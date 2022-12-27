@@ -14,14 +14,14 @@ function App() {
         <Route path="/tasks" exact>
           <TaskManager />
         </Route>
+        <Route path="/tasks/:tasksType">
+          <TaskManager />
+        </Route>
         <Route path="/calendar" exact>
           <Calendar />
         </Route>
         <Route path="/habits" exact>
           <HabitTracker />
-        </Route>
-        <Route path="*">
-          <Redirect to="/tasks" />
         </Route>
       </Switch>
     </Layout>

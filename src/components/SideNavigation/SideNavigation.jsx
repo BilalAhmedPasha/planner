@@ -2,7 +2,7 @@ import React from "react";
 import CalendarMonth from "@mui/icons-material/CalendarMonth";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import LoopIcon from "@mui/icons-material/Loop";
-import { Drawer, List, ListItemButton } from "@mui/material";
+import { Drawer, List, ListItemButton, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 
 const sideNavConfig = [
@@ -35,7 +35,9 @@ const SideNavigation = () => {
             aria-label={each.name}
             variant="contained"
           >
-            <each.icon style={{ height: "1.75em", width: "1.75rem" }} />
+            <Tooltip title={each.name} placement="right">
+              <each.icon style={{ height: "1.75em", width: "1.75rem" }} />
+            </Tooltip>
           </ListItemButton>
         ))}
       </List>
