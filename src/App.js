@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { Route, Redirect, Switch } from "react-router-dom";
+import Calendar from "./features/Calendar/Calendar";
+import HabitTracker from "./features/HabitTracker/HabitTracker";
+import Layout from "./features/Layout";
+import TaskManager from "./features/TaskManager/TaskManager";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout>
+      <Switch>
+        <Route path="/" exact>
+          <Redirect to="/tasks" />
+        </Route>
+        <Route path="/tasks" exact>
+          <TaskManager />
+        </Route>
+        <Route path="/calendar" exact>
+          <Calendar />
+        </Route>
+        <Route path="/habits" exact>
+          <HabitTracker />
+        </Route>
+        <Route path="*">
+          <Redirect to="/tasks" />
+        </Route>
+      </Switch>
+    </Layout>
   );
 }
 
