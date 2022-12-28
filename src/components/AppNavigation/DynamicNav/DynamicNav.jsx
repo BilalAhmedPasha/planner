@@ -42,7 +42,7 @@ const DynamicNav = ({
             <ListItem disablePadding key={each.name}>
               <ListItemButton
                 component={Link}
-                to={`/tasks/${type}${each.redirectUrl}`}
+                to={`/${type}${each.redirectUrl}`}
                 aria-label={each.name}
                 sx={{ pl: 2 }}
               >

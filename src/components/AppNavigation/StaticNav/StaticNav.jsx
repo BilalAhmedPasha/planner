@@ -14,7 +14,7 @@ const StaticNav = ({ navigationConfig }) => {
         <ListItem disablePadding key={each.name}>
           <ListItemButton
             component={Link}
-            to={`/tasks${each.redirectUrl}`}
+            to={`${each.redirectUrl}`}
             aria-label={each.name}
             variant="contained"
           >

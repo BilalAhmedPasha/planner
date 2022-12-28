@@ -1,13 +1,8 @@
 import React from "react";
-import TaskNavigation from "../../components/TaskNavigation/TaskNavigation";
-import classes from "./TaskManager.module.css";
+import { useParams } from "react-router-dom";
 
 const TaskManager = (props) => {
-  return (
-    <>
-      <TaskNavigation />
-      <main className={classes.main}>{props.children}</main>
-    </>
-  );
+  const { tasksType } = useParams();
+  return <h1>{tasksType} tasks here</h1>;
 };
 export default TaskManager;

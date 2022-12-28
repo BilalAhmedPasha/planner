@@ -6,17 +6,17 @@ const taskNavConfigFooter = [
   {
     name: "Completed",
     icon: CheckBoxIcon,
-    redirectUrl: "/completed",
+    redirectUrl: "/tasks/completed",
   },
   {
     name: "Won't Do",
     icon: DisabledByDefaultIcon,
-    redirectUrl: "/wont-do",
+    redirectUrl: "/tasks/wont-do",
   },
   {
     name: "Deleted",
     icon: DeleteIcon,
-    redirectUrl: "/deleted",
+    redirectUrl: "/tasks/deleted",
   },
 ];
 

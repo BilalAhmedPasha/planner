@@ -13,7 +13,7 @@ const TagsNav = () => {
       navigationConfig={customTags}
       title={"Tags"}
       tooltip={"Add tag"}
-      type={"lists"}
+      type={"tags"}
       open={open}
       handleClickItem={handleClickItem}
     />

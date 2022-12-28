@@ -9,19 +9,19 @@ function App() {
     <Layout>
       <Switch>
         <Route path="/" exact>
-          <Redirect to="/tasks" />
-        </Route>
-        <Route path="/tasks" exact>
-          <TaskManager />
-        </Route>
-        <Route path="/tasks/:tasksType">
-          <TaskManager />
+          <Redirect to="/tasks/all" />
         </Route>
         <Route path="/calendar" exact>
           <Calendar />
         </Route>
         <Route path="/habits" exact>
           <HabitTracker />
+        </Route>
+        <Route path="/tasks/:tasksType">
+          <TaskManager />
+        </Route>
+        <Route path="*">
+          <Redirect to="/" />
         </Route>
       </Switch>
     </Layout>

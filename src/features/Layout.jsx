@@ -1,12 +1,13 @@
+import { Box } from "@mui/material";
+import AppNavigation from "../components/AppNavigation/AppNavigation";
 import classes from "./Layout.module.css";
-import SideNavigation from "../components/SideNavigation/SideNavigation";
 
 const Layout = (props) => {
   return (
-    <>
-      <SideNavigation />
+    <Box sx={{ display: "flex" }}>
+      <AppNavigation />
       <main className={classes.main}>{props.children}</main>
-    </>
+    </Box>
   );
 };
 export default Layout;

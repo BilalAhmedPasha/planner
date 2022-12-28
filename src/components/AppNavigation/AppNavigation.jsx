@@ -1,15 +1,25 @@
 import React from "react";
-import { Box, Divider, List } from "@mui/material";
+import { Divider, Drawer, List } from "@mui/material";
 import taskNavConfigHeader from "./StaticNav/StaticNavConfigs/HeaderNavigation.config";
 import taskNavConfigFooter from "./StaticNav/StaticNavConfigs/FooterNavigation.config";
 import StaticNav from "./StaticNav/StaticNav";
 import ListsNav from "./ListsNav/ListsNav";
 import TagsNav from "./TagsNav/TagsNav";
 
-const TaskNavigation = () => {
+const AppNavigation = () => {
+  const drawerWidth = 320;
   return (
-    <Box
-      sx={{ width: "100%", maxWidth: 320, maxHeight: "50%", overflow: "auto" }}
+    <Drawer
+      sx={{
+        width: drawerWidth,
+        flexShrink: 0,
+        "& .MuiDrawer-paper": {
+          width: drawerWidth,
+          boxSizing: "border-box",
+        },
+      }}
+      variant="permanent"
+      anchor="left"
     >
       <StaticNav navigationConfig={taskNavConfigHeader} />
       <Divider />
@@ -19,12 +29,8 @@ const TaskNavigation = () => {
       </List>
       <Divider />
       <StaticNav navigationConfig={taskNavConfigFooter} />
-      <StaticNav navigationConfig={taskNavConfigFooter} />
-      <StaticNav navigationConfig={taskNavConfigFooter} />
-      <StaticNav navigationConfig={taskNavConfigFooter} />
-      <StaticNav navigationConfig={taskNavConfigFooter} />
-    </Box>
+    </Drawer>
   );
 };
 
-export default TaskNavigation;
+export default AppNavigation;
