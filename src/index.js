@@ -11,6 +11,13 @@ const theme = createTheme({
       main: grey[700],
     },
   },
+  components: {
+    MuiButtonBase: {
+      defaultProps: {
+        disableRipple: true,
+      },
+    },
+  },
 });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
