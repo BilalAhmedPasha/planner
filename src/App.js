@@ -20,9 +20,6 @@ function App() {
         <Route path="/tasks/:tasksType">
           <TaskManager />
         </Route>
-        <Route path="*">
-          <Redirect to="/" />
-        </Route>
       </Switch>
     </Layout>
   );
