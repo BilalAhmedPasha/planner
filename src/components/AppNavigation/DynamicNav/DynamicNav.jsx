@@ -18,8 +18,10 @@ const DynamicNav = ({
   title,
   tooltip,
   type,
-  open,
+  openList,
   handleClickItem,
+  handleOpenDialog,
+  addDialogComponent: AddDialogComponent,
 }) => {
   return (
     <>
@@ -28,15 +30,20 @@ const DynamicNav = ({
         secondaryAction={
           <IconButton edge="end" aria-label={tooltip}>
             <Tooltip title={tooltip} placement="bottom">
-              <AddIcon onClick={(event) => event.stopPropagation()} />
+              <AddIcon
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleOpenDialog();
+                }}
+              />
             </Tooltip>
           </IconButton>
         }
       >
-        {open ? <KeyboardArrowDownIcon /> : <KeyboardArrowRightIcon />}
+        {openList ? <KeyboardArrowDownIcon /> : <KeyboardArrowRightIcon />}
         <ListItemText primary={title} />
       </ListItem>
-      <Collapse in={open} timeout="auto" unmountOnExit>
+      <Collapse in={openList} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           {navigationConfig.map((each, index) => (
             <ListItem disablePadding key={each.name}>
@@ -55,6 +62,7 @@ const DynamicNav = ({
           ))}
         </List>
       </Collapse>
+      {AddDialogComponent}
     </>
   );
 };
