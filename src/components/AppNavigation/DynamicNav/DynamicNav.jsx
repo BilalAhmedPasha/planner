@@ -4,7 +4,6 @@ import {
   List,
   ListItem,
   ListItemButton,
-  ListItemIcon,
   ListItemText,
   Tooltip,
 } from "@mui/material";
@@ -12,13 +11,14 @@ import { Link } from "react-router-dom";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import AddIcon from "@mui/icons-material/Add";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 const DynamicNav = ({
   navigationConfig,
   title,
   tooltip,
   type,
-  openList,
+  open,
   handleClickItem,
   handleOpenDialog,
   addDialogComponent: AddDialogComponent,
@@ -40,22 +40,33 @@ const DynamicNav = ({
           </IconButton>
         }
       >
-        {openList ? <KeyboardArrowDownIcon /> : <KeyboardArrowRightIcon />}
+        {open ? <KeyboardArrowDownIcon /> : <KeyboardArrowRightIcon />}
         <ListItemText primary={title} />
       </ListItem>
-      <Collapse in={openList} timeout="auto" unmountOnExit>
+      <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           {navigationConfig.map((each, index) => (
-            <ListItem disablePadding key={each.name}>
+            <ListItem
+              disablePadding
+              key={each.name}
+              secondaryAction={
+                <IconButton edge="end" aria-label={tooltip}>
+                  <Tooltip title={"Edit"} placement="bottom">
+                    <MoreVertIcon
+                      onClick={(event) => {
+                        event.stopPropagation();
+                      }}
+                    />
+                  </Tooltip>
+                </IconButton>
+              }
+            >
               <ListItemButton
                 component={Link}
                 to={`/${type}${each.redirectUrl}`}
                 aria-label={each.name}
-                sx={{ pl: 2 }}
+                sx={{ pl: 5 }}
               >
-                <ListItemIcon>
-                  <each.icon style={{ height: "1.25em", width: "1.5rem" }} />
-                </ListItemIcon>
                 <ListItemText primary={each.name} />
               </ListItemButton>
             </ListItem>

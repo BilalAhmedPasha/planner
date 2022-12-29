@@ -1,11 +1,9 @@
-import { AccountCircle } from "@mui/icons-material";
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  InputAdornment,
   TextField,
 } from "@mui/material";
 import { MuiColorInput } from "mui-color-input";
@@ -17,36 +15,34 @@ const AddListDialog = ({
   handleColorChange,
 }) => {
   return (
-    <Dialog open={openDialog} onClose={handleCloseDialog}>
-      <DialogTitle>{"Add List"}</DialogTitle>
-      <DialogContent>
-        <TextField
-          id="name"
-          label="List name"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <AccountCircle />
-              </InputAdornment>
-            ),
-          }}
-          autoFocus
-          margin="dense"
-          fullWidth
-          variant="standard"
-        />
-        <MuiColorInput
-          value={color}
-          onChange={handleColorChange}
-          format="hex"
-          fallbackValue="#ffffff"
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleCloseDialog}>Cancel</Button>
-        <Button onClick={handleCloseDialog}>Add</Button>
-      </DialogActions>
-    </Dialog>
+    <form>
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>{"Add List"}</DialogTitle>
+        <DialogContent>
+          <TextField
+            id="name"
+            label="Name"
+            autoFocus
+            margin="dense"
+            fullWidth
+            variant="standard"
+          />
+
+          <MuiColorInput
+            size="small"
+            value={color}
+            onChange={handleColorChange}
+            format="hex"
+            fallbackValue="#ffffff"
+            variant="outlined"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>Cancel</Button>
+          <Button onClick={handleCloseDialog}>Add</Button>
+        </DialogActions>
+      </Dialog>
+    </form>
   );
 };
 export default AddListDialog;

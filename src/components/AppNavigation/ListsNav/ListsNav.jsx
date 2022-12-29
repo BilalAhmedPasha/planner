@@ -4,9 +4,9 @@ import AddListDialog from "./AddListDialog";
 import customLists from "./ListNavigation.config";
 
 const ListNav = () => {
-  const [openList, setOpenList] = useState(false);
+  const [openLists, setOpenLists] = useState(false);
   const handleClickItem = () => {
-    setOpenList(!openList);
+    setOpenLists(!openLists);
   };
 
   const [openDialog, setOpenDialog] = useState(false);
@@ -28,7 +28,7 @@ const ListNav = () => {
       title={"Lists"}
       tooltip={"Add list"}
       type={"lists"}
-      openList={openList}
+      open={openLists}
       handleClickItem={handleClickItem}
       openDialog={openDialog}
       handleOpenDialog={handleOpenDialog}

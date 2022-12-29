@@ -4,28 +4,42 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  InputAdornment,
   TextField,
 } from "@mui/material";
-import EmojiPicker from "emoji-picker-react";
+import { AccountCircle } from "@mui/icons-material";
+import { MuiColorInput } from "mui-color-input";
 
-const AddTagDialog = ({ openDialog, handleCloseDialog }) => {
+const AddTagDialog = ({
+  openDialog,
+  handleCloseDialog,
+  color,
+  handleColorChange,
+}) => {
   return (
     <Dialog open={openDialog} onClose={handleCloseDialog}>
       <DialogTitle>{"Add Tag"}</DialogTitle>
       <DialogContent>
         <TextField
+          id="name"
+          label="Tag name"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <AccountCircle  />
+              </InputAdornment>
+            ),
+          }}
           autoFocus
           margin="dense"
-          id="name"
-          label="Email Address"
-          type="email"
           fullWidth
           variant="standard"
         />
-        <EmojiPicker
-          emojiStyle="google"
-          skinTonesDisabled={true}
-          searchDisabled={true}
+        <MuiColorInput
+          value={color}
+          onChange={handleColorChange}
+          format="hex"
+          fallbackValue="#ffffff"
         />
       </DialogContent>
       <DialogActions>

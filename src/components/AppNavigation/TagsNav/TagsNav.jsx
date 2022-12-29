@@ -4,20 +4,24 @@ import AddTagDialog from "./AddTagDialog";
 import customTags from "./TagNavigation.config";
 
 const TagsNav = () => {
-  const [open, setOpen] = useState(false);
+  const [openTag, setOpenTags] = useState(false);
   const handleClickItem = () => {
-    setOpen(!open);
+    setOpenTags(!openTag);
   };
 
-    const [openDialog, setOpenDialog] = useState(false);
-    const handleOpenDialog = () => {
-      setOpenDialog(true);
-    };
+  const [openDialog, setOpenDialog] = useState(false);
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
 
-    const handleCloseDialog = () => {
-      setOpenDialog(false);
-    };
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
 
+  const [color, setColor] = useState("#ffffff");
+  const handleColorChange = (color) => {
+    setColor(color);
+  };
 
   return (
     <DynamicNav
@@ -25,7 +29,7 @@ const TagsNav = () => {
       title={"Tags"}
       tooltip={"Add tag"}
       type={"tags"}
-      open={open}
+      open={openTag}
       handleClickItem={handleClickItem}
       openDialog={openDialog}
       handleOpenDialog={handleOpenDialog}
@@ -34,6 +38,8 @@ const TagsNav = () => {
         <AddTagDialog
           openDialog={openDialog}
           handleCloseDialog={handleCloseDialog}
+          color={color}
+          handleColorChange={handleColorChange}
         />
       }
     />
