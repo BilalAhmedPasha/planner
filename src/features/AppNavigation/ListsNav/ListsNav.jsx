@@ -1,6 +1,10 @@
 import { useState } from "react";
 import DynamicNav from "../DynamicNav/DynamicNav";
-import AddListDialog from "./AddListDialog";
+import ListDialogForm from "./ListDialogForm/ListDialogForm";
+import {
+  DEFAULT_VALUES,
+  VALIDATION_SCHEMA,
+} from "./ListDialogForm/ListDialogForm.config";
 import customLists from "./ListNavigation.config";
 
 const ListNav = () => {
@@ -17,11 +21,6 @@ const ListNav = () => {
     setOpenDialog(false);
   };
 
-  const [color, setColor] = useState("#ffffff");
-  const handleColorChange = (color) => {
-    setColor(color);
-  };
-
   return (
     <DynamicNav
       navigationConfig={customLists}
@@ -34,11 +33,11 @@ const ListNav = () => {
       handleOpenDialog={handleOpenDialog}
       handleCloseDialog={handleCloseDialog}
       addDialogComponent={
-        <AddListDialog
+        <ListDialogForm
           openDialog={openDialog}
           handleCloseDialog={handleCloseDialog}
-          color={color}
-          handleColorChange={handleColorChange}
+          defaultValues={DEFAULT_VALUES()}
+          validationSchema={VALIDATION_SCHEMA()}
         />
       }
     />

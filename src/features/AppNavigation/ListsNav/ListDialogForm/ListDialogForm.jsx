@@ -7,25 +7,40 @@ import {
   TextField,
 } from "@mui/material";
 import { MuiColorInput } from "mui-color-input";
+import { Controller, useForm } from "react-hook-form";
 
-const AddListDialog = ({
+const ListDialogForm = ({
   openDialog,
   handleCloseDialog,
   color,
   handleColorChange,
 }) => {
+  const { handleSubmit, reset, control } = useForm();
+  const onSubmit = (data) => {
+    console.log(data);
+    handleCloseDialog();
+  };
+
   return (
     <form>
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>{"Add List"}</DialogTitle>
         <DialogContent>
-          <TextField
-            id="name"
-            label="Name"
-            autoFocus
-            margin="dense"
-            fullWidth
-            variant="standard"
+          <Controller
+            name={"name"}
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <TextField
+                onChange={onChange}
+                value={value}
+                label={"Name"}
+                id={"name"}
+                autoFocus={true}
+                margin={"dense"}
+                fullWidth={true}
+                variant={"standard"}
+              />
+            )}
           />
 
           <MuiColorInput
@@ -39,10 +54,10 @@ const AddListDialog = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={handleCloseDialog}>Add</Button>
+          <Button onClick={handleSubmit(onSubmit)}>Add</Button>
         </DialogActions>
       </Dialog>
     </form>
   );
 };
-export default AddListDialog;
+export default ListDialogForm;
