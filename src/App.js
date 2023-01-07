@@ -22,6 +22,12 @@ function App() {
         <Route path="/tasks/:tasksType">
           <TaskManager />
         </Route>
+        <Route path="/lists/:listName">
+          <TaskManager />
+        </Route>
+        <Route path="/tags/:listName">
+          <TaskManager />
+        </Route>
       </Switch>
     </AppLayout>
   );
