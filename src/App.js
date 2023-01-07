@@ -1,12 +1,14 @@
+import React from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
-import Calendar from "./features/Calendar/Calendar";
-import HabitTracker from "./features/HabitTracker/HabitTracker";
-import Layout from "./features/Layout";
-import TaskManager from "./features/TaskManager/TaskManager";
+import Calendar from "./features/Calendar";
+import HabitTracker from "./features/HabitTracker";
+import AppLayout from "./features/AppLayout";
+import TaskManager from "./features/TaskManager";
+import "./App.css";
 
 function App() {
   return (
-    <Layout>
+    <AppLayout>
       <Switch>
         <Route path="/" exact>
           <Redirect to="/tasks/all" />
@@ -21,8 +23,7 @@ function App() {
           <TaskManager />
         </Route>
       </Switch>
-    </Layout>
+    </AppLayout>
   );
 }
-
 export default App;
