@@ -3,12 +3,12 @@ export const fetchListsApi = () => {
     {
       label: "List 1",
       color: "#D87C69",
-      redirectUrl: "/list1",
+      redirectUrl: "/list-1",
     },
     {
       label: "List 2",
       color: "#96CD6C",
-      redirectUrl: "/list2",
+      redirectUrl: "/list-2",
     },
   ]);
 };

@@ -91,28 +91,28 @@ const renderSubMenuItems = ({ items, key, title, onAddClick, icon }) => {
   );
 };
 
-const SideMenu = ({ headerMenu, footerMenu, listItems, tagItems }) => {
+const SideMenu = ({ headerMenu, footerMenu, listConfig, tagConfig }) => {
   return (
     <Menu theme="light" defaultChecked={false} mode="inline">
       {renderMenuItems(headerMenu)}
       <Menu.Divider />
       {renderSubMenuItems({
-        items: listItems,
+        items: listConfig.items,
         key: "lists",
         title: "Lists",
         onAddClick: (e) => {
-          console.log("Add list clicked");
           e.stopPropagation();
+          listConfig.setOpenAddDialog(true);
         },
         icon: <UnorderedListOutlined />,
       })}
       {renderSubMenuItems({
-        items: tagItems,
+        items: tagConfig.items,
         key: "tags",
         title: "Tags",
         onAddClick: (e) => {
-          console.log("Add tag clicked");
           e.stopPropagation();
+          tagConfig.setOpenAddDialog(true);
         },
         icon: <TagOutlined />,
       })}

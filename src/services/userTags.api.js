@@ -3,12 +3,12 @@ export const fetchTagsApi = () => {
     {
       label: "Tag 1",
       color: "#6CBBCD",
-      redirectUrl: "/tag1",
+      redirectUrl: "/tag-1",
     },
     {
       label: "Tag 2",
       color: "#966CCD",
-      redirectUrl: "/tag2",
+      redirectUrl: "/tag-2",
     },
   ]);
 };
