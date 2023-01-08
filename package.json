@@ -8,6 +8,8 @@
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
     "antd": "^5.1.2",
+    "axios": "^1.2.2",
+    "firebase": "^9.15.0",
     "react": "^18.2.0",
     "react-color": "^2.19.3",
     "react-colorful": "^5.6.1",
@@ -17,7 +19,9 @@
     "react-router-dom": "5.3.4",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.0",
-    "yup": "^0.32.8"
+    "yup": "^0.32.8",
+    "moment": "^2.29.4",
+    "moment-timezone": "0.5.37"
   },
   "scripts": {
     "start": "react-scripts start",
