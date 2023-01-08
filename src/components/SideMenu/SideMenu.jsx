@@ -72,12 +72,12 @@ const renderSubMenuItems = ({ items, key, title, onAddClick, icon }) => {
                 justifyContent: "space-between",
               }}
             >
-              <Link to={`/${key}${each.redirectUrl}`}>{each.label}</Link>
+              <Link to={`/${key}/${each.redirectUrl}`}>{each.label}</Link>
               <Space>
                 {renderColorDot(each.color)}
                 <Dropdown
                   overlay={moreMenuItems}
-                  trigger={["click"]}
+                  trigger={["hover"]}
                   placement="bottomLeft"
                 >
                   <Button icon={<MoreOutlined />} type="text" size="small" />

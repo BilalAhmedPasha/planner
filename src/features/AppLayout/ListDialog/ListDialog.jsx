@@ -14,7 +14,7 @@ const ListDialogForm = ({ color, handleColorChange }) => {
           },
         ]}
       >
-        <Input autocomplete="off" />
+        <Input autoComplete="off" />
       </Form.Item>
       <Form.Item name="color" label="Color">
         <SliderPicker color={color} onChange={handleColorChange} />
