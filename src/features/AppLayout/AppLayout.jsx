@@ -1,13 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Layout, Menu } from "antd";
 import { defaultSideNav1, defaultSideNav2 } from "./defaultSideNav.config";
 import SideMenu from "../../components/SideMenu";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { listsSelector } from "./state/userLists/userLists.reducer";
 import { tagsSelector } from "./state/userTags/userTags.reducer";
+import { listsAction } from "./state/userLists/userLists.actions";
+import { tagsAction } from "./state/userTags/userTags.actions";
 
 const AppLayout = (props) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(listsAction());
+    dispatch(tagsAction());
+  }, [dispatch]);
+
   const { lists } = useSelector(listsSelector);
   const { tags } = useSelector(tagsSelector);
 

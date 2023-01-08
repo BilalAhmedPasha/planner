@@ -1,4 +1,4 @@
-import { fetchListsApi } from "../../../../services/appLayout.api";
+import { fetchListsApi } from "../../../../services/userLists.api";
 import {
   FETCH_LISTS,
   FETCH_LISTS_ERROR,
@@ -22,7 +22,7 @@ export const fetchListsError = (error) => ({
 export const listsAction = () => async (dispatch) => {
   dispatch(fetchLists());
   try {
-    const { data } = await fetchListsApi();
+    const data = await fetchListsApi();
     const response = { data, total: data.length };
     return dispatch(fetchListsSuccess(response));
   } catch (error) {

@@ -1,4 +1,4 @@
-import { fetchTagsApi } from "../../../../services/appLayout.api";
+import { fetchTagsApi } from "../../../../services/userTags.api";
 import {
   FETCH_TAGS,
   FETCH_TAGS_ERROR,
@@ -22,7 +22,7 @@ export const fetchTagsError = (error) => ({
 export const tagsAction = () => async (dispatch) => {
   dispatch(fetchTags());
   try {
-    const { data } = await fetchTagsApi();
+    const data = await fetchTagsApi();
     const response = { data, total: data.length };
     return dispatch(fetchTagsSuccess(response));
   } catch (error) {
