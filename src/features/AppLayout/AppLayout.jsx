@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Layout, Menu } from "antd";
+import { Layout } from "antd";
 import { defaultSideNav1, defaultSideNav2 } from "./defaultSideNav.config";
 import SideMenu from "../../components/SideMenu";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,7 +7,8 @@ import { listsSelector } from "./state/userLists/userLists.reducer";
 import { tagsSelector } from "./state/userTags/userTags.reducer";
 import { listsAction } from "./state/userLists/userLists.actions";
 import { tagsAction } from "./state/userTags/userTags.actions";
-import ModalForm from "../../components/Form/Form";
+import ListDialog from "./ListDialog";
+import TagDialog from "./TagDialog";
 
 const AppLayout = (props) => {
   const dispatch = useDispatch();
@@ -61,26 +62,16 @@ const AppLayout = (props) => {
             setOpenAddDialog: setOpenTagDialog,
           }}
         />
-        {openListDialog && (
-          <ModalForm
-            open={openListDialog}
-            formTitle={"Create New List"}
-            onCreate={handleAddList}
-            onCancel={() => {
-              setOpenListDialog(false);
-            }}
-          />
-        )}
-        {openTagDialog && (
-          <ModalForm
-            open={openTagDialog}
-            formTitle={"Create New Tag"}
-            onCreate={handleAddTag}
-            onCancel={() => {
-              setOpenTagDialog(false);
-            }}
-          />
-        )}
+        <ListDialog
+          handleAdd={handleAddList}
+          openAddDialog={openListDialog}
+          setOpenAddDialog={setOpenListDialog}
+        />
+        <TagDialog
+          handleAdd={handleAddTag}
+          openAddDialog={openTagDialog}
+          setOpenAddDialog={setOpenTagDialog}
+        />
       </Layout.Sider>
       <Layout.Content className="content">{props.children}</Layout.Content>
     </Layout>
