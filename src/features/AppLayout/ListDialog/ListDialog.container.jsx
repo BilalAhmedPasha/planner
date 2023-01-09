@@ -2,17 +2,17 @@ import React, { useState } from "react";
 import ModalForm from "../../../components/ModalForm";
 import ListDialogForm from "./ListDialog";
 
-const ListDialog = ({ handleAdd, openAddDialog, setOpenAddDialog }) => {
+const ListDialog = ({ handleAdd, openDialog, setOpenDialog }) => {
   const [color, setColor] = useState("#FFFFFF");
 
   return (
-    openAddDialog && (
+    openDialog && (
       <ModalForm
-        open={openAddDialog}
+        open={openDialog}
         formTitle={"Create New List"}
         onOk={handleAdd}
         onCancel={() => {
-          setOpenAddDialog(false);
+          setOpenDialog(false);
         }}
         okText={"Create"}
       >

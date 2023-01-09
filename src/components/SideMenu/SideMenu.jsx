@@ -1,4 +1,4 @@
-import { Button, Dropdown, Menu, Space } from "antd";
+import { Badge, Button, Dropdown, Menu, Space } from "antd";
 import { Link } from "react-router-dom";
 import {
   TagOutlined,
@@ -6,6 +6,7 @@ import {
   PlusOutlined,
   MoreOutlined,
 } from "@ant-design/icons";
+import { CREATE } from "../../constants/formType.constants";
 
 const renderColorDot = (color) => {
   return (
@@ -31,18 +32,24 @@ const renderMenuItems = (itemsArray) => {
   });
 };
 
-const moreMenuItems = (
-  <Menu
-    onClick={(e) => {
-      console.log(e.key);
-    }}
-  >
-    <Menu.Item key="edit">{"Edit"}</Menu.Item>
-    <Menu.Item key="delete">{"Delete"}</Menu.Item>
-  </Menu>
-);
+const moreMenuItems = ({ onMoreClick, currentItem }) => {
+  return (
+    <Menu onClick={(e) => onMoreClick({ e, currentItem })}>
+      <Menu.Item key="edit">{"Edit"}</Menu.Item>
+      <Menu.Item key="delete">{"Delete"}</Menu.Item>
+    </Menu>
+  );
+};
 
-const renderSubMenuItems = ({ items, key, title, onAddClick, icon }) => {
+const renderSubMenuItems = ({
+  items,
+  itemCount,
+  key,
+  title,
+  onAddClick,
+  icon,
+  onMoreClick,
+}) => {
   return (
     <Menu.SubMenu
       key={key}
@@ -56,7 +63,15 @@ const renderSubMenuItems = ({ items, key, title, onAddClick, icon }) => {
           }}
         >
           {title}
-          <Button icon={<PlusOutlined />} type="text" onClick={onAddClick} />
+          <Space>
+            <Badge
+              count={itemCount}
+              showZero
+              color="#aaaaaa"
+              overflowCount={10}
+            />
+            <Button icon={<PlusOutlined />} type="text" onClick={onAddClick} />
+          </Space>
         </div>
       }
       icon={icon}
@@ -76,7 +91,12 @@ const renderSubMenuItems = ({ items, key, title, onAddClick, icon }) => {
               <Space>
                 {renderColorDot(each.color)}
                 <Dropdown
-                  overlay={moreMenuItems}
+                  overlay={() =>
+                    moreMenuItems({
+                      onMoreClick: onMoreClick,
+                      currentItem: each,
+                    })
+                  }
                   trigger={["hover"]}
                   placement="bottomLeft"
                 >
@@ -98,23 +118,28 @@ const SideMenu = ({ headerMenu, footerMenu, listConfig, tagConfig }) => {
       <Menu.Divider />
       {renderSubMenuItems({
         items: listConfig.items,
+        itemCount: listConfig.count,
         key: "lists",
         title: "Lists",
         onAddClick: (e) => {
           e.stopPropagation();
-          listConfig.setOpenAddDialog(true);
+          listConfig.setOpenDialog(true);
         },
         icon: <UnorderedListOutlined />,
+        onMoreClick: tagConfig.handleMoreMenu,
       })}
       {renderSubMenuItems({
         items: tagConfig.items,
+        itemCount: tagConfig.count,
         key: "tags",
         title: "Tags",
         onAddClick: (e) => {
           e.stopPropagation();
-          tagConfig.setOpenAddDialog(true);
+          tagConfig.setTagFormType(CREATE);
+          tagConfig.setOpenDialog(true);
         },
         icon: <TagOutlined />,
+        onMoreClick: tagConfig.handleMoreMenu,
       })}
       <Menu.Divider />
       {renderMenuItems(footerMenu)}
