@@ -111,9 +111,20 @@ const renderSubMenuItems = ({
   );
 };
 
-const SideMenu = ({ headerMenu, footerMenu, listConfig, tagConfig }) => {
+const SideMenu = ({
+  headerMenu,
+  footerMenu,
+  listConfig,
+  tagConfig,
+  setCurrentTitle,
+}) => {
   return (
-    <Menu theme="light" defaultChecked={false} mode="inline">
+    <Menu
+      theme="light"
+      defaultChecked={false}
+      mode="inline"
+      onClick={(e) => setCurrentTitle(e.domEvent.currentTarget.textContent)}
+    >
       {renderMenuItems(headerMenu)}
       <Menu.Divider />
       {renderSubMenuItems({
