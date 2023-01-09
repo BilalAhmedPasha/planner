@@ -1,5 +1,5 @@
 import { Form, Input } from "antd";
-import { CompactPicker } from "react-color";
+import { SliderPicker } from "react-color";
 
 const TagDialogForm = ({ color, handleColorChange }) => {
   return (
@@ -17,7 +17,7 @@ const TagDialogForm = ({ color, handleColorChange }) => {
         <Input autoComplete="off" />
       </Form.Item>
       <Form.Item name="color" label="Color">
-        <CompactPicker color={color} onChange={handleColorChange} />
+        <SliderPicker color={color} onChangeComplete={handleColorChange} />
       </Form.Item>
     </>
   );

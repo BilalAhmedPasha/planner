@@ -6,9 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { listsSelector } from "./state/userLists/userLists.reducer";
 import { tagsSelector } from "./state/userTags/userTags.reducer";
 import { listsAction } from "./state/userLists/userLists.actions";
-import { fetchTagsAction } from "./state/userTags/userTags.actions";
+import {
+  deleteTagAction,
+  fetchTagsAction,
+} from "./state/userTags/userTags.actions";
 import ListDialog from "./ListDialog";
 import TagDialog from "./TagDialog";
+import { DELETE, SUCCESS } from "../../constants/app.constants";
+import { EDIT } from "../../constants/formType.constants";
 
 const AppLayout = (props) => {
   const dispatch = useDispatch();
@@ -18,8 +23,8 @@ const AppLayout = (props) => {
     dispatch(fetchTagsAction());
   }, [dispatch]);
 
-  const { lists } = useSelector(listsSelector);
-  const { tags, isLoadingTags } = useSelector(tagsSelector);
+  const { lists, totalLists } = useSelector(listsSelector);
+  const { tags, isLoadingTags, totalTags } = useSelector(tagsSelector);
   const [openListDialog, setOpenListDialog] = useState(false);
   const [openTagDialog, setOpenTagDialog] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
@@ -27,6 +32,51 @@ const AppLayout = (props) => {
   const handleAddList = (e) => {
     console.log("Handle Add List");
     setOpenListDialog(false);
+  };
+
+  const handleMoreListMenu = (e) => {
+    console.log(e);
+  };
+
+  const deleteTagSuccess = () => {
+    messageApi.open({
+      type: "success",
+      content: "Tag Deleted",
+      duration: 3,
+    });
+  };
+  const deleteTagFailed = () => {
+    messageApi.open({
+      type: "error",
+      content: "Failed to delete tag",
+      duration: 3,
+    });
+  };
+
+  const handleDeleteTag = (currentTag) => {
+    console.log(currentTag);
+    dispatch(deleteTagAction(currentTag)).then((response) => {
+      if (response.success === SUCCESS) {
+        deleteTagSuccess();
+      } else {
+        deleteTagFailed();
+      }
+    });
+  };
+
+  const [tagFormType, setTagFormType] = useState();
+  const [tagData, setTagData] = useState();
+  const handleMoreTagMenu = ({ e, currentItem }) => {
+    if (e.key === DELETE) {
+      if (e.keyPath.includes("tags")) {
+        handleDeleteTag(currentItem);
+      }
+    }
+    if (e.key === EDIT) {
+      setTagData(currentItem);
+      setTagFormType(EDIT);
+      setOpenTagDialog(true);
+    }
   };
 
   return (
@@ -42,29 +92,39 @@ const AppLayout = (props) => {
         }}
         width={300}
       >
-        <SideMenu
-          headerMenu={defaultSideNav1}
-          footerMenu={defaultSideNav2}
-          listConfig={{
-            items: lists,
-            setOpenAddDialog: setOpenListDialog,
-          }}
-          tagConfig={{
-            items: tags,
-            setOpenAddDialog: setOpenTagDialog,
-          }}
-        />
-        <ListDialog
-          handleAdd={handleAddList}
-          openAddDialog={openListDialog}
-          setOpenAddDialog={setOpenListDialog}
-        />
         <Spin spinning={isLoadingTags} size="large">
-          <TagDialog
-            messageApi={messageApi}
-            openAddDialog={openTagDialog}
-            setOpenAddDialog={setOpenTagDialog}
+          <SideMenu
+            headerMenu={defaultSideNav1}
+            footerMenu={defaultSideNav2}
+            listConfig={{
+              items: lists,
+              count: totalLists,
+              setOpenDialog: setOpenListDialog,
+              handleMoreMenu: handleMoreListMenu,
+            }}
+            tagConfig={{
+              items: tags,
+              count: totalTags,
+              setOpenDialog: setOpenTagDialog,
+              handleMoreMenu: handleMoreTagMenu,
+              setTagFormType: setTagFormType,
+              setTagData: setTagData,
+            }}
           />
+          <ListDialog
+            handleAdd={handleAddList}
+            openDialog={openListDialog}
+            setOpenDialog={setOpenListDialog}
+          />
+          {openTagDialog && (
+            <TagDialog
+              messageApi={messageApi}
+              openDialog={openTagDialog}
+              setOpenDialog={setOpenTagDialog}
+              formType={tagFormType}
+              formValues={tagData}
+            />
+          )}
         </Spin>
       </Layout.Sider>
       <Layout.Content className="content">{props.children}</Layout.Content>

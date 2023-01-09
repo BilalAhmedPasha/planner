@@ -8,6 +8,7 @@ const ModalForm = ({
   onCancel,
   okText,
   children,
+  initialValues,
   ...props
 }) => {
   const [form] = Form.useForm();
@@ -35,9 +36,7 @@ const ModalForm = ({
         form={form}
         layout="vertical"
         name="form_in_modal"
-        initialValues={{
-          modifier: "public",
-        }}
+        initialValues={initialValues}
       >
         {children}
       </Form>
