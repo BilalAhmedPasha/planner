@@ -1,14 +1,28 @@
-export const fetchListsApi = () => {
-  return Promise.resolve([
-    {
-      label: "List 1",
-      color: "#D87C69",
-      redirectUrl: "/list-1",
-    },
-    {
-      label: "List 2",
-      color: "#96CD6C",
-      redirectUrl: "/list-2",
-    },
-  ]);
+import firestore from "../firebase";
+import {
+  addDoc,
+  deleteDoc,
+  updateDoc,
+  collection,
+  getDocs,
+  doc,
+} from "@firebase/firestore";
+
+const ref = collection(firestore, "lists");
+export const fetchListsApi = async () => {
+  return getDocs(ref);
+};
+
+export const addListApi = (newList) => {
+  return addDoc(ref, newList);
+};
+
+export const editListApi = (modifiedList, listId) => {
+  const docRef = doc(ref, listId);
+  return updateDoc(docRef, modifiedList);
+};
+
+export const deleteListApi = (currentList) => {
+  const docRef = doc(ref, currentList.id);
+  return deleteDoc(docRef);
 };
