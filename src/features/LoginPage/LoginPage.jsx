@@ -5,11 +5,9 @@ import { GoogleOutlined } from "@ant-design/icons";
 const LoginPage = ({ title }) => {
   const divStyle = {
     height: "100vh",
-    maxHeight: "100vh",
     backgroundImage: `url(${image})`,
     backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
+    overflow: "hidden",
   };
 
   const [welcomeText, setWelcomeText] = useState("");
