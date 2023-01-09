@@ -123,10 +123,11 @@ const SideMenu = ({ headerMenu, footerMenu, listConfig, tagConfig }) => {
         title: "Lists",
         onAddClick: (e) => {
           e.stopPropagation();
+          listConfig.setListFormType(CREATE);
           listConfig.setOpenDialog(true);
         },
         icon: <UnorderedListOutlined />,
-        onMoreClick: tagConfig.handleMoreMenu,
+        onMoreClick: listConfig.handleMoreMenu,
       })}
       {renderSubMenuItems({
         items: tagConfig.items,
