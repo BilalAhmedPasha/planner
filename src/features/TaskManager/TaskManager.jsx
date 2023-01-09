@@ -1,9 +1,10 @@
-import { Layout, Typography, theme, Button, Space } from "antd";
+import { Layout, Typography, theme, Button } from "antd";
 import React from "react";
 import { useParams } from "react-router-dom";
 
 const TaskManager = ({ title }) => {
-  const { tasksType, listName } = useParams();
+  const { tasksType, listName, tagName } = useParams();
+
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -11,7 +12,7 @@ const TaskManager = ({ title }) => {
   return (
     <Layout.Content
       style={{
-        padding: "1rem 12rem",
+        padding: "1.5rem 8rem",
         background: colorBgContainer,
       }}
     >

@@ -1,5 +1,4 @@
 import { Layout, Typography, theme } from "antd";
-const { Title } = Typography;
 
 const Calendar = () => {
   const {
@@ -9,12 +8,18 @@ const Calendar = () => {
   return (
     <Layout.Content
       style={{
-        margin: 5,
-        padding: 24,
+        padding: "1.5rem 5rem",
         background: colorBgContainer,
       }}
     >
-      <Title level={2}>Calendar</Title>
+      <Typography.Text
+        style={{
+          fontWeight: "bold",
+          fontSize: "24px",
+        }}
+      >
+        {"Calendar"}
+      </Typography.Text>
     </Layout.Content>
   );
 };
