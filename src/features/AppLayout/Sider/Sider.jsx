@@ -95,7 +95,8 @@ const Sider = ({ messageApi, setCurrentTitle }) => {
         top: 0,
         left: 0,
       }}
-      width={300}
+      width="18vw"
+      collapsible
     >
       <Spin spinning={isLoadingTags || isLoadingLists} size="large">
         <SideMenu
