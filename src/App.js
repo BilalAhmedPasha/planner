@@ -12,7 +12,7 @@ function App() {
   return (
     <Switch>
       <Route path="/" exact>
-        <Redirect to="/tasks/all" />
+        <Redirect to="/login" />
       </Route>
       <Route path="/login" exact>
         <LoginPage title={currentTitle} />
@@ -27,17 +27,17 @@ function App() {
           <HabitTracker title={currentTitle} />
         </AppLayout>
       </Route>
-      <Route path="/tasks/:tasksType">
+      <Route path="/tasks/:id">
         <AppLayout setCurrentTitle={setCurrentTitle}>
           <TaskManager title={currentTitle} />
         </AppLayout>
       </Route>
-      <Route path="/lists/:listName">
+      <Route path="/lists/:id">
         <AppLayout setCurrentTitle={setCurrentTitle}>
           <TaskManager title={currentTitle} />
         </AppLayout>
       </Route>
-      <Route path="/tags/:listName">
+      <Route path="/tags/:id">
         <AppLayout setCurrentTitle={setCurrentTitle}>
           <TaskManager title={currentTitle} />
         </AppLayout>

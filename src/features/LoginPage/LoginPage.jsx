@@ -2,6 +2,9 @@ import { Button, Space, Typography } from "antd";
 import { useEffect, useState } from "react";
 import image from "../../images/backGround.jpg";
 import { GoogleOutlined } from "@ant-design/icons";
+import { UserAuth } from "../../context/AuthContext";
+import { useHistory } from "react-router-dom";
+
 const LoginPage = ({ title }) => {
   const divStyle = {
     height: "100vh",
@@ -48,6 +51,22 @@ const LoginPage = ({ title }) => {
     }
   }, [loginIndex, loginText]);
 
+  const history = useHistory();
+  const { googleSignIn, user } = UserAuth();
+  const handleGoogleSignIn = async () => {
+    try {
+      await googleSignIn();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (user !== null) {
+      history.push("/tasks/all");
+    }
+  }, [history, user]);
+
   return (
     <div style={divStyle}>
       <div
@@ -79,6 +98,7 @@ const LoginPage = ({ title }) => {
             style={{ opacity: showLoginButton }}
             type="dashed"
             icon={<GoogleOutlined />}
+            onClick={handleGoogleSignIn}
           >
             <Typography.Text
               strong

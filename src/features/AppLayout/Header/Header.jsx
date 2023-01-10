@@ -1,9 +1,28 @@
 import { Button, Layout, Space, theme, Typography } from "antd";
+import { useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import { UserAuth } from "../../../context/AuthContext";
 
 const Header = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+  const { logOut, user } = UserAuth();
+  const history = useHistory();
+
+  const handleSignOut = async () => {
+    try {
+      await logOut();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (user === null) {
+      history.push("/login");
+    }
+  }, [history, user]);
 
   return (
     <Layout.Header
@@ -35,7 +54,7 @@ const Header = () => {
             {"Planner"}
           </Typography.Text>
         </Space>
-        <Button danger type="text">
+        <Button danger type="text" onClick={handleSignOut}>
           Logout
         </Button>
       </div>
