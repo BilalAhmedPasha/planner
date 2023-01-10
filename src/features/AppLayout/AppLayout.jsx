@@ -7,10 +7,10 @@ import Header from "./Header/Header";
 import Sider from "./Sider/Sider";
 import { UserAuth } from "../../context/AuthContext";
 import { useHistory } from "react-router-dom";
+import { ConfigProvider, theme } from "antd";
 
 const AppLayout = ({ setCurrentTitle, children }) => {
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(fetchListsAction());
     dispatch(fetchTagsAction());
@@ -23,16 +23,24 @@ const AppLayout = ({ setCurrentTitle, children }) => {
   if (user === null) {
     return history.push("/login");
   }
-  
+
+  const { defaultAlgorithm, darkAlgorithm } = theme;
+
   return (
-    <Layout>
-      <Header />
+    <ConfigProvider
+      theme={{
+        algorithm: false ? darkAlgorithm : defaultAlgorithm,
+      }}
+    >
       <Layout>
-        <Sider messageApi={messageApi} setCurrentTitle={setCurrentTitle} />
-        {children}
-        {contextHolder}
+        <Header />
+        <Layout>
+          <Sider messageApi={messageApi} setCurrentTitle={setCurrentTitle} />
+          {children}
+          {contextHolder}
+        </Layout>
       </Layout>
-    </Layout>
+    </ConfigProvider>
   );
 };
 export default AppLayout;

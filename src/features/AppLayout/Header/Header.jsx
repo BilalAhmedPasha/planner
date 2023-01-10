@@ -1,7 +1,8 @@
-import { Button, Layout, Space, theme, Typography } from "antd";
+import { Avatar, Button, Layout, Space, theme, Typography } from "antd";
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { UserAuth } from "../../../context/AuthContext";
+import { PoweroffOutlined } from "@ant-design/icons";
 
 const Header = () => {
   const {
@@ -28,7 +29,8 @@ const Header = () => {
     <Layout.Header
       className="header"
       style={{
-        padding: "0.5rem 2rem",
+        height: "7vh",
+        padding: "0rem 1.5rem",
         background: colorBgContainer,
       }}
     >
@@ -54,9 +56,16 @@ const Header = () => {
             {"Planner"}
           </Typography.Text>
         </Space>
-        <Button danger type="text" onClick={handleSignOut}>
-          Logout
-        </Button>
+        <Space align="baseline">
+          <Avatar size="large" shape="square" src={user.photoURL} />
+          <Button
+            danger
+            type="text"
+            size="large"
+            icon={<PoweroffOutlined />}
+            onClick={handleSignOut}
+          />
+        </Space>
       </div>
     </Layout.Header>
   );

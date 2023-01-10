@@ -90,7 +90,7 @@ const Sider = ({ messageApi, setCurrentTitle }) => {
       theme="light"
       style={{
         overflow: "auto",
-        height: "90vh",
+        height: "93vh",
         position: "sticky",
         top: 0,
         left: 0,
