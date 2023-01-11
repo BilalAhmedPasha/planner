@@ -6,7 +6,6 @@ import { fetchListsAction } from "./state/userLists/userLists.actions";
 import { fetchTagsAction } from "./state/userTags/userTags.actions";
 import { listsSelector } from "./state/userLists/userLists.reducer";
 import { tagsSelector } from "./state/userTags/userTags.reducer";
-// import { useParams } from "react-router-dom";
 
 const TaskManager = ({ title, setCurrentTitle }) => {
   const {
