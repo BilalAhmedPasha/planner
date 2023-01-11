@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import ModalForm from "../../../components/ModalForm";
-import ListDialogForm from "./ListDialog";
+import ListDialogForm from "./ListDialogForm";
 import moment from "moment-timezone";
 import { SUCCESS } from "../../../constants/app.constants";
 import { CREATE, EDIT } from "../../../constants/formType.constants";

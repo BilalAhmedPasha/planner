@@ -5,12 +5,12 @@ import SideMenu from "../../../components/SideMenu";
 import { DELETE, SUCCESS } from "../../../constants/app.constants";
 import { CREATE, EDIT } from "../../../constants/formType.constants";
 import { defaultTaskNav1, defaultTaskNav2 } from "./defaultTaskNav.config";
-import ListDialog from "../ListDialog";
+import ListDialogForm from "../ListDialogForm";
+import TagDialogForm from "../TagDialogForm";
 import { deleteListAction } from "../state/userLists/userLists.actions";
 import { listsSelector } from "../state/userLists/userLists.reducer";
 import { deleteTagAction } from "../state/userTags/userTags.actions";
 import { tagsSelector } from "../state/userTags/userTags.reducer";
-import TagDialog from "../TagDialog";
 import { Link } from "react-router-dom";
 import {
   UnorderedListOutlined,
@@ -265,7 +265,7 @@ const TaskNav = ({ messageApi, setCurrentTitle }) => {
           {renderMenuItems(defaultTaskNav2)}
         </SideMenu>
         {openListDialog && (
-          <ListDialog
+          <ListDialogForm
             messageApi={messageApi}
             openDialog={openListDialog}
             setOpenDialog={setOpenListDialog}
@@ -274,7 +274,7 @@ const TaskNav = ({ messageApi, setCurrentTitle }) => {
           />
         )}
         {openTagDialog && (
-          <TagDialog
+          <TagDialogForm
             messageApi={messageApi}
             openDialog={openTagDialog}
             setOpenDialog={setOpenTagDialog}

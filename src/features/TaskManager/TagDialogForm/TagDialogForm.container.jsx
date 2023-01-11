@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import ModalForm from "../../../components/ModalForm";
-import TagDialogForm from "./TagDialog";
+import TagDialogForm from "./TagDialogForm";
 import moment from "moment-timezone";
 import { SUCCESS } from "../../../constants/app.constants";
 import { useDispatch } from "react-redux";
