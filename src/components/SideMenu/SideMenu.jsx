@@ -112,15 +112,7 @@ const renderSubMenuItems = ({
   );
 };
 
-const SideMenu = ({
-  headerMenu,
-  footerMenu,
-  listConfig,
-  tagConfig,
-  setCurrentTitle,
-  onClick,
-  children,
-}) => {
+const SideMenu = ({ onClick, children }) => {
   return (
     <Menu theme="light" defaultChecked={false} mode="inline" onClick={onClick}>
       {children}
