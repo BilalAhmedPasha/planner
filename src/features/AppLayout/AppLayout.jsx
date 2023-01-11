@@ -21,7 +21,6 @@ const AppLayout = ({ setCurrentTitle, children }) => {
       }}
     >
       <Layout>
-        <Header/>
         <AppNav setCurrentTitle={setCurrentTitle} />
         {children}
       </Layout>
