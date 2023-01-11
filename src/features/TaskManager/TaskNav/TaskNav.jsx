@@ -1,4 +1,13 @@
-import { Badge, Button, Dropdown, Layout, Menu, Space, Spin } from "antd";
+import {
+  Badge,
+  Button,
+  Dropdown,
+  Layout,
+  Menu,
+  Modal,
+  Space,
+  Spin,
+} from "antd";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SideMenu from "../../../components/SideMenu";
@@ -17,6 +26,7 @@ import {
   TagOutlined,
   PlusOutlined,
   MoreOutlined,
+  ExclamationCircleOutlined,
 } from "@ant-design/icons";
 
 const renderColorDot = (color) => {
@@ -168,18 +178,24 @@ const TaskNav = ({ messageApi, setCurrentTitle }) => {
   const handleMoreMenu = ({ e, currentItem }) => {
     if (e.key === DELETE) {
       if (e.keyPath.includes("tags")) {
-        handleDelete({
+        showDeleteConfirm({
           currentItem: currentItem,
           deleteAction: deleteTagAction,
           successMessage: "Tag deleted",
           failureMessage: "Failed to delete tag",
+          content:
+            "The tag will be deleted and removed in all tasks. Delete the tag?",
+          handleDelete: handleDelete,
         });
       } else if (e.keyPath.includes("lists")) {
-        handleDelete({
+        showDeleteConfirm({
           currentItem: currentItem,
           deleteAction: deleteListAction,
           successMessage: "List deleted",
           failureMessage: "Failed to delete list",
+          content:
+            "The list will be deleted along with its tasks. Delete the list?",
+          handleDelete: handleDelete,
         });
       }
     } else if (e.key === EDIT) {
@@ -197,6 +213,38 @@ const TaskNav = ({ messageApi, setCurrentTitle }) => {
 
   const handleMenuClick = (e) =>
     setCurrentTitle(e.domEvent.currentTarget.textContent);
+
+  const { confirm } = Modal;
+
+  const showDeleteConfirm = ({
+    content,
+    handleDelete,
+    currentItem,
+    deleteAction,
+    successMessage,
+    failureMessage,
+  }) => {
+    confirm({
+      icon: <ExclamationCircleOutlined />,
+      title: "Delete",
+      content: content,
+      centered: true,
+      okText: "Delete",
+      okType: "danger",
+      cancelText: "Cancel",
+      onOk() {
+        handleDelete({
+          currentItem: currentItem,
+          deleteAction: deleteAction,
+          successMessage: successMessage,
+          failureMessage: failureMessage,
+        });
+      },
+      onCancel() {
+        Modal.destroyAll();
+      },
+    });
+  };
 
   return (
     <Layout.Sider

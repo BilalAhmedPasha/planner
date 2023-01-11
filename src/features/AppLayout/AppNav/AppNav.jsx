@@ -90,7 +90,7 @@ const SiderNav = ({ setCurrentTitle }) => {
       collapsedWidth={70}
       collapsed
     >
-      <Dropdown menu={menuProps} placement="bottomLeft" trigger="click">
+      <Dropdown menu={menuProps} placement="bottomLeft">
         <Avatar
           size={50}
           shape="square"
