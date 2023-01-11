@@ -1,5 +1,5 @@
 import {
-  InboxOutlined,
+  FormOutlined,
   CalendarOutlined,
   RedoOutlined,
 } from "@ant-design/icons";
@@ -7,7 +7,7 @@ import {
 export const defaultAppNav = [
   {
     label: "Tasks",
-    icon: InboxOutlined,
+    icon: FormOutlined,
     redirectUrl: "/tasks/all",
   },
   {

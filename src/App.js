@@ -32,12 +32,12 @@ function App() {
           <TaskManager title={currentTitle} setCurrentTitle={setCurrentTitle} />
         </AppLayout>
       </Route>
-      <Route path="/lists/:id">
+      <Route path="/tasks/lists/:id">
         <AppLayout setCurrentTitle={setCurrentTitle}>
           <TaskManager title={currentTitle} setCurrentTitle={setCurrentTitle} />
         </AppLayout>
       </Route>
-      <Route path="/tags/:id">
+      <Route path="/tasks/tags/:id">
         <AppLayout setCurrentTitle={setCurrentTitle}>
           <TaskManager title={currentTitle} setCurrentTitle={setCurrentTitle} />
         </AppLayout>

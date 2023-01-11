@@ -1,6 +1,5 @@
 import React from "react";
 import { Layout, ConfigProvider, theme } from "antd";
-import Header from "./Header/Header";
 import AppNav from "./AppNav";
 import { UserAuth } from "../../context/AuthContext";
 import { useHistory } from "react-router-dom";

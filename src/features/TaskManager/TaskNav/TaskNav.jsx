@@ -12,10 +12,9 @@ import { deleteTagAction } from "../state/userTags/userTags.actions";
 import { tagsSelector } from "../state/userTags/userTags.reducer";
 import TagDialog from "../TagDialog";
 import { Link } from "react-router-dom";
-
 import {
-  TagOutlined,
   UnorderedListOutlined,
+  TagOutlined,
   PlusOutlined,
   MoreOutlined,
 } from "@ant-design/icons";
@@ -99,7 +98,7 @@ const renderSubMenuItems = ({
                 justifyContent: "space-between",
               }}
             >
-              <Link to={`/${key}/${each.redirectUrl}`}>{each.label}</Link>
+              <Link to={`/tasks/${key}/${each.redirectUrl}`}>{each.label}</Link>
               <Space>
                 {renderColorDot(each.color)}
                 <Dropdown
@@ -259,7 +258,7 @@ const TaskNav = ({ messageApi, setCurrentTitle }) => {
               setTagFormType(CREATE);
               setOpenTagDialog(true);
             },
-            icon: <UnorderedListOutlined />,
+            icon: <TagOutlined />,
             onMoreClick: handleMoreMenu,
           })}
           <Menu.Divider />
