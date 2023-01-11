@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import { Avatar, Dropdown, Layout, Menu } from "antd";
+import { Avatar, Dropdown, Layout, Menu, Modal } from "antd";
 import { Link, useHistory } from "react-router-dom";
 import SideMenu from "../../../components/SideMenu";
 import { UserAuth } from "../../../context/AuthContext";
 import { defaultAppNav } from "./defaultAppNav.config";
-import { LogoutOutlined } from "@ant-design/icons";
+import { LogoutOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { LOGOUT } from "../../../constants/app.constants";
 
 const renderMenuItems = (itemsArray) => {
@@ -44,13 +44,31 @@ const SiderNav = ({ setCurrentTitle }) => {
       key: LOGOUT,
       icon: <LogoutOutlined />,
       title: null,
-      danger: true,
     },
   ];
 
+  const { confirm } = Modal;
+
+  const showConfirm = () => {
+    confirm({
+      icon: <ExclamationCircleOutlined />,
+      title: "Are you sure you want to logout?",
+      centered: true,
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk() {
+        handleSignOut();
+      },
+      onCancel() {
+        Modal.destroyAll();
+      },
+    });
+  };
+
   const handleAvatarClick = (e) => {
     if (e.key === LOGOUT) {
-      handleSignOut();
+      showConfirm();
     }
   };
 
