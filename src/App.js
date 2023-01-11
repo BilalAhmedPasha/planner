@@ -29,17 +29,17 @@ function App() {
       </Route>
       <Route path="/tasks/:id">
         <AppLayout setCurrentTitle={setCurrentTitle}>
-          <TaskManager title={currentTitle} />
+          <TaskManager title={currentTitle} setCurrentTitle={setCurrentTitle} />
         </AppLayout>
       </Route>
       <Route path="/lists/:id">
         <AppLayout setCurrentTitle={setCurrentTitle}>
-          <TaskManager title={currentTitle} />
+          <TaskManager title={currentTitle} setCurrentTitle={setCurrentTitle} />
         </AppLayout>
       </Route>
       <Route path="/tags/:id">
         <AppLayout setCurrentTitle={setCurrentTitle}>
-          <TaskManager title={currentTitle} />
+          <TaskManager title={currentTitle} setCurrentTitle={setCurrentTitle} />
         </AppLayout>
       </Route>
     </Switch>

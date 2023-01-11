@@ -1,14 +1,12 @@
 import {
   InboxOutlined,
-  CalendarOutlined,
   CheckSquareOutlined,
-  RedoOutlined,
   CheckSquareFilled,
   CloseSquareFilled,
   DeleteOutlined,
 } from "@ant-design/icons";
 
-export const defaultSideNav1 = [
+export const defaultTaskNav1 = [
   {
     label: "All Tasks",
     icon: InboxOutlined,
@@ -19,19 +17,9 @@ export const defaultSideNav1 = [
     icon: CheckSquareOutlined,
     redirectUrl: "/tasks/today",
   },
-  {
-    label: "Calendar",
-    icon: CalendarOutlined,
-    redirectUrl: "/calendar",
-  },
-  {
-    label: "Habits",
-    icon: RedoOutlined,
-    redirectUrl: "/habits",
-  },
 ];
 
-export const defaultSideNav2 = [
+export const defaultTaskNav2 = [
   {
     label: "Completed",
     icon: CheckSquareFilled,

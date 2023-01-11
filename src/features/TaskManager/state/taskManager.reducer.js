@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import userListsReducer from "../state/userLists/userLists.reducer";
-import userTagsReducer from "../state/userTags/userTags.reducer";
+import userListsReducer from "./userLists/userLists.reducer";
+import userTagsReducer from "./userTags/userTags.reducer";
 
 export default combineReducers({
   userLists: userListsReducer,

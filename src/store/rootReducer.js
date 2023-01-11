@@ -1,10 +1,10 @@
 import { combineReducers } from "redux";
 import globalConfigReducer from "./globalConfig/globalConfig.reducer";
-import appLayoutReducer from "../features/AppLayout/state";
+import taskManagerReducer from "../features/TaskManager/state";
 
 const reducerMap = {
   globalConfig: globalConfigReducer,
-  appLayout: appLayoutReducer
+  taskManager: taskManagerReducer
 };
 
 export default combineReducers(reducerMap);

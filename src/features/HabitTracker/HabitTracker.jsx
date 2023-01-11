@@ -9,7 +9,7 @@ const HabitTracker = () => {
       <Layout.Content
         style={{
           marginRight: "0.1rem",
-          padding: "0rem 5rem",
+          padding: "1rem 3rem",
           background: colorBgContainer,
         }}
       >
@@ -25,7 +25,7 @@ const HabitTracker = () => {
       <Layout.Content
         style={{
           marginLeft: "0.1rem",
-          padding: "0rem 5rem",
+          padding: "1rem 3rem",
           background: colorBgContainer,
         }}
       >

@@ -144,6 +144,6 @@ const reducer = (state = INITIAL_STATE, action) => {
   }
 };
 
-export const tagsSelector = (state) => state.appLayout.userTags;
+export const tagsSelector = (state) => state.taskManager.userTags;
 
 export default reducer;

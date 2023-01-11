@@ -144,6 +144,6 @@ const reducer = (state = INITIAL_STATE, action) => {
   }
 };
 
-export const listsSelector = (state) => state.appLayout.userLists;
+export const listsSelector = (state) => state.taskManager.userLists;
 
 export default reducer;

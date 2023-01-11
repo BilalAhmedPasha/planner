@@ -1,4 +1,4 @@
-import { Badge, Button, Dropdown, Menu, Space } from "antd";
+import { Avatar, Badge, Button, Dropdown, Menu, Space } from "antd";
 import { Link } from "react-router-dom";
 import {
   TagOutlined,
@@ -7,6 +7,7 @@ import {
   MoreOutlined,
 } from "@ant-design/icons";
 import { CREATE } from "../../constants/formType.constants";
+import { UserAuth } from "../../context/AuthContext";
 
 const renderColorDot = (color) => {
   return (
@@ -117,44 +118,12 @@ const SideMenu = ({
   listConfig,
   tagConfig,
   setCurrentTitle,
+  onClick,
+  children,
 }) => {
   return (
-    <Menu
-      theme="light"
-      defaultChecked={false}
-      mode="inline"
-      onClick={(e) => setCurrentTitle(e.domEvent.currentTarget.textContent)}
-    >
-      {renderMenuItems(headerMenu)}
-      <Menu.Divider />
-      {renderSubMenuItems({
-        items: listConfig.items,
-        itemCount: listConfig.count,
-        key: "lists",
-        title: "Lists",
-        onAddClick: (e) => {
-          e.stopPropagation();
-          listConfig.setListFormType(CREATE);
-          listConfig.setOpenDialog(true);
-        },
-        icon: <UnorderedListOutlined />,
-        onMoreClick: listConfig.handleMoreMenu,
-      })}
-      {renderSubMenuItems({
-        items: tagConfig.items,
-        itemCount: tagConfig.count,
-        key: "tags",
-        title: "Tags",
-        onAddClick: (e) => {
-          e.stopPropagation();
-          tagConfig.setTagFormType(CREATE);
-          tagConfig.setOpenDialog(true);
-        },
-        icon: <TagOutlined />,
-        onMoreClick: tagConfig.handleMoreMenu,
-      })}
-      <Menu.Divider />
-      {renderMenuItems(footerMenu)}
+    <Menu theme="light" defaultChecked={false} mode="inline" onClick={onClick}>
+      {children}
     </Menu>
   );
 };

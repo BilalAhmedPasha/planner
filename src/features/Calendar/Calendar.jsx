@@ -8,7 +8,7 @@ const Calendar = () => {
   return (
     <Layout.Content
       style={{
-        padding: "0rem 5rem",
+        padding: "1rem 3rem",
         background: colorBgContainer,
       }}
     >
