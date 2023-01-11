@@ -251,7 +251,8 @@ const TaskNav = ({ messageApi, setCurrentTitle }) => {
       theme="light"
       style={{
         overflow: "auto",
-        height: "100vh",
+        paddingTop: "1vh",
+        height: "99vh",
         position: "sticky",
         top: 0,
         left: 0,
