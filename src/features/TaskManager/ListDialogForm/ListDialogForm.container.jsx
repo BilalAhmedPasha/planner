@@ -55,7 +55,6 @@ const ListDialog = ({
   const handleAddList = (e) => {
     const newList = {
       name: e.name.replace(/\s/g, "").toLowerCase(),
-      redirectUrl: e.name.replace(/\s/g, "-").toLowerCase(),
       label: e.name,
       color: e.color?.hex,
       createdTime: moment.utc().format(),
@@ -75,7 +74,6 @@ const ListDialog = ({
   const handleEditList = (e) => {
     const modifiedList = {
       name: e.name.replace(/\s/g, "").toLowerCase(),
-      redirectUrl: e.name.replace(/\s/g, "-").toLowerCase(),
       label: e.name,
       color: e.color?.hex,
       createdTime: formValues.createdTime,

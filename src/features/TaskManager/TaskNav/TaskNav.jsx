@@ -99,7 +99,7 @@ const renderSubMenuItems = ({
     >
       {items.map((each) => {
         return (
-          <Menu.Item key={each.redirectUrl}>
+          <Menu.Item key={each.id}>
             <div
               style={{
                 display: "flex",
@@ -108,7 +108,7 @@ const renderSubMenuItems = ({
                 justifyContent: "space-between",
               }}
             >
-              <Link to={`/tasks/${key}/${each.redirectUrl}`}>{each.label}</Link>
+              <Link to={`/tasks/${key}/${each.id}`}>{each.label}</Link>
               <Space>
                 {renderColorDot(each.color)}
                 <Dropdown

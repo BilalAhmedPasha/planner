@@ -55,7 +55,6 @@ const TagDialog = ({
   const handleAddTag = (e) => {
     const newTag = {
       name: e.name.replace(/\s/g, "").toLowerCase(),
-      redirectUrl: e.name.replace(/\s/g, "-").toLowerCase(),
       label: e.name,
       color: e.color?.hex,
       createdTime: moment.utc().format(),
@@ -74,7 +73,6 @@ const TagDialog = ({
   const handleEditTag = (e) => {
     const modifiedTag = {
       name: e.name.replace(/\s/g, "").toLowerCase(),
-      redirectUrl: e.name.replace(/\s/g, "-").toLowerCase(),
       label: e.name,
       color: e.color?.hex,
       createdTime: formValues.createdTime,
