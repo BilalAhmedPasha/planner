@@ -69,6 +69,7 @@ const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
         form={form}
         centered={true}
         width="50vw"
+        destroyOnClose={true}
       >
         <TaskDialogForm
           layout="vertical"

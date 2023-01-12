@@ -1,8 +1,13 @@
 import { Form, Input } from "antd";
 import { SliderPicker } from "react-color";
 
-const TagDialogForm = ({ color, handleColorChange, layout, initialValues }) => {
-  const [form] = Form.useForm();
+const TagDialogForm = ({
+  form,
+  color,
+  handleColorChange,
+  layout,
+  initialValues,
+}) => {
   return (
     <Form
       form={form}

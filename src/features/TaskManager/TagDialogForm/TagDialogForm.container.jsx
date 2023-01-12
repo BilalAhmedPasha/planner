@@ -10,6 +10,7 @@ import {
 } from "../state/userTags/userTags.actions";
 import { DEFAULT_TAG_COLOR } from "../../../constants/color.constants";
 import { CREATE, EDIT } from "../../../constants/formType.constants";
+import { Form } from "antd";
 
 const TagDialog = ({
   user,
@@ -125,6 +126,8 @@ const TagDialog = ({
     }
   }, [formType]);
 
+  const [form] = Form.useForm();
+
   return (
     openDialog && (
       <Modal
@@ -135,8 +138,10 @@ const TagDialog = ({
           setOpenDialog(false);
         }}
         okText={okText}
+        form={form}
       >
         <TagDialogForm
+          form={form}
           color={color}
           handleColorChange={(color) => {
             return setColor(color);

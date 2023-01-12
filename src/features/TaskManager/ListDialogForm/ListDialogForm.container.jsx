@@ -10,6 +10,7 @@ import {
   addListAction,
   editListAction,
 } from "../state/userLists/userLists.actions";
+import { Form } from "antd";
 
 const ListDialog = ({
   user,
@@ -135,6 +136,8 @@ const ListDialog = ({
     }
   }, [formType]);
 
+  const [form] = Form.useForm();
+
   return (
     openDialog && (
       <Modal
@@ -145,8 +148,10 @@ const ListDialog = ({
           setOpenDialog(false);
         }}
         okText={okText}
+        form={form}
       >
         <ListDialogForm
+          form={form}
           color={color}
           handleColorChange={(color) => {
             return setColor(color);

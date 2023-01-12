@@ -3,6 +3,7 @@ import { SliderPicker } from "react-color";
 const { Text } = Typography;
 
 const ListDialogForm = ({
+  form,
   color,
   handleColorChange,
   hidden,
@@ -10,8 +11,6 @@ const ListDialogForm = ({
   layout,
   initialValues,
 }) => {
-  const [form] = Form.useForm();
-
   return (
     <Form
       form={form}
