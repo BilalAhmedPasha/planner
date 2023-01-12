@@ -9,7 +9,7 @@ import LoginPage from "./features/LoginPage";
 import { UserAuth } from "./context/AuthContext";
 
 function App() {
-  const [currentTitle, setCurrentTitle] = useState("All Tasks");
+  const [currentTitle, setCurrentTitle] = useState("Inbox");
   const { user } = UserAuth();
 
   return (

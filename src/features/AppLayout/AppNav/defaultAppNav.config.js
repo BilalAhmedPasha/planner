@@ -6,9 +6,9 @@ import {
 
 export const defaultAppNav = [
   {
-    label: "Tasks",
+    label: "Inbox",
     icon: FormOutlined,
-    redirectUrl: "/tasks/all",
+    redirectUrl: "/tasks/inbox",
   },
   {
     label: "Calendar",

@@ -6,6 +6,7 @@ import { fetchListsAction } from "./state/userLists/userLists.actions";
 import { fetchTagsAction } from "./state/userTags/userTags.actions";
 import db from "../../firebase";
 import { doc, setDoc } from "@firebase/firestore";
+import TaskList from "./TaskList";
 
 const TaskManager = ({ user, title, setCurrentTitle }) => {
   const {
@@ -42,32 +43,7 @@ const TaskManager = ({ user, title, setCurrentTitle }) => {
         messageApi={messageApi}
         setCurrentTitle={setCurrentTitle}
       />
-      <Layout.Content
-        style={{
-          marginRight: "0.1rem",
-          padding: "1rem 3rem",
-          background: colorBgContainer,
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <Typography.Text
-            style={{
-              fontWeight: "bold",
-              fontSize: "24px",
-            }}
-          >
-            {title}
-          </Typography.Text>
-          <Button type="primary">Add Task</Button>
-        </div>
-      </Layout.Content>
+      <TaskList title={title} />
       <Layout.Content
         style={{
           marginLeft: "0.1rem",

@@ -64,7 +64,7 @@ const LoginPage = ({ title }) => {
 
   useEffect(() => {
     if (user !== null) {
-      history.push("/tasks/all");
+      history.push("/tasks/inbox");
     }
   }, [history, user]);
 
