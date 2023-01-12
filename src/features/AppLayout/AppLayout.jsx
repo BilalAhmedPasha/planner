@@ -1,15 +1,20 @@
 import React from "react";
 import { Layout, ConfigProvider, theme } from "antd";
 import AppNav from "./AppNav";
-import { UserAuth } from "../../context/AuthContext";
 import { useHistory } from "react-router-dom";
 
-const AppLayout = ({ setCurrentTitle, children }) => {
-  const { user } = UserAuth();
+const AppLayout = ({ user, setCurrentTitle, children }) => {
   const history = useHistory();
   if (user === null) {
     return history.push("/login");
   }
+
+  const childrenWithProps = React.Children.map(children, (child) => {
+    if (React.isValidElement(child)) {
+      return React.cloneElement(child, { setCurrentTitle, user });
+    }
+    return child;
+  });
 
   const { defaultAlgorithm, darkAlgorithm } = theme;
 
@@ -21,7 +26,7 @@ const AppLayout = ({ setCurrentTitle, children }) => {
     >
       <Layout>
         <AppNav setCurrentTitle={setCurrentTitle} />
-        {children}
+        {childrenWithProps}
       </Layout>
     </ConfigProvider>
   );

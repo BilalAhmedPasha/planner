@@ -6,9 +6,12 @@ import AppLayout from "./features/AppLayout";
 import TaskManager from "./features/TaskManager";
 import "./App.css";
 import LoginPage from "./features/LoginPage";
+import { UserAuth } from "./context/AuthContext";
 
 function App() {
   const [currentTitle, setCurrentTitle] = useState("All Tasks");
+  const { user } = UserAuth();
+
   return (
     <Switch>
       <Route path="/" exact>
@@ -18,28 +21,28 @@ function App() {
         <LoginPage title={currentTitle} />
       </Route>
       <Route path="/calendar" exact>
-        <AppLayout setCurrentTitle={setCurrentTitle}>
+        <AppLayout user={user} setCurrentTitle={setCurrentTitle}>
           <Calendar title={currentTitle} />
         </AppLayout>
       </Route>
       <Route path="/habits" exact>
-        <AppLayout setCurrentTitle={setCurrentTitle}>
+        <AppLayout user={user} setCurrentTitle={setCurrentTitle}>
           <HabitTracker title={currentTitle} />
         </AppLayout>
       </Route>
       <Route path="/tasks/:id">
-        <AppLayout setCurrentTitle={setCurrentTitle}>
-          <TaskManager title={currentTitle} setCurrentTitle={setCurrentTitle} />
+        <AppLayout user={user} setCurrentTitle={setCurrentTitle}>
+          <TaskManager title={currentTitle} />
         </AppLayout>
       </Route>
       <Route path="/tasks/lists/:id">
-        <AppLayout setCurrentTitle={setCurrentTitle}>
-          <TaskManager title={currentTitle} setCurrentTitle={setCurrentTitle} />
+        <AppLayout user={user} setCurrentTitle={setCurrentTitle}>
+          <TaskManager title={currentTitle} />
         </AppLayout>
       </Route>
       <Route path="/tasks/tags/:id">
-        <AppLayout setCurrentTitle={setCurrentTitle}>
-          <TaskManager title={currentTitle} setCurrentTitle={setCurrentTitle} />
+        <AppLayout user={user} setCurrentTitle={setCurrentTitle}>
+          <TaskManager title={currentTitle} />
         </AppLayout>
       </Route>
     </Switch>

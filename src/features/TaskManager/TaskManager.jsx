@@ -4,18 +4,15 @@ import { useDispatch } from "react-redux";
 import TaskNav from "./TaskNav";
 import { fetchListsAction } from "./state/userLists/userLists.actions";
 import { fetchTagsAction } from "./state/userTags/userTags.actions";
-import { UserAuth } from "../../context/AuthContext";
 import db from "../../firebase";
 import { doc, setDoc } from "@firebase/firestore";
 
-const TaskManager = ({ title, setCurrentTitle }) => {
+const TaskManager = ({ user, title, setCurrentTitle }) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
 
   const dispatch = useDispatch();
-
-  const { user } = UserAuth();
 
   useEffect(() => {
     if (user.uid) {
