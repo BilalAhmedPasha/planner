@@ -132,7 +132,7 @@ const renderSubMenuItems = ({
   );
 };
 
-const TaskNav = ({ messageApi, setCurrentTitle }) => {
+const TaskNav = ({ user, messageApi, setCurrentTitle }) => {
   const dispatch = useDispatch();
   const { lists, isLoadingLists, totalLists } = useSelector(listsSelector);
   const { tags, isLoadingTags, totalTags } = useSelector(tagsSelector);
@@ -166,7 +166,7 @@ const TaskNav = ({ messageApi, setCurrentTitle }) => {
     successMessage,
     failureMessage,
   }) => {
-    dispatch(deleteAction(currentItem)).then((response) => {
+    dispatch(deleteAction(user.uid, currentItem)).then((response) => {
       if (response.success === SUCCESS) {
         deleteSuccess({ messageText: successMessage });
       } else {
@@ -315,6 +315,7 @@ const TaskNav = ({ messageApi, setCurrentTitle }) => {
         </SideMenu>
         {openListDialog && (
           <ListDialogForm
+            user={user}
             messageApi={messageApi}
             openDialog={openListDialog}
             setOpenDialog={setOpenListDialog}

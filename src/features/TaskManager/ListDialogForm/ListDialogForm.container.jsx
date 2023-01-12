@@ -12,6 +12,7 @@ import {
 } from "../state/userLists/userLists.actions";
 
 const ListDialog = ({
+  user,
   messageApi,
   openDialog,
   setOpenDialog,
@@ -62,7 +63,7 @@ const ListDialog = ({
       hidden: e.hidden,
     };
     setOpenDialog(false);
-    dispatch(addListAction(newList)).then((response) => {
+    dispatch(addListAction(user.uid, newList)).then((response) => {
       if (response.success === SUCCESS) {
         createListSuccess();
       } else {
@@ -81,13 +82,15 @@ const ListDialog = ({
       hidden: e.hidden,
     };
     setOpenDialog(false);
-    dispatch(editListAction(modifiedList, formValues.id)).then((response) => {
-      if (response.success === SUCCESS) {
-        editListSuccess();
-      } else {
-        editListFailed();
+    dispatch(editListAction(user.uid, modifiedList, formValues.id)).then(
+      (response) => {
+        if (response.success === SUCCESS) {
+          editListSuccess();
+        } else {
+          editListFailed();
+        }
       }
-    });
+    );
   };
 
   const [color, setColor] = useState(

@@ -1,4 +1,4 @@
-import firestore from "../firebase";
+import db from "../firebase";
 import {
   addDoc,
   deleteDoc,
@@ -8,21 +8,28 @@ import {
   doc,
 } from "@firebase/firestore";
 
-const ref = collection(firestore, "lists");
-export const fetchListsApi = async () => {
-  return getDocs(ref);
+export const fetchListsApi = async (userId) => {
+  const userDocRef = doc(db, "users", userId);
+  const listCollectionRef = collection(userDocRef, "lists");
+  return getDocs(listCollectionRef);
 };
 
-export const addListApi = (newList) => {
-  return addDoc(ref, newList);
+export const addListApi = (userId, newList) => {
+  const userDocRef = doc(db, "users", userId);
+  const listCollectionRef = collection(userDocRef, "lists");
+  return addDoc(listCollectionRef, newList);
 };
 
-export const editListApi = (modifiedList, listId) => {
-  const docRef = doc(ref, listId);
+export const editListApi = (userId, modifiedList, listId) => {
+  const userDocRef = doc(db, "users", userId);
+  const listCollectionRef = collection(userDocRef, "lists");
+  const docRef = doc(listCollectionRef, listId);
   return updateDoc(docRef, modifiedList);
 };
 
-export const deleteListApi = (currentList) => {
-  const docRef = doc(ref, currentList.id);
+export const deleteListApi = (userId, currentList) => {
+  const userDocRef = doc(db, "users", userId);
+  const listCollectionRef = collection(userDocRef, "lists");
+  const docRef = doc(listCollectionRef, currentList.id);
   return deleteDoc(docRef);
 };

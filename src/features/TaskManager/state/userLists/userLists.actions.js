@@ -20,7 +20,6 @@ import {
   EDIT_LIST_ERROR,
 } from "./userLists.reducer";
 
-
 export const fetchLists = () => ({
   type: FETCH_LISTS,
 });
@@ -83,11 +82,10 @@ export const deleteListFailure = (error) => ({
   payload: { error },
 });
 
-
-export const fetchListsAction = () => async (dispatch) => {
+export const fetchListsAction = (userId) => async (dispatch) => {
   dispatch(fetchLists());
   try {
-    const data = await fetchListsApi();
+    const data = await fetchListsApi(userId);
     const response = data.docs.map((doc) => {
       return { ...doc.data(), id: doc.id };
     });
@@ -99,10 +97,10 @@ export const fetchListsAction = () => async (dispatch) => {
   }
 };
 
-export const addListAction = (newList) => async (dispatch) => {
+export const addListAction = (userId, newList) => async (dispatch) => {
   dispatch(addList());
   try {
-    const returnValue = await addListApi(newList);
+    const returnValue = await addListApi(userId, newList);
     return dispatch(
       addListSuccess({
         response: { ...newList, id: returnValue.id },
@@ -113,24 +111,25 @@ export const addListAction = (newList) => async (dispatch) => {
   }
 };
 
-export const editListAction = (modifiedList, listId) => async (dispatch) => {
-  dispatch(editList());
-  try {
-    await editListApi(modifiedList, listId);
-    return dispatch(
-      editListSuccess({
-        response: { ...modifiedList, id: listId },
-      })
-    );
-  } catch (error) {
-    return dispatch(editListFailure(error));
-  }
-};
+export const editListAction =
+  (userId, modifiedList, listId) => async (dispatch) => {
+    dispatch(editList());
+    try {
+      await editListApi(userId, modifiedList, listId);
+      return dispatch(
+        editListSuccess({
+          response: { ...modifiedList, id: listId },
+        })
+      );
+    } catch (error) {
+      return dispatch(editListFailure(error));
+    }
+  };
 
-export const deleteListAction = (currentList) => async (dispatch) => {
+export const deleteListAction = (userId, currentList) => async (dispatch) => {
   dispatch(deleteList());
   try {
-    await deleteListApi(currentList);
+    await deleteListApi(userId, currentList);
     return dispatch(
       deleteListSuccess({
         response: { id: currentList.id },
