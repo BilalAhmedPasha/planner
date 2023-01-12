@@ -12,6 +12,7 @@ import { DEFAULT_TAG_COLOR } from "../../../constants/color.constants";
 import { CREATE, EDIT } from "../../../constants/formType.constants";
 
 const TagDialog = ({
+  user,
   messageApi,
   openDialog,
   setOpenDialog,
@@ -61,7 +62,7 @@ const TagDialog = ({
       modifiedTime: moment.utc().format(),
     };
     setOpenDialog(false);
-    dispatch(addTagAction(newTag)).then((response) => {
+    dispatch(addTagAction(user.uid, newTag)).then((response) => {
       if (response.success === SUCCESS) {
         createTagSuccess();
       } else {
@@ -79,13 +80,15 @@ const TagDialog = ({
       modifiedTime: moment.utc().format(),
     };
     setOpenDialog(false);
-    dispatch(editTagAction(modifiedTag, formValues.id)).then((response) => {
-      if (response.success === SUCCESS) {
-        editTagSuccess();
-      } else {
-        editTagFailed();
+    dispatch(editTagAction(user.uid, modifiedTag, formValues.id)).then(
+      (response) => {
+        if (response.success === SUCCESS) {
+          editTagSuccess();
+        } else {
+          editTagFailed();
+        }
       }
-    });
+    );
   };
 
   const [color, setColor] = useState(

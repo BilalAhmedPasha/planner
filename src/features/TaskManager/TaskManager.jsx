@@ -31,7 +31,7 @@ const TaskManager = ({ title, setCurrentTitle }) => {
           { merge: true }
         );
         dispatch(fetchListsAction(user.uid));
-        dispatch(fetchTagsAction());
+        dispatch(fetchTagsAction(user.uid));
       }
       getInitialUserData();
     }

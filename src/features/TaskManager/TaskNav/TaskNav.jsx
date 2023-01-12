@@ -325,6 +325,7 @@ const TaskNav = ({ user, messageApi, setCurrentTitle }) => {
         )}
         {openTagDialog && (
           <TagDialogForm
+            user={user}
             messageApi={messageApi}
             openDialog={openTagDialog}
             setOpenDialog={setOpenTagDialog}

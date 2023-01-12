@@ -82,10 +82,10 @@ export const deleteTagFailure = (error) => ({
   payload: { error },
 });
 
-export const fetchTagsAction = () => async (dispatch) => {
+export const fetchTagsAction = (userId) => async (dispatch) => {
   dispatch(fetchTags());
   try {
-    const data = await fetchTagsApi();
+    const data = await fetchTagsApi(userId);
     const response = data.docs.map((doc) => {
       return { ...doc.data(), id: doc.id };
     });
@@ -97,10 +97,10 @@ export const fetchTagsAction = () => async (dispatch) => {
   }
 };
 
-export const addTagAction = (newTag) => async (dispatch) => {
+export const addTagAction = (userId, newTag) => async (dispatch) => {
   dispatch(addTag());
   try {
-    const returnValue = await addTagApi(newTag);
+    const returnValue = await addTagApi(userId, newTag);
     return dispatch(
       addTagSuccess({
         response: { ...newTag, id: returnValue.id },
@@ -111,24 +111,25 @@ export const addTagAction = (newTag) => async (dispatch) => {
   }
 };
 
-export const editTagAction = (modifiedTag, tagId) => async (dispatch) => {
-  dispatch(editTag());
-  try {
-    await editTagApi(modifiedTag, tagId);
-    return dispatch(
-      editTagSuccess({
-        response: { ...modifiedTag, id: tagId },
-      })
-    );
-  } catch (error) {
-    return dispatch(editTagFailure(error));
-  }
-};
+export const editTagAction =
+  (userId, modifiedTag, tagId) => async (dispatch) => {
+    dispatch(editTag());
+    try {
+      await editTagApi(userId, modifiedTag, tagId);
+      return dispatch(
+        editTagSuccess({
+          response: { ...modifiedTag, id: tagId },
+        })
+      );
+    } catch (error) {
+      return dispatch(editTagFailure(error));
+    }
+  };
 
-export const deleteTagAction = (currentTag) => async (dispatch) => {
+export const deleteTagAction = (userId, currentTag) => async (dispatch) => {
   dispatch(deleteTag());
   try {
-    await deleteTagApi(currentTag);
+    await deleteTagApi(userId, currentTag);
     return dispatch(
       deleteTagSuccess({
         response: { id: currentTag.id },
