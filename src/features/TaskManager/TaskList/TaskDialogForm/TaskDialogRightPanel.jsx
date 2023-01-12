@@ -4,14 +4,30 @@ import {
   InputNumber,
   Layout,
   Select,
+  Space,
   Tag,
   theme,
   TimePicker,
+  Typography,
 } from "antd";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { listsSelector } from "../../state/userLists/userLists.reducer";
 import { tagsSelector } from "../../state/userTags/userTags.reducer";
+import { FlagFilled } from "@ant-design/icons";
+import {
+  HIGH,
+  LOW,
+  MEDIUM,
+  NONE,
+} from "../../../../constants/priority.constants";
+import {
+  HIGH_COLOR,
+  LOW_COLOR,
+  MEDIUM_COLOR,
+  NONE_COLOR,
+} from "../../../../constants/color.constants";
+import { INBOX } from "../../../../constants/app.constants";
 
 const tagRender = (props) => {
   const { label, value, closable, onClose } = props;
@@ -62,6 +78,19 @@ const TaskDialogRightPanel = () => {
     token: { colorBgContainer },
   } = theme.useToken();
 
+  const [priorityColor, setPriorityColor] = useState(NONE_COLOR);
+  const handlePriorityChange = (event) => {
+    if (event === HIGH) {
+      setPriorityColor(HIGH_COLOR);
+    } else if (event === MEDIUM) {
+      setPriorityColor(MEDIUM_COLOR);
+    } else if (event === LOW) {
+      setPriorityColor(LOW_COLOR);
+    } else {
+      setPriorityColor(NONE_COLOR);
+    }
+  };
+
   return (
     <Layout.Content
       style={{
@@ -80,37 +109,47 @@ const TaskDialogRightPanel = () => {
           <Select
             options={[
               {
-                value: "inbox",
+                value: INBOX,
                 label: "Inbox",
               },
               ...listOptions,
             ]}
           />
         </Form.Item>
-        <Form.Item name="priority" label="Priority">
+
+        <Form.Item
+          name="priority"
+          label={
+            <Space>
+              <Typography.Text>{"Priority"}</Typography.Text>
+              <FlagFilled style={{ color: priorityColor }} />
+            </Space>
+          }
+        >
           <Select
+            onSelect={(event) => handlePriorityChange(event)}
             options={[
               {
-                value: "high",
+                value: HIGH,
                 label: "High",
               },
               {
-                value: "medium",
+                value: MEDIUM,
                 label: "Medium",
               },
               {
-                value: "low",
+                value: LOW,
                 label: "Low",
               },
               {
-                value: "none",
+                value: NONE,
                 label: "None",
               },
             ]}
           />
         </Form.Item>
 
-        <Form.Item name="tag" label="Tags">
+        <Form.Item name="tags" label="Tags">
           <Select
             mode="multiple"
             allowClear

@@ -3,9 +3,10 @@ import { useDispatch } from "react-redux";
 import Modal from "../../../../components/Modal";
 import TaskDialogForm from "./TaskDialogForm";
 import moment from "moment-timezone";
-import { SUCCESS } from "../../../../constants/app.constants";
+import { INBOX, SUCCESS } from "../../../../constants/app.constants";
 import { addTaskAction } from "../../state/userTasks/userTasks.actions";
 import { Form, Layout, theme, Typography } from "antd";
+import { NONE } from "../../../../constants/priority.constants";
 
 const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
   const dispatch = useDispatch();
@@ -48,8 +49,8 @@ const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
   const DEFAULT_VALUES = useMemo(() => {
     return {
       name: "",
-      list: "inbox",
-      priority: "low",
+      list: INBOX,
+      priority: NONE,
       endBy: "endless",
     };
   }, []);
