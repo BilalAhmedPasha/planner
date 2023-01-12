@@ -4,6 +4,7 @@ import {
   InputNumber,
   Layout,
   Select,
+  Tag,
   theme,
   TimePicker,
 } from "antd";
@@ -11,6 +12,28 @@ import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { listsSelector } from "../../state/userLists/userLists.reducer";
 import { tagsSelector } from "../../state/userTags/userTags.reducer";
+
+const tagRender = (props) => {
+  const { label, value, closable, onClose } = props;
+  const [id, color] = value.split("/");
+  const onPreventMouseDown = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+  };
+  return (
+    <Tag
+      color={color}
+      onMouseDown={onPreventMouseDown}
+      closable={closable}
+      onClose={onClose}
+      style={{
+        marginRight: 3,
+      }}
+    >
+      {label}
+    </Tag>
+  );
+};
 
 const TaskDialogRightPanel = () => {
   const { lists } = useSelector(listsSelector);
@@ -29,9 +52,8 @@ const TaskDialogRightPanel = () => {
   const tagOptions = useMemo(() => {
     return tags.map((each) => {
       return {
-        value: each.id,
         label: each.label,
-        color: each.color,
+        value: `${each.id}/${each.color}`,
       };
     });
   }, [tags]);
@@ -89,7 +111,14 @@ const TaskDialogRightPanel = () => {
         </Form.Item>
 
         <Form.Item name="tag" label="Tags">
-          <Select mode="multiple" allowClear options={tagOptions} />
+          <Select
+            mode="multiple"
+            allowClear
+            options={tagOptions}
+            maxTagCount={2}
+            maxTagTextLength={5}
+            tagRender={tagRender}
+          />
         </Form.Item>
         <Form.Item name="date" label="Date">
           <DatePicker format="DD-MM-YYYY" />
