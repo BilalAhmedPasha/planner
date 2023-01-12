@@ -5,7 +5,7 @@ import TaskDialogForm from "./TaskDialogForm";
 import moment from "moment-timezone";
 import { SUCCESS } from "../../../../constants/app.constants";
 import { addTaskAction } from "../../state/userTasks/userTasks.actions";
-import { Form } from "antd";
+import { Form, Layout, theme, Typography } from "antd";
 
 const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
   const dispatch = useDispatch();
@@ -49,7 +49,7 @@ const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
     return {
       name: "",
       list: "inbox",
-      priority: "p4",
+      priority: "low",
       endBy: "endless",
     };
   }, []);
@@ -67,8 +67,8 @@ const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
         }}
         okText={"Add"}
         form={form}
-        width="60vw"
         centered={true}
+        width="50vw"
       >
         <TaskDialogForm
           layout="vertical"

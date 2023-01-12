@@ -17,7 +17,7 @@ const renderMenuItems = (itemsArray) => {
   });
 };
 
-const SiderNav = ({ setCurrentTitle }) => {
+const AppNav = ({ setCurrentTitle }) => {
   const { logOut, user } = UserAuth();
   const history = useHistory();
 
@@ -105,4 +105,4 @@ const SiderNav = ({ setCurrentTitle }) => {
   );
 };
 
-export default SiderNav;
+export default AppNav;
