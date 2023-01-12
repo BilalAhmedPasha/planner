@@ -30,17 +30,12 @@ function App() {
           <HabitTracker title={currentTitle} />
         </AppLayout>
       </Route>
-      <Route path="/tasks/:id">
+      <Route path="/tasks/:sectionId/:documentId">
         <AppLayout user={user} setCurrentTitle={setCurrentTitle}>
           <TaskManager title={currentTitle} />
         </AppLayout>
       </Route>
-      <Route path="/tasks/lists/:id">
-        <AppLayout user={user} setCurrentTitle={setCurrentTitle}>
-          <TaskManager title={currentTitle} />
-        </AppLayout>
-      </Route>
-      <Route path="/tasks/tags/:id">
+      <Route path="/tasks/:sectionId">
         <AppLayout user={user} setCurrentTitle={setCurrentTitle}>
           <TaskManager title={currentTitle} />
         </AppLayout>

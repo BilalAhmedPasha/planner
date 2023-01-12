@@ -1,4 +1,4 @@
-import { Layout, Typography, theme, Button, message } from "antd";
+import { Layout, Typography, theme, message } from "antd";
 import React, { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import TaskNav from "./TaskNav";
@@ -7,8 +7,11 @@ import { fetchTagsAction } from "./state/userTags/userTags.actions";
 import db from "../../firebase";
 import { doc, setDoc } from "@firebase/firestore";
 import TaskList from "./TaskList";
+import { useParams } from "react-router-dom";
 
 const TaskManager = ({ user, title, setCurrentTitle }) => {
+  const { sectionId, documentId } = useParams();
+
   const {
     token: { colorBgContainer },
   } = theme.useToken();
