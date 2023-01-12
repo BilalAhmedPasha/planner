@@ -1,5 +1,5 @@
 import { Layout, Typography, theme, Button, message } from "antd";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import TaskNav from "./TaskNav";
 import { fetchListsAction } from "./state/userLists/userLists.actions";
@@ -14,25 +14,24 @@ const TaskManager = ({ user, title, setCurrentTitle }) => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (user.uid) {
-      const userDocRef = doc(db, "users", user.uid);
-      async function getInitialUserData() {
-        await setDoc(
-          userDocRef,
-          {
-            displayName: user.displayName,
-            email: user.email,
-            photoURL: user.photoURL,
-          },
-          { merge: true }
-        );
-        dispatch(fetchListsAction(user.uid));
-        dispatch(fetchTagsAction(user.uid));
-      }
-      getInitialUserData();
-    }
+  const getInitialUserData = useCallback(async () => {
+    const userDocRef = doc(db, "users", user.uid);
+    await setDoc(
+      userDocRef,
+      {
+        displayName: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+      },
+      { merge: true }
+    );
+    dispatch(fetchListsAction(user.uid));
+    dispatch(fetchTagsAction(user.uid));
   }, [dispatch, user]);
+
+  useEffect(() => {
+    getInitialUserData();
+  }, [getInitialUserData]);
 
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -89,4 +88,4 @@ const TaskManager = ({ user, title, setCurrentTitle }) => {
     </Layout>
   );
 };
-export default TaskManager;
+export default React.memo(TaskManager);

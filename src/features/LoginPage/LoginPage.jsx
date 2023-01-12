@@ -38,11 +38,12 @@ const LoginPage = ({ title }) => {
       setTimeout(() => {
         selLoginText(loginText + fullLoginText[loginIndex]);
         setLoginIndex(loginIndex + 1);
-      }, 100);
+      }, 50);
     }
   }, [loginIndex, loginText, welcomeIndex, fullWelcomeText]);
 
   const [showLoginButton, setShowLoginButton] = useState(0);
+
   useEffect(() => {
     if (loginIndex === fullLoginText.length) {
       setTimeout(() => {
