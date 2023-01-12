@@ -1,20 +1,19 @@
 import React from "react";
-import { Form, Modal } from "antd";
+import { Modal as ModalAnt } from "antd";
 
-const ModalForm = ({
+const Modal = ({
   open,
   formTitle,
   onOk,
   onCancel,
   okText,
+  customStyles,
   children,
-  initialValues,
+  form,
   ...props
 }) => {
-  const [form] = Form.useForm();
-
   return (
-    <Modal
+    <ModalAnt
       open={open}
       title={formTitle}
       okText={okText}
@@ -31,17 +30,11 @@ const ModalForm = ({
           });
       }}
       onCancel={onCancel}
+      {...props}
     >
-      <Form
-        form={form}
-        layout="vertical"
-        name="form_in_modal"
-        initialValues={initialValues}
-      >
-        {children}
-      </Form>
-    </Modal>
+      {children}
+    </ModalAnt>
   );
 };
 
-export default ModalForm;
+export default Modal;

@@ -7,9 +7,18 @@ const ListDialogForm = ({
   handleColorChange,
   hidden,
   handleHiddenChange,
+  layout,
+  initialValues,
 }) => {
+  const [form] = Form.useForm();
+
   return (
-    <>
+    <Form
+      form={form}
+      layout={layout}
+      name="form_in_modal"
+      initialValues={initialValues}
+    >
       <Form.Item
         name="name"
         label="Name"
@@ -33,7 +42,7 @@ const ListDialogForm = ({
           {"If enabled, tasks in this list will not be shown in smart lists."}
         </Text>
       </Space>
-    </>
+    </Form>
   );
 };
 

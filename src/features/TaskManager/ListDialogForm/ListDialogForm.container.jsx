@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
-import ModalForm from "../../../components/ModalForm";
+import Modal from "../../../components/Modal";
 import ListDialogForm from "./ListDialogForm";
 import moment from "moment-timezone";
 import { SUCCESS } from "../../../constants/app.constants";
@@ -137,7 +137,7 @@ const ListDialog = ({
 
   return (
     openDialog && (
-      <ModalForm
+      <Modal
         open={openDialog}
         formTitle={formTitle}
         onOk={formType === CREATE ? handleAddList : handleEditList}
@@ -145,7 +145,6 @@ const ListDialog = ({
           setOpenDialog(false);
         }}
         okText={okText}
-        initialValues={DEFAULT_VALUES}
       >
         <ListDialogForm
           color={color}
@@ -154,8 +153,10 @@ const ListDialog = ({
           }}
           hidden={checkedHidden}
           handleHiddenChange={() => setCheckedHidden(!checkedHidden)}
+          initialValues={DEFAULT_VALUES}
+          layout="vertical"
         />
-      </ModalForm>
+      </Modal>
     )
   );
 };

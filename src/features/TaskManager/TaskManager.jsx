@@ -46,7 +46,7 @@ const TaskManager = ({ user, title, setCurrentTitle }) => {
         messageApi={messageApi}
         setCurrentTitle={setCurrentTitle}
       />
-      <TaskList title={title} />
+      <TaskList user={user} title={title} />
       <Layout.Content
         style={{
           marginLeft: "0.1rem",

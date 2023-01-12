@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import ModalForm from "../../../components/ModalForm";
+import Modal from "../../../components/Modal";
 import TagDialogForm from "./TagDialogForm";
 import moment from "moment-timezone";
 import { SUCCESS } from "../../../constants/app.constants";
@@ -127,7 +127,7 @@ const TagDialog = ({
 
   return (
     openDialog && (
-      <ModalForm
+      <Modal
         open={openDialog}
         formTitle={formTitle}
         onOk={formType === CREATE ? handleAddTag : handleEditTag}
@@ -135,15 +135,16 @@ const TagDialog = ({
           setOpenDialog(false);
         }}
         okText={okText}
-        initialValues={DEFAULT_VALUES}
       >
         <TagDialogForm
           color={color}
           handleColorChange={(color) => {
             return setColor(color);
           }}
+          initialValues={DEFAULT_VALUES}
+          layout="vertical"
         />
-      </ModalForm>
+      </Modal>
     )
   );
 };
