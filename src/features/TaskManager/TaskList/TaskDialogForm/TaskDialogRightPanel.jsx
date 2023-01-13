@@ -104,6 +104,12 @@ const TaskDialogRightPanel = ({ height }) => {
   const [showEndByDate, setShowEndByDate] = useState(false);
   const [showEndByRepeatCount, setshowEndByRepeatCount] = useState(false);
 
+  const [startDate, setStartDate] = useState();
+
+  const handleStartDateChange = (e) => {
+    setStartDate(e);
+  };
+
   const handleIsMultiDaySwitch = (e) => {
     setIsMultiDay(e);
     if (e === true) {
@@ -132,9 +138,14 @@ const TaskDialogRightPanel = ({ height }) => {
     }
   };
 
-  const disabledPastDate = (current) => {
-    const currentDate = dayjs.utc(current);
-    return currentDate.isBefore(dayjs.utc().subtract(1, "day"));
+  const disabledStartDate = (current) => {
+    // const currentDate = dayjs.utc(current);
+    return current.isBefore(dayjs.utc().subtract(1, "day"));
+  };
+
+  const disabledEndDate = (current) => {
+    // const currentDate = dayjs.utc(current);
+    return current.isBefore(startDate);
   };
 
   return (
@@ -229,11 +240,12 @@ const TaskDialogRightPanel = ({ height }) => {
           <Form.Item name="date" label="Schedule">
             <DatePicker
               format={DATE_FORMAT}
-              disabledDate={disabledPastDate}
+              disabledDate={disabledStartDate}
               style={{
                 cursor: "pointer",
                 width: "100%",
               }}
+              onChange={handleStartDateChange}
             />
           </Form.Item>
         )}
@@ -327,7 +339,7 @@ const TaskDialogRightPanel = ({ height }) => {
                 cursor: "pointer",
                 width: "100%",
               }}
-              disabledDate={disabledPastDate}
+              disabledDate={disabledEndDate}
             />
           </Form.Item>
         )}
