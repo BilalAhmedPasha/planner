@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from "react";
 import Modal from "../../../components/Modal";
 import TagDialogForm from "./TagDialogForm";
-import moment from "moment-timezone";
 import { SUCCESS } from "../../../constants/app.constants";
 import { useDispatch } from "react-redux";
 import {
@@ -11,6 +10,9 @@ import {
 import { DEFAULT_TAG_COLOR } from "../../../constants/color.constants";
 import { CREATE, EDIT } from "../../../constants/formType.constants";
 import { Form } from "antd";
+import dayjs from "dayjs";
+const utc = require("dayjs/plugin/utc");
+dayjs.extend(utc);
 
 const TagDialog = ({
   user,
@@ -59,8 +61,8 @@ const TagDialog = ({
       name: e.name.replace(/\s/g, "").toLowerCase(),
       label: e.name,
       color: e.color?.hex,
-      createdTime: moment.utc().format(),
-      modifiedTime: moment.utc().format(),
+      createdTime: dayjs.utc().format(),
+      modifiedTime: dayjs.utc().format(),
     };
     setOpenDialog(false);
     dispatch(addTagAction(user.uid, newTag)).then((response) => {
@@ -78,7 +80,7 @@ const TagDialog = ({
       label: e.name,
       color: e.color?.hex,
       createdTime: formValues.createdTime,
-      modifiedTime: moment.utc().format(),
+      modifiedTime: dayjs.utc().format(),
     };
     setOpenDialog(false);
     dispatch(editTagAction(user.uid, modifiedTag, formValues.id)).then(

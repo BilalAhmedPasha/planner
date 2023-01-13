@@ -2,7 +2,6 @@ import React, { useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import Modal from "../../../components/Modal";
 import ListDialogForm from "./ListDialogForm";
-import moment from "moment-timezone";
 import { SUCCESS } from "../../../constants/app.constants";
 import { CREATE, EDIT } from "../../../constants/formType.constants";
 import { DEFAULT_LIST_COLOR } from "../../../constants/color.constants";
@@ -11,6 +10,9 @@ import {
   editListAction,
 } from "../state/userLists/userLists.actions";
 import { Form } from "antd";
+import dayjs from "dayjs";
+const utc = require("dayjs/plugin/utc");
+dayjs.extend(utc);
 
 const ListDialog = ({
   user,
@@ -59,8 +61,8 @@ const ListDialog = ({
       name: e.name.replace(/\s/g, "").toLowerCase(),
       label: e.name,
       color: e.color?.hex,
-      createdTime: moment.utc().format(),
-      modifiedTime: moment.utc().format(),
+      createdTime: dayjs.utc().format(),
+      modifiedTime: dayjs.utc().format(),
       hidden: e.hidden,
     };
     setOpenDialog(false);
@@ -79,7 +81,7 @@ const ListDialog = ({
       label: e.name,
       color: e.color?.hex,
       createdTime: formValues.createdTime,
-      modifiedTime: moment.utc().format(),
+      modifiedTime: dayjs.utc().format(),
       hidden: e.hidden,
     };
     setOpenDialog(false);

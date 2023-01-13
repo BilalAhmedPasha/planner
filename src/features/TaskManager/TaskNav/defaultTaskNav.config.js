@@ -8,32 +8,42 @@ import {
   ProfileOutlined,
   RightSquareOutlined,
 } from "@ant-design/icons";
+import {
+  ALL,
+  COMPLETED,
+  DELETED,
+  INBOX,
+  NEXT_7_DAYS,
+  TODAY,
+  TOMORROW,
+  WONT_DO,
+} from "../../../constants/app.constants";
 
 export const defaultTaskNav1 = [
   {
-    label: "All Tasks",
+    label: "All",
     icon: ProfileOutlined,
-    redirectUrl: "/tasks/all",
+    redirectUrl: `/tasks/${ALL}`,
   },
   {
     label: "Inbox",
     icon: InboxOutlined,
-    redirectUrl: "/tasks/inbox",
+    redirectUrl: `/tasks/${INBOX}`,
   },
   {
     label: "Today",
     icon: CheckSquareOutlined,
-    redirectUrl: "/tasks/today",
+    redirectUrl: `/tasks/${TODAY}`,
   },
   {
     label: "Tomorrow",
     icon: RightSquareOutlined,
-    redirectUrl: "/tasks/tomorrow",
+    redirectUrl: `/tasks/${TOMORROW}`,
   },
   {
     label: "Next 7 Days",
     icon: CarryOutOutlined,
-    redirectUrl: "/tasks/next-7-days",
+    redirectUrl: `/tasks/${NEXT_7_DAYS}`,
   },
 ];
 
@@ -41,16 +51,16 @@ export const defaultTaskNav2 = [
   {
     label: "Completed",
     icon: CheckSquareFilled,
-    redirectUrl: "/tasks/completed",
+    redirectUrl: `/tasks/${COMPLETED}`,
   },
   {
     label: "Won't Do",
     icon: CloseSquareFilled,
-    redirectUrl: "/tasks/wont-do",
+    redirectUrl: `/tasks/${WONT_DO}`,
   },
   {
     label: "Deleted",
     icon: DeleteFilled,
-    redirectUrl: "/tasks/deleted",
+    redirectUrl: `/tasks/${DELETED}`,
   },
 ];

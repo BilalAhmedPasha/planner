@@ -11,7 +11,7 @@ import {
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SideMenu from "../../../components/SideMenu";
-import { DELETE, SUCCESS } from "../../../constants/app.constants";
+import { DELETE, LISTS, SUCCESS, TAGS } from "../../../constants/app.constants";
 import { CREATE, EDIT } from "../../../constants/formType.constants";
 import { defaultTaskNav1, defaultTaskNav2 } from "./defaultTaskNav.config";
 import ListDialogForm from "../ListDialogForm";
@@ -177,7 +177,7 @@ const TaskNav = ({ user, messageApi, setCurrentTitle }) => {
 
   const handleMoreMenu = ({ e, currentItem }) => {
     if (e.key === DELETE) {
-      if (e.keyPath.includes("tags")) {
+      if (e.keyPath.includes(TAGS)) {
         showDeleteConfirm({
           currentItem: currentItem,
           deleteAction: deleteTagAction,
@@ -187,7 +187,7 @@ const TaskNav = ({ user, messageApi, setCurrentTitle }) => {
             "The tag will be deleted and removed in all tasks. Delete the tag?",
           handleDelete: handleDelete,
         });
-      } else if (e.keyPath.includes("lists")) {
+      } else if (e.keyPath.includes(LISTS)) {
         showDeleteConfirm({
           currentItem: currentItem,
           deleteAction: deleteListAction,
@@ -199,11 +199,11 @@ const TaskNav = ({ user, messageApi, setCurrentTitle }) => {
         });
       }
     } else if (e.key === EDIT) {
-      if (e.keyPath.includes("tags")) {
+      if (e.keyPath.includes(TAGS)) {
         setTagData(currentItem);
         setTagFormType(EDIT);
         setOpenTagDialog(true);
-      } else if (e.keyPath.includes("lists")) {
+      } else if (e.keyPath.includes(LISTS)) {
         setListData(currentItem);
         setListFormType(EDIT);
         setOpenListDialog(true);
@@ -287,7 +287,7 @@ const TaskNav = ({ user, messageApi, setCurrentTitle }) => {
           {renderSubMenuItems({
             items: lists,
             itemCount: totalLists,
-            key: "lists",
+            key: LISTS,
             title: "Lists",
             onAddClick: (e) => {
               e.stopPropagation();
@@ -300,7 +300,7 @@ const TaskNav = ({ user, messageApi, setCurrentTitle }) => {
           {renderSubMenuItems({
             items: tags,
             itemCount: totalTags,
-            key: "tags",
+            key: TAGS,
             title: "Tags",
             onAddClick: (e) => {
               e.stopPropagation();
