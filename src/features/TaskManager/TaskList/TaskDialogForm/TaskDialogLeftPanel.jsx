@@ -32,7 +32,7 @@ const TaskDialogLeftPanel = ({ height }) => {
           <Input autoComplete="off" />
         </Form.Item>
         <Form.Item name="description" label="Desciption">
-          <Input.TextArea autoComplete="off" rows={5} />
+          <Input.TextArea autoComplete="off" rows={3} />
         </Form.Item>
       </div>
     </Layout.Content>

@@ -10,7 +10,6 @@ const TaskList = ({ user, title }) => {
 
   const [messageApi, contextHolder] = message.useMessage();
   const [openAddTaskDialog, setOpenAddTaskDialog] = useState(false);
-  const [taskData, setTaskData] = useState();
 
   const handleAddTask = () => {
     setOpenAddTaskDialog(true);
@@ -50,7 +49,6 @@ const TaskList = ({ user, title }) => {
             openDialog={openAddTaskDialog}
             setOpenDialog={setOpenAddTaskDialog}
             formType={CREATE}
-            formValues={taskData}
           />
         )}
       </div>

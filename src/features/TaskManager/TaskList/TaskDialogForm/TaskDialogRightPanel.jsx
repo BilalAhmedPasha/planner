@@ -33,6 +33,9 @@ import {
   DATE_FORMAT,
   TIME_FORMAT,
 } from "../../../../constants/dateTime.constants";
+import dayjs from "dayjs";
+const utc = require("dayjs/plugin/utc");
+dayjs.extend(utc);
 
 const tagRender = (props) => {
   const { label, value, closable, onClose } = props;
@@ -120,7 +123,7 @@ const TaskDialogRightPanel = ({ height }) => {
     if (e === "endByDate") {
       setShowEndByDate(true);
       setshowEndByRepeatCount(false);
-    } else if (e === "endByARepeatCount") {
+    } else if (e === "endByRepeatCount") {
       setShowEndByDate(false);
       setshowEndByRepeatCount(true);
     } else {
@@ -129,12 +132,16 @@ const TaskDialogRightPanel = ({ height }) => {
     }
   };
 
+  const disabledPastDate = (current) => {
+    const currentDate = dayjs.utc(current);
+    return currentDate.isBefore(dayjs.utc().subtract(1, "day"));
+  };
+
   return (
     <Layout.Content
       style={{
         marginLeft: "0.1rem",
         background: colorBgContainer,
-        
       }}
     >
       <div
@@ -222,6 +229,7 @@ const TaskDialogRightPanel = ({ height }) => {
           <Form.Item name="date" label="Schedule">
             <DatePicker
               format={DATE_FORMAT}
+              disabledDate={disabledPastDate}
               style={{
                 cursor: "pointer",
                 width: "100%",
@@ -293,7 +301,7 @@ const TaskDialogRightPanel = ({ height }) => {
                   label: "End by date",
                 },
                 {
-                  value: "endByARepeatCount",
+                  value: "endByRepeatCount",
                   label: "End by repeat count",
                 },
               ]}
@@ -319,13 +327,14 @@ const TaskDialogRightPanel = ({ height }) => {
                 cursor: "pointer",
                 width: "100%",
               }}
+              disabledDate={disabledPastDate}
             />
           </Form.Item>
         )}
         {isRepeating && showEndByRepeatCount && (
           <Form.Item
             name="endByRepeatCount"
-            label="Repeat count"
+            label="Repeat Count"
             rules={[
               {
                 required: true,
