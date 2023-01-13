@@ -2,7 +2,12 @@ import React, { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../../../components/Modal";
 import TaskDialogForm from "./TaskDialogForm";
-import { INBOX, LISTS, SUCCESS, TAGS } from "../../../../constants/app.constants";
+import {
+  INBOX,
+  LISTS,
+  SUCCESS,
+  TAGS,
+} from "../../../../constants/app.constants";
 import { addTaskAction } from "../../state/userTasks/userTasks.actions";
 import { Form } from "antd";
 import { NONE } from "../../../../constants/priority.constants";
@@ -15,10 +20,6 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
-  console.log(dayjs.utc());
-  console.log(dayjs.utc().format());
-  console.log(dayjs(dayjs.utc().format()));
-  console.log(dayjs("2013-11-18T11:55:20").tz("America/Toronto"));
   const { sectionId, documentId } = useParams();
 
   const dispatch = useDispatch();

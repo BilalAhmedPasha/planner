@@ -5,6 +5,7 @@ import {
   Layout,
   Select,
   Space,
+  Switch,
   Tag,
   theme,
   TimePicker,
@@ -28,7 +29,10 @@ import {
   NONE_COLOR,
 } from "../../../../constants/color.constants";
 import { INBOX } from "../../../../constants/app.constants";
-import { DATE_FORMAT, TIME_FORMAT } from "../../../../constants/dateTime.constants";
+import {
+  DATE_FORMAT,
+  TIME_FORMAT,
+} from "../../../../constants/dateTime.constants";
 
 const tagRender = (props) => {
   const { label, value, closable, onClose } = props;
@@ -52,7 +56,7 @@ const tagRender = (props) => {
   );
 };
 
-const TaskDialogRightPanel = () => {
+const TaskDialogRightPanel = ({ height }) => {
   const { lists } = useSelector(listsSelector);
   const { tags } = useSelector(tagsSelector);
 
@@ -92,19 +96,53 @@ const TaskDialogRightPanel = () => {
     }
   };
 
+  const [isMultiDay, setIsMultiDay] = useState(false);
+  const [isRepeating, setIsRepeating] = useState(false);
+  const [showEndByDate, setShowEndByDate] = useState(false);
+  const [showEndByRepeatCount, setshowEndByRepeatCount] = useState(false);
+
+  const handleIsMultiDaySwitch = (e) => {
+    setIsMultiDay(e);
+    if (e === true) {
+      setIsRepeating(false);
+    }
+  };
+
+  const handleRepeatDropDownChange = (e) => {
+    if (e) {
+      setIsRepeating(true);
+    } else {
+      setIsRepeating(false);
+    }
+  };
+
+  const handleEndByDropDownChange = (e) => {
+    if (e === "endByDate") {
+      setShowEndByDate(true);
+      setshowEndByRepeatCount(false);
+    } else if (e === "endByARepeatCount") {
+      setShowEndByDate(false);
+      setshowEndByRepeatCount(true);
+    } else {
+      setShowEndByDate(false);
+      setshowEndByRepeatCount(false);
+    }
+  };
+
   return (
     <Layout.Content
       style={{
         marginLeft: "0.1rem",
         background: colorBgContainer,
+        
       }}
     >
       <div
         style={{
-          height: "70vh",
+          height: height,
           overflowY: "scroll",
           overflowX: "hidden",
-          padding: "0rem 2rem",
+          padding: "1rem 1.5rem",
         }}
       >
         <Form.Item name="list" label="List">
@@ -161,25 +199,57 @@ const TaskDialogRightPanel = () => {
             tagRender={tagRender}
           />
         </Form.Item>
-        <Form.Item name="date" label="Date">
-          <DatePicker
-            format={DATE_FORMAT}
+        <Form.Item>
+          <div
             style={{
-              cursor: "pointer",
-              width: "100%",
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "center",
+              justifyContent: "space-between",
             }}
-          />
+          >
+            <Typography.Text
+              style={{
+                fontSize: "0.9rem",
+              }}
+            >
+              {"Multi day task"}
+            </Typography.Text>
+            <Switch onClick={handleIsMultiDaySwitch} />
+          </div>
         </Form.Item>
-        <Form.Item name="dateRange" label="Date Range">
-          <DatePicker.RangePicker
-            format={DATE_FORMAT}
-            style={{
-              cursor: "pointer",
-              width: "100%",
-            }}
-          />
-        </Form.Item>
-        <Form.Item name="duration" label="Duration">
+        {!isMultiDay && (
+          <Form.Item name="date" label="Schedule">
+            <DatePicker
+              format={DATE_FORMAT}
+              style={{
+                cursor: "pointer",
+                width: "100%",
+              }}
+            />
+          </Form.Item>
+        )}
+        {isMultiDay && (
+          <Form.Item
+            name="dateRange"
+            label="Schedule"
+            rules={[
+              {
+                required: true,
+                message: "Date range is required",
+              },
+            ]}
+          >
+            <DatePicker.RangePicker
+              format={DATE_FORMAT}
+              style={{
+                cursor: "pointer",
+                width: "100%",
+              }}
+            />
+          </Form.Item>
+        )}
+        <Form.Item name="duration">
           <TimePicker.RangePicker
             format={TIME_FORMAT}
             style={{
@@ -188,61 +258,90 @@ const TaskDialogRightPanel = () => {
             }}
           />
         </Form.Item>
-        <Form.Item name="repeat" label="Repeat">
-          <Select
-            allowClear
-            options={[
+        {!isMultiDay && (
+          <Form.Item name="repeat" label="Repeat">
+            <Select
+              allowClear
+              options={[
+                {
+                  value: "daily",
+                  label: "Daily",
+                },
+                {
+                  value: "weekly",
+                  label: "Weekly",
+                },
+                {
+                  value: "monthly",
+                  label: "Monthly",
+                },
+              ]}
+              onChange={handleRepeatDropDownChange}
+            />
+          </Form.Item>
+        )}
+        {isRepeating && (
+          <Form.Item name="endBy" label="End by">
+            <Select
+              options={[
+                {
+                  value: "endless",
+                  label: "EndLess",
+                },
+                {
+                  value: "endByDate",
+                  label: "End by date",
+                },
+                {
+                  value: "endByARepeatCount",
+                  label: "End by repeat count",
+                },
+              ]}
+              onChange={handleEndByDropDownChange}
+            />
+          </Form.Item>
+        )}
+
+        {isRepeating && showEndByDate && (
+          <Form.Item
+            name="endByDate"
+            label="End Date"
+            rules={[
               {
-                value: "daily",
-                label: "Daily",
-              },
-              {
-                value: "weekly",
-                label: "Weekly",
-              },
-              {
-                value: "monthly",
-                label: "Monthly",
+                required: true,
+                message: "End date is required",
               },
             ]}
-          />
-        </Form.Item>
-        <Form.Item name="endBy" label="End by">
-          <Select
-            options={[
+          >
+            <DatePicker
+              format={DATE_FORMAT}
+              style={{
+                cursor: "pointer",
+                width: "100%",
+              }}
+            />
+          </Form.Item>
+        )}
+        {isRepeating && showEndByRepeatCount && (
+          <Form.Item
+            name="endByRepeatCount"
+            label="Repeat count"
+            rules={[
               {
-                value: "endless",
-                label: "EndLess",
-              },
-              {
-                value: "endByDate",
-                label: "End by a date",
-              },
-              {
-                value: "endByARepeatCount",
-                label: "End by a repeat count",
+                required: true,
+                message: "Repeat count is required",
               },
             ]}
-          />
-        </Form.Item>
-        <Form.Item name="endByDatePicker" label="End by Date">
-          <DatePicker
-            format={DATE_FORMAT}
-            style={{
-              cursor: "pointer",
-              width: "100%",
-            }}
-          />
-        </Form.Item>
-        <Form.Item name="endByARepeatCount" label="End by repeat count">
-          <InputNumber
-            min={2}
-            style={{
-              cursor: "pointer",
-              width: "100%",
-            }}
-          />
-        </Form.Item>
+          >
+            <InputNumber
+              min={2}
+              style={{
+                cursor: "pointer",
+                width: "100%",
+              }}
+            />
+          </Form.Item>
+        )}
       </div>
     </Layout.Content>
   );

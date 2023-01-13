@@ -12,8 +12,8 @@ const TaskDialogForm = ({ form, layout, initialValues }) => {
     >
       <Layout>
         <Layout.Sider collapsed collapsedWidth={0} />
-        <TaskDialogLeftPanel />
-        <TaskDialogRightPanel />
+        <TaskDialogLeftPanel form={form} height={"75vh"} />
+        <TaskDialogRightPanel form={form} height={"75vh"} />
       </Layout>
     </Form>
   );

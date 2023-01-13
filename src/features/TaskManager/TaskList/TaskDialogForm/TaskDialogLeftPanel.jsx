@@ -1,6 +1,6 @@
 import { Form, Input, Layout, theme } from "antd";
 
-const TaskDialogLeftPanel = () => {
+const TaskDialogLeftPanel = ({ height }) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -14,9 +14,9 @@ const TaskDialogLeftPanel = () => {
     >
       <div
         style={{
-          height: "70vh",
+          height: height,
           overflowY: "scroll",
-          padding: "2rem 2rem",
+          padding: "1rem 1.5rem",
         }}
       >
         <Form.Item
