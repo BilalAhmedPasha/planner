@@ -1,12 +1,11 @@
 import { Layout, Typography, theme, message } from "antd";
-import React, { useCallback, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import TaskNav from "./TaskNav";
 import { fetchListsAction } from "./state/userLists/userLists.actions";
 import { fetchTagsAction } from "./state/userTags/userTags.actions";
-import db from "../../firebase";
-import { doc, setDoc, getDoc } from "@firebase/firestore";
 import TaskList from "./TaskList";
+import { userSelector } from "../AppLayout/state/userSettings/userSettings.reducer";
 
 const TaskManager = ({ user, title, setCurrentTitle }) => {
   const {
@@ -14,30 +13,13 @@ const TaskManager = ({ user, title, setCurrentTitle }) => {
   } = theme.useToken();
 
   const dispatch = useDispatch();
-
-  const getInitialUserData = useCallback(async () => {
-    if (user.uid) {
-      const userDocRef = doc(db, "users", user.uid);
-      const userDoc = await getDoc(userDocRef);
-      if (!userDoc.exists()) {
-        await setDoc(
-          userDocRef,
-          {
-            displayName: user.displayName,
-            email: user.email,
-            photoURL: user.photoURL,
-          },
-          { merge: true }
-        );
-      }
+  const userSetting = useSelector(userSelector);
+  useEffect(() => {
+    if (user.uid !== userSetting.id) {
       dispatch(fetchListsAction(user.uid));
       dispatch(fetchTagsAction(user.uid));
     }
-  }, [dispatch, user]);
-
-  useEffect(() => {
-    getInitialUserData();
-  }, [getInitialUserData]);
+  }, [userSetting, dispatch, user.uid]);
 
   const [messageApi, contextHolder] = message.useMessage();
 

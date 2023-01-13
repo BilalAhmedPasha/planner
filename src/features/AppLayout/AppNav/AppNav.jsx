@@ -6,6 +6,8 @@ import { UserAuth } from "../../../context/AuthContext";
 import { defaultAppNav } from "./defaultAppNav.config";
 import { LogoutOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { LOGOUT } from "../../../constants/app.constants";
+import { useDispatch } from "react-redux";
+import { removeUserSettingAction } from "../state/userSettings/userSettings.actions";
 
 const renderMenuItems = (itemsArray) => {
   return itemsArray.map((each) => {
@@ -20,6 +22,7 @@ const renderMenuItems = (itemsArray) => {
 const AppNav = ({ setCurrentTitle }) => {
   const { logOut, user } = UserAuth();
   const history = useHistory();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (user === null) {
@@ -30,6 +33,7 @@ const AppNav = ({ setCurrentTitle }) => {
   const handleSignOut = async () => {
     try {
       await logOut();
+      dispatch(removeUserSettingAction());
     } catch (error) {
       console.log(error);
     }

@@ -6,12 +6,9 @@ import AppLayout from "./features/AppLayout";
 import TaskManager from "./features/TaskManager";
 import "./App.css";
 import LoginPage from "./features/LoginPage";
-import { UserAuth } from "./context/AuthContext";
 
 function App() {
   const [currentTitle, setCurrentTitle] = useState("Inbox");
-  const { user } = UserAuth();
-
   return (
     <Switch>
       <Route path="/" exact>
@@ -21,22 +18,22 @@ function App() {
         <LoginPage title={currentTitle} />
       </Route>
       <Route path="/calendar" exact>
-        <AppLayout user={user} setCurrentTitle={setCurrentTitle}>
+        <AppLayout setCurrentTitle={setCurrentTitle}>
           <Calendar title={currentTitle} />
         </AppLayout>
       </Route>
       <Route path="/habits" exact>
-        <AppLayout user={user} setCurrentTitle={setCurrentTitle}>
+        <AppLayout setCurrentTitle={setCurrentTitle}>
           <HabitTracker title={currentTitle} />
         </AppLayout>
       </Route>
       <Route path="/tasks/:sectionId/:documentId">
-        <AppLayout user={user} setCurrentTitle={setCurrentTitle}>
+        <AppLayout setCurrentTitle={setCurrentTitle}>
           <TaskManager title={currentTitle} />
         </AppLayout>
       </Route>
       <Route path="/tasks/:sectionId">
-        <AppLayout user={user} setCurrentTitle={setCurrentTitle}>
+        <AppLayout setCurrentTitle={setCurrentTitle}>
           <TaskManager title={currentTitle} />
         </AppLayout>
       </Route>
