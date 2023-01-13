@@ -1,14 +1,18 @@
 import React, { useMemo } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../../../components/Modal";
 import TaskDialogForm from "./TaskDialogForm";
 import moment from "moment-timezone";
 import { INBOX, SUCCESS } from "../../../../constants/app.constants";
 import { addTaskAction } from "../../state/userTasks/userTasks.actions";
-import { Form, Layout, theme, Typography } from "antd";
+import { Form } from "antd";
 import { NONE } from "../../../../constants/priority.constants";
+import { useParams } from "react-router-dom";
+import { tagsSelector } from "../../state/userTags/userTags.reducer";
 
 const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
+  const { sectionId, documentId } = useParams();
+
   const dispatch = useDispatch();
 
   const createTaskSuccess = () => {
@@ -46,14 +50,27 @@ const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
     });
   };
 
+  const DEFAULT_LIST = sectionId === "lists" ? documentId : INBOX;
+
+  const { tags } = useSelector(tagsSelector);
+
+  const DEFAULT_TAGS = useMemo(() => {
+    if (sectionId === "tags") {
+      const currentTag = tags.find((each) => each.id === documentId);
+      return [`${documentId}/${currentTag.color}`];
+    }
+    return [];
+  }, [documentId, sectionId, tags]);
+
   const DEFAULT_VALUES = useMemo(() => {
     return {
       name: "",
-      list: INBOX,
+      list: DEFAULT_LIST,
       priority: NONE,
       endBy: "endless",
+      tags: DEFAULT_TAGS,
     };
-  }, []);
+  }, [DEFAULT_LIST, DEFAULT_TAGS]);
 
   const [form] = Form.useForm();
 

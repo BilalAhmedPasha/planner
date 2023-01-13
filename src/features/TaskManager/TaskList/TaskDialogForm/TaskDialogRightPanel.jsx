@@ -28,6 +28,7 @@ import {
   NONE_COLOR,
 } from "../../../../constants/color.constants";
 import { INBOX } from "../../../../constants/app.constants";
+import { DATE_FORMAT, TIME_FORMAT } from "../../../../constants/dateTime.constants";
 
 const tagRender = (props) => {
   const { label, value, closable, onClose } = props;
@@ -102,7 +103,8 @@ const TaskDialogRightPanel = () => {
         style={{
           height: "70vh",
           overflowY: "scroll",
-          padding: "2rem 2rem",
+          overflowX: "hidden",
+          padding: "0rem 2rem",
         }}
       >
         <Form.Item name="list" label="List">
@@ -160,13 +162,31 @@ const TaskDialogRightPanel = () => {
           />
         </Form.Item>
         <Form.Item name="date" label="Date">
-          <DatePicker format="DD-MM-YYYY" />
+          <DatePicker
+            format={DATE_FORMAT}
+            style={{
+              cursor: "pointer",
+              width: "100%",
+            }}
+          />
         </Form.Item>
         <Form.Item name="dateRange" label="Date Range">
-          <DatePicker.RangePicker format="DD-MM-YYYY" />
+          <DatePicker.RangePicker
+            format={DATE_FORMAT}
+            style={{
+              cursor: "pointer",
+              width: "100%",
+            }}
+          />
         </Form.Item>
         <Form.Item name="duration" label="Duration">
-          <TimePicker.RangePicker format="h:mm A" />
+          <TimePicker.RangePicker
+            format={TIME_FORMAT}
+            style={{
+              cursor: "pointer",
+              width: "100%",
+            }}
+          />
         </Form.Item>
         <Form.Item name="repeat" label="Repeat">
           <Select
@@ -206,10 +226,22 @@ const TaskDialogRightPanel = () => {
           />
         </Form.Item>
         <Form.Item name="endByDatePicker" label="End by Date">
-          <DatePicker format="DD-MM-YYYY" />
+          <DatePicker
+            format={DATE_FORMAT}
+            style={{
+              cursor: "pointer",
+              width: "100%",
+            }}
+          />
         </Form.Item>
         <Form.Item name="endByARepeatCount" label="End by repeat count">
-          <InputNumber min={2} />
+          <InputNumber
+            min={2}
+            style={{
+              cursor: "pointer",
+              width: "100%",
+            }}
+          />
         </Form.Item>
       </div>
     </Layout.Content>

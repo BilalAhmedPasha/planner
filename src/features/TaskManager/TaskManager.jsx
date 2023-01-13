@@ -5,13 +5,10 @@ import TaskNav from "./TaskNav";
 import { fetchListsAction } from "./state/userLists/userLists.actions";
 import { fetchTagsAction } from "./state/userTags/userTags.actions";
 import db from "../../firebase";
-import { doc, setDoc } from "@firebase/firestore";
+import { doc, setDoc, getDoc } from "@firebase/firestore";
 import TaskList from "./TaskList";
-import { useParams } from "react-router-dom";
 
 const TaskManager = ({ user, title, setCurrentTitle }) => {
-  const { sectionId, documentId } = useParams();
-
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -19,18 +16,23 @@ const TaskManager = ({ user, title, setCurrentTitle }) => {
   const dispatch = useDispatch();
 
   const getInitialUserData = useCallback(async () => {
-    const userDocRef = doc(db, "users", user.uid);
-    await setDoc(
-      userDocRef,
-      {
-        displayName: user.displayName,
-        email: user.email,
-        photoURL: user.photoURL,
-      },
-      { merge: true }
-    );
-    dispatch(fetchListsAction(user.uid));
-    dispatch(fetchTagsAction(user.uid));
+    if (user.uid) {
+      const userDocRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userDocRef);
+      if (!userDoc.exists()) {
+        await setDoc(
+          userDocRef,
+          {
+            displayName: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL,
+          },
+          { merge: true }
+        );
+      }
+      dispatch(fetchListsAction(user.uid));
+      dispatch(fetchTagsAction(user.uid));
+    }
   }, [dispatch, user]);
 
   useEffect(() => {
