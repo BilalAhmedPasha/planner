@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../../components/Modal";
 import ListDialogForm from "./ListDialogForm";
 import { SUCCESS } from "../../../constants/app.constants";
@@ -11,6 +11,7 @@ import {
 } from "../state/userLists/userLists.actions";
 import { Form } from "antd";
 import dayjs from "../../../utils/dateTime.uitls";
+import { listsSelector } from "../state/userLists/userLists.reducer";
 
 const ListDialog = ({
   user,
@@ -63,9 +64,9 @@ const ListDialog = ({
       modifiedTime: dayjs.utc().format(),
       hidden: e.hidden,
     };
-    setOpenDialog(false);
     dispatch(addListAction(user.uid, newList)).then((response) => {
       if (response.success === SUCCESS) {
+        setOpenDialog(false);
         createListSuccess();
       } else {
         createListFailed();
@@ -82,10 +83,10 @@ const ListDialog = ({
       modifiedTime: dayjs.utc().format(),
       hidden: e.hidden,
     };
-    setOpenDialog(false);
     dispatch(editListAction(user.uid, modifiedList, formValues.id)).then(
       (response) => {
         if (response.success === SUCCESS) {
+          setOpenDialog(false);
           editListSuccess();
         } else {
           editListFailed();
@@ -138,6 +139,7 @@ const ListDialog = ({
 
   const [form] = Form.useForm();
 
+  const { isLoadingLists } = useSelector(listsSelector);
   return (
     openDialog && (
       <Modal
@@ -149,6 +151,7 @@ const ListDialog = ({
         }}
         okText={okText}
         form={form}
+        loading={isLoadingLists}
       >
         <ListDialogForm
           form={form}

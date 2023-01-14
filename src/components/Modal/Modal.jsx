@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal as ModalAnt } from "antd";
+import { Modal as ModalAnt, Spin } from "antd";
 
 const Modal = ({
   open,
@@ -10,6 +10,7 @@ const Modal = ({
   customStyles,
   children,
   form,
+  loading,
   ...props
 }) => {
   return (
@@ -33,7 +34,7 @@ const Modal = ({
       maskClosable={false}
       {...props}
     >
-      {children}
+      <Spin spinning={loading}>{children}</Spin>
     </ModalAnt>
   );
 };

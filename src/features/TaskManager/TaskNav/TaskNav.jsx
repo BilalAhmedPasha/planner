@@ -70,7 +70,6 @@ const renderSubMenuItems = ({
   onAddClick,
   icon,
   onMoreClick,
-  isLoading,
 }) => {
   return (
     <Menu.SubMenu
@@ -98,39 +97,37 @@ const renderSubMenuItems = ({
       }
       icon={icon}
     >
-      <Spin spinning={isLoading} delay={0}>
-        {items.map((each) => {
-          return (
-            <Menu.Item key={each.id}>
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Link to={`/tasks/${key}/${each.id}`}>{each.label}</Link>
-                <Space>
-                  {renderColorDot(each.color)}
-                  <Dropdown
-                    overlay={() =>
-                      moreMenuItems({
-                        onMoreClick: onMoreClick,
-                        currentItem: each,
-                      })
-                    }
-                    trigger={["hover"]}
-                    placement="bottomLeft"
-                  >
-                    <Button icon={<MoreOutlined />} type="text" size="small" />
-                  </Dropdown>
-                </Space>
-              </div>
-            </Menu.Item>
-          );
-        })}
-      </Spin>
+      {items.map((each) => {
+        return (
+          <Menu.Item key={each.id}>
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Link to={`/tasks/${key}/${each.id}`}>{each.label}</Link>
+              <Space>
+                {renderColorDot(each.color)}
+                <Dropdown
+                  overlay={() =>
+                    moreMenuItems({
+                      onMoreClick: onMoreClick,
+                      currentItem: each,
+                    })
+                  }
+                  trigger={["hover"]}
+                  placement="bottomLeft"
+                >
+                  <Button icon={<MoreOutlined />} type="text" size="small" />
+                </Dropdown>
+              </Space>
+            </div>
+          </Menu.Item>
+        );
+      })}
     </Menu.SubMenu>
   );
 };
@@ -262,81 +259,83 @@ const TaskNav = ({ user, messageApi, setCurrentTitle }) => {
       }}
       width="18vw"
     >
-      <SideMenu
-        headerMenu={defaultTaskNav1}
-        footerMenu={defaultTaskNav2}
-        listConfig={{
-          items: lists,
-          count: totalLists,
-          setOpenDialog: setOpenListDialog,
-          handleMoreMenu: handleMoreMenu,
-          setListFormType: setListFormType,
-          setListData: setListData,
-        }}
-        tagConfig={{
-          items: tags,
-          count: totalTags,
-          setOpenDialog: setOpenTagDialog,
-          handleMoreMenu: handleMoreMenu,
-          setTagFormType: setTagFormType,
-          setTagData: setTagData,
-        }}
-        onClick={handleMenuClick}
-        setCurrentTitle={setCurrentTitle}
-      >
-        {renderMenuItems(defaultTaskNav1)}
-        <Menu.Divider />
-        {renderSubMenuItems({
-          items: lists,
-          itemCount: totalLists,
-          key: LISTS,
-          title: "Lists",
-          onAddClick: (e) => {
-            e.stopPropagation();
-            setListFormType(CREATE);
-            setOpenListDialog(true);
-          },
-          icon: <UnorderedListOutlined />,
-          onMoreClick: handleMoreMenu,
-          isLoading: isLoadingLists,
-        })}
-        {renderSubMenuItems({
-          items: tags,
-          itemCount: totalTags,
-          key: TAGS,
-          title: "Tags",
-          onAddClick: (e) => {
-            e.stopPropagation();
-            setTagFormType(CREATE);
-            setOpenTagDialog(true);
-          },
-          icon: <TagOutlined />,
-          onMoreClick: handleMoreMenu,
-          isLoading: isLoadingTags,
-        })}
-        <Menu.Divider />
-        {renderMenuItems(defaultTaskNav2)}
-      </SideMenu>
-      {openListDialog && (
-        <ListDialogForm
-          user={user}
-          messageApi={messageApi}
-          openDialog={openListDialog}
-          setOpenDialog={setOpenListDialog}
-          formType={listFormType}
-          formValues={listData}
-        />
-      )}
-      {openTagDialog && (
-        <TagDialogForm
-          user={user}
-          messageApi={messageApi}
-          openDialog={openTagDialog}
-          setOpenDialog={setOpenTagDialog}
-          formType={tagFormType}
-          formValues={tagData}
-        />
-      )}
+      <Spin spinning={isLoadingLists || isLoadingTags} delay={0}>
+        <SideMenu
+          headerMenu={defaultTaskNav1}
+          footerMenu={defaultTaskNav2}
+          listConfig={{
+            items: lists,
+            count: totalLists,
+            setOpenDialog: setOpenListDialog,
+            handleMoreMenu: handleMoreMenu,
+            setListFormType: setListFormType,
+            setListData: setListData,
+          }}
+          tagConfig={{
+            items: tags,
+            count: totalTags,
+            setOpenDialog: setOpenTagDialog,
+            handleMoreMenu: handleMoreMenu,
+            setTagFormType: setTagFormType,
+            setTagData: setTagData,
+          }}
+          onClick={handleMenuClick}
+          setCurrentTitle={setCurrentTitle}
+        >
+          {renderMenuItems(defaultTaskNav1)}
+          <Menu.Divider />
+          {renderSubMenuItems({
+            items: lists,
+            itemCount: totalLists,
+            key: LISTS,
+            title: "Lists",
+            onAddClick: (e) => {
+              e.stopPropagation();
+              setListFormType(CREATE);
+              setOpenListDialog(true);
+            },
+            icon: <UnorderedListOutlined />,
+            onMoreClick: handleMoreMenu,
+            isLoading: isLoadingLists,
+          })}
+          {renderSubMenuItems({
+            items: tags,
+            itemCount: totalTags,
+            key: TAGS,
+            title: "Tags",
+            onAddClick: (e) => {
+              e.stopPropagation();
+              setTagFormType(CREATE);
+              setOpenTagDialog(true);
+            },
+            icon: <TagOutlined />,
+            onMoreClick: handleMoreMenu,
+            isLoading: isLoadingTags,
+          })}
+          <Menu.Divider />
+          {renderMenuItems(defaultTaskNav2)}
+        </SideMenu>
+        {openListDialog && (
+          <ListDialogForm
+            user={user}
+            messageApi={messageApi}
+            openDialog={openListDialog}
+            setOpenDialog={setOpenListDialog}
+            formType={listFormType}
+            formValues={listData}
+          />
+        )}
+        {openTagDialog && (
+          <TagDialogForm
+            user={user}
+            messageApi={messageApi}
+            openDialog={openTagDialog}
+            setOpenDialog={setOpenTagDialog}
+            formType={tagFormType}
+            formValues={tagData}
+          />
+        )}
+      </Spin>
     </Layout.Sider>
   );
 };

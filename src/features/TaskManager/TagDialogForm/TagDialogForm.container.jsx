@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import Modal from "../../../components/Modal";
 import TagDialogForm from "./TagDialogForm";
 import { SUCCESS } from "../../../constants/app.constants";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   addTagAction,
   editTagAction,
@@ -11,6 +11,7 @@ import { DEFAULT_TAG_COLOR } from "../../../constants/color.constants";
 import { CREATE, EDIT } from "../../../constants/formType.constants";
 import { Form } from "antd";
 import dayjs from "../../../utils/dateTime.uitls";
+import { tagsSelector } from "../state/userTags/userTags.reducer";
 
 const TagDialog = ({
   user,
@@ -62,9 +63,9 @@ const TagDialog = ({
       createdTime: dayjs.utc().format(),
       modifiedTime: dayjs.utc().format(),
     };
-    setOpenDialog(false);
     dispatch(addTagAction(user.uid, newTag)).then((response) => {
       if (response.success === SUCCESS) {
+        setOpenDialog(false);
         createTagSuccess();
       } else {
         createTagFailed();
@@ -80,10 +81,10 @@ const TagDialog = ({
       createdTime: formValues.createdTime,
       modifiedTime: dayjs.utc().format(),
     };
-    setOpenDialog(false);
     dispatch(editTagAction(user.uid, modifiedTag, formValues.id)).then(
       (response) => {
         if (response.success === SUCCESS) {
+          setOpenDialog(false);
           editTagSuccess();
         } else {
           editTagFailed();
@@ -128,6 +129,8 @@ const TagDialog = ({
 
   const [form] = Form.useForm();
 
+  const { isLoadingTags } = useSelector(tagsSelector);
+
   return (
     openDialog && (
       <Modal
@@ -139,6 +142,7 @@ const TagDialog = ({
         }}
         okText={okText}
         form={form}
+        loading={isLoadingTags}
       >
         <TagDialogForm
           form={form}
