@@ -1,5 +1,6 @@
 import React from "react";
 import { Modal as ModalAnt, Spin } from "antd";
+import Loading from "../Loading";
 
 const Modal = ({
   open,
@@ -23,7 +24,6 @@ const Modal = ({
         form
           .validateFields()
           .then((values) => {
-            form.resetFields();
             onOk(values);
           })
           .catch((info) => {
@@ -34,7 +34,9 @@ const Modal = ({
       maskClosable={false}
       {...props}
     >
-      <Spin spinning={loading}>{children}</Spin>
+      <Spin spinning={loading} indicator={Loading(50)}>
+        {children}
+      </Spin>
     </ModalAnt>
   );
 };

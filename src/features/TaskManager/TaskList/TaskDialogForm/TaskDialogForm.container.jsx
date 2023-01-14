@@ -15,6 +15,7 @@ import { useParams } from "react-router-dom";
 import { tagsSelector } from "../../state/userTags/userTags.reducer";
 import dayjs from "../../../../utils/dateTime.uitls";
 import { TIME_ZONE } from "../../../../constants/dateTime.constants";
+import { tasksSelector } from "../../state/userTasks/userTasks.reducer";
 
 const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
   const { sectionId, documentId } = useParams();
@@ -38,18 +39,42 @@ const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
   };
 
   const handleAddTask = (e) => {
+    const createdTime = dayjs.utc().format();
     const newTask = {
-      name: e.name.replace(/\s/g, "").toLowerCase(),
-      label: e.name,
-      color: e.color?.hex,
-      createdTime: dayjs.utc().format(),
-      modifiedTime: dayjs.utc().format(),
-      hidden: e.hidden,
+      name: e.name,
+      description: e.description || null,
+      listId: e.list,
+      priority: e.priority,
+      tagIds: e.tags || [],
+      taskDate: (e.date && e.date.startOf("day").format()) || null,
+      isAllDay: e.duration?.length > 0 ? false : true,
+      startTime: (e.duration && e.duration[0].format("HH:mm:ss")) || null,
+      endTime: (e.duration && e.duration[1].format("HH:mm:ss")) || null,
+      isRepeating: e.repeat ? true : false,
+      repeatFrequency: e.repeat || null,
+      endBy: e.endBy || null,
+      endByDate: (e.endByDate && e.endByDate.endOf("day").format()) || null,
+      endByRepeatCount: e.endByRepeatCount || null,
+      isMultiDay: e.dateRange ? true : false,
+      startMultiDate:
+        (e.dateRange && e.dateRange[0].startOf("day").format()) || null,
+      endMultiDate:
+        (e.dateRange && e.dateRange[1].endOf("day").format()) || null,
+      isCompleted: false,
+      isCompletedMap: {},
+      isWontDo: false,
+      isDeleted: false,
+      completedTime: null,
+      progress: 0,
+      parentTaskId: null,
+      childTaskIds: [],
+      createdTime: createdTime,
+      modifiedTime: createdTime,
     };
-    setOpenDialog(false);
     dispatch(addTaskAction(user.uid, newTask)).then((response) => {
       if (response.success === SUCCESS) {
         createTaskSuccess();
+        setOpenDialog(false);
       } else {
         createTaskFailed();
       }
@@ -88,6 +113,7 @@ const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
 
   const [form] = Form.useForm();
 
+  const { isLoadingTasks } = useSelector(tasksSelector);
   return (
     openDialog && (
       <Modal
@@ -102,6 +128,7 @@ const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
         centered={true}
         width="50vw"
         destroyOnClose={true}
+        loading={isLoadingTasks}
       >
         <TaskDialogForm
           layout="vertical"

@@ -28,6 +28,7 @@ import {
   MoreOutlined,
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
+import Loading from "../../../components/Loading";
 
 const renderColorDot = (color) => {
   return (
@@ -259,7 +260,7 @@ const TaskNav = ({ user, messageApi, setCurrentTitle }) => {
       }}
       width="18vw"
     >
-      <Spin spinning={isLoadingLists || isLoadingTags} delay={0}>
+      <Spin spinning={isLoadingLists || isLoadingTags} indicator={Loading(50)}>
         <SideMenu
           headerMenu={defaultTaskNav1}
           footerMenu={defaultTaskNav2}

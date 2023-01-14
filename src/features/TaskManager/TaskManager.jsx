@@ -1,4 +1,4 @@
-import { Layout, Typography, theme, message } from "antd";
+import { Layout, Typography, theme, message, Spin } from "antd";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TaskNav from "./TaskNav";
@@ -6,6 +6,9 @@ import { fetchListsAction } from "./state/userLists/userLists.actions";
 import { fetchTagsAction } from "./state/userTags/userTags.actions";
 import TaskList from "./TaskList";
 import { userSelector } from "../AppLayout/state/userSettings/userSettings.reducer";
+import { fetchTasksAction } from "./state/userTasks/userTasks.actions";
+import { tasksSelector } from "./state/userTasks/userTasks.reducer";
+import Loading from "../../components/Loading";
 
 const TaskManager = ({ user, title, setCurrentTitle }) => {
   const {
@@ -18,11 +21,12 @@ const TaskManager = ({ user, title, setCurrentTitle }) => {
     if (user.uid !== userSetting.id) {
       dispatch(fetchListsAction(user.uid));
       dispatch(fetchTagsAction(user.uid));
+      dispatch(fetchTasksAction(user.uid));
     }
   }, [userSetting, dispatch, user.uid]);
 
   const [messageApi, contextHolder] = message.useMessage();
-
+  const { isLoadingTasks } = useSelector(tasksSelector);
   return (
     <Layout>
       <TaskNav
@@ -38,14 +42,16 @@ const TaskManager = ({ user, title, setCurrentTitle }) => {
           background: colorBgContainer,
         }}
       >
-        <Typography.Text
-          style={{
-            fontWeight: "bold",
-            fontSize: "24px",
-          }}
-        >
-          {"Task details"}
-        </Typography.Text>
+        <Spin spinning={isLoadingTasks} indicator={Loading(50)}>
+          <Typography.Text
+            style={{
+              fontWeight: "bold",
+              fontSize: "24px",
+            }}
+          >
+            {"Task details"}
+          </Typography.Text>
+        </Spin>
       </Layout.Content>
       {contextHolder}
     </Layout>

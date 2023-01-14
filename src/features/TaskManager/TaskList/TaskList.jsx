@@ -1,6 +1,9 @@
-import { Button, Layout, message, theme, Typography } from "antd";
+import { Button, Layout, message, Spin, theme, Typography } from "antd";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import Loading from "../../../components/Loading";
 import { CREATE } from "../../../constants/formType.constants";
+import { tasksSelector } from "../state/userTasks/userTasks.reducer";
 import TaskDialogForm from "./TaskDialogForm";
 
 const TaskList = ({ user, title }) => {
@@ -15,6 +18,7 @@ const TaskList = ({ user, title }) => {
     setOpenAddTaskDialog(true);
   };
 
+  const { isLoadingTasks } = useSelector(tasksSelector);
   return (
     <Layout.Content
       style={{
@@ -23,35 +27,37 @@ const TaskList = ({ user, title }) => {
         background: colorBgContainer,
       }}
     >
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <Typography.Text
+      <Spin spinning={isLoadingTasks} indicator={Loading(50)}>
+        <div
           style={{
-            fontWeight: "bold",
-            fontSize: "24px",
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}
         >
-          {title}
-        </Typography.Text>
-        <Button type="primary" onClick={handleAddTask}>
-          Add Task
-        </Button>
-        {openAddTaskDialog && (
-          <TaskDialogForm
-            user={user}
-            messageApi={messageApi}
-            openDialog={openAddTaskDialog}
-            setOpenDialog={setOpenAddTaskDialog}
-            formType={CREATE}
-          />
-        )}
-      </div>
+          <Typography.Text
+            style={{
+              fontWeight: "bold",
+              fontSize: "24px",
+            }}
+          >
+            {title}
+          </Typography.Text>
+          <Button type="primary" onClick={handleAddTask}>
+            Add Task
+          </Button>
+          {openAddTaskDialog && (
+            <TaskDialogForm
+              user={user}
+              messageApi={messageApi}
+              openDialog={openAddTaskDialog}
+              setOpenDialog={setOpenAddTaskDialog}
+              formType={CREATE}
+            />
+          )}
+        </div>
+      </Spin>
     </Layout.Content>
   );
 };
