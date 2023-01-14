@@ -38,8 +38,8 @@ const renderTags = ({ item, tags }) => {
         showZero={false}
       >
         <Tag color={tagColor} closable={false}>
-          {tagDetails.label.length > 8
-            ? `${tagDetails.label.slice(0, 1)}...`
+          {tagDetails.label.length > 5
+            ? `${tagDetails.label.slice(0, 3)}...`
             : tagDetails.label}
         </Tag>
       </Badge>
@@ -48,7 +48,7 @@ const renderTags = ({ item, tags }) => {
 };
 
 const TaskItem = () => {
-  const date = dayjs.utc().format("DD-MM-YY");
+  const date = dayjs.utc().format("DD MMM");
   return (
     <div
       style={{
@@ -69,7 +69,7 @@ const TaskItem = () => {
           item: { tagIds: ["1/#F1AA68", "2/#68F1A6"] },
           tags: [
             { id: "1", label: "Tag Name" },
-            { id: "2", label: "Tag Name" },
+            { id: "2", label: "Tag" },
           ],
         })}
         <NodeExpandOutlined />
