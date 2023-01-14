@@ -4,7 +4,6 @@ import {
   Checkbox,
   Layout,
   List,
-  Menu,
   message,
   Spin,
   Tag,
@@ -33,6 +32,7 @@ import {
 } from "@ant-design/icons";
 import { listsSelector } from "../state/userLists/userLists.reducer";
 import { tagsSelector } from "../state/userTags/userTags.reducer";
+import Container from "./Container";
 
 const StyledCheckBox = styled(Checkbox)`
   .ant-checkbox-inner,
@@ -113,7 +113,7 @@ const renderListItem = ({ item, lists, tags }) => {
   );
 };
 
-const TaskList = ({ user, title }) => {
+const TaskListContainer = ({ user, title }) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -170,15 +170,16 @@ const TaskList = ({ user, title }) => {
         <div
           style={{ overflowY: "scroll", height: "90vh", padding: "1rem 0rem" }}
         >
-          <List
+          {/* <List
             itemLayout="horizontal"
             dataSource={tasks}
             renderItem={(item) => renderListItem({ item, lists, tags })}
-          />
+          /> */}
+          <Container />
         </div>
       </Spin>
     </Layout.Content>
   );
 };
 
-export default TaskList;
+export default TaskListContainer;

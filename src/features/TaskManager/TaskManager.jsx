@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import TaskNav from "./TaskNav";
 import { fetchListsAction } from "./state/userLists/userLists.actions";
 import { fetchTagsAction } from "./state/userTags/userTags.actions";
-import TaskList from "./TaskList";
+import TaskListContainer from "./TaskList";
 import { userSelector } from "../AppLayout/state/userSettings/userSettings.reducer";
 import { fetchTasksAction } from "./state/userTasks/userTasks.actions";
 import { tasksSelector } from "./state/userTasks/userTasks.reducer";
@@ -35,7 +35,7 @@ const TaskManager = ({ user, title, setCurrentTitle }) => {
         messageApi={messageApi}
         setCurrentTitle={setCurrentTitle}
       />
-      <TaskList user={user} title={title} />
+      <TaskListContainer user={user} title={title} />
       <Layout.Content
         style={{
           marginLeft: "0.1rem",
