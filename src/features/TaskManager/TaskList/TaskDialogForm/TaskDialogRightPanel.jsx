@@ -32,10 +32,9 @@ import { INBOX } from "../../../../constants/app.constants";
 import {
   DATE_FORMAT,
   TIME_FORMAT,
+  TIME_ZONE,
 } from "../../../../constants/dateTime.constants";
-import dayjs from "dayjs";
-const utc = require("dayjs/plugin/utc");
-dayjs.extend(utc);
+import dayjs from "../../../../utils/dateTime.uitls";
 
 const tagRender = (props) => {
   const { label, value, closable, onClose } = props;
@@ -59,9 +58,11 @@ const tagRender = (props) => {
   );
 };
 
-const TaskDialogRightPanel = ({ height }) => {
+const TaskDialogRightPanel = ({ form, height }) => {
   const { lists } = useSelector(listsSelector);
   const { tags } = useSelector(tagsSelector);
+
+  console.log(form);
 
   const listOptions = useMemo(() => {
     return lists.map((each) => {
@@ -100,14 +101,19 @@ const TaskDialogRightPanel = ({ height }) => {
   };
 
   const [isMultiDay, setIsMultiDay] = useState(false);
+  const [isScheduled, setIsScheduled] = useState(false);
   const [isRepeating, setIsRepeating] = useState(false);
   const [showEndByDate, setShowEndByDate] = useState(false);
   const [showEndByRepeatCount, setshowEndByRepeatCount] = useState(false);
-
-  const [startDate, setStartDate] = useState();
+  const [startDate, setStartDate] = useState(form.getFieldValue("date"));
 
   const handleStartDateChange = (e) => {
     setStartDate(e);
+    if (e) {
+      setIsScheduled(true);
+    } else {
+      setIsScheduled(false);
+    }
   };
 
   const handleIsMultiDaySwitch = (e) => {
@@ -139,13 +145,14 @@ const TaskDialogRightPanel = ({ height }) => {
   };
 
   const disabledStartDate = (current) => {
-    // const currentDate = dayjs.utc(current);
-    return current.isBefore(dayjs.utc().subtract(1, "day"));
+    const today = dayjs.utc().tz(TIME_ZONE).startOf("day");
+    return current.startOf("day").isBefore(today);
   };
 
   const disabledEndDate = (current) => {
-    // const currentDate = dayjs.utc(current);
-    return current.isBefore(startDate);
+    return (
+      startDate && current.startOf("day").isBefore(startDate.startOf("day"))
+    );
   };
 
   return (
@@ -278,7 +285,7 @@ const TaskDialogRightPanel = ({ height }) => {
             }}
           />
         </Form.Item>
-        {!isMultiDay && (
+        {!isMultiDay && isScheduled && (
           <Form.Item name="repeat" label="Repeat">
             <Select
               allowClear
@@ -300,7 +307,7 @@ const TaskDialogRightPanel = ({ height }) => {
             />
           </Form.Item>
         )}
-        {isRepeating && (
+        {isScheduled && isRepeating && (
           <Form.Item name="endBy" label="End by">
             <Select
               options={[
@@ -322,7 +329,7 @@ const TaskDialogRightPanel = ({ height }) => {
           </Form.Item>
         )}
 
-        {isRepeating && showEndByDate && (
+        {isScheduled && isRepeating && showEndByDate && (
           <Form.Item
             name="endByDate"
             label="End Date"
@@ -343,7 +350,7 @@ const TaskDialogRightPanel = ({ height }) => {
             />
           </Form.Item>
         )}
-        {isRepeating && showEndByRepeatCount && (
+        {isScheduled && isRepeating && showEndByRepeatCount && (
           <Form.Item
             name="endByRepeatCount"
             label="Repeat Count"

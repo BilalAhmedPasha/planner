@@ -13,11 +13,8 @@ import { Form } from "antd";
 import { NONE } from "../../../../constants/priority.constants";
 import { useParams } from "react-router-dom";
 import { tagsSelector } from "../../state/userTags/userTags.reducer";
-import dayjs from "dayjs";
-const utc = require("dayjs/plugin/utc");
-const timezone = require("dayjs/plugin/timezone");
-dayjs.extend(utc);
-dayjs.extend(timezone);
+import dayjs from "../../../../utils/dateTime.uitls";
+import { TIME_ZONE } from "../../../../constants/dateTime.constants";
 
 const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
   const { sectionId, documentId } = useParams();
@@ -72,9 +69,11 @@ const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
 
   const TASK_DATE = useMemo(() => {
     if (sectionId === "today") {
-      return dayjs.utc();
+      const today = dayjs.utc().tz(TIME_ZONE);
+      return today;
     } else if (sectionId === "tomorrow") {
-      return dayjs.utc().add(1, "day");
+      const tomorrow = dayjs.utc().tz(TIME_ZONE).add(1, "day");
+      return tomorrow;
     }
   }, [sectionId]);
 
