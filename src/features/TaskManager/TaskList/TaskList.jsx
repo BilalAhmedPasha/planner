@@ -2,6 +2,7 @@ import { Button, Layout, message, Spin, theme, Typography } from "antd";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import Loading from "../../../components/Loading";
+import { LOADER_SIZE } from "../../../constants/app.constants";
 import { CREATE } from "../../../constants/formType.constants";
 import { tasksSelector } from "../state/userTasks/userTasks.reducer";
 import TaskDialogForm from "./TaskDialogForm";
@@ -27,7 +28,7 @@ const TaskList = ({ user, title }) => {
         background: colorBgContainer,
       }}
     >
-      <Spin spinning={isLoadingTasks} indicator={Loading(50)}>
+      <Spin spinning={isLoadingTasks} indicator={Loading(LOADER_SIZE)}>
         <div
           style={{
             display: "flex",

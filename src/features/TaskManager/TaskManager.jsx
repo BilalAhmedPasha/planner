@@ -9,6 +9,7 @@ import { userSelector } from "../AppLayout/state/userSettings/userSettings.reduc
 import { fetchTasksAction } from "./state/userTasks/userTasks.actions";
 import { tasksSelector } from "./state/userTasks/userTasks.reducer";
 import Loading from "../../components/Loading";
+import { LOADER_SIZE } from "../../constants/app.constants";
 
 const TaskManager = ({ user, title, setCurrentTitle }) => {
   const {
@@ -42,7 +43,7 @@ const TaskManager = ({ user, title, setCurrentTitle }) => {
           background: colorBgContainer,
         }}
       >
-        <Spin spinning={isLoadingTasks} indicator={Loading(50)}>
+        <Spin spinning={isLoadingTasks} indicator={Loading(LOADER_SIZE)}>
           <Typography.Text
             style={{
               fontWeight: "bold",

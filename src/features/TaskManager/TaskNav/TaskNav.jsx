@@ -11,7 +11,7 @@ import {
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SideMenu from "../../../components/SideMenu";
-import { DELETE, LISTS, SUCCESS, TAGS } from "../../../constants/app.constants";
+import { DELETE, LISTS, LOADER_SIZE, SUCCESS, TAGS } from "../../../constants/app.constants";
 import { CREATE, EDIT } from "../../../constants/formType.constants";
 import { defaultTaskNav1, defaultTaskNav2 } from "./defaultTaskNav.config";
 import ListDialogForm from "../ListDialogForm";
@@ -260,7 +260,10 @@ const TaskNav = ({ user, messageApi, setCurrentTitle }) => {
       }}
       width="18vw"
     >
-      <Spin spinning={isLoadingLists || isLoadingTags} indicator={Loading(50)}>
+      <Spin
+        spinning={isLoadingLists || isLoadingTags}
+        indicator={Loading(LOADER_SIZE)}
+      >
         <SideMenu
           headerMenu={defaultTaskNav1}
           footerMenu={defaultTaskNav2}
