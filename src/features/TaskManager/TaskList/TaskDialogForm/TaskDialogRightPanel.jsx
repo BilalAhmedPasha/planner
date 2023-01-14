@@ -62,8 +62,6 @@ const TaskDialogRightPanel = ({ form, height }) => {
   const { lists } = useSelector(listsSelector);
   const { tags } = useSelector(tagsSelector);
 
-  console.log(form);
-
   const listOptions = useMemo(() => {
     return lists.map((each) => {
       return {
@@ -118,8 +116,13 @@ const TaskDialogRightPanel = ({ form, height }) => {
 
   const handleIsMultiDaySwitch = (e) => {
     setIsMultiDay(e);
+    setIsRepeating(false);
+    setIsScheduled(false);
     if (e === true) {
-      setIsRepeating(false);
+      form.setFieldValue("dateRange", null);
+    } else {
+      form.setFieldValue("date", null);
+      form.setFieldValue("repeat", null);
     }
   };
 
@@ -153,6 +156,14 @@ const TaskDialogRightPanel = ({ form, height }) => {
     return (
       startDate && current.startOf("day").isBefore(startDate.startOf("day"))
     );
+  };
+
+  const handleDateRangeChange = (e) => {
+    if (e) {
+      setIsScheduled(true);
+    } else {
+      setIsScheduled(false);
+    }
   };
 
   return (
@@ -268,7 +279,21 @@ const TaskDialogRightPanel = ({ form, height }) => {
             ]}
           >
             <DatePicker.RangePicker
+              disabledDate={disabledStartDate}
               format={DATE_FORMAT}
+              style={{
+                cursor: "pointer",
+                width: "100%",
+              }}
+              onChange={handleDateRangeChange}
+            />
+          </Form.Item>
+        )}
+        {isScheduled && (
+          <Form.Item name="duration">
+            <TimePicker.RangePicker
+              format={TIME_FORMAT}
+              minuteStep={5}
               style={{
                 cursor: "pointer",
                 width: "100%",
@@ -276,15 +301,6 @@ const TaskDialogRightPanel = ({ form, height }) => {
             />
           </Form.Item>
         )}
-        <Form.Item name="duration">
-          <TimePicker.RangePicker
-            format={TIME_FORMAT}
-            style={{
-              cursor: "pointer",
-              width: "100%",
-            }}
-          />
-        </Form.Item>
         {!isMultiDay && isScheduled && (
           <Form.Item name="repeat" label="Repeat">
             <Select

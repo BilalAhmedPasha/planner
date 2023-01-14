@@ -30,6 +30,7 @@ const Modal = ({
           });
       }}
       onCancel={onCancel}
+      maskClosable={false}
       {...props}
     >
       {children}
