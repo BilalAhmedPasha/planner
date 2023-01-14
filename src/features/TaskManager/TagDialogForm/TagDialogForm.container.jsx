@@ -10,9 +10,7 @@ import {
 import { DEFAULT_TAG_COLOR } from "../../../constants/color.constants";
 import { CREATE, EDIT } from "../../../constants/formType.constants";
 import { Form } from "antd";
-import dayjs from "dayjs";
-const utc = require("dayjs/plugin/utc");
-dayjs.extend(utc);
+import dayjs from "../../../utils/dateTime.uitls";
 
 const TagDialog = ({
   user,

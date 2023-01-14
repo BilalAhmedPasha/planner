@@ -10,9 +10,7 @@ import {
   editListAction,
 } from "../state/userLists/userLists.actions";
 import { Form } from "antd";
-import dayjs from "dayjs";
-const utc = require("dayjs/plugin/utc");
-dayjs.extend(utc);
+import dayjs from "../../../utils/dateTime.uitls";
 
 const ListDialog = ({
   user,
