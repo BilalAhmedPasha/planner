@@ -1,10 +1,13 @@
 import {
+  Badge,
   Button,
   Checkbox,
   Layout,
   List,
+  Menu,
   message,
   Spin,
+  Tag,
   theme,
   Typography,
 } from "antd";
@@ -12,105 +15,104 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import Loading from "../../../components/Loading";
-import { LOADER_SIZE } from "../../../constants/app.constants";
+import { INBOX, LOADER_SIZE } from "../../../constants/app.constants";
+import {
+  HIGH_COLOR,
+  LOW_COLOR,
+  MEDIUM_COLOR,
+  NONE_COLOR,
+} from "../../../constants/color.constants";
 import { CREATE } from "../../../constants/formType.constants";
+import { HIGH, LOW, MEDIUM } from "../../../constants/priority.constants";
 import { tasksSelector } from "../state/userTasks/userTasks.reducer";
 import TaskDialogForm from "./TaskDialogForm";
+import {
+  FlagFilled,
+  SyncOutlined,
+  NodeExpandOutlined,
+} from "@ant-design/icons";
+import { listsSelector } from "../state/userLists/userLists.reducer";
+import { tagsSelector } from "../state/userTags/userTags.reducer";
 
 const StyledCheckBox = styled(Checkbox)`
   .ant-checkbox-inner,
   .ant-checkbox-input {
     transform: scale(1.25);
   }
-  .ant-checkbox .ant-checkbox-inner {
-    border-color: red;
-  }
-
-  .ant-checkbox-wrapper:hover .ant-checkbox-inner,
-  .ant-checkbox:hover .ant-checkbox-inner,
-  .ant-checkbox-input:focus + .ant-checkbox-inner {
-    border-color: red;
-  }
-
-  .ant-checkbox-checked .ant-checkbox-inner {
-    background-color: red;
-    border-color: red;
-  }
-  
-
-  .ant-checkbox-checked:hover .ant-checkbox-inner:hover,
-  .ant-checkbox-checked-input:hover + .ant-checkbox-inner {
-    border-color: red;
-    background-color: red;
-  }
-
-  .ant-checkbox-checked .ant-checkbox-inner,
-  .ant-checkbox-indeterminate .ant-checkbox-inner {
-    background-color: red;
-    border-color: red;
-  }
 `;
 
-const data = [
-  {
-    title: "Ant Design Title 1",
-  },
-  {
-    title: "Ant Design Title 2",
-  },
-  {
-    title: "Ant Design Title 3",
-  },
-  {
-    title: "Ant Design Title 4",
-  },
-  {
-    title: "Ant Design Title 1",
-  },
-  {
-    title: "Ant Design Title 2",
-  },
-  {
-    title: "Ant Design Title 3",
-  },
-  {
-    title: "Ant Design Title 4",
-  },
-  {
-    title: "Ant Design Title 1",
-  },
-  {
-    title: "Ant Design Title 2",
-  },
-  {
-    title: "Ant Design Title 3",
-  },
-  {
-    title: "Ant Design Title 4",
-  },
-];
+const renderTags = ({ item, tags }) => {
+  if (item.tagIds.length > 0) {
+    const [tagId, tagColor] = item.tagIds[0].split("/");
+    const tagDetails = tags.find((each) => each.id === tagId);
+    return (
+      <Badge
+        size="small"
+        count={item.tagIds.length - 1}
+        overflowCount={3}
+        color="#AB98B8"
+        showZero={false}
+      >
+        <Tag color={tagColor} closable={false}>
+          {tagDetails.label.length > 8
+            ? `${tagDetails.label.slice(0, 1)}...`
+            : tagDetails.label}
+        </Tag>
+      </Badge>
+    );
+  }
+};
 
-const renderListItem = (item) => {
+const renderListName = ({ item, lists }) => {
+  const itemInList = lists.find((each) => each.id === item.listId);
+  return (
+    <Typography.Text style={{ textTransform: "capitalize" }}>
+      {itemInList?.label || INBOX}
+    </Typography.Text>
+  );
+};
+
+const getListItemActions = ({ item, lists, tags }) => {
+  let priorityColor = NONE_COLOR;
+  if (item.priority === HIGH) {
+    priorityColor = HIGH_COLOR;
+  } else if (item.priority === MEDIUM) {
+    priorityColor = MEDIUM_COLOR;
+  } else if (item.priority === LOW) {
+    priorityColor = LOW_COLOR;
+  }
+  const responseArray = [];
+  responseArray.push(<FlagFilled style={{ color: priorityColor }} />);
+  responseArray.push(renderListName({ item, lists }));
+  if (item.tagIds.length > 0) {
+    responseArray.push(renderTags({ item, tags }));
+  }
+  if (item.childTaskIds.length > 0) {
+    responseArray.push(<NodeExpandOutlined />);
+  }
+  if (item.isRepeating) {
+    responseArray.push(<SyncOutlined />);
+  }
+  return [...responseArray, <Typography.Text>Actions</Typography.Text>];
+};
+
+const renderListItem = ({ item, lists, tags }) => {
   return (
     <List.Item
       style={{
-        // border: "1px solid grey",
         margin: "0.5rem 0rem",
         padding: "0.5rem 1.5rem 0.5rem 1rem",
       }}
-      actions={[
-        <Typography.Text>Actions</Typography.Text>,
-        <Typography.Text>Actions</Typography.Text>,
-      ]}
-      extra={<Typography.Text>Extra</Typography.Text>}
+      actions={getListItemActions({ item, lists, tags })}
     >
       <List.Item.Meta
-        avatar={<StyledCheckBox value={item.isCompleted} />}
+        avatar={<StyledCheckBox />}
         title={<Typography.Text>{item.name}</Typography.Text>}
       />
     </List.Item>
   );
 };
+
 const TaskList = ({ user, title }) => {
   const {
     token: { colorBgContainer },
@@ -124,6 +126,9 @@ const TaskList = ({ user, title }) => {
   };
 
   const { tasks, isLoadingTasks } = useSelector(tasksSelector);
+  const { lists } = useSelector(listsSelector);
+  const { tags } = useSelector(tagsSelector);
+
   return (
     <Layout.Content
       style={{
@@ -167,8 +172,8 @@ const TaskList = ({ user, title }) => {
         >
           <List
             itemLayout="horizontal"
-            dataSource={[...tasks, ...tasks, ...tasks, ...tasks, ...tasks]}
-            renderItem={renderListItem}
+            dataSource={tasks}
+            renderItem={(item) => renderListItem({ item, lists, tags })}
           />
         </div>
       </Spin>
