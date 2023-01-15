@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { useSelector } from "react-redux";
 import { listsSelector } from "../state/userLists/userLists.reducer";
@@ -15,6 +15,8 @@ const style = {
   boxShadow: "0px 2px 8px 0px #E8E8E8",
 };
 const Card = ({
+  user,
+  messageApi,
   cardDetails,
   moveCard,
   findCard,
@@ -55,6 +57,7 @@ const Card = ({
     [findCard, moveCard]
   );
   const opacity = isDragging ? 0 : 1;
+  
   return (
     <div
       ref={(node) => drag(drop(node))}
@@ -65,6 +68,8 @@ const Card = ({
       }}
     >
       <TaskItem
+        user={user}
+        messageApi={messageApi}
         taskDetails={cardDetails}
         lists={lists}
         tags={tags}

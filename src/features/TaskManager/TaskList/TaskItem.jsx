@@ -1,4 +1,4 @@
-import { Badge, Button, Checkbox, Space, Tag, Typography } from "antd";
+import { Badge, Button, Checkbox, Modal, Space, Tag, Typography } from "antd";
 import styled from "styled-components";
 import {
   FlagFilled,
@@ -6,8 +6,7 @@ import {
   NodeExpandOutlined,
   DeleteOutlined,
   RightOutlined,
-  ArrowRightOutlined,
-  CaretRightOutlined,
+  ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import {
   HIGH_COLOR,
@@ -15,9 +14,11 @@ import {
   MEDIUM_COLOR,
   NONE_COLOR,
 } from "../../../constants/color.constants";
-import { INBOX } from "../../../constants/app.constants";
+import { INBOX, SUCCESS } from "../../../constants/app.constants";
 import dayjs from "../../../utils/dateTime.uitls";
 import { HIGH, LOW, MEDIUM } from "../../../constants/priority.constants";
+import { useDispatch } from "react-redux";
+import { deleteTaskAction } from "../state/userTasks/userTasks.actions";
 
 const StyledCheckBox = styled(Checkbox)`
   .ant-checkbox-inner,
@@ -101,7 +102,77 @@ const renderTaskDate = ({ item }) => {
   }
 };
 
-const TaskItem = ({ taskDetails, lists, tags, setSelectedCardId }) => {
+const TaskItem = ({
+  user,
+  messageApi,
+  taskDetails,
+  lists,
+  tags,
+  setSelectedCardId,
+}) => {
+  const { confirm } = Modal;
+
+  const showDeleteConfirm = ({
+    content,
+    handleDelete,
+    currentItem,
+    deleteAction,
+    successMessage,
+    failureMessage,
+  }) => {
+    confirm({
+      icon: <ExclamationCircleOutlined />,
+      title: "Delete",
+      content: content,
+      centered: true,
+      okText: "Delete",
+      okType: "danger",
+      cancelText: "Cancel",
+      onOk() {
+        handleDelete({
+          currentItem: currentItem,
+          deleteAction: deleteAction,
+          successMessage: successMessage,
+          failureMessage: failureMessage,
+        });
+      },
+      onCancel() {
+        Modal.destroyAll();
+      },
+    });
+  };
+
+  const dispatch = useDispatch();
+  const deleteSuccess = ({ messageText }) => {
+    messageApi.open({
+      type: "success",
+      content: messageText,
+      duration: 3,
+    });
+  };
+  const deleteFailed = ({ messageText }) => {
+    messageApi.open({
+      type: "error",
+      content: messageText,
+      duration: 3,
+    });
+  };
+
+  const handleDelete = ({
+    currentItem,
+    deleteAction,
+    successMessage,
+    failureMessage,
+  }) => {
+    dispatch(deleteAction(user.uid, currentItem)).then((response) => {
+      if (response.success === SUCCESS) {
+        deleteSuccess({ messageText: successMessage });
+      } else {
+        deleteFailed({ messageText: failureMessage });
+      }
+    });
+  };
+
   return (
     <div
       style={{
@@ -143,7 +214,21 @@ const TaskItem = ({ taskDetails, lists, tags, setSelectedCardId }) => {
           {renderRepeatIcon({ item: taskDetails })}
           {renderTaskDate({ item: taskDetails })}
         </Space>
-        <Button type="text" icon={<DeleteOutlined />} size="small" />
+        <Button
+          type="text"
+          icon={<DeleteOutlined />}
+          size="small"
+          onClick={(e) => {
+            showDeleteConfirm({
+              content: "Delete this task?",
+              handleDelete: handleDelete,
+              currentItem: taskDetails,
+              deleteAction: deleteTaskAction,
+              successMessage: "Task deleted",
+              failureMessage: "Failed to delete taslk",
+            });
+          }}
+        />
         <Button
           type="text"
           icon={<RightOutlined />}

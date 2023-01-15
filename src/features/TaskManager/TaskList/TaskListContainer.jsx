@@ -63,7 +63,7 @@ const TaskListContainer = ({ user, title }) => {
         <div
           style={{ overflowY: "scroll", height: "90vh", padding: "1rem 0rem" }}
         >
-          <Container tasks={tasks} />
+          <Container user={user} tasks={tasks} />
         </div>
       </Spin>
     </Layout.Content>

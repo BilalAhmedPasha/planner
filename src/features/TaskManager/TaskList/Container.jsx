@@ -1,3 +1,4 @@
+import { message } from "antd";
 import update from "immutability-helper";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDrop } from "react-dnd";
@@ -10,7 +11,7 @@ const style = {
   padding: "0rem 1rem",
 };
 
-const Container = ({ tasks }) => {
+const Container = ({ user, tasks }) => {
   const [cards, setCards] = useState(tasks);
   useEffect(() => {
     setCards(tasks);
@@ -41,10 +42,14 @@ const Container = ({ tasks }) => {
   );
   const [, drop] = useDrop(() => ({ accept: ItemTypes.CARD }));
   const [selectedCardId, setSelectedCardId] = useState("");
+  const [messageApi, contextHolder] = message.useMessage();
+
   return (
     <div ref={drop} style={style}>
       {cards.map((card) => (
         <Card
+          user={user}
+          messageApi={messageApi}
           key={card.id}
           cardDetails={card}
           moveCard={moveCard}
@@ -53,6 +58,7 @@ const Container = ({ tasks }) => {
           setSelectedCardId={setSelectedCardId}
         />
       ))}
+      {contextHolder}
     </div>
   );
 };
