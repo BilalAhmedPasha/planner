@@ -1,5 +1,5 @@
 import update from "immutability-helper";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDrop } from "react-dnd";
 import Card from "./Card.jsx";
 const ItemTypes = {
@@ -9,66 +9,12 @@ const ItemTypes = {
 const style = {
   padding: "0rem 1rem",
 };
-const ITEMS = [
-  {
-    id: 1,
-    text: "Write a cool JS library",
-  },
-  {
-    id: 2,
-    text: "Make it generic enough",
-  },
-  {
-    id: 3,
-    text: "Write README",
-  },
-  {
-    id: 4,
-    text: "Create some examples",
-  },
-  {
-    id: 5,
-    text: "Spam in Twitter and IRC to promote it",
-  },
-  {
-    id: 6,
-    text: "???",
-  },
-  {
-    id: 7,
-    text: "PROFIT",
-  },
-  {
-    id: 8,
-    text: "Write a cool JS library",
-  },
-  {
-    id: 9,
-    text: "Make it generic enough",
-  },
-  {
-    id: 10,
-    text: "Write README",
-  },
-  {
-    id: 11,
-    text: "Create some examples",
-  },
-  {
-    id: 12,
-    text: "Spam in Twitter and IRC to promote it",
-  },
-  {
-    id: 13,
-    text: "???",
-  },
-  {
-    id: 14,
-    text: "PROFIT",
-  },
-];
-const Container = () => {
-  const [cards, setCards] = useState(ITEMS);
+
+const Container = ({ tasks }) => {
+  const [cards, setCards] = useState(tasks);
+  useEffect(() => {
+    setCards(tasks);
+  }, [tasks]);
   const findCard = useCallback(
     (id) => {
       const card = cards.filter((c) => `${c.id}` === id)[0];
@@ -99,8 +45,7 @@ const Container = () => {
       {cards.map((card) => (
         <Card
           key={card.id}
-          id={`${card.id}`}
-          text={card.text}
+          cardDetails={card}
           moveCard={moveCard}
           findCard={findCard}
         />
@@ -109,4 +54,4 @@ const Container = () => {
   );
 };
 
-export default React.memo(Container);
+export default Container;

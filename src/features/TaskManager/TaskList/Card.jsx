@@ -1,7 +1,8 @@
-import { Button, Checkbox, Typography } from "antd";
 import React from "react";
 import { useDrag, useDrop } from "react-dnd";
-import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { listsSelector } from "../state/userLists/userLists.reducer";
+import { tagsSelector } from "../state/userTags/userTags.reducer";
 import TaskItem from "./TaskItem";
 
 const ItemTypes = {
@@ -9,13 +10,16 @@ const ItemTypes = {
 };
 
 const style = {
-  border: "1px dashed gray",
   padding: "1rem 1rem",
   margin: "0.5rem 0rem",
   backgroundColor: "white",
-  // cursor: "move",
+  boxShadow: "0px 2px 8px 0px #E8E8E8",
+  cursor: "move",
 };
-const Card = ({ id, text, moveCard, findCard }) => {
+const Card = ({ key, cardDetails, moveCard, findCard }) => {
+  const { lists } = useSelector(listsSelector);
+  const { tags } = useSelector(tagsSelector);
+  const id = cardDetails.id;
   const originalIndex = findCard(id).index;
   const [{ isDragging }, drag] = useDrag(
     () => ({
@@ -47,17 +51,11 @@ const Card = ({ id, text, moveCard, findCard }) => {
     [findCard, moveCard]
   );
   const opacity = isDragging ? 0 : 1;
-  const StyledCheckBox = styled(Checkbox)`
-    .ant-checkbox-inner,
-    .ant-checkbox-input {
-      transform: scale(1.25);
-    }
-  `;
   return (
     <div ref={(node) => drag(drop(node))} style={{ ...style, opacity }}>
-      <TaskItem />
+      <TaskItem taskDetails={cardDetails} lists={lists} tags={tags} />
     </div>
   );
 };
 
-export default React.memo(Card);
+export default Card;

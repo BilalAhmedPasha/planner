@@ -5,9 +5,15 @@ import {
   SyncOutlined,
   NodeExpandOutlined,
 } from "@ant-design/icons";
-import { NONE_COLOR } from "../../../constants/color.constants";
+import {
+  HIGH_COLOR,
+  LOW_COLOR,
+  MEDIUM_COLOR,
+  NONE_COLOR,
+} from "../../../constants/color.constants";
 import { INBOX } from "../../../constants/app.constants";
 import dayjs from "../../../utils/dateTime.uitls";
+import { HIGH, LOW, MEDIUM } from "../../../constants/priority.constants";
 
 const StyledCheckBox = styled(Checkbox)`
   .ant-checkbox-inner,
@@ -15,6 +21,18 @@ const StyledCheckBox = styled(Checkbox)`
     transform: scale(1.25);
   }
 `;
+
+const renderPriorityFlag = ({ item }) => {
+  let priorityColor = NONE_COLOR;
+  if (item.priority === HIGH) {
+    priorityColor = HIGH_COLOR;
+  } else if (item.priority === MEDIUM) {
+    priorityColor = MEDIUM_COLOR;
+  } else if (item.priority === LOW) {
+    priorityColor = LOW_COLOR;
+  }
+  return <FlagFilled style={{ color: priorityColor }} />;
+};
 
 const renderListName = ({ item, lists }) => {
   const itemInList = lists?.find((each) => each.id === item?.listId);
@@ -47,8 +65,25 @@ const renderTags = ({ item, tags }) => {
   }
 };
 
-const TaskItem = () => {
+const renderChildNodeIcon = ({ item }) => {
+  if (item.childTaskIds.length > 0) {
+    return <NodeExpandOutlined />;
+  }
+};
+
+const renderRepeatIcon = ({ item }) => {
+  if (item.isRepeating) {
+    return <SyncOutlined />;
+  }
+};
+const renderTaskDate = ({ item }) => {
   const date = dayjs.utc().format("DD MMM");
+  if (item.isRepeating) {
+    return <Typography.Text>{date}</Typography.Text>;
+  }
+};
+
+const TaskItem = ({ taskDetails, lists, tags }) => {
   return (
     <div
       style={{
@@ -60,21 +95,18 @@ const TaskItem = () => {
     >
       <Space size="middle">
         <StyledCheckBox />
-        <Typography.Text>{"Task name"}</Typography.Text>
+        <Typography.Text>{taskDetails.name}</Typography.Text>
       </Space>
       <Space size="small">
-        <FlagFilled style={{ color: NONE_COLOR }} />
-        {renderListName({ item: {}, lists: [] })}
+        {renderPriorityFlag({ item: taskDetails })}
+        {renderListName({ item: taskDetails, lists: lists })}
         {renderTags({
-          item: { tagIds: ["1/#F1AA68", "2/#68F1A6"] },
-          tags: [
-            { id: "1", label: "Tag Name" },
-            { id: "2", label: "Tag" },
-          ],
+          item: taskDetails,
+          tags: tags,
         })}
-        <NodeExpandOutlined />
-        <SyncOutlined />
-        <Typography.Text>{date}</Typography.Text>
+        {renderChildNodeIcon({ item: taskDetails })}
+        {renderRepeatIcon({ item: taskDetails })}
+        {renderTaskDate({ item: taskDetails })}
       </Space>
     </div>
   );

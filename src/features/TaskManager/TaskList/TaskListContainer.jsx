@@ -93,7 +93,7 @@ const getListItemActions = ({ item, lists, tags }) => {
   if (item.isRepeating) {
     responseArray.push(<SyncOutlined />);
   }
-  return [...responseArray, <Typography.Text>Actions</Typography.Text>];
+  return [...responseArray];
 };
 
 const renderListItem = ({ item, lists, tags }) => {
@@ -155,7 +155,7 @@ const TaskListContainer = ({ user, title }) => {
             {title}
           </Typography.Text>
           <Button type="primary" onClick={handleAddTask}>
-            Add Task
+            {"Add Task"}
           </Button>
           {openAddTaskDialog && (
             <TaskDialogForm
@@ -170,12 +170,7 @@ const TaskListContainer = ({ user, title }) => {
         <div
           style={{ overflowY: "scroll", height: "90vh", padding: "1rem 0rem" }}
         >
-          {/* <List
-            itemLayout="horizontal"
-            dataSource={tasks}
-            renderItem={(item) => renderListItem({ item, lists, tags })}
-          /> */}
-          <Container />
+          <Container tasks={tasks} />
         </div>
       </Spin>
     </Layout.Content>
