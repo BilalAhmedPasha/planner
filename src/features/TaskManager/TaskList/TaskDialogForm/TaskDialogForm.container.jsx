@@ -12,7 +12,6 @@ import { addTaskAction } from "../../state/userTasks/userTasks.actions";
 import { Form } from "antd";
 import { NONE } from "../../../../constants/priority.constants";
 import { useParams } from "react-router-dom";
-import { tagsSelector } from "../../state/userTags/userTags.reducer";
 import dayjs from "../../../../utils/dateTime.uitls";
 import { TIME_ZONE } from "../../../../constants/dateTime.constants";
 import { tasksSelector } from "../../state/userTasks/userTasks.reducer";

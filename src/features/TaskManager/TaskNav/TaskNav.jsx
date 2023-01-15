@@ -144,6 +144,7 @@ const TaskNav = ({
   messageApi,
   currentSelectedTaskSection,
   setCurrentSelectedTaskSection,
+  setSelectedCardId,
   collapsed,
 }) => {
   const dispatch = useDispatch();
@@ -234,6 +235,7 @@ const TaskNav = ({
       e.domEvent.currentTarget.textContent !== currentSelectedTaskSection.label
     ) {
       setCurrentSelectedTaskSection(e.domEvent.currentTarget.textContent);
+      setSelectedCardId("");
     }
   };
 

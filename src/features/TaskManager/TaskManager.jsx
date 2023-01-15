@@ -41,6 +41,7 @@ const TaskManager = ({ user }) => {
         messageApi={messageApi}
         currentSelectedTaskSection={currentSelectedTaskSection}
         setCurrentSelectedTaskSection={setCurrentSelectedTaskSection}
+        setSelectedCardId={setSelectedCardId}
         collapsed={isMenuCollapsed}
       />
       <TaskListContainer
