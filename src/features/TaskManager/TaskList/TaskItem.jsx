@@ -37,7 +37,7 @@ const renderPriorityFlag = ({ item }) => {
 const renderListName = ({ item, lists }) => {
   const itemInList = lists?.find((each) => each.id === item?.listId);
   return (
-    <Typography.Text style={{ textTransform: "capitalize" }}>
+    <Typography.Text type="secondary" style={{ textTransform: "capitalize" }}>
       {itemInList?.label || INBOX}
     </Typography.Text>
   );
@@ -67,19 +67,30 @@ const renderTags = ({ item, tags }) => {
 
 const renderChildNodeIcon = ({ item }) => {
   if (item.childTaskIds.length > 0) {
-    return <NodeExpandOutlined />;
+    return <NodeExpandOutlined style={{ color: "grey" }} />;
   }
 };
 
 const renderRepeatIcon = ({ item }) => {
   if (item.isRepeating) {
-    return <SyncOutlined />;
+    return <SyncOutlined style={{ color: "grey" }} />;
   }
 };
 const renderTaskDate = ({ item }) => {
-  const date = dayjs.utc().format("DD MMM");
-  if (item.isRepeating) {
-    return <Typography.Text>{date}</Typography.Text>;
+  if (item.taskDate) {
+    return (
+      <Typography.Text type="secondary">
+        {dayjs(item.taskDate).format("DD MMM")}
+      </Typography.Text>
+    );
+  } else if (item.isMultiDay) {
+    return (
+      <Typography.Text type="secondary">
+        {`${dayjs(item.startMultiDate).format("DD MMM")}-${dayjs(
+          item.endMultiDate
+        ).format("DD MMM")}`}
+      </Typography.Text>
+    );
   }
 };
 
@@ -95,10 +106,10 @@ const TaskItem = ({ taskDetails, lists, tags }) => {
     >
       <Space size="middle">
         <StyledCheckBox />
+        {renderPriorityFlag({ item: taskDetails })}
         <Typography.Text>{taskDetails.name}</Typography.Text>
       </Space>
       <Space size="small">
-        {renderPriorityFlag({ item: taskDetails })}
         {renderListName({ item: taskDetails, lists: lists })}
         {renderTags({
           item: taskDetails,
