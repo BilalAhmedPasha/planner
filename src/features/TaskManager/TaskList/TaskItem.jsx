@@ -64,8 +64,8 @@ const renderTags = ({ item, tags }) => {
         offset={[0, 8]}
       >
         <Tag color={tagDetails.color} closable={false}>
-          {tagDetails.label.length > 5
-            ? `${tagDetails.label.slice(0, 3)}...`
+          {tagDetails.label.length > 8
+            ? `${tagDetails.label.slice(0, 5)}...`
             : tagDetails.label}
         </Tag>
       </Badge>
