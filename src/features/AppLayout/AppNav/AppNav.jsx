@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Avatar, Dropdown, Layout, Menu, Modal } from "antd";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import SideMenu from "../../../components/SideMenu";
 import { UserAuth } from "../../../context/AuthContext";
 import { defaultAppNav } from "./defaultAppNav.config";
@@ -81,6 +81,15 @@ const AppNav = ({ setCurrentTitle }) => {
     onClick: handleAvatarClick,
   };
 
+  const url = useLocation();
+  let selectedAppMenuKey = "/tasks/inbox";
+  const currentPathName = url.pathname.split("/");
+  if (currentPathName[1] === "calendar") {
+    selectedAppMenuKey = "/calendar";
+  } else if (currentPathName[1] === "habits") {
+    selectedAppMenuKey = "/habits";
+  }
+
   return (
     <Layout.Sider
       theme="light"
@@ -102,7 +111,10 @@ const AppNav = ({ setCurrentTitle }) => {
           style={{ margin: "0.5rem", cursor: "pointer" }}
         />
       </Dropdown>
-      <SideMenu onClick={handleMenuClick}>
+      <SideMenu
+        onClick={handleMenuClick}
+        selectedAppMenuKey={selectedAppMenuKey}
+      >
         {renderMenuItems(defaultAppNav)}
       </SideMenu>
     </Layout.Sider>
