@@ -92,8 +92,8 @@ const TaskListContainer = ({
         <div
           style={{
             overflowY: "scroll",
-            height: "91vh",
-            padding: "1rem 2rem",
+            height: "90vh",
+            padding: "0rem 1rem",
             marginTop: "0.5rem",
           }}
         >

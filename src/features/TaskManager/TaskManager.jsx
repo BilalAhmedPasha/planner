@@ -54,7 +54,7 @@ const TaskManager = ({ user }) => {
       <Layout.Content
         style={{
           marginLeft: "0.1rem",
-          padding: "1rem 3rem",
+          padding: "1rem 1rem",
           background: colorBgContainer,
         }}
       >
