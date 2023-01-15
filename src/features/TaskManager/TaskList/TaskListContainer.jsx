@@ -54,7 +54,7 @@ const TaskListContainer = ({
   const [openAddTaskDialog, setOpenAddTaskDialog] = useState(false);
 
   const handleAddTask = () => {
-    setOpenAddTaskDialog(true);
+    setOpenAddTaskDialog(true); 
   };
 
   const { tasks, isLoadingTasks } = useSelector(tasksSelector);

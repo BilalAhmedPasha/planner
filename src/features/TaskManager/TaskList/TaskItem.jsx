@@ -52,7 +52,7 @@ const renderListName = ({ item, lists }) => {
 
 const renderTags = ({ item, tags }) => {
   if (item.tagIds.length > 0) {
-    const [tagId, tagColor] = item.tagIds[0].split("/");
+    const tagId = item.tagIds[0];
     const tagDetails = tags.find((each) => each.id === tagId);
     return (
       <Badge
@@ -63,7 +63,7 @@ const renderTags = ({ item, tags }) => {
         showZero={false}
         offset={[0, 8]}
       >
-        <Tag color={tagColor} closable={false}>
+        <Tag color={tagDetails.color} closable={false}>
           {tagDetails.label.length > 5
             ? `${tagDetails.label.slice(0, 3)}...`
             : tagDetails.label}

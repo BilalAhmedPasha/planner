@@ -83,14 +83,12 @@ const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
 
   const TASK_LIST = sectionId === LISTS ? documentId : INBOX;
 
-  const { tags } = useSelector(tagsSelector);
   const TASK_TAGS = useMemo(() => {
     if (sectionId === TAGS) {
-      const currentTag = tags.find((each) => each.id === documentId);
-      return [`${documentId}/${currentTag.color}`];
+      return [documentId];
     }
     return [];
-  }, [documentId, sectionId, tags]);
+  }, [documentId, sectionId]);
 
   const TASK_DATE = useMemo(() => {
     if (sectionId === "today") {

@@ -36,28 +36,6 @@ import {
 } from "../../../../constants/dateTime.constants";
 import dayjs from "../../../../utils/dateTime.uitls";
 
-const tagRender = (props) => {
-  const { label, value, closable, onClose } = props;
-  const [id, color] = value.split("/");
-  const onPreventMouseDown = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-  };
-  return (
-    <Tag
-      color={color}
-      onMouseDown={onPreventMouseDown}
-      closable={closable}
-      onClose={onClose}
-      style={{
-        marginRight: 3,
-      }}
-    >
-      {label}
-    </Tag>
-  );
-};
-
 const TaskDialogRightPanel = ({ form, height }) => {
   const { lists } = useSelector(listsSelector);
   const { tags } = useSelector(tagsSelector);
@@ -76,10 +54,32 @@ const TaskDialogRightPanel = ({ form, height }) => {
     return tags.map((each) => {
       return {
         label: each.label,
-        value: `${each.id}/${each.color}`,
+        value: each.id,
       };
     });
   }, [tags]);
+
+  const tagRender = (props) => {
+    const { label, value, closable, onClose } = props;
+    const color = tags.find((each) => each.id === value).color;
+    const onPreventMouseDown = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+    };
+    return (
+      <Tag
+        color={color}
+        onMouseDown={onPreventMouseDown}
+        closable={closable}
+        onClose={onClose}
+        style={{
+          marginRight: 3,
+        }}
+      >
+        {label}
+      </Tag>
+    );
+  };
 
   const {
     token: { colorBgContainer },
