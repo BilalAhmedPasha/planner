@@ -26,7 +26,7 @@ import { deleteListAction } from "../state/userLists/userLists.actions";
 import { listsSelector } from "../state/userLists/userLists.reducer";
 import { deleteTagAction } from "../state/userTags/userTags.actions";
 import { tagsSelector } from "../state/userTags/userTags.reducer";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import {
   UnorderedListOutlined,
   TagOutlined,
@@ -168,6 +168,7 @@ const TaskNav = ({ user, messageApi, setCurrentSelectedTaskSection }) => {
   };
 
   const history = useHistory();
+  const { documentId } = useParams();
   const handleDelete = ({
     currentItem,
     deleteAction,
@@ -177,7 +178,9 @@ const TaskNav = ({ user, messageApi, setCurrentSelectedTaskSection }) => {
     dispatch(deleteAction(user.uid, currentItem)).then((response) => {
       if (response.success === SUCCESS) {
         deleteSuccess({ messageText: successMessage });
-        history.push("/tasks/inbox");
+        if (documentId === currentItem.id) {
+          history.push("/tasks/inbox");
+        }
       } else {
         deleteFailed({ messageText: failureMessage });
       }
