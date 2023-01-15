@@ -1,9 +1,13 @@
-import { Badge, Checkbox, Space, Tag, Typography } from "antd";
+import { Badge, Button, Checkbox, Space, Tag, Typography } from "antd";
 import styled from "styled-components";
 import {
   FlagFilled,
   SyncOutlined,
   NodeExpandOutlined,
+  DeleteOutlined,
+  RightOutlined,
+  ArrowRightOutlined,
+  CaretRightOutlined,
 } from "@ant-design/icons";
 import {
   HIGH_COLOR,
@@ -31,7 +35,9 @@ const renderPriorityFlag = ({ item }) => {
   } else if (item.priority === LOW) {
     priorityColor = LOW_COLOR;
   }
-  return <FlagFilled style={{ color: priorityColor }} />;
+  return (
+    <FlagFilled style={{ color: priorityColor, padding: "0rem 0.75rem" }} />
+  );
 };
 
 const renderListName = ({ item, lists }) => {
@@ -54,6 +60,7 @@ const renderTags = ({ item, tags }) => {
         overflowCount={3}
         color="#AB98B8"
         showZero={false}
+        offset={[0, 2]}
       >
         <Tag color={tagColor} closable={false}>
           {tagDetails.label.length > 5
@@ -104,21 +111,41 @@ const TaskItem = ({ taskDetails, lists, tags }) => {
         justifyContent: "space-between",
       }}
     >
-      <Space size="middle">
-        <StyledCheckBox />
-        {renderPriorityFlag({ item: taskDetails })}
-        <Typography.Text>{taskDetails.name}</Typography.Text>
+      <StyledCheckBox />
+      {renderPriorityFlag({ item: taskDetails })}
+      <Space
+        size="middle"
+        style={{
+          flex: "1",
+          whiteSpace: "nowrap",
+          overflowX: "scroll",
+          textOverflow: "ellipsis",
+        }}
+      >
+        <Typography.Text>{`${taskDetails.name}`}</Typography.Text>
       </Space>
-      <Space size="small">
-        {renderListName({ item: taskDetails, lists: lists })}
-        {renderTags({
-          item: taskDetails,
-          tags: tags,
-        })}
-        {renderChildNodeIcon({ item: taskDetails })}
-        {renderRepeatIcon({ item: taskDetails })}
-        {renderTaskDate({ item: taskDetails })}
-      </Space>
+
+      <div
+        style={{
+          whiteSpace: "nowrap",
+          overflowX: "scroll",
+          textOverflow: "ellipsis",
+          paddingLeft: "0.25rem",
+        }}
+      >
+        <Space size="small" style={{ paddingRight: "0.25rem" }}>
+          {renderListName({ item: taskDetails, lists: lists })}
+          {renderTags({
+            item: taskDetails,
+            tags: tags,
+          })}
+          {renderChildNodeIcon({ item: taskDetails })}
+          {renderRepeatIcon({ item: taskDetails })}
+          {renderTaskDate({ item: taskDetails })}
+        </Space>
+        <Button type="text" icon={<DeleteOutlined />} />
+        <Button type="text" icon={<RightOutlined />} />
+      </div>
     </div>
   );
 };
