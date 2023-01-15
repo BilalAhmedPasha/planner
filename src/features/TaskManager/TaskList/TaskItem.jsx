@@ -60,7 +60,7 @@ const renderTags = ({ item, tags }) => {
         overflowCount={3}
         color="#AB98B8"
         showZero={false}
-        offset={[0, 2]}
+        offset={[0, 8]}
       >
         <Tag color={tagColor} closable={false}>
           {tagDetails.label.length > 5
@@ -101,7 +101,7 @@ const renderTaskDate = ({ item }) => {
   }
 };
 
-const TaskItem = ({ taskDetails, lists, tags }) => {
+const TaskItem = ({ taskDetails, lists, tags, setSelectedCardId }) => {
   return (
     <div
       style={{
@@ -143,8 +143,15 @@ const TaskItem = ({ taskDetails, lists, tags }) => {
           {renderRepeatIcon({ item: taskDetails })}
           {renderTaskDate({ item: taskDetails })}
         </Space>
-        <Button type="text" icon={<DeleteOutlined />} />
-        <Button type="text" icon={<RightOutlined />} />
+        <Button type="text" icon={<DeleteOutlined />} size="small" />
+        <Button
+          type="text"
+          icon={<RightOutlined />}
+          size="small"
+          onClick={(e) => {
+            setSelectedCardId(taskDetails.id);
+          }}
+        />
       </div>
     </div>
   );

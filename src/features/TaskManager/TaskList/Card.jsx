@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { useSelector } from "react-redux";
 import { listsSelector } from "../state/userLists/userLists.reducer";
@@ -12,11 +12,15 @@ const ItemTypes = {
 const style = {
   padding: "1rem 1rem",
   margin: "0.5rem 0rem",
-  backgroundColor: "white",
   boxShadow: "0px 2px 8px 0px #E8E8E8",
-  cursor: "move",
 };
-const Card = ({ key, cardDetails, moveCard, findCard }) => {
+const Card = ({
+  cardDetails,
+  moveCard,
+  findCard,
+  selectedCardId,
+  setSelectedCardId,
+}) => {
   const { lists } = useSelector(listsSelector);
   const { tags } = useSelector(tagsSelector);
   const id = cardDetails.id;
@@ -52,8 +56,21 @@ const Card = ({ key, cardDetails, moveCard, findCard }) => {
   );
   const opacity = isDragging ? 0 : 1;
   return (
-    <div ref={(node) => drag(drop(node))} style={{ ...style, opacity }}>
-      <TaskItem taskDetails={cardDetails} lists={lists} tags={tags} />
+    <div
+      ref={(node) => drag(drop(node))}
+      style={{
+        ...style,
+        opacity,
+        backgroundColor: selectedCardId === id ? "#e6f4ff" : "white",
+      }}
+    >
+      <TaskItem
+        taskDetails={cardDetails}
+        lists={lists}
+        tags={tags}
+        selectedCardId={selectedCardId}
+        setSelectedCardId={setSelectedCardId}
+      />
     </div>
   );
 };

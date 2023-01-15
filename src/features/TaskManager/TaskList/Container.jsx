@@ -40,6 +40,7 @@ const Container = ({ tasks }) => {
     [findCard, cards, setCards]
   );
   const [, drop] = useDrop(() => ({ accept: ItemTypes.CARD }));
+  const [selectedCardId, setSelectedCardId] = useState("");
   return (
     <div ref={drop} style={style}>
       {cards.map((card) => (
@@ -48,6 +49,8 @@ const Container = ({ tasks }) => {
           cardDetails={card}
           moveCard={moveCard}
           findCard={findCard}
+          selectedCardId={selectedCardId}
+          setSelectedCardId={setSelectedCardId}
         />
       ))}
     </div>
