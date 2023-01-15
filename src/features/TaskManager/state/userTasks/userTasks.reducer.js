@@ -74,7 +74,7 @@ const reducer = (state = INITIAL_STATE, action) => {
         isLoadingTasks: false,
         addTaskSuccess: true,
         totalTasks: state.totalTasks + 1,
-        tasks: [...state.tasks, action.payload],
+        tasks: [action.payload, ...state.tasks],
       };
     }
 
