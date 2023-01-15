@@ -139,7 +139,13 @@ const renderSubMenuItems = ({
   );
 };
 
-const TaskNav = ({ user, messageApi, setCurrentSelectedTaskSection }) => {
+const TaskNav = ({
+  user,
+  messageApi,
+  currentSelectedTaskSection,
+  setCurrentSelectedTaskSection,
+  collapsed,
+}) => {
   const dispatch = useDispatch();
   const { lists, isLoadingLists, totalLists } = useSelector(listsSelector);
   const { tags, isLoadingTags, totalTags } = useSelector(tagsSelector);
@@ -223,8 +229,13 @@ const TaskNav = ({ user, messageApi, setCurrentSelectedTaskSection }) => {
     }
   };
 
-  const handleMenuClick = (e) =>
-    setCurrentSelectedTaskSection(e.domEvent.currentTarget.textContent);
+  const handleMenuClick = (e) => {
+    if (
+      e.domEvent.currentTarget.textContent !== currentSelectedTaskSection.label
+    ) {
+      setCurrentSelectedTaskSection(e.domEvent.currentTarget.textContent);
+    }
+  };
 
   const { confirm } = Modal;
 
@@ -304,6 +315,7 @@ const TaskNav = ({ user, messageApi, setCurrentSelectedTaskSection }) => {
         left: 0,
       }}
       width="18vw"
+      collapsed={collapsed}
     >
       <Spin
         spinning={isLoadingLists || isLoadingTags}

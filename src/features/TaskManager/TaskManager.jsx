@@ -32,19 +32,24 @@ const TaskManager = ({ user }) => {
   const [selectedCardId, setSelectedCardId] = useState("");
   const [currentSelectedTaskSection, setCurrentSelectedTaskSection] =
     useState();
+  const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
 
   return (
     <Layout>
       <TaskNav
         user={user}
         messageApi={messageApi}
+        currentSelectedTaskSection={currentSelectedTaskSection}
         setCurrentSelectedTaskSection={setCurrentSelectedTaskSection}
+        collapsed={isMenuCollapsed}
       />
       <TaskListContainer
         user={user}
         currentSection={currentSelectedTaskSection}
         selectedCardId={selectedCardId}
         setSelectedCardId={setSelectedCardId}
+        isMenuCollapsed={isMenuCollapsed}
+        setIsMenuCollapsed={setIsMenuCollapsed}
       />
       <Layout.Content
         style={{
