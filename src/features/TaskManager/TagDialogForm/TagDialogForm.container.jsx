@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import Modal from "../../../components/Modal";
 import TagDialogForm from "./TagDialogForm";
-import { SUCCESS } from "../../../constants/app.constants";
+import { SUCCESS, TAGS } from "../../../constants/app.constants";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addTagAction,
@@ -62,6 +62,7 @@ const TagDialog = ({
       color: e.color?.hex,
       createdTime: dayjs.utc().format(),
       modifiedTime: dayjs.utc().format(),
+      type: TAGS,
     };
     dispatch(addTagAction(user.uid, newTag)).then((response) => {
       if (response.success === SUCCESS) {
@@ -80,6 +81,7 @@ const TagDialog = ({
       color: e.color?.hex,
       createdTime: formValues.createdTime,
       modifiedTime: dayjs.utc().format(),
+      type: TAGS,
     };
     dispatch(editTagAction(user.uid, modifiedTag, formValues.id)).then(
       (response) => {

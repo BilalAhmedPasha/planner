@@ -324,26 +324,7 @@ const TaskNav = ({
         <SideMenu
           selectedAppMenuKey={selectedAppMenuKey}
           openSubMenuKeys={openSubMenuKeys}
-          headerMenu={defaultTaskNav1}
-          footerMenu={defaultTaskNav2}
-          listConfig={{
-            items: lists,
-            count: totalLists,
-            setOpenDialog: setOpenListDialog,
-            handleMoreMenu: handleMoreMenu,
-            setListFormType: setListFormType,
-            setListData: setListData,
-          }}
-          tagConfig={{
-            items: tags,
-            count: totalTags,
-            setOpenDialog: setOpenTagDialog,
-            handleMoreMenu: handleMoreMenu,
-            setTagFormType: setTagFormType,
-            setTagData: setTagData,
-          }}
           onClick={handleMenuClick}
-          setCurrentTitle={setCurrentSelectedTaskSection}
         >
           {renderMenuItems(defaultTaskNav1)}
           <Menu.Divider />

@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../../components/Modal";
 import ListDialogForm from "./ListDialogForm";
-import { SUCCESS } from "../../../constants/app.constants";
+import { LISTS, SUCCESS } from "../../../constants/app.constants";
 import { CREATE, EDIT } from "../../../constants/formType.constants";
 import { DEFAULT_LIST_COLOR } from "../../../constants/color.constants";
 import {
@@ -63,6 +63,7 @@ const ListDialog = ({
       createdTime: dayjs.utc().format(),
       modifiedTime: dayjs.utc().format(),
       hidden: e.hidden,
+      type: LISTS,
     };
     dispatch(addListAction(user.uid, newList)).then((response) => {
       if (response.success === SUCCESS) {
@@ -82,6 +83,7 @@ const ListDialog = ({
       createdTime: formValues.createdTime,
       modifiedTime: dayjs.utc().format(),
       hidden: e.hidden,
+      type: LISTS,
     };
     dispatch(editListAction(user.uid, modifiedList, formValues.id)).then(
       (response) => {

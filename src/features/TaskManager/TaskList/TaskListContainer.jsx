@@ -1,8 +1,20 @@
 import { Button, Layout, message, Space, Spin, theme, Typography } from "antd";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Loading from "../../../components/Loading";
-import { LOADER_SIZE } from "../../../constants/app.constants";
+import {
+  ALL,
+  COMPLETED,
+  DELETED,
+  INBOX,
+  LISTS,
+  LOADER_SIZE,
+  NEXT_7_DAYS,
+  TAGS,
+  TODAY,
+  TOMORROW,
+  WONT_DO,
+} from "../../../constants/app.constants";
 import { CREATE } from "../../../constants/formType.constants";
 import { tasksSelector } from "../state/userTasks/userTasks.reducer";
 import TaskDialogForm from "./TaskDialogForm";
@@ -12,6 +24,19 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
 } from "@ant-design/icons";
+import dayjs from "../../../utils/dateTime.uitls";
+import {
+  getAllTasks,
+  getByListId,
+  getByTagId,
+  getCompletedTasks,
+  getDeletedTasks,
+  getInboxTasks,
+  getTasksByDate,
+  getTasksByNextXDays,
+  getWontDoTasks,
+} from "./TaskUtils";
+import { TIME_ZONE } from "../../../constants/dateTime.constants";
 
 const TaskListContainer = ({
   user,
@@ -33,6 +58,48 @@ const TaskListContainer = ({
   };
 
   const { tasks, isLoadingTasks } = useSelector(tasksSelector);
+  const [currentSectionTasks, setCurrentSectionTasks] = useState([]);
+
+  const computeSectionData = useCallback(({ tasks, currentSection }) => {
+    if (currentSection.id === ALL) {
+      return getAllTasks({ tasks });
+    } else if (currentSection.id === INBOX) {
+      return getInboxTasks({ tasks });
+    } else if (currentSection.id === TODAY) {
+      return [];
+      // const today = dayjs.utc().tz(TIME_ZONE);
+      // return getTasksByDate({ tasks, date: today });
+    } else if (currentSection.id === TOMORROW) {
+      return [];
+      // const tomorrow = dayjs.utc().tz(TIME_ZONE).add(1, "day");
+      // return getTasksByDate({ tasks, date: tomorrow });
+    } else if (currentSection.id === NEXT_7_DAYS) {
+      return [];
+      // const today = dayjs.utc().tz(TIME_ZONE);
+      // return getTasksByNextXDays({ tasks, fromDate: today, count: 7 });
+    } else if (currentSection.id === COMPLETED) {
+      return getCompletedTasks({ tasks });
+    } else if (currentSection.id === WONT_DO) {
+      return getWontDoTasks({ tasks });
+    } else if (currentSection.id === DELETED) {
+      return getDeletedTasks({ tasks });
+    } else if (currentSection.type === LISTS) {
+      return getByListId({ tasks, listId: currentSection.id });
+    } else if (currentSection.type === TAGS) {
+      return getByTagId({ tasks, tagId: currentSection.id });
+    }
+    return [];
+  }, []);
+
+  useEffect(() => {
+    if (currentSection?.label) {
+      const sectionData = computeSectionData({
+        tasks,
+        currentSection,
+      });
+      setCurrentSectionTasks(sectionData);
+    }
+  }, [currentSection, tasks, computeSectionData]);
 
   return (
     <Layout.Content
@@ -74,8 +141,8 @@ const TaskListContainer = ({
             </Typography.Text>
           </Space>
           <Button
+            size="small"
             type="primary"
-            shape="circle"
             icon={<PlusOutlined />}
             onClick={handleAddTask}
           />
@@ -99,7 +166,7 @@ const TaskListContainer = ({
         >
           <Container
             user={user}
-            tasks={tasks}
+            tasks={currentSectionTasks}
             selectedCardId={selectedCardId}
             setSelectedCardId={setSelectedCardId}
           />
