@@ -1,6 +1,11 @@
 import { Menu } from "antd";
 
-const SideMenu = ({ onClick, selectedAppMenuKey, children }) => {
+const SideMenu = ({
+  onClick,
+  selectedAppMenuKey,
+  openSubMenuKeys,
+  children,
+}) => {
   return (
     <Menu
       theme="light"
@@ -8,6 +13,7 @@ const SideMenu = ({ onClick, selectedAppMenuKey, children }) => {
       mode="inline"
       onClick={onClick}
       defaultSelectedKeys={[selectedAppMenuKey]}
+      defaultOpenKeys={[openSubMenuKeys]}
     >
       {children}
     </Menu>

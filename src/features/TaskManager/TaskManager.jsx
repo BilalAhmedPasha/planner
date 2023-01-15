@@ -18,6 +18,7 @@ const TaskManager = ({ user, title, setCurrentTitle }) => {
 
   const dispatch = useDispatch();
   const userSetting = useSelector(userSelector);
+  
   useEffect(() => {
     if (user.uid !== userSetting.id) {
       dispatch(fetchListsAction(user.uid));

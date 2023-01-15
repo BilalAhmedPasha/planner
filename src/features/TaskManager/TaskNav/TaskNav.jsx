@@ -11,7 +11,13 @@ import {
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SideMenu from "../../../components/SideMenu";
-import { DELETE, LISTS, LOADER_SIZE, SUCCESS, TAGS } from "../../../constants/app.constants";
+import {
+  DELETE,
+  LISTS,
+  LOADER_SIZE,
+  SUCCESS,
+  TAGS,
+} from "../../../constants/app.constants";
 import { CREATE, EDIT } from "../../../constants/formType.constants";
 import { defaultTaskNav1, defaultTaskNav2 } from "./defaultTaskNav.config";
 import ListDialogForm from "../ListDialogForm";
@@ -20,7 +26,7 @@ import { deleteListAction } from "../state/userLists/userLists.actions";
 import { listsSelector } from "../state/userLists/userLists.reducer";
 import { deleteTagAction } from "../state/userTags/userTags.actions";
 import { tagsSelector } from "../state/userTags/userTags.reducer";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   UnorderedListOutlined,
   TagOutlined,
@@ -247,6 +253,15 @@ const TaskNav = ({ user, messageApi, setCurrentTitle }) => {
     });
   };
 
+  const url = useLocation();
+  const pathParameters = url?.pathname.split("/");
+  let selectedAppMenuKey = url.pathname;
+  let openSubMenuKeys;
+  if (pathParameters.length > 3) {
+    openSubMenuKeys = pathParameters[2];
+    selectedAppMenuKey = pathParameters[3];
+  }
+
   return (
     <Layout.Sider
       theme="light"
@@ -265,6 +280,8 @@ const TaskNav = ({ user, messageApi, setCurrentTitle }) => {
         indicator={Loading(LOADER_SIZE)}
       >
         <SideMenu
+          selectedAppMenuKey={selectedAppMenuKey}
+          openSubMenuKeys={openSubMenuKeys}
           headerMenu={defaultTaskNav1}
           footerMenu={defaultTaskNav2}
           listConfig={{
