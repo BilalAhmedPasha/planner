@@ -8,7 +8,12 @@ import { tasksSelector } from "../state/userTasks/userTasks.reducer";
 import TaskDialogForm from "./TaskDialogForm";
 import Container from "./Container";
 
-const TaskListContainer = ({ user, title }) => {
+const TaskListContainer = ({
+  user,
+  title,
+  selectedCardId,
+  setSelectedCardId,
+}) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -63,7 +68,12 @@ const TaskListContainer = ({ user, title }) => {
         <div
           style={{ overflowY: "scroll", height: "90vh", padding: "1rem 0rem" }}
         >
-          <Container user={user} tasks={tasks} />
+          <Container
+            user={user}
+            tasks={tasks}
+            selectedCardId={selectedCardId}
+            setSelectedCardId={setSelectedCardId}
+          />
         </div>
       </Spin>
     </Layout.Content>

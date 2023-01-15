@@ -1,5 +1,5 @@
 import { Layout, Typography, theme, message, Spin } from "antd";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TaskNav from "./TaskNav";
 import { fetchListsAction } from "./state/userLists/userLists.actions";
@@ -28,6 +28,7 @@ const TaskManager = ({ user, title, setCurrentTitle }) => {
 
   const [messageApi, contextHolder] = message.useMessage();
   const { isLoadingTasks } = useSelector(tasksSelector);
+  const [selectedCardId, setSelectedCardId] = useState("");
   return (
     <Layout>
       <TaskNav
@@ -35,7 +36,12 @@ const TaskManager = ({ user, title, setCurrentTitle }) => {
         messageApi={messageApi}
         setCurrentTitle={setCurrentTitle}
       />
-      <TaskListContainer user={user} title={title} />
+      <TaskListContainer
+        user={user}
+        title={title}
+        selectedCardId={selectedCardId}
+        setSelectedCardId={setSelectedCardId}
+      />
       <Layout.Content
         style={{
           marginLeft: "0.1rem",

@@ -11,7 +11,7 @@ const style = {
   padding: "0rem 1rem",
 };
 
-const Container = ({ user, tasks }) => {
+const Container = ({ user, tasks, selectedCardId, setSelectedCardId }) => {
   const [cards, setCards] = useState(tasks);
   useEffect(() => {
     setCards(tasks);
@@ -41,7 +41,6 @@ const Container = ({ user, tasks }) => {
     [findCard, cards, setCards]
   );
   const [, drop] = useDrop(() => ({ accept: ItemTypes.CARD }));
-  const [selectedCardId, setSelectedCardId] = useState("");
   const [messageApi, contextHolder] = message.useMessage();
 
   return (
