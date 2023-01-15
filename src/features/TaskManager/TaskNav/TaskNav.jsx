@@ -8,7 +8,7 @@ import {
   Space,
   Spin,
 } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SideMenu from "../../../components/SideMenu";
 import {
@@ -26,7 +26,7 @@ import { deleteListAction } from "../state/userLists/userLists.actions";
 import { listsSelector } from "../state/userLists/userLists.reducer";
 import { deleteTagAction } from "../state/userTags/userTags.actions";
 import { tagsSelector } from "../state/userTags/userTags.reducer";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import {
   UnorderedListOutlined,
   TagOutlined,
@@ -139,7 +139,7 @@ const renderSubMenuItems = ({
   );
 };
 
-const TaskNav = ({ user, messageApi, setCurrentTitle }) => {
+const TaskNav = ({ user, messageApi, setCurrentSelectedTaskSection }) => {
   const dispatch = useDispatch();
   const { lists, isLoadingLists, totalLists } = useSelector(listsSelector);
   const { tags, isLoadingTags, totalTags } = useSelector(tagsSelector);
@@ -167,6 +167,7 @@ const TaskNav = ({ user, messageApi, setCurrentTitle }) => {
     });
   };
 
+  const history = useHistory();
   const handleDelete = ({
     currentItem,
     deleteAction,
@@ -176,6 +177,7 @@ const TaskNav = ({ user, messageApi, setCurrentTitle }) => {
     dispatch(deleteAction(user.uid, currentItem)).then((response) => {
       if (response.success === SUCCESS) {
         deleteSuccess({ messageText: successMessage });
+        history.push("/tasks/inbox");
       } else {
         deleteFailed({ messageText: failureMessage });
       }
@@ -219,7 +221,7 @@ const TaskNav = ({ user, messageApi, setCurrentTitle }) => {
   };
 
   const handleMenuClick = (e) =>
-    setCurrentTitle(e.domEvent.currentTarget.textContent);
+    setCurrentSelectedTaskSection(e.domEvent.currentTarget.textContent);
 
   const { confirm } = Modal;
 
@@ -254,9 +256,34 @@ const TaskNav = ({ user, messageApi, setCurrentTitle }) => {
   };
 
   const url = useLocation();
-  const pathParameters = url?.pathname.split("/");
   let selectedAppMenuKey = url.pathname;
   let openSubMenuKeys;
+  const pathParameters = url?.pathname.split("/");
+
+  useEffect(() => {
+    let currentSideMenuItem = [...defaultTaskNav1, ...defaultTaskNav2].filter(
+      (each) => each.redirectUrl === selectedAppMenuKey
+    );
+    if (currentSideMenuItem.length === 0) {
+      if (pathParameters[2] === LISTS) {
+        currentSideMenuItem = lists.filter(
+          (each) => each.id === pathParameters[3]
+        );
+      } else if (pathParameters[2] === TAGS) {
+        currentSideMenuItem = tags.filter(
+          (each) => each.id === pathParameters[3]
+        );
+      }
+    }
+    setCurrentSelectedTaskSection(currentSideMenuItem[0]);
+  }, [
+    lists,
+    tags,
+    pathParameters,
+    selectedAppMenuKey,
+    setCurrentSelectedTaskSection,
+  ]);
+
   if (pathParameters.length > 3) {
     openSubMenuKeys = pathParameters[2];
     selectedAppMenuKey = pathParameters[3];
@@ -301,7 +328,7 @@ const TaskNav = ({ user, messageApi, setCurrentTitle }) => {
             setTagData: setTagData,
           }}
           onClick={handleMenuClick}
-          setCurrentTitle={setCurrentTitle}
+          setCurrentTitle={setCurrentSelectedTaskSection}
         >
           {renderMenuItems(defaultTaskNav1)}
           <Menu.Divider />

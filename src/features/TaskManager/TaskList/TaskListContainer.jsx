@@ -10,7 +10,7 @@ import Container from "./Container";
 
 const TaskListContainer = ({
   user,
-  title,
+  currentSection,
   selectedCardId,
   setSelectedCardId,
 }) => {
@@ -28,55 +28,61 @@ const TaskListContainer = ({
   const { tasks, isLoadingTasks } = useSelector(tasksSelector);
 
   return (
-    <Layout.Content
-      style={{
-        marginRight: "0.1rem",
-        padding: "1rem 3rem",
-        background: colorBgContainer,
-      }}
-    >
-      <Spin spinning={isLoadingTasks} indicator={Loading(LOADER_SIZE)}>
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <Typography.Text
+    currentSection && (
+      <Layout.Content
+        style={{
+          marginRight: "0.1rem",
+          padding: "1rem 3rem",
+          background: colorBgContainer,
+        }}
+      >
+        <Spin spinning={isLoadingTasks} indicator={Loading(LOADER_SIZE)}>
+          <div
             style={{
-              fontWeight: "bold",
-              fontSize: "24px",
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "center",
+              justifyContent: "space-between",
             }}
           >
-            {title}
-          </Typography.Text>
-          <Button type="primary" onClick={handleAddTask}>
-            {"Add Task"}
-          </Button>
-          {openAddTaskDialog && (
-            <TaskDialogForm
+            <Typography.Text
+              style={{
+                fontWeight: "bold",
+                fontSize: "24px",
+              }}
+            >
+              {currentSection.label || "Title"}
+            </Typography.Text>
+            <Button type="primary" onClick={handleAddTask}>
+              {"Add Task"}
+            </Button>
+            {openAddTaskDialog && (
+              <TaskDialogForm
+                user={user}
+                messageApi={messageApi}
+                openDialog={openAddTaskDialog}
+                setOpenDialog={setOpenAddTaskDialog}
+                formType={CREATE}
+              />
+            )}
+          </div>
+          <div
+            style={{
+              overflowY: "scroll",
+              height: "90vh",
+              padding: "1rem 0rem",
+            }}
+          >
+            <Container
               user={user}
-              messageApi={messageApi}
-              openDialog={openAddTaskDialog}
-              setOpenDialog={setOpenAddTaskDialog}
-              formType={CREATE}
+              tasks={tasks}
+              selectedCardId={selectedCardId}
+              setSelectedCardId={setSelectedCardId}
             />
-          )}
-        </div>
-        <div
-          style={{ overflowY: "scroll", height: "90vh", padding: "1rem 0rem" }}
-        >
-          <Container
-            user={user}
-            tasks={tasks}
-            selectedCardId={selectedCardId}
-            setSelectedCardId={setSelectedCardId}
-          />
-        </div>
-      </Spin>
-    </Layout.Content>
+          </div>
+        </Spin>
+      </Layout.Content>
+    )
   );
 };
 

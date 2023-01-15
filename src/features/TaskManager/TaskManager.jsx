@@ -11,14 +11,14 @@ import { tasksSelector } from "./state/userTasks/userTasks.reducer";
 import Loading from "../../components/Loading";
 import { LOADER_SIZE } from "../../constants/app.constants";
 
-const TaskManager = ({ user, title, setCurrentTitle }) => {
+const TaskManager = ({ user }) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
 
   const dispatch = useDispatch();
   const userSetting = useSelector(userSelector);
-  
+
   useEffect(() => {
     if (user.uid !== userSetting.id) {
       dispatch(fetchListsAction(user.uid));
@@ -30,16 +30,19 @@ const TaskManager = ({ user, title, setCurrentTitle }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const { isLoadingTasks } = useSelector(tasksSelector);
   const [selectedCardId, setSelectedCardId] = useState("");
+  const [currentSelectedTaskSection, setCurrentSelectedTaskSection] =
+    useState();
+
   return (
     <Layout>
       <TaskNav
         user={user}
         messageApi={messageApi}
-        setCurrentTitle={setCurrentTitle}
+        setCurrentSelectedTaskSection={setCurrentSelectedTaskSection}
       />
       <TaskListContainer
         user={user}
-        title={title}
+        currentSection={currentSelectedTaskSection}
         selectedCardId={selectedCardId}
         setSelectedCardId={setSelectedCardId}
       />

@@ -5,7 +5,7 @@ import { GoogleOutlined } from "@ant-design/icons";
 import { UserAuth } from "../../context/AuthContext";
 import { useHistory } from "react-router-dom";
 
-const LoginPage = ({ title }) => {
+const LoginPage = () => {
   const divStyle = {
     height: "100vh",
     backgroundImage: `url(${image})`,
