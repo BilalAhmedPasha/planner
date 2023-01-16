@@ -1,5 +1,5 @@
-import dayjs from "../../../utils/dateTime.uitls";
-import { INBOX } from "../../../constants/app.constants";
+import dayjs from "../../../../utils/dateTime.uitls";
+import { INBOX } from "../../../../constants/app.constants";
 
 export const getAllTasks = ({ tasks }) => {
   return tasks;

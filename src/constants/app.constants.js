@@ -17,3 +17,5 @@ export const TAGS = "tags";
 export const LISTS = "lists";
 
 export const LOADER_SIZE = 35;
+
+export const MULTI_DATE_AVAILABLE = false;

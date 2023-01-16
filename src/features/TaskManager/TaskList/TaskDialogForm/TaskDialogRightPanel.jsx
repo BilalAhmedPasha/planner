@@ -28,7 +28,7 @@ import {
   MEDIUM_COLOR,
   NONE_COLOR,
 } from "../../../../constants/color.constants";
-import { INBOX } from "../../../../constants/app.constants";
+import { INBOX, MULTI_DATE_AVAILABLE } from "../../../../constants/app.constants";
 import {
   DATE_FORMAT,
   TIME_FORMAT,
@@ -235,7 +235,7 @@ const TaskDialogRightPanel = ({ form, height }) => {
             tagRender={tagRender}
           />
         </Form.Item>
-        <Form.Item>
+        {MULTI_DATE_AVAILABLE && <Form.Item>
           <div
             style={{
               display: "flex",
@@ -253,7 +253,7 @@ const TaskDialogRightPanel = ({ form, height }) => {
             </Typography.Text>
             <Switch onClick={handleIsMultiDaySwitch} />
           </div>
-        </Form.Item>
+        </Form.Item>}
         {!isMultiDay && (
           <Form.Item name="date" label="Schedule">
             <DatePicker

@@ -13,12 +13,12 @@ import {
   LOW_COLOR,
   MEDIUM_COLOR,
   NONE_COLOR,
-} from "../../../constants/color.constants";
-import { INBOX, SUCCESS } from "../../../constants/app.constants";
-import dayjs from "../../../utils/dateTime.uitls";
-import { HIGH, LOW, MEDIUM } from "../../../constants/priority.constants";
+} from "../../../../constants/color.constants";
+import { INBOX, SUCCESS } from "../../../../constants/app.constants";
+import dayjs from "../../../../utils/dateTime.uitls";
+import { HIGH, LOW, MEDIUM } from "../../../../constants/priority.constants";
 import { useDispatch } from "react-redux";
-import { deleteTaskAction } from "../state/userTasks/userTasks.actions";
+import { deleteTaskAction } from "../../state/userTasks/userTasks.actions";
 
 const StyledCheckBox = styled(Checkbox)`
   .ant-checkbox-inner,

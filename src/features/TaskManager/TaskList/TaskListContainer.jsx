@@ -18,7 +18,7 @@ import {
 import { CREATE } from "../../../constants/formType.constants";
 import { tasksSelector } from "../state/userTasks/userTasks.reducer";
 import TaskDialogForm from "./TaskDialogForm";
-import Container from "./Container";
+import Container from "./TaskListItem/Container";
 import {
   PlusOutlined,
   MenuFoldOutlined,
@@ -35,7 +35,7 @@ import {
   getTasksByDate,
   getTasksByNextXDays,
   getWontDoTasks,
-} from "./TaskUtils";
+} from "./TaskListItem/TaskUtils";
 import { TIME_ZONE } from "../../../constants/dateTime.constants";
 
 const TaskListContainer = ({
