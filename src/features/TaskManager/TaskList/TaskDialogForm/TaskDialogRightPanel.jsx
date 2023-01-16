@@ -378,7 +378,7 @@ const TaskDialogRightPanel = ({ form, height }) => {
             ]}
           >
             <InputNumber
-              min={2}
+              min={1}
               style={{
                 cursor: "pointer",
                 width: "100%",

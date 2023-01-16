@@ -28,30 +28,23 @@ export const getTasksByDate = ({ tasks, date }) => {
     } else if (dateEnd.isBefore(taskDateStart)) {
       // taskDate is future date
       continue;
-    } else if (dateStart.isSame(taskDateStart)) {
+    } else if (!tasks[i].isRepeating && dateStart.isSame(taskDateStart)) {
       // taskDate is date
       dateTasks.push(tasks[i]);
-    } else if (tasks[i].isMultiDay) {
-      // taskDate lies between startMultiDate && endMultiDate
-      const startMultiDate = dayjs(tasks[i].startMultiDate).startOf("day");
-      const endMultiDate = dayjs(tasks[i].endMultiDate).endOf("day");
-      dateStart.isSameOrAfter(startMultiDate) &&
-        dateEnd.isSameOrBefore(endMultiDate) &&
-        dateTasks.push(tasks[i]);
     } else if (tasks[i].isRepeating) {
       if (tasks[i].endByDate) {
         // Repeating task end by date
-        const endDate = dayjs(tasks[i].endByDate).endOf("day");
+        const taskDateEnd = dayjs(tasks[i].endByDate).endOf("day");
         dateStart.isSameOrAfter(taskDateStart) &&
-          dateEnd.isSameOrBefore(endDate) &&
+          dateEnd.isSameOrBefore(taskDateEnd) &&
           dateTasks.push(tasks[i]);
-      } else if (tasks[i].endByRepeatCount) {
+      } else if (tasks[i].endByRepeatCount >= 0) {
         // Repeating task end by count
-        const endDate = taskDateStart
+        const taskDateEnd = taskDateStart
           .add(tasks[i].endByRepeatCount, "day")
           .endOf("day");
         dateStart.isSameOrAfter(taskDateStart) &&
-          dateEnd.isSameOrBefore(endDate) &&
+          dateEnd.isSameOrBefore(taskDateEnd) &&
           dateTasks.push(tasks[i]);
       } else {
         // Endless task
@@ -66,38 +59,22 @@ export const getTasksByNextXDays = ({ tasks, fromDate, count }) => {
   const startFromDate = fromDate.startOf("day");
   const endByDate = startFromDate.add(count, "day").endOf("day");
   const nextXDayTasks = [];
-
   for (let i = 0; i < tasks.length; i++) {
     // calculate taskDate in dayJS
     const taskDateStart = dayjs(tasks[i].taskDate).startOf("day");
-    if (!taskDateStart) {
+    if (!tasks[i].taskDate) {
       // Not dated tasks
       continue;
-    } else if (startFromDate.isAfter(taskDateStart)) {
-      // taskDate is past date
+    } else if (endByDate.isAfter(taskDateStart)) {
+      // taskDate is future date
       continue;
     } else if (
-      startFromDate.isBefore(taskDateStart) &&
-      endByDate.isSameOrBefore(taskDateStart)
+      !tasks[i].isRepeating &&
+      startFromDate.isSameOrBefore(taskDateStart) &&
+      endByDate.isSameOrAfter(taskDateStart)
     ) {
-      // taskDate is date
+      // taskDate is in given range
       nextXDayTasks.push(tasks[i]);
-    } else if (tasks[i].isMultiDay) {
-      // taskDate lies between startMultiDate && endMultiDate
-      const startMultiDate = dayjs(tasks[i].startMultiDate).startOf("day");
-      const endMultiDate = dayjs(tasks[i].endMultiDate).endOf("day");
-      if (
-        (startFromDate.isBefore(startMultiDate) &&
-          endByDate.isSameOrAfter(endMultiDate)) ||
-        (startFromDate.isAfter(startMultiDate) &&
-          endByDate.isSameOrBefore(endMultiDate)) ||
-        (startFromDate.isBefore(startMultiDate) &&
-          endByDate.isSameOrBefore(endMultiDate)) ||
-        (startFromDate.isAfter(startMultiDate) &&
-          endByDate.isSameOrAfter(endMultiDate))
-      ) {
-        nextXDayTasks.push(tasks[i]);
-      }
     } else if (tasks[i].isRepeating) {
       if (tasks[i].endByDate) {
         // Repeating task end by date
@@ -114,7 +91,7 @@ export const getTasksByNextXDays = ({ tasks, fromDate, count }) => {
         ) {
           nextXDayTasks.push(tasks[i]);
         }
-      } else if (tasks[i].endByRepeatCount) {
+      } else if (tasks[i].endByRepeatCount >= 0) {
         // Repeating task end by count
         const endDate = taskDateStart
           .add(tasks[i].endByRepeatCount, "day")
@@ -133,7 +110,7 @@ export const getTasksByNextXDays = ({ tasks, fromDate, count }) => {
         }
       } else {
         // Endless task
-        startFromDate.isSameOrAfter(taskDateStart) &&
+        startFromDate.isSameOrBefore(taskDateStart) &&
           nextXDayTasks.push(tasks[i]);
       }
     }

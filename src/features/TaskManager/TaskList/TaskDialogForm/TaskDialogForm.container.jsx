@@ -53,7 +53,10 @@ const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
       repeatFrequency: e.repeat || null,
       endBy: e.endBy || null,
       endByDate: (e.endByDate && e.endByDate.endOf("day").format()) || null,
-      endByRepeatCount: e.endByRepeatCount || null,
+      endByRepeatCount:
+        e.endByRepeatCount !== undefined && e.endByRepeatCount >= 0
+          ? e.endByRepeatCount
+          : null,
       isMultiDay: e.dateRange ? true : false,
       startMultiDate:
         (e.dateRange && e.dateRange[0].startOf("day").format()) || null,
