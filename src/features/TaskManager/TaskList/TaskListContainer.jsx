@@ -54,7 +54,7 @@ const TaskListContainer = ({
   const [openAddTaskDialog, setOpenAddTaskDialog] = useState(false);
 
   const handleAddTask = () => {
-    setOpenAddTaskDialog(true); 
+    setOpenAddTaskDialog(true);
   };
 
   const { tasks, isLoadingTasks } = useSelector(tasksSelector);
@@ -66,17 +66,17 @@ const TaskListContainer = ({
     } else if (currentSection.id === INBOX) {
       return getInboxTasks({ tasks });
     } else if (currentSection.id === TODAY) {
-      return [];
-      // const today = dayjs.utc().tz(TIME_ZONE);
-      // return getTasksByDate({ tasks, date: today });
+      // return [];
+      const today = dayjs.utc().tz(TIME_ZONE);
+      return getTasksByDate({ tasks, date: today });
     } else if (currentSection.id === TOMORROW) {
-      return [];
-      // const tomorrow = dayjs.utc().tz(TIME_ZONE).add(1, "day");
-      // return getTasksByDate({ tasks, date: tomorrow });
+      // return [];
+      const tomorrow = dayjs.utc().tz(TIME_ZONE).add(1, "day");
+      return getTasksByDate({ tasks, date: tomorrow });
     } else if (currentSection.id === NEXT_7_DAYS) {
-      return [];
-      // const today = dayjs.utc().tz(TIME_ZONE);
-      // return getTasksByNextXDays({ tasks, fromDate: today, count: 7 });
+      // return [];
+      const tomorrow = dayjs.utc().tz(TIME_ZONE).add(1, "day");
+      return getTasksByNextXDays({ tasks, fromDate: tomorrow, count: 7 });
     } else if (currentSection.id === COMPLETED) {
       return getCompletedTasks({ tasks });
     } else if (currentSection.id === WONT_DO) {

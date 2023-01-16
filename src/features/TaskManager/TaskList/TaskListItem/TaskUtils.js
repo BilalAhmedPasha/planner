@@ -22,7 +22,7 @@ export const getTasksByDate = ({ tasks, date }) => {
   for (let i = 0; i < tasks.length; i++) {
     // calculate taskDate in dayJS
     const taskDateStart = dayjs(tasks[i].taskDate).startOf("day");
-    if (!taskDateStart) {
+    if (!tasks[i].taskDate) {
       // Not dated tasks
       continue;
     } else if (dateEnd.isBefore(taskDateStart)) {
@@ -38,28 +38,33 @@ export const getTasksByDate = ({ tasks, date }) => {
       dateStart.isSameOrAfter(startMultiDate) &&
         dateEnd.isSameOrBefore(endMultiDate) &&
         dateTasks.push(tasks[i]);
-    } else if (tasks[i].isRepeating && tasks[i].endByDate) {
-      // Repeating task end by date
-      const endDate = dayjs(tasks[i].endByDate).endOf("day");
-      dateStart.isSameOrAfter(taskDateStart) &&
-        dateEnd.isSameOrBefore(endDate) &&
-        dateTasks.push(tasks[i]);
-    } else if (tasks[i].isRepeating && tasks[i].endByRepeatCount) {
-      // Repeating task end by count
-      const endDate = taskDateStart
-        .add(tasks[i].endByRepeatCount, "day")
-        .endOf("day");
-      dateStart.isSameOrAfter(taskDateStart) &&
-        dateEnd.isSameOrBefore(endDate) &&
-        dateTasks.push(tasks[i]);
+    } else if (tasks[i].isRepeating) {
+      if (tasks[i].endByDate) {
+        // Repeating task end by date
+        const endDate = dayjs(tasks[i].endByDate).endOf("day");
+        dateStart.isSameOrAfter(taskDateStart) &&
+          dateEnd.isSameOrBefore(endDate) &&
+          dateTasks.push(tasks[i]);
+      } else if (tasks[i].endByRepeatCount) {
+        // Repeating task end by count
+        const endDate = taskDateStart
+          .add(tasks[i].endByRepeatCount, "day")
+          .endOf("day");
+        dateStart.isSameOrAfter(taskDateStart) &&
+          dateEnd.isSameOrBefore(endDate) &&
+          dateTasks.push(tasks[i]);
+      } else {
+        // Endless task
+        dateStart.isSameOrAfter(taskDateStart) && dateTasks.push(tasks[i]);
+      }
     }
   }
   return dateTasks;
 };
 
 export const getTasksByNextXDays = ({ tasks, fromDate, count }) => {
-  const startFromDate = fromDate.endOf("day");
-  const endByDate = fromDate.startOf("day").add(count, "day").endOf("day");
+  const startFromDate = fromDate.startOf("day");
+  const endByDate = startFromDate.add(count, "day").endOf("day");
   const nextXDayTasks = [];
 
   for (let i = 0; i < tasks.length; i++) {
@@ -93,37 +98,43 @@ export const getTasksByNextXDays = ({ tasks, fromDate, count }) => {
       ) {
         nextXDayTasks.push(tasks[i]);
       }
-    } else if (tasks[i].isRepeating && tasks[i].endByDate) {
-      // Repeating task end by date
-      const endDate = dayjs(tasks[i].endByDate).endOf("day");
-      if (
-        (startFromDate.isBefore(taskDateStart) &&
-          endByDate.isSameOrAfter(endDate)) ||
-        (startFromDate.isAfter(taskDateStart) &&
-          endByDate.isSameOrBefore(endDate)) ||
-        (startFromDate.isBefore(taskDateStart) &&
-          endByDate.isSameOrBefore(endDate)) ||
-        (startFromDate.isAfter(taskDateStart) &&
-          endByDate.isSameOrAfter(endDate))
-      ) {
-        nextXDayTasks.push(tasks[i]);
-      }
-    } else if (tasks[i].isRepeating && tasks[i].endByRepeatCount) {
-      // Repeating task end by count
-      const endDate = taskDateStart
-        .add(tasks[i].endByRepeatCount, "day")
-        .endOf("day");
-      if (
-        (startFromDate.isBefore(taskDateStart) &&
-          endByDate.isSameOrAfter(endDate)) ||
-        (startFromDate.isAfter(taskDateStart) &&
-          endByDate.isSameOrBefore(endDate)) ||
-        (startFromDate.isBefore(taskDateStart) &&
-          endByDate.isSameOrBefore(endDate)) ||
-        (startFromDate.isAfter(taskDateStart) &&
-          endByDate.isSameOrAfter(endDate))
-      ) {
-        nextXDayTasks.push(tasks[i]);
+    } else if (tasks[i].isRepeating) {
+      if (tasks[i].endByDate) {
+        // Repeating task end by date
+        const endDate = dayjs(tasks[i].endByDate).endOf("day");
+        if (
+          (startFromDate.isBefore(taskDateStart) &&
+            endByDate.isSameOrAfter(endDate)) ||
+          (startFromDate.isAfter(taskDateStart) &&
+            endByDate.isSameOrBefore(endDate)) ||
+          (startFromDate.isBefore(taskDateStart) &&
+            endByDate.isSameOrBefore(endDate)) ||
+          (startFromDate.isAfter(taskDateStart) &&
+            endByDate.isSameOrAfter(endDate))
+        ) {
+          nextXDayTasks.push(tasks[i]);
+        }
+      } else if (tasks[i].endByRepeatCount) {
+        // Repeating task end by count
+        const endDate = taskDateStart
+          .add(tasks[i].endByRepeatCount, "day")
+          .endOf("day");
+        if (
+          (startFromDate.isBefore(taskDateStart) &&
+            endByDate.isSameOrAfter(endDate)) ||
+          (startFromDate.isAfter(taskDateStart) &&
+            endByDate.isSameOrBefore(endDate)) ||
+          (startFromDate.isBefore(taskDateStart) &&
+            endByDate.isSameOrBefore(endDate)) ||
+          (startFromDate.isAfter(taskDateStart) &&
+            endByDate.isSameOrAfter(endDate))
+        ) {
+          nextXDayTasks.push(tasks[i]);
+        }
+      } else {
+        // Endless task
+        startFromDate.isSameOrAfter(taskDateStart) &&
+          nextXDayTasks.push(tasks[i]);
       }
     }
   }

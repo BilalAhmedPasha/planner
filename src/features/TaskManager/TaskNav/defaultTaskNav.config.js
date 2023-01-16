@@ -48,7 +48,7 @@ export const defaultTaskNav1 = [
     label: "Next 7 Days",
     icon: CarryOutOutlined,
     redirectUrl: `/tasks/${NEXT_7_DAYS}`,
-    id: "next7Days",
+    id: "next-7-days",
   },
 ];
 
