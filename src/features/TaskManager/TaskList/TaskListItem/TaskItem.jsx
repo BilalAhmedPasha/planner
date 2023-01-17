@@ -1,6 +1,5 @@
 import { Badge, Button, Modal, Space, Tag, Typography } from "antd";
 import {
-  FlagFilled,
   SyncOutlined,
   NodeExpandOutlined,
   DeleteOutlined,
@@ -24,11 +23,9 @@ import { useDispatch } from "react-redux";
 import { deleteTaskAction } from "../../state/userTasks/userTasks.actions";
 import styled from "styled-components";
 
-// border: 1.5px solid #8c8c8c;
-
 const CheckBoxInput = styled.input.attrs({ type: "checkbox" })`
   position: relative;
-
+  cursor: pointer;
   &:hover::before {
     background-color: ${(props) => props.hoverBGColor};
   }
@@ -71,20 +68,6 @@ const getPriorityColor = ({ item }) => {
     return { color: LOW_COLOR, bgColor: LOW_BG_COLOR };
   }
   return { color: NONE_COLOR, bgColor: NONE_BG_COLOR };
-};
-
-const renderPriorityFlag = ({ item }) => {
-  let priorityColor = NONE_COLOR;
-  if (item.priority === HIGH) {
-    priorityColor = HIGH_COLOR;
-  } else if (item.priority === MEDIUM) {
-    priorityColor = MEDIUM_COLOR;
-  } else if (item.priority === LOW) {
-    priorityColor = LOW_COLOR;
-  }
-  return (
-    <FlagFilled style={{ color: priorityColor, padding: "0rem 0.75rem" }} />
-  );
 };
 
 const renderListName = ({ item, lists }) => {
