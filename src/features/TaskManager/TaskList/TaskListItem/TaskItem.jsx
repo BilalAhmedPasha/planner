@@ -22,6 +22,8 @@ import { HIGH, LOW, MEDIUM } from "../../../../constants/priority.constants";
 import { useDispatch } from "react-redux";
 import { deleteTaskAction } from "../../state/userTasks/userTasks.actions";
 import styled from "styled-components";
+import { useState } from "react";
+import { cross, tick } from "../../../../constants/checkBox.constants";
 
 const CheckBoxInput = styled.input.attrs({ type: "checkbox" })`
   position: relative;
@@ -202,6 +204,8 @@ const TaskItem = ({
     });
   };
 
+  const [checkBoxContent, setCheckBoxContent] = useState(cross);
+
   return (
     <div
       style={{
@@ -214,7 +218,9 @@ const TaskItem = ({
       <Space size="middle">
         <CheckBoxInput
           // eslint-disable-next-line no-octal-escape
-          uniCode="'\2715'"
+          // uniCode="'✕'"
+
+          uniCode={checkBoxContent}
           backgroundColor={getPriorityColor({ item: taskDetails }).color}
           borderColor={getPriorityColor({ item: taskDetails }).color}
           checkBoxColor={getPriorityColor({ item: taskDetails }).color}
