@@ -76,7 +76,7 @@ const TaskListContainer = ({
     } else if (currentSection.id === NEXT_7_DAYS) {
       // return [];
       const tomorrow = dayjs.utc().tz(TIME_ZONE).add(1, "day");
-      return getTasksByNextXDays({ tasks, fromDate: tomorrow, count: 7 });
+      return getTasksByNextXDays({ tasks, fromDate: tomorrow, count: 6 });
     } else if (currentSection.id === COMPLETED) {
       return getCompletedTasks({ tasks });
     } else if (currentSection.id === WONT_DO) {

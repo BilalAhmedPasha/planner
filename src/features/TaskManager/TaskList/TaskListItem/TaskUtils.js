@@ -65,7 +65,7 @@ export const getTasksByNextXDays = ({ tasks, fromDate, count }) => {
     if (!tasks[i].taskDate) {
       // Not dated tasks
       continue;
-    } else if (endByDate.isAfter(taskDateStart)) {
+    } else if (endByDate.isBefore(taskDateStart)) {
       // taskDate is future date
       continue;
     } else if (
@@ -110,8 +110,9 @@ export const getTasksByNextXDays = ({ tasks, fromDate, count }) => {
         }
       } else {
         // Endless task
-        startFromDate.isSameOrBefore(taskDateStart) &&
+        if (endByDate.isSameOrAfter(taskDateStart)) {
           nextXDayTasks.push(tasks[i]);
+        }
       }
     }
   }

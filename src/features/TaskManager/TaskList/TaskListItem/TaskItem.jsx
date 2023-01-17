@@ -1,5 +1,4 @@
-import { Badge, Button, Checkbox, Modal, Space, Tag, Typography } from "antd";
-import styled from "styled-components";
+import { Badge, Button, Modal, Space, Tag, Typography } from "antd";
 import {
   FlagFilled,
   SyncOutlined,
@@ -19,11 +18,37 @@ import dayjs from "../../../../utils/dateTime.uitls";
 import { HIGH, LOW, MEDIUM } from "../../../../constants/priority.constants";
 import { useDispatch } from "react-redux";
 import { deleteTaskAction } from "../../state/userTasks/userTasks.actions";
+import styled from "styled-components";
 
-const StyledCheckBox = styled(Checkbox)`
-  .ant-checkbox-inner,
-  .ant-checkbox-input {
-    transform: scale(1.25);
+const CheckBoxInput = styled.input.attrs({ type: "checkbox" })`
+  position: relative;
+
+  &:before {
+    position: absolute;
+    content: "";
+    height: 1rem;
+    width: 1rem;
+    background-color: #fff;
+    border: 1.5px solid #8c8c8c;
+    border-radius: 20%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    transition: 0.3s all ease;
+  }
+
+  &:checked::before {
+    background-color: ${(props) => props.backgroundColor};
+    border: 1.5px solid ${(props) => props.borderColor};
+  }
+
+  &:checked::after {
+    position: absolute;
+    content: ${(props) => props.uniCode};
+    font-size: 0.9rem;
+    margin-top: -0.1rem;
+    color: white;
   }
 `;
 
@@ -173,6 +198,12 @@ const TaskItem = ({
     });
   };
 
+  const handleComplete = ({ event, taskDetails }) => {
+    if (event.target.checked === true) {
+      console.log("Complete task ", event, " task ", taskDetails);
+    }
+  };
+
   return (
     <div
       style={{
@@ -182,7 +213,18 @@ const TaskItem = ({
         justifyContent: "space-between",
       }}
     >
-      <StyledCheckBox />
+      <Space size={10}>
+        <CheckBoxInput
+          uniCode="'\2713'"
+          backgroundColor="#1677ff"
+          borderColor="#1677ff"
+        />
+        <CheckBoxInput
+          uniCode="'\2715'"
+          backgroundColor="#1677ff"
+          borderColor="#1677ff"
+        />
+      </Space>
       {renderPriorityFlag({ item: taskDetails })}
       <Space
         size="middle"
@@ -195,7 +237,6 @@ const TaskItem = ({
       >
         <Typography.Text>{`${taskDetails.name}`}</Typography.Text>
       </Space>
-
       <div
         style={{
           whiteSpace: "nowrap",
@@ -225,7 +266,7 @@ const TaskItem = ({
               currentItem: taskDetails,
               deleteAction: deleteTaskAction,
               successMessage: "Task deleted",
-              failureMessage: "Failed to delete taslk",
+              failureMessage: "Failed to delete task",
             });
           }}
         />
