@@ -8,9 +8,13 @@ import {
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import {
+  HIGH_BG_COLOR,
   HIGH_COLOR,
+  LOW_BG_COLOR,
   LOW_COLOR,
+  MEDIUM_BG_COLOR,
   MEDIUM_COLOR,
+  NONE_BG_COLOR,
   NONE_COLOR,
 } from "../../../../constants/color.constants";
 import { INBOX, SUCCESS } from "../../../../constants/app.constants";
@@ -20,8 +24,14 @@ import { useDispatch } from "react-redux";
 import { deleteTaskAction } from "../../state/userTasks/userTasks.actions";
 import styled from "styled-components";
 
+// border: 1.5px solid #8c8c8c;
+
 const CheckBoxInput = styled.input.attrs({ type: "checkbox" })`
   position: relative;
+
+  &:hover::before {
+    background-color: ${(props) => props.hoverBGColor};
+  }
 
   &:before {
     position: absolute;
@@ -29,7 +39,7 @@ const CheckBoxInput = styled.input.attrs({ type: "checkbox" })`
     height: 1rem;
     width: 1rem;
     background-color: #fff;
-    border: 1.5px solid #8c8c8c;
+    border: 1.5px solid ${(props) => props.checkBoxColor};
     border-radius: 20%;
     top: 50%;
     left: 50%;
@@ -51,6 +61,17 @@ const CheckBoxInput = styled.input.attrs({ type: "checkbox" })`
     color: white;
   }
 `;
+
+const getPriorityColor = ({ item }) => {
+  if (item.priority === HIGH) {
+    return { color: HIGH_COLOR, bgColor: HIGH_BG_COLOR };
+  } else if (item.priority === MEDIUM) {
+    return { color: MEDIUM_COLOR, bgColor: MEDIUM_BG_COLOR };
+  } else if (item.priority === LOW) {
+    return { color: LOW_COLOR, bgColor: LOW_BG_COLOR };
+  }
+  return { color: NONE_COLOR, bgColor: NONE_BG_COLOR };
+};
 
 const renderPriorityFlag = ({ item }) => {
   let priorityColor = NONE_COLOR;
@@ -198,12 +219,6 @@ const TaskItem = ({
     });
   };
 
-  const handleComplete = ({ event, taskDetails }) => {
-    if (event.target.checked === true) {
-      console.log("Complete task ", event, " task ", taskDetails);
-    }
-  };
-
   return (
     <div
       style={{
@@ -213,29 +228,26 @@ const TaskItem = ({
         justifyContent: "space-between",
       }}
     >
-      <Space size={10}>
+      <Space size="middle">
         <CheckBoxInput
-          uniCode="'\2713'"
-          backgroundColor="#1677ff"
-          borderColor="#1677ff"
-        />
-        <CheckBoxInput
+          // eslint-disable-next-line no-octal-escape
           uniCode="'\2715'"
-          backgroundColor="#1677ff"
-          borderColor="#1677ff"
+          backgroundColor={getPriorityColor({ item: taskDetails }).color}
+          borderColor={getPriorityColor({ item: taskDetails }).color}
+          checkBoxColor={getPriorityColor({ item: taskDetails }).color}
+          hoverBGColor={getPriorityColor({ item: taskDetails }).bgColor}
         />
-      </Space>
-      {renderPriorityFlag({ item: taskDetails })}
-      <Space
-        size="middle"
-        style={{
-          flex: "1",
-          whiteSpace: "nowrap",
-          overflowX: "scroll",
-          textOverflow: "ellipsis",
-        }}
-      >
-        <Typography.Text>{`${taskDetails.name}`}</Typography.Text>
+        <Space
+          size="middle"
+          style={{
+            flex: "1",
+            whiteSpace: "nowrap",
+            overflowX: "scroll",
+            textOverflow: "ellipsis",
+          }}
+        >
+          <Typography.Text>{`${taskDetails.name}`}</Typography.Text>
+        </Space>
       </Space>
       <div
         style={{
