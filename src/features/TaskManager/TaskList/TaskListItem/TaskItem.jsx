@@ -178,9 +178,9 @@ const TaskItem = ({
   const [checkBoxContent, setCheckBoxContent] = useState(tick);
 
   const handleClick = (e) => {
-    setCheckBoxContent(tick);
-    setIsChecked(e.checked);
     setShowCheckBoxMenu(false);
+    setCheckBoxContent(tick);
+    setIsChecked(e.target.checked);
   };
 
   const handleRightClick = (e) => {
@@ -195,12 +195,11 @@ const TaskItem = ({
   }
 
   const handleMenuClick = (e) => {
+    setIsChecked(true);
     if (e.key === COMPLETED) {
       setCheckBoxContent(tick);
-      setIsChecked(true);
     } else if (e.key === WONT_DO) {
       setCheckBoxContent(cross);
-      setIsChecked(true);
     }
   };
 
