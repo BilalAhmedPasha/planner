@@ -6,6 +6,7 @@ import {
   collection,
   getDocs,
   doc,
+  onSnapshot,
 } from "@firebase/firestore";
 
 export const fetchTasksApi = async (userId) => {
@@ -27,11 +28,14 @@ export const editTaskApi = (userId, modifiedTask, taskId) => {
   return updateDoc(docRef, modifiedTask);
 };
 
-export const deleteTaskApi = (userId, currentTask) => {
+export const softDeleteTaskApi = (userId, currentTask) => {
   const userDocRef = doc(db, "users", userId);
   const taskCollectionRef = collection(userDocRef, "tasks");
   const docRef = doc(taskCollectionRef, currentTask.id);
-  return deleteDoc(docRef);
+  return updateDoc(docRef, {
+    ...currentTask,
+    isDeleted: 1,
+  });
 };
 
 export const completeTaskApi = (userId, taskDetails, isCompleted) => {
@@ -55,3 +59,5 @@ export const wontDoTaskApi = (userId, taskDetails, isWontDo) => {
     isCompleted: isWontDo ? false : taskDetails.isCompleted,
   });
 };
+
+export const hardDeleteTaskApi = async (userId) => {};

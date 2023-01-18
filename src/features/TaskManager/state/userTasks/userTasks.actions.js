@@ -2,21 +2,22 @@ import { SUCCESS } from "../../../../constants/app.constants";
 import {
   fetchTasksApi,
   addTaskApi,
-  deleteTaskApi,
+  softDeleteTaskApi,
   editTaskApi,
   completeTaskApi,
   wontDoTaskApi,
+  hardDeleteTaskApi,
 } from "../../../../services/userTasks.api";
 import {
   FETCH_TASKS,
-  FETCH_TASKS_ERROR,
   FETCH_TASKS_SUCCESS,
+  FETCH_TASKS_ERROR,
   ADD_TASK,
-  ADD_TASK_ERROR,
   ADD_TASK_SUCCESS,
-  DELETE_TASK,
-  DELETE_TASK_ERROR,
-  DELETE_TASK_SUCCESS,
+  ADD_TASK_ERROR,
+  SOFT_DELETE_TASK,
+  SOFT_DELETE_TASK_SUCCESS,
+  SOFT_DELETE_TASK_ERROR,
   EDIT_TASK,
   EDIT_TASK_SUCCESS,
   EDIT_TASK_ERROR,
@@ -26,6 +27,9 @@ import {
   WONT_DO_TASK,
   WONT_DO_TASK_SUCCESS,
   WONT_DO_TASK_ERROR,
+  HARD_DELETE_TASK,
+  HARD_DELETE_TASK_SUCCESS,
+  HARD_DELETE_TASK_ERROR,
 } from "./userTasks.reducer";
 
 export const fetchTasks = () => ({
@@ -74,19 +78,19 @@ export const editTaskFailure = (error) => ({
   payload: { error },
 });
 
-export const deleteTask = (payload) => ({
-  type: DELETE_TASK,
+export const softDeleteTask = (payload) => ({
+  type: SOFT_DELETE_TASK,
   payload,
 });
 
-export const deleteTaskSuccess = ({ response }) => ({
-  type: DELETE_TASK_SUCCESS,
+export const softDeleteTaskSuccess = ({ response }) => ({
+  type: SOFT_DELETE_TASK_SUCCESS,
   payload: response,
   success: SUCCESS,
 });
 
-export const deleteTaskFailure = (error) => ({
-  type: DELETE_TASK_ERROR,
+export const softDeleteTaskFailure = (error) => ({
+  type: SOFT_DELETE_TASK_ERROR,
   payload: { error },
 });
 
@@ -119,6 +123,21 @@ export const wontDoTaskSuccess = ({ response }) => ({
 
 export const wontDoTaskFailure = (error) => ({
   type: WONT_DO_TASK_ERROR,
+  payload: { error },
+});
+
+export const hardDeleteTask = (payload) => ({
+  type: HARD_DELETE_TASK,
+  payload,
+});
+
+export const hardDeleteTaskSuccess = () => ({
+  type: HARD_DELETE_TASK_SUCCESS,
+  success: SUCCESS,
+});
+
+export const hardDeleteTaskFailure = (error) => ({
+  type: HARD_DELETE_TASK_ERROR,
   payload: { error },
 });
 
@@ -166,19 +185,20 @@ export const editTaskAction =
     }
   };
 
-export const deleteTaskAction = (userId, currentTask) => async (dispatch) => {
-  dispatch(deleteTask());
-  try {
-    await deleteTaskApi(userId, currentTask);
-    return dispatch(
-      deleteTaskSuccess({
-        response: { id: currentTask.id },
-      })
-    );
-  } catch (error) {
-    return dispatch(deleteTaskFailure(error));
-  }
-};
+export const softDeleteTaskAction =
+  (userId, currentTask) => async (dispatch) => {
+    dispatch(softDeleteTask());
+    try {
+      await softDeleteTaskApi(userId, currentTask);
+      return dispatch(
+        softDeleteTaskSuccess({
+          response: { id: currentTask.id },
+        })
+      );
+    } catch (error) {
+      return dispatch(softDeleteTaskFailure(error));
+    }
+  };
 
 export const completeTaskAction =
   (userId, taskDetails, isCompleted) => async (dispatch) => {
@@ -209,3 +229,13 @@ export const wontDoTaskAction =
       return dispatch(wontDoTaskFailure(error));
     }
   };
+
+export const hardDeleteTaskAction = (userId) => async (dispatch) => {
+  dispatch(hardDeleteTask());
+  try {
+    await hardDeleteTaskApi(userId);
+    return dispatch(hardDeleteTaskSuccess());
+  } catch (error) {
+    return dispatch(hardDeleteTaskFailure(error));
+  }
+};

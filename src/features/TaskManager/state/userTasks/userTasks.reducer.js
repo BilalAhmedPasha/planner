@@ -10,9 +10,9 @@ export const EDIT_TASK = "EDIT_TASK";
 export const EDIT_TASK_SUCCESS = "EDIT_TASK_SUCCESS";
 export const EDIT_TASK_ERROR = "EDIT_TASK_ERROR";
 
-export const DELETE_TASK = "DELETE_TASK";
-export const DELETE_TASK_SUCCESS = "DELETE_TASK_SUCCESS";
-export const DELETE_TASK_ERROR = "DELETE_TASK_ERROR";
+export const SOFT_DELETE_TASK = "SOFT_DELETE_TASK";
+export const SOFT_DELETE_TASK_SUCCESS = "SOFT_DELETE_TASK_SUCCESS";
+export const SOFT_DELETE_TASK_ERROR = "SOFT_DELETE_TASK_ERROR";
 
 export const COMPLETE_TASK = "COMPLETE_TASK";
 export const COMPLETE_TASK_SUCCESS = "COMPLETE_TASK_SUCCESS";
@@ -21,6 +21,10 @@ export const COMPLETE_TASK_ERROR = "COMPLETE_TASK_ERROR";
 export const WONT_DO_TASK = "WONT_DO_TASK";
 export const WONT_DO_TASK_SUCCESS = "WONT_DO_TASK_SUCCESS";
 export const WONT_DO_TASK_ERROR = "WONT_DO_TASK_ERROR";
+
+export const HARD_DELETE_TASK = "HARD_DELETE_TASK";
+export const HARD_DELETE_TASK_SUCCESS = "HARD_DELETE_TASK_SUCCESS";
+export const HARD_DELETE_TASK_ERROR = "HARD_DELETE_TASK_ERROR";
 
 export const INITIAL_STATE = {
   isLoadingTasks: false,
@@ -43,9 +47,9 @@ const modifyTasksAfterEdit = ({ currentTasks, editedTask }) => {
   );
 };
 
-const modifyTasksAfterDelete = ({ currentTasks, deletedTask }) => {
-  return currentTasks.filter((each) => {
-    return each.id !== deletedTask.id;
+const modifyTasksAfterSoftDelete = ({ currentTasks, deletedTask }) => {
+  return currentTasks.map((each) => {
+    return each.id === deletedTask.id ? { ...each, isDeleted: 1 } : each;
   });
 };
 
@@ -77,6 +81,19 @@ const modifyTasksAfterWontDo = ({ currentTasks, wontDoTaskId, isWontDo }) => {
       : each
   );
   return newArr;
+};
+
+const modifyTasksAfterHardDelete = ({ currentTasks }) => {
+  // return currentTasks.filter((each) => {
+  //   return each.isDeleted === 0;
+  // });
+  return currentTasks;
+};
+
+const countRemainingTasks = ({ currentTasks }) => {
+  return currentTasks.filter((each) => {
+    return each.isDeleted === 0;
+  }).length;
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -150,28 +167,28 @@ const reducer = (state = INITIAL_STATE, action) => {
       };
     }
 
-    case DELETE_TASK: {
+    case SOFT_DELETE_TASK: {
       return fetchLoadingState({ state });
     }
 
-    case DELETE_TASK_SUCCESS: {
+    case SOFT_DELETE_TASK_SUCCESS: {
       return {
         ...state,
         isLoadingTasks: false,
-        deleteTaskSuccess: true,
+        softDeleteTaskSuccess: true,
         totalTasks: state.totalTasks > 0 ? state.totalTasks - 1 : 0,
-        tasks: modifyTasksAfterDelete({
+        tasks: modifyTasksAfterSoftDelete({
           currentTasks: state.tasks,
           deletedTask: action.payload,
         }),
       };
     }
 
-    case DELETE_TASK_ERROR: {
+    case SOFT_DELETE_TASK_ERROR: {
       return {
         ...state,
         error: action.payload.error,
-        deleteTaskSuccess: false,
+        softDeleteTaskSuccess: false,
         isLoadingTasks: false,
       };
     }
@@ -224,6 +241,31 @@ const reducer = (state = INITIAL_STATE, action) => {
         ...state,
         error: action.payload.error,
         wontDoTaskSuccess: false,
+        isLoadingTasks: false,
+      };
+    }
+
+    case HARD_DELETE_TASK: {
+      return fetchLoadingState({ state });
+    }
+
+    case HARD_DELETE_TASK_SUCCESS: {
+      return {
+        ...state,
+        isLoadingTasks: false,
+        hardDeleteTaskSuccess: true,
+        totalTasks: countRemainingTasks({ currentTasks: state.tasks }),
+        tasks: modifyTasksAfterHardDelete({
+          currentTasks: state.tasks,
+        }),
+      };
+    }
+
+    case HARD_DELETE_TASK_ERROR: {
+      return {
+        ...state,
+        error: action.payload.error,
+        hardDeleteTaskSuccess: false,
         isLoadingTasks: false,
       };
     }

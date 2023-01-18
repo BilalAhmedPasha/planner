@@ -27,7 +27,7 @@ import { HIGH, LOW, MEDIUM } from "../../../../constants/priority.constants";
 import { useDispatch } from "react-redux";
 import {
   completeTaskAction,
-  deleteTaskAction,
+  softDeleteTaskAction,
   wontDoTaskAction,
 } from "../../state/userTasks/userTasks.actions";
 import { useState } from "react";
@@ -116,11 +116,11 @@ const TaskItem = ({
 }) => {
   const { confirm } = Modal;
 
-  const showDeleteConfirm = ({
+  const showSoftDeleteConfirm = ({
     content,
-    handleDelete,
+    handleSoftDelete,
     currentItem,
-    deleteAction,
+    softDeleteAction,
     successMessage,
     failureMessage,
   }) => {
@@ -133,9 +133,9 @@ const TaskItem = ({
       okType: "danger",
       cancelText: "Cancel",
       onOk() {
-        handleDelete({
+        handleSoftDelete({
           currentItem: currentItem,
-          deleteAction: deleteAction,
+          softDeleteAction: softDeleteAction,
           successMessage: successMessage,
           failureMessage: failureMessage,
         });
@@ -147,14 +147,14 @@ const TaskItem = ({
   };
 
   const dispatch = useDispatch();
-  const deleteSuccess = ({ messageText }) => {
+  const softDeleteSuccess = ({ messageText }) => {
     messageApi.open({
       type: "success",
       content: messageText,
       duration: 3,
     });
   };
-  const deleteFailed = ({ messageText }) => {
+  const softDeleteFailed = ({ messageText }) => {
     messageApi.open({
       type: "error",
       content: messageText,
@@ -162,17 +162,17 @@ const TaskItem = ({
     });
   };
 
-  const handleDelete = ({
+  const handleSoftDelete = ({
     currentItem,
-    deleteAction,
+    softDeleteAction,
     successMessage,
     failureMessage,
   }) => {
-    dispatch(deleteAction(user.uid, currentItem)).then((response) => {
+    dispatch(softDeleteAction(user.uid, currentItem)).then((response) => {
       if (response.success === SUCCESS) {
-        deleteSuccess({ messageText: successMessage });
+        softDeleteSuccess({ messageText: successMessage });
       } else {
-        deleteFailed({ messageText: failureMessage });
+        softDeleteFailed({ messageText: failureMessage });
       }
     });
   };
@@ -303,11 +303,11 @@ const TaskItem = ({
           icon={<DeleteOutlined />}
           size="small"
           onClick={(e) => {
-            showDeleteConfirm({
+            showSoftDeleteConfirm({
               content: "Delete this task?",
-              handleDelete: handleDelete,
+              handleSoftDelete: handleSoftDelete,
               currentItem: taskDetails,
-              deleteAction: deleteTaskAction,
+              softDeleteAction: softDeleteTaskAction,
               successMessage: "Task deleted",
               failureMessage: "Failed to delete task",
             });

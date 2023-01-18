@@ -65,7 +65,7 @@ const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
       isCompleted: false,
       isCompletedMap: {},
       isWontDo: false,
-      isDeleted: false,
+      isDeleted: 0,
       completedTime: null,
       progress: 0,
       parentTaskId: null,

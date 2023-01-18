@@ -1,6 +1,15 @@
-import { Button, Layout, message, Space, Spin, theme, Typography } from "antd";
+import {
+  Button,
+  Layout,
+  message,
+  Modal,
+  Space,
+  Spin,
+  theme,
+  Typography,
+} from "antd";
 import { useCallback, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../../components/Loading";
 import {
   ALL,
@@ -10,6 +19,7 @@ import {
   LISTS,
   LOADER_SIZE,
   NEXT_7_DAYS,
+  SUCCESS,
   TAGS,
   TODAY,
   TOMORROW,
@@ -23,6 +33,8 @@ import {
   PlusOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  ClearOutlined,
+  ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import dayjs from "../../../utils/dateTime.uitls";
 import {
@@ -37,6 +49,17 @@ import {
   getWontDoTasks,
 } from "./TaskListItem/TaskUtils";
 import { TIME_ZONE } from "../../../constants/dateTime.constants";
+import { hardDeleteTaskAction } from "../state/userTasks/userTasks.actions";
+
+const showAddForSections = [
+  ALL,
+  INBOX,
+  TODAY,
+  TOMORROW,
+  NEXT_7_DAYS,
+  LISTS,
+  TAGS,
+];
 
 const TaskListContainer = ({
   user,
@@ -98,6 +121,67 @@ const TaskListContainer = ({
     }
   }, [currentSection, tasks, computeSectionData]);
 
+  const { confirm } = Modal;
+  const deleteSuccess = ({ messageText }) => {
+    messageApi.open({
+      type: "success",
+      content: messageText,
+      duration: 3,
+    });
+  };
+  const deleteFailed = ({ messageText }) => {
+    messageApi.open({
+      type: "error",
+      content: messageText,
+      duration: 3,
+    });
+  };
+
+  const dispatch = useDispatch();
+  const handleDelete = ({ successMessage, failureMessage }) => {
+    dispatch(hardDeleteTaskAction(user.uid)).then((response) => {
+      if (response.success === SUCCESS) {
+        deleteSuccess({ messageText: successMessage });
+      } else {
+        deleteFailed({ messageText: failureMessage });
+      }
+    });
+  };
+  const showDeleteConfirm = ({
+    content,
+    handleDelete,
+    successMessage,
+    failureMessage,
+  }) => {
+    confirm({
+      icon: <ExclamationCircleOutlined />,
+      title: "Delete",
+      content: content,
+      centered: true,
+      okText: "Delete",
+      okType: "danger",
+      cancelText: "Cancel",
+      onOk() {
+        handleDelete({
+          successMessage: successMessage,
+          failureMessage: failureMessage,
+        });
+      },
+      onCancel() {
+        Modal.destroyAll();
+      },
+    });
+  };
+
+  const handlePermanentDelete = (e) => {
+    showDeleteConfirm({
+      successMessage: "Tasks deleted",
+      failureMessage: "Failed to delete tasks",
+      content: "These tasks will be permanantly deleted. Delete the tasks?",
+      handleDelete: handleDelete,
+    });
+  };
+
   return (
     <Layout.Content
       style={{
@@ -137,12 +221,23 @@ const TaskListContainer = ({
               {currentSection?.label}
             </Typography.Text>
           </Space>
-          <Button
-            size="small"
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={handleAddTask}
-          />
+          {(showAddForSections.includes(currentSection?.id) ||
+            showAddForSections.includes(currentSection?.type)) && (
+            <Button
+              size="small"
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={handleAddTask}
+            />
+          )}
+          {currentSection?.id === DELETED && (
+            <Button
+              size="large"
+              type="text"
+              icon={<ClearOutlined />}
+              onClick={handlePermanentDelete}
+            />
+          )}
         </div>
         {openAddTaskDialog && (
           <TaskDialogForm
