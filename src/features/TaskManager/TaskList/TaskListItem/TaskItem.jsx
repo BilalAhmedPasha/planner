@@ -173,8 +173,9 @@ const TaskItem = ({
     });
   };
 
-  const [checkBoxContent, setCheckBoxContent] = useState(tick);
+  const [showCheckBoxMenu, setShowCheckBoxMenu] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [checkBoxContent, setCheckBoxContent] = useState(tick);
 
   const handleClick = (e) => {
     setCheckBoxContent(tick);
@@ -186,8 +187,6 @@ const TaskItem = ({
     e.preventDefault();
     setShowCheckBoxMenu((prevState) => !prevState);
   };
-
-  const [showCheckBoxMenu, setShowCheckBoxMenu] = useState(false);
 
   function keyPress(e) {
     if (e.key === "Escape") {
@@ -205,22 +204,16 @@ const TaskItem = ({
     }
   };
 
-  const items = [
+  const checkBoxMenuItems = [
     {
       label: "Complete",
       key: COMPLETED,
-      onClick: handleMenuClick,
     },
     {
       label: "Won't Do",
       key: WONT_DO,
-      onClick: handleMenuClick,
     },
   ];
-
-  const menuProps = {
-    items,
-  };
 
   return (
     <div
@@ -235,7 +228,7 @@ const TaskItem = ({
     >
       <Space size="middle">
         <Dropdown
-          menu={menuProps}
+          menu={{ items: checkBoxMenuItems, onClick: handleMenuClick }}
           placement="bottomLeft"
           open={showCheckBoxMenu}
         >

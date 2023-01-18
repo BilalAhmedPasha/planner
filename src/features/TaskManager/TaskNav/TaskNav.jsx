@@ -69,6 +69,17 @@ const renderMenuItems = (itemsArray) => {
   });
 };
 
+const moreMenuItemList = [
+  {
+    label: "Edit",
+    key: EDIT,
+  },
+  {
+    label: "Delete",
+    key: DELETE,
+  },
+];
+
 const renderSubMenuItems = ({
   items,
   itemCount,
@@ -119,12 +130,10 @@ const renderSubMenuItems = ({
               <Space>
                 {renderColorDot(each.color)}
                 <Dropdown
-                  overlay={() =>
-                    moreMenuItems({
-                      onMoreClick: onMoreClick,
-                      currentItem: each,
-                    })
-                  }
+                  menu={{
+                    items: moreMenuItemList,
+                    onClick: (e) => onMoreClick({ e, currentItem: each }),
+                  }}
                   trigger={["hover"]}
                   placement="bottomLeft"
                 >
