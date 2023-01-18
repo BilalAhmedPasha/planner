@@ -1,4 +1,4 @@
-import { Badge, Button, Modal, Space, Tag, Typography } from "antd";
+import { Badge, Button, Dropdown, Modal, Space, Tag, Typography } from "antd";
 import {
   SyncOutlined,
   NodeExpandOutlined,
@@ -16,50 +16,19 @@ import {
   NONE_BG_COLOR,
   NONE_COLOR,
 } from "../../../../constants/color.constants";
-import { INBOX, SUCCESS } from "../../../../constants/app.constants";
+import {
+  COMPLETED,
+  INBOX,
+  SUCCESS,
+  WONT_DO,
+} from "../../../../constants/app.constants";
 import dayjs from "../../../../utils/dateTime.uitls";
 import { HIGH, LOW, MEDIUM } from "../../../../constants/priority.constants";
 import { useDispatch } from "react-redux";
 import { deleteTaskAction } from "../../state/userTasks/userTasks.actions";
-import styled from "styled-components";
 import { useState } from "react";
 import { cross, tick } from "../../../../constants/checkBox.constants";
-
-const CheckBoxInput = styled.input.attrs({ type: "checkbox" })`
-  position: relative;
-  cursor: pointer;
-  &:hover::before {
-    background-color: ${(props) => props.hoverBGColor};
-  }
-
-  &:before {
-    position: absolute;
-    content: "";
-    height: 1rem;
-    width: 1rem;
-    background-color: #fff;
-    border: 1.5px solid ${(props) => props.checkBoxColor};
-    border-radius: 20%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    cursor: pointer;
-    transition: 0.3s all ease;
-  }
-
-  &:checked::before {
-    background-color: ${(props) => props.backgroundColor};
-    border: 1.5px solid ${(props) => props.borderColor};
-  }
-
-  &:checked::after {
-    position: absolute;
-    content: ${(props) => props.uniCode};
-    font-size: 0.9rem;
-    margin-top: -0.1rem;
-    color: white;
-  }
-`;
+import CheckBoxInput from "../../../../components/CheckBox";
 
 const getPriorityColor = ({ item }) => {
   if (item.priority === HIGH) {
@@ -204,7 +173,54 @@ const TaskItem = ({
     });
   };
 
-  const [checkBoxContent, setCheckBoxContent] = useState(cross);
+  const [checkBoxContent, setCheckBoxContent] = useState(tick);
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleClick = (e) => {
+    setCheckBoxContent(tick);
+    setIsChecked(e.checked);
+    setShowCheckBoxMenu(false);
+  };
+
+  const handleRightClick = (e) => {
+    e.preventDefault();
+    setShowCheckBoxMenu((prevState) => !prevState);
+  };
+
+  const [showCheckBoxMenu, setShowCheckBoxMenu] = useState(false);
+
+  function keyPress(e) {
+    if (e.key === "Escape") {
+      setShowCheckBoxMenu(false);
+    }
+  }
+
+  const handleMenuClick = (e) => {
+    if (e.key === COMPLETED) {
+      setCheckBoxContent(tick);
+      setIsChecked(true);
+    } else if (e.key === WONT_DO) {
+      setCheckBoxContent(cross);
+      setIsChecked(true);
+    }
+  };
+
+  const items = [
+    {
+      label: "Complete",
+      key: COMPLETED,
+      onClick: handleMenuClick,
+    },
+    {
+      label: "Won't Do",
+      key: WONT_DO,
+      onClick: handleMenuClick,
+    },
+  ];
+
+  const menuProps = {
+    items,
+  };
 
   return (
     <div
@@ -214,18 +230,27 @@ const TaskItem = ({
         alignItems: "center",
         justifyContent: "space-between",
       }}
+      onClick={() => setShowCheckBoxMenu(false)}
+      onKeyDown={keyPress}
     >
       <Space size="middle">
-        <CheckBoxInput
-          // eslint-disable-next-line no-octal-escape
-          // uniCode="'✕'"
+        <Dropdown
+          menu={menuProps}
+          placement="bottomLeft"
+          open={showCheckBoxMenu}
+        >
+          <CheckBoxInput
+            uniCode={checkBoxContent}
+            backgroundColor={getPriorityColor({ item: taskDetails }).color}
+            borderColor={getPriorityColor({ item: taskDetails }).color}
+            checkBoxColor={getPriorityColor({ item: taskDetails }).color}
+            hoverBGColor={getPriorityColor({ item: taskDetails }).bgColor}
+            onChange={handleClick}
+            onContextMenu={handleRightClick}
+            checked={isChecked}
+          />
+        </Dropdown>
 
-          uniCode={checkBoxContent}
-          backgroundColor={getPriorityColor({ item: taskDetails }).color}
-          borderColor={getPriorityColor({ item: taskDetails }).color}
-          checkBoxColor={getPriorityColor({ item: taskDetails }).color}
-          hoverBGColor={getPriorityColor({ item: taskDetails }).bgColor}
-        />
         <Space
           size="middle"
           style={{

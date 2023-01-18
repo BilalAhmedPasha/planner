@@ -195,6 +195,7 @@ const TaskNav = ({
   };
 
   const handleMoreMenu = ({ e, currentItem }) => {
+    e.domEvent.stopPropagation();
     if (e.key === DELETE) {
       if (e.keyPath.includes(TAGS)) {
         showDeleteConfirm({
