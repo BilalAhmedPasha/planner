@@ -84,10 +84,9 @@ const modifyTasksAfterWontDo = ({ currentTasks, wontDoTaskId, isWontDo }) => {
 };
 
 const modifyTasksAfterHardDelete = ({ currentTasks }) => {
-  // return currentTasks.filter((each) => {
-  //   return each.isDeleted === 0;
-  // });
-  return currentTasks;
+  return currentTasks.filter((each) => {
+    return each.isDeleted === 0;
+  });
 };
 
 const countRemainingTasks = ({ currentTasks }) => {

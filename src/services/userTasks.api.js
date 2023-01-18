@@ -6,7 +6,8 @@ import {
   collection,
   getDocs,
   doc,
-  onSnapshot,
+  query,
+  where,
 } from "@firebase/firestore";
 
 export const fetchTasksApi = async (userId) => {
@@ -60,4 +61,14 @@ export const wontDoTaskApi = (userId, taskDetails, isWontDo) => {
   });
 };
 
-export const hardDeleteTaskApi = async (userId) => {};
+export const hardDeleteTaskApi = async (userId) => {
+  const userDocRef = doc(db, "users", userId);
+  const taskCollectionRef = collection(userDocRef, "tasks");
+  const q = query(taskCollectionRef, where("isDeleted", "==", 1));
+  const snapShot = await getDocs(q);
+  const results = snapShot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+  results.forEach(async (result) => {
+    const docRef = doc(db, "users", userId, "tasks", result.id);
+    await deleteDoc(docRef);
+  });
+};
