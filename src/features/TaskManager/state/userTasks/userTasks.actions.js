@@ -4,6 +4,8 @@ import {
   addTaskApi,
   deleteTaskApi,
   editTaskApi,
+  completeTaskApi,
+  wontDoTaskApi,
 } from "../../../../services/userTasks.api";
 import {
   FETCH_TASKS,
@@ -18,6 +20,12 @@ import {
   EDIT_TASK,
   EDIT_TASK_SUCCESS,
   EDIT_TASK_ERROR,
+  COMPLETE_TASK,
+  COMPLETE_TASK_SUCCESS,
+  COMPLETE_TASK_ERROR,
+  WONT_DO_TASK,
+  WONT_DO_TASK_SUCCESS,
+  WONT_DO_TASK_ERROR,
 } from "./userTasks.reducer";
 
 export const fetchTasks = () => ({
@@ -82,6 +90,38 @@ export const deleteTaskFailure = (error) => ({
   payload: { error },
 });
 
+export const completeTask = (payload) => ({
+  type: COMPLETE_TASK,
+  payload,
+});
+
+export const completeTaskSuccess = ({ response }) => ({
+  type: COMPLETE_TASK_SUCCESS,
+  payload: response,
+  success: SUCCESS,
+});
+
+export const completeTaskFailure = (error) => ({
+  type: COMPLETE_TASK_ERROR,
+  payload: { error },
+});
+
+export const wontDoTask = (payload) => ({
+  type: WONT_DO_TASK,
+  payload,
+});
+
+export const wontDoTaskSuccess = ({ response }) => ({
+  type: WONT_DO_TASK_SUCCESS,
+  payload: response,
+  success: SUCCESS,
+});
+
+export const wontDoTaskFailure = (error) => ({
+  type: WONT_DO_TASK_ERROR,
+  payload: { error },
+});
+
 export const fetchTasksAction = (userId) => async (dispatch) => {
   dispatch(fetchTasks());
   try {
@@ -139,3 +179,33 @@ export const deleteTaskAction = (userId, currentTask) => async (dispatch) => {
     return dispatch(deleteTaskFailure(error));
   }
 };
+
+export const completeTaskAction =
+  (userId, taskDetails, isCompleted) => async (dispatch) => {
+    dispatch(completeTask());
+    try {
+      await completeTaskApi(userId, taskDetails, isCompleted);
+      return dispatch(
+        completeTaskSuccess({
+          response: { completedTaskId: taskDetails.id, isCompleted },
+        })
+      );
+    } catch (error) {
+      return dispatch(completeTaskFailure(error));
+    }
+  };
+
+export const wontDoTaskAction =
+  (userId, taskDetails, isWontDo) => async (dispatch) => {
+    dispatch(wontDoTask());
+    try {
+      await wontDoTaskApi(userId, taskDetails, isWontDo);
+      return dispatch(
+        wontDoTaskSuccess({
+          response: { wontDoTaskId: taskDetails.id, isWontDo },
+        })
+      );
+    } catch (error) {
+      return dispatch(wontDoTaskFailure(error));
+    }
+  };

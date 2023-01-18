@@ -14,6 +14,14 @@ export const DELETE_TASK = "DELETE_TASK";
 export const DELETE_TASK_SUCCESS = "DELETE_TASK_SUCCESS";
 export const DELETE_TASK_ERROR = "DELETE_TASK_ERROR";
 
+export const COMPLETE_TASK = "COMPLETE_TASK";
+export const COMPLETE_TASK_SUCCESS = "COMPLETE_TASK_SUCCESS";
+export const COMPLETE_TASK_ERROR = "COMPLETE_TASK_ERROR";
+
+export const WONT_DO_TASK = "WONT_DO_TASK";
+export const WONT_DO_TASK_SUCCESS = "WONT_DO_TASK_SUCCESS";
+export const WONT_DO_TASK_ERROR = "WONT_DO_TASK_ERROR";
+
 export const INITIAL_STATE = {
   isLoadingTasks: false,
   totalTasks: 0,
@@ -39,6 +47,36 @@ const modifyTasksAfterDelete = ({ currentTasks, deletedTask }) => {
   return currentTasks.filter((each) => {
     return each.id !== deletedTask.id;
   });
+};
+
+const modifyTasksAfterComplete = ({
+  currentTasks,
+  completedTaskId,
+  isCompleted,
+}) => {
+  const newArr = currentTasks.map((each) =>
+    each.id === completedTaskId
+      ? {
+          ...each,
+          isCompleted: isCompleted,
+          isWontDo: isCompleted ? false : each.isWontDo,
+        }
+      : each
+  );
+  return newArr;
+};
+
+const modifyTasksAfterWontDo = ({ currentTasks, wontDoTaskId, isWontDo }) => {
+  const newArr = currentTasks.map((each) =>
+    each.id === wontDoTaskId
+      ? {
+          ...each,
+          isWontDo: isWontDo,
+          isCompleted: isWontDo ? false : each.isCompleted,
+        }
+      : each
+  );
+  return newArr;
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -134,6 +172,58 @@ const reducer = (state = INITIAL_STATE, action) => {
         ...state,
         error: action.payload.error,
         deleteTaskSuccess: false,
+        isLoadingTasks: false,
+      };
+    }
+
+    case COMPLETE_TASK: {
+      return fetchLoadingState({ state });
+    }
+
+    case COMPLETE_TASK_SUCCESS: {
+      return {
+        ...state,
+        isLoadingTasks: false,
+        completeTaskSuccess: true,
+        tasks: modifyTasksAfterComplete({
+          currentTasks: state.tasks,
+          completedTaskId: action.payload.completedTaskId,
+          isCompleted: action.payload.isCompleted,
+        }),
+      };
+    }
+
+    case COMPLETE_TASK_ERROR: {
+      return {
+        ...state,
+        error: action.payload.error,
+        completeTaskSuccess: false,
+        isLoadingTasks: false,
+      };
+    }
+
+    case WONT_DO_TASK: {
+      return fetchLoadingState({ state });
+    }
+
+    case WONT_DO_TASK_SUCCESS: {
+      return {
+        ...state,
+        isLoadingTasks: false,
+        wontDoTaskSuccess: true,
+        tasks: modifyTasksAfterWontDo({
+          currentTasks: state.tasks,
+          wontDoTaskId: action.payload.wontDoTaskId,
+          isWontDo: action.payload.isWontDo,
+        }),
+      };
+    }
+
+    case WONT_DO_TASK_ERROR: {
+      return {
+        ...state,
+        error: action.payload.error,
+        wontDoTaskSuccess: false,
         isLoadingTasks: false,
       };
     }

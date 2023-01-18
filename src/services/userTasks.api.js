@@ -33,3 +33,25 @@ export const deleteTaskApi = (userId, currentTask) => {
   const docRef = doc(taskCollectionRef, currentTask.id);
   return deleteDoc(docRef);
 };
+
+export const completeTaskApi = (userId, taskDetails, isCompleted) => {
+  const userDocRef = doc(db, "users", userId);
+  const taskCollectionRef = collection(userDocRef, "tasks");
+  const docRef = doc(taskCollectionRef, taskDetails.id);
+  return updateDoc(docRef, {
+    ...taskDetails,
+    isCompleted: isCompleted,
+    isWontDo: isCompleted ? false : taskDetails.isWontDo,
+  });
+};
+
+export const wontDoTaskApi = (userId, taskDetails, isWontDo) => {
+  const userDocRef = doc(db, "users", userId);
+  const taskCollectionRef = collection(userDocRef, "tasks");
+  const docRef = doc(taskCollectionRef, taskDetails.id);
+  return updateDoc(docRef, {
+    ...taskDetails,
+    isWontDo: isWontDo,
+    isCompleted: isWontDo ? false : taskDetails.isCompleted,
+  });
+};

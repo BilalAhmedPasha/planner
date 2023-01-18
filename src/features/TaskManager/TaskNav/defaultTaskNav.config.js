@@ -63,7 +63,7 @@ export const defaultTaskNav2 = [
     label: "Won't Do",
     icon: CloseSquareFilled,
     redirectUrl: `/tasks/${WONT_DO}`,
-    id: "wontDo",
+    id: "wont-do",
   },
   {
     label: "Deleted",

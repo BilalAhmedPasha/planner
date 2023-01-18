@@ -25,7 +25,11 @@ import {
 import dayjs from "../../../../utils/dateTime.uitls";
 import { HIGH, LOW, MEDIUM } from "../../../../constants/priority.constants";
 import { useDispatch } from "react-redux";
-import { deleteTaskAction } from "../../state/userTasks/userTasks.actions";
+import {
+  completeTaskAction,
+  deleteTaskAction,
+  wontDoTaskAction,
+} from "../../state/userTasks/userTasks.actions";
 import { useState } from "react";
 import { cross, tick } from "../../../../constants/checkBox.constants";
 import CheckBoxInput from "../../../../components/CheckBox";
@@ -51,7 +55,7 @@ const renderListName = ({ item, lists }) => {
 };
 
 const renderTags = ({ item, tags }) => {
-  if (item.tagIds.length > 0) {
+  if (item?.tagIds?.length > 0) {
     const tagId = item.tagIds[0];
     const tagDetails = tags.find((each) => each.id === tagId);
     return (
@@ -174,13 +178,25 @@ const TaskItem = ({
   };
 
   const [showCheckBoxMenu, setShowCheckBoxMenu] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
-  const [checkBoxContent, setCheckBoxContent] = useState(tick);
+  const [checkBoxContent, setCheckBoxContent] = useState(
+    taskDetails.isCompleted ? tick : cross
+  );
+
+  const markTaskComplete = (isCompleted) => {
+    return dispatch(completeTaskAction(user.uid, taskDetails, isCompleted));
+  };
+
+  const markTaskWontDo = (isWontDo) => {
+    return dispatch(wontDoTaskAction(user.uid, taskDetails, isWontDo));
+  };
 
   const handleClick = (e) => {
-    setShowCheckBoxMenu(false);
-    setCheckBoxContent(tick);
-    setIsChecked(e.target.checked);
+    markTaskComplete(e.target.checked).then((response) => {
+      if (response.success === SUCCESS) {
+        setShowCheckBoxMenu(false);
+        setCheckBoxContent(tick);
+      }
+    });
   };
 
   const handleRightClick = (e) => {
@@ -195,11 +211,20 @@ const TaskItem = ({
   }
 
   const handleMenuClick = (e) => {
-    setIsChecked(true);
     if (e.key === COMPLETED) {
-      setCheckBoxContent(tick);
+      markTaskComplete(!taskDetails.isCompleted).then((response) => {
+        if (response.success === SUCCESS) {
+          setShowCheckBoxMenu(false);
+          setCheckBoxContent(tick);
+        }
+      });
     } else if (e.key === WONT_DO) {
-      setCheckBoxContent(cross);
+      markTaskWontDo(!taskDetails.isWontDo).then((response) => {
+        if (response.success === SUCCESS) {
+          setShowCheckBoxMenu(false);
+          setCheckBoxContent(cross);
+        }
+      });
     }
   };
 
@@ -239,7 +264,7 @@ const TaskItem = ({
             hoverBGColor={getPriorityColor({ item: taskDetails }).bgColor}
             onChange={handleClick}
             onContextMenu={handleRightClick}
-            checked={isChecked}
+            checked={taskDetails.isCompleted || taskDetails.isWontDo}
           />
         </Dropdown>
 
