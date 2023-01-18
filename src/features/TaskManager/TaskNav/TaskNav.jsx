@@ -50,15 +50,6 @@ const renderColorDot = (color) => {
   );
 };
 
-const moreMenuItems = ({ onMoreClick, currentItem }) => {
-  return (
-    <Menu onClick={(e) => onMoreClick({ e, currentItem })}>
-      <Menu.Item key="edit">{"Edit"}</Menu.Item>
-      <Menu.Item key="delete">{"Delete"}</Menu.Item>
-    </Menu>
-  );
-};
-
 const renderMenuItems = (itemsArray) => {
   return itemsArray.map((each) => {
     return (
