@@ -8,7 +8,7 @@ const ItemTypes = {
 };
 
 const style = {
-  padding: "0rem 1rem",
+  padding: "0rem 0.5rem",
 };
 
 const Container = ({ user, tasks, selectedCardId, setSelectedCardId }) => {

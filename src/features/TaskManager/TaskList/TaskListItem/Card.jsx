@@ -10,8 +10,8 @@ const ItemTypes = {
 };
 
 const style = {
-  padding: "1rem 1rem",
-  margin: "0.5rem 0rem",
+  padding: "0.75rem 1rem",
+  margin: "0.25rem 0rem",
   boxShadow: "0px 2px 8px 0px #E8E8E8",
 };
 const Card = ({
