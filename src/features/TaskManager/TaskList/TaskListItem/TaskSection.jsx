@@ -6,6 +6,7 @@ import Card from "./Card";
 const TaskListSection = ({
   sectionTitle,
   sectionTasks,
+  isOpen = false,
   setSectionTasks,
   selectedCardId,
   setSelectedCardId,
@@ -39,27 +40,29 @@ const TaskListSection = ({
   );
 
   return (
-    sectionTasks.length > 0 && (
-      <Collapse ghost={true} style={{ padding: "0rem", margin: "0rem" }}>
-        <Collapse.Panel
-          header={<Typography.Text strong>{sectionTitle}</Typography.Text>}
-          key="1"
-        >
-          {sectionTasks.map((card) => (
-            <Card
-              user={user}
-              messageApi={messageApi}
-              key={card.id}
-              cardDetails={card}
-              moveCard={moveSectionTask}
-              findCard={findSectionTask}
-              selectedCardId={selectedCardId}
-              setSelectedCardId={setSelectedCardId}
-            />
-          ))}
-        </Collapse.Panel>
-      </Collapse>
-    )
+    <Collapse
+      ghost={true}
+      style={{ padding: "0rem", margin: "0rem" }}
+      defaultActiveKey={isOpen ? ["1"] : []}
+    >
+      <Collapse.Panel
+        header={<Typography.Text strong>{sectionTitle}</Typography.Text>}
+        key="1"
+      >
+        {sectionTasks.map((card) => (
+          <Card
+            user={user}
+            messageApi={messageApi}
+            key={card.id}
+            cardDetails={card}
+            moveCard={moveSectionTask}
+            findCard={findSectionTask}
+            selectedCardId={selectedCardId}
+            setSelectedCardId={setSelectedCardId}
+          />
+        ))}
+      </Collapse.Panel>
+    </Collapse>
   );
 };
 
