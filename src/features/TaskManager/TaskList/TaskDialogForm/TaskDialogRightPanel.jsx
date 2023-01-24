@@ -28,7 +28,10 @@ import {
   MEDIUM_COLOR,
   NONE_COLOR,
 } from "../../../../constants/color.constants";
-import { INBOX, MULTI_DATE_AVAILABLE } from "../../../../constants/app.constants";
+import {
+  INBOX,
+  MULTI_DATE_AVAILABLE,
+} from "../../../../constants/app.constants";
 import {
   DATE_FORMAT,
   TIME_FORMAT,
@@ -98,12 +101,14 @@ const TaskDialogRightPanel = ({ form, height }) => {
     }
   };
 
+  const [startDate, setStartDate] = useState(form.getFieldValue("date"));
+  const [isScheduled, setIsScheduled] = useState(
+    form.getFieldValue("date") ? true : false
+  );
   const [isMultiDay, setIsMultiDay] = useState(false);
-  const [isScheduled, setIsScheduled] = useState(false);
   const [isRepeating, setIsRepeating] = useState(false);
   const [showEndByDate, setShowEndByDate] = useState(false);
   const [showEndByRepeatCount, setshowEndByRepeatCount] = useState(false);
-  const [startDate, setStartDate] = useState(form.getFieldValue("date"));
 
   const handleStartDateChange = (e) => {
     setStartDate(e);
@@ -235,25 +240,27 @@ const TaskDialogRightPanel = ({ form, height }) => {
             tagRender={tagRender}
           />
         </Form.Item>
-        {MULTI_DATE_AVAILABLE && <Form.Item>
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <Typography.Text
+        {MULTI_DATE_AVAILABLE && (
+          <Form.Item>
+            <div
               style={{
-                fontSize: "0.9rem",
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "center",
+                justifyContent: "space-between",
               }}
             >
-              {"Multi day task"}
-            </Typography.Text>
-            <Switch onClick={handleIsMultiDaySwitch} />
-          </div>
-        </Form.Item>}
+              <Typography.Text
+                style={{
+                  fontSize: "0.9rem",
+                }}
+              >
+                {"Multi day task"}
+              </Typography.Text>
+              <Switch onClick={handleIsMultiDaySwitch} />
+            </div>
+          </Form.Item>
+        )}
         {!isMultiDay && (
           <Form.Item name="date" label="Schedule">
             <DatePicker
