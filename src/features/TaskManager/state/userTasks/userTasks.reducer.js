@@ -205,6 +205,7 @@ const reducer = (state = INITIAL_STATE, action) => {
           currentTasks: state.tasks,
           completedTaskId: action.payload.completedTaskId,
           isCompleted: action.payload.isCompleted,
+          completedTime: action.payload.markedTime,
         }),
       };
     }
@@ -231,6 +232,7 @@ const reducer = (state = INITIAL_STATE, action) => {
           currentTasks: state.tasks,
           wontDoTaskId: action.payload.wontDoTaskId,
           isWontDo: action.payload.isWontDo,
+          completedTime: action.payload.markedTime,
         }),
       };
     }

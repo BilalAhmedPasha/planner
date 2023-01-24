@@ -1,5 +1,6 @@
 import dayjs from "../../../../utils/dateTime.uitls";
 import { INBOX } from "../../../../constants/app.constants";
+import { TIME_ZONE } from "../../../../constants/dateTime.constants";
 
 const isMarked = (task) => {
   return task.isDeleted;
@@ -25,9 +26,9 @@ export const getInboxTasks = ({ tasks }) => {
 };
 
 export const getTasksByDate = ({ tasks, date }) => {
-  const dateStart = date.startOf("day");
-  const dateEnd = date.endOf("day");
-  const dateTasks = [];
+  const currentDateStart = date.startOf("day");
+  const currentDateEnd = date.endOf("day");
+  const currentDateTasks = [];
   for (let i = 0; i < tasks.length; i++) {
     if (!isMarked(tasks[i])) {
       // calculate taskDate in dayJS
@@ -35,40 +36,44 @@ export const getTasksByDate = ({ tasks, date }) => {
       if (!tasks[i].taskDate) {
         // Not dated tasks
         continue;
-      } else if (dateEnd.isBefore(taskDateStart)) {
+      } else if (currentDateEnd.isBefore(taskDateStart)) {
         // taskDate is future date
         continue;
-      } else if (!tasks[i].isRepeating && dateStart.isSame(taskDateStart)) {
+      } else if (
+        !tasks[i].isRepeating &&
+        currentDateStart.isSame(taskDateStart)
+      ) {
         // taskDate is date
-        dateTasks.push(tasks[i]);
+        currentDateTasks.push(tasks[i]);
       } else if (tasks[i].isRepeating) {
         if (tasks[i].endByDate) {
           // Repeating task end by date
           const taskDateEnd = dayjs(tasks[i].endByDate).endOf("day");
-          dateStart.isSameOrAfter(taskDateStart) &&
-            dateEnd.isSameOrBefore(taskDateEnd) &&
-            dateTasks.push(tasks[i]);
+          currentDateStart.isSameOrAfter(taskDateStart) &&
+            currentDateEnd.isSameOrBefore(taskDateEnd) &&
+            currentDateTasks.push(tasks[i]);
         } else if (tasks[i].endByRepeatCount >= 0) {
           // Repeating task end by count
           const taskDateEnd = taskDateStart
             .add(tasks[i].endByRepeatCount, "day")
             .endOf("day");
-          dateStart.isSameOrAfter(taskDateStart) &&
-            dateEnd.isSameOrBefore(taskDateEnd) &&
-            dateTasks.push(tasks[i]);
+          currentDateStart.isSameOrAfter(taskDateStart) &&
+            currentDateEnd.isSameOrBefore(taskDateEnd) &&
+            currentDateTasks.push(tasks[i]);
         } else {
           // Endless task
-          dateStart.isSameOrAfter(taskDateStart) && dateTasks.push(tasks[i]);
+          currentDateStart.isSameOrAfter(taskDateStart) &&
+            currentDateTasks.push(tasks[i]);
         }
       }
     }
   }
-  return dateTasks;
+  return currentDateTasks;
 };
 
 export const getTasksByNextXDays = ({ tasks, fromDate, count }) => {
-  const startFromDate = fromDate.startOf("day");
-  const endByDate = startFromDate.add(count, "day").endOf("day");
+  const startDate = fromDate.startOf("day");
+  const endDate = startDate.add(count, "day").endOf("day");
   const nextXDayTasks = [];
   for (let i = 0; i < tasks.length; i++) {
     if (!isMarked(tasks[i])) {
@@ -77,13 +82,13 @@ export const getTasksByNextXDays = ({ tasks, fromDate, count }) => {
       if (!tasks[i].taskDate) {
         // Not dated tasks
         continue;
-      } else if (endByDate.isBefore(taskDateStart)) {
+      } else if (endDate.isBefore(taskDateStart)) {
         // taskDate is future date
         continue;
       } else if (
         !tasks[i].isRepeating &&
-        startFromDate.isSameOrBefore(taskDateStart) &&
-        endByDate.isSameOrAfter(taskDateStart)
+        startDate.isSameOrBefore(taskDateStart) &&
+        endDate.isSameOrAfter(taskDateStart)
       ) {
         // taskDate is in given range
         nextXDayTasks.push(tasks[i]);
@@ -92,14 +97,13 @@ export const getTasksByNextXDays = ({ tasks, fromDate, count }) => {
           // Repeating task end by date
           const endDate = dayjs(tasks[i].endByDate).endOf("day");
           if (
-            (startFromDate.isBefore(taskDateStart) &&
-              endByDate.isSameOrAfter(endDate)) ||
-            (startFromDate.isAfter(taskDateStart) &&
-              endByDate.isSameOrBefore(endDate)) ||
-            (startFromDate.isBefore(taskDateStart) &&
-              endByDate.isSameOrBefore(endDate)) ||
-            (startFromDate.isAfter(taskDateStart) &&
-              endByDate.isSameOrAfter(endDate))
+            (startDate.isBefore(taskDateStart) &&
+              endDate.isSameOrAfter(endDate)) ||
+            (startDate.isAfter(taskDateStart) &&
+              endDate.isSameOrBefore(endDate)) ||
+            (startDate.isBefore(taskDateStart) &&
+              endDate.isSameOrBefore(endDate)) ||
+            (startDate.isAfter(taskDateStart) && endDate.isSameOrAfter(endDate))
           ) {
             nextXDayTasks.push(tasks[i]);
           }
@@ -109,20 +113,19 @@ export const getTasksByNextXDays = ({ tasks, fromDate, count }) => {
             .add(tasks[i].endByRepeatCount, "day")
             .endOf("day");
           if (
-            (startFromDate.isBefore(taskDateStart) &&
-              endByDate.isSameOrAfter(endDate)) ||
-            (startFromDate.isAfter(taskDateStart) &&
-              endByDate.isSameOrBefore(endDate)) ||
-            (startFromDate.isBefore(taskDateStart) &&
-              endByDate.isSameOrBefore(endDate)) ||
-            (startFromDate.isAfter(taskDateStart) &&
-              endByDate.isSameOrAfter(endDate))
+            (startDate.isBefore(taskDateStart) &&
+              endDate.isSameOrAfter(endDate)) ||
+            (startDate.isAfter(taskDateStart) &&
+              endDate.isSameOrBefore(endDate)) ||
+            (startDate.isBefore(taskDateStart) &&
+              endDate.isSameOrBefore(endDate)) ||
+            (startDate.isAfter(taskDateStart) && endDate.isSameOrAfter(endDate))
           ) {
             nextXDayTasks.push(tasks[i]);
           }
         } else {
           // Endless task
-          if (endByDate.isSameOrAfter(taskDateStart)) {
+          if (endDate.isSameOrAfter(taskDateStart)) {
             nextXDayTasks.push(tasks[i]);
           }
         }
@@ -190,4 +193,27 @@ export const getByTagId = ({ tasks, tagId }) => {
     }
   }
   return tagTasks;
+};
+
+export const isTaskOverdue = (task) => {
+  const todayTS = dayjs.utc().tz(TIME_ZONE).startOf("day");
+  if (task.isRepeating === false && task.taskDate !== null) {
+    // If scheduled, not repeating task and taskDate.end is before today.start then overdue
+    const taskDateTS = dayjs(task.taskDate).endOf("day");
+    return taskDateTS.isBefore(todayTS);
+  } else if (task.taskDate !== null) {
+    // If scheduled and repeating task
+    if (task.endByDate !== null) {
+      // If end by date
+      const taskDateEnd = dayjs(task.endByDate).endOf("day");
+      
+    } else if (task.endByRepeatCount !== null) {
+      // If end by count
+      const taskDateEnd = task.taskDate
+        .add(task.endByRepeatCount, "day")
+        .endOf("day");
+    } else {
+      // If endless then check if completed map has the previous date
+    }
+  }
 };

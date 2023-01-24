@@ -151,6 +151,7 @@ const TaskListContainer = ({
       }
     });
   };
+  
   const showDeleteConfirm = ({
     content,
     handleDelete,

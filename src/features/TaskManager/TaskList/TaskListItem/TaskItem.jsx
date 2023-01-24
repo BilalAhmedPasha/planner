@@ -183,11 +183,17 @@ const TaskItem = ({
   );
 
   const markTaskComplete = (isCompleted) => {
-    return dispatch(completeTaskAction(user.uid, taskDetails, isCompleted));
+    const markedTime = dayjs.utc().endOf("day").format();
+    return dispatch(
+      completeTaskAction(user.uid, taskDetails, isCompleted, markedTime)
+    );
   };
 
   const markTaskWontDo = (isWontDo) => {
-    return dispatch(wontDoTaskAction(user.uid, taskDetails, isWontDo));
+    const markedTime = dayjs.utc().endOf("day").format();
+    return dispatch(
+      wontDoTaskAction(user.uid, taskDetails, isWontDo, markedTime)
+    );
   };
 
   const handleClick = (e) => {

@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useDrop } from "react-dnd";
 import Card from "./Card.jsx";
 import TaskListSection from "./TaskSection.jsx";
+import { isTaskOverdue } from "./TaskUtils.js";
 const ItemTypes = {
   CARD: "card",
 };
@@ -13,21 +14,26 @@ const style = {
 };
 
 const Container = ({ user, tasks, selectedCardId, setSelectedCardId }) => {
+  const [overdueTasks, setOverdueTasks] = useState([]);
   const [currentTasks, setCurrentTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
 
   useEffect(() => {
-    const completedTemp = [];
+    const overdueTemp = [];
     const currentTemp = [];
+    const completedTemp = [];
     for (let i = 0; i < tasks.length; i++) {
       if (tasks[i].isCompleted || tasks[i].isWontDo) {
         completedTemp.push(tasks[i]);
+      } else if (isTaskOverdue(tasks[i])) {
+        overdueTemp.push(tasks[i]);
       } else {
         currentTemp.push(tasks[i]);
       }
     }
-    setCompletedTasks(completedTemp);
+    setOverdueTasks(overdueTemp);
     setCurrentTasks(currentTemp);
+    setCompletedTasks(completedTemp);
   }, [tasks]);
 
   const findCurrentTask = useCallback(
@@ -61,31 +67,59 @@ const Container = ({ user, tasks, selectedCardId, setSelectedCardId }) => {
 
   return (
     <>
-      <div ref={drop} style={style}>
-      {currentTasks &&
-        currentTasks.map((card) => (
-          <Card
-            user={user}
-            messageApi={messageApi}
-            key={card.id}
-            cardDetails={card}
-            moveCard={moveCurrentTask}
-            findCard={findCurrentTask}
-            selectedCardId={selectedCardId}
-            setSelectedCardId={setSelectedCardId}
-          />
-        ))}
+      {overdueTasks.length > 0 ? (
+        <TaskListSection
+          sectionTitle={"OverDue"}
+          sectionTasks={overdueTasks}
+          setSectionTasks={setOverdueTasks}
+          selectedCardId={selectedCardId}
+          setSelectedCardId={setSelectedCardId}
+          messageApi={messageApi}
+          user={user}
+          isOpen={true}
+        />
+      ) : null}
+      {overdueTasks.length > 0 ? (
+        <TaskListSection
+          sectionTitle={"Today & Later"}
+          sectionTasks={currentTasks}
+          setSectionTasks={setCurrentTasks}
+          selectedCardId={selectedCardId}
+          setSelectedCardId={setSelectedCardId}
+          messageApi={messageApi}
+          user={user}
+          isOpen={true}
+        />
+      ) : (
+        <div ref={drop} style={style}>
+          {currentTasks &&
+            currentTasks.map((card) => (
+              <Card
+                user={user}
+                messageApi={messageApi}
+                key={card.id}
+                cardDetails={card}
+                moveCard={moveCurrentTask}
+                findCard={findCurrentTask}
+                selectedCardId={selectedCardId}
+                setSelectedCardId={setSelectedCardId}
+              />
+            ))}
+        </div>
+      )}
+
       {contextHolder}
-      </div>
-      <TaskListSection
-        sectionTitle={"Completed & Won't Do"}
-        sectionTasks={completedTasks}
-        setSectionTasks={setCompletedTasks}
-        selectedCardId={selectedCardId}
-        setSelectedCardId={setSelectedCardId}
-        messageApi={messageApi}
-        user={user}
-      />
+      {completedTasks.length > 0 ? (
+        <TaskListSection
+          sectionTitle={"Completed & Won't Do"}
+          sectionTasks={completedTasks}
+          setSectionTasks={setCompletedTasks}
+          selectedCardId={selectedCardId}
+          setSelectedCardId={setSelectedCardId}
+          messageApi={messageApi}
+          user={user}
+        />
+      ) : null}
     </>
   );
 };

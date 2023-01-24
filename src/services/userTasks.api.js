@@ -39,25 +39,34 @@ export const softDeleteTaskApi = (userId, currentTask) => {
   });
 };
 
-export const completeTaskApi = (userId, taskDetails, isCompleted) => {
+export const completeTaskApi = (
+  userId,
+  taskDetails,
+  isCompleted,
+  markedTime
+) => {
   const userDocRef = doc(db, "users", userId);
   const taskCollectionRef = collection(userDocRef, "tasks");
   const docRef = doc(taskCollectionRef, taskDetails.id);
+  const isWontDoNew = isCompleted ? false : taskDetails.isWontDo;
   return updateDoc(docRef, {
     ...taskDetails,
     isCompleted: isCompleted,
-    isWontDo: isCompleted ? false : taskDetails.isWontDo,
+    completedTime: isCompleted || isWontDoNew ? markedTime : null,
+    isWontDo: isWontDoNew,
   });
 };
 
-export const wontDoTaskApi = (userId, taskDetails, isWontDo) => {
+export const wontDoTaskApi = (userId, taskDetails, isWontDo, markedTime) => {
   const userDocRef = doc(db, "users", userId);
   const taskCollectionRef = collection(userDocRef, "tasks");
   const docRef = doc(taskCollectionRef, taskDetails.id);
+  const isCompletedNew = isWontDo ? false : taskDetails.isCompleted;
   return updateDoc(docRef, {
     ...taskDetails,
     isWontDo: isWontDo,
-    isCompleted: isWontDo ? false : taskDetails.isCompleted,
+    completedTime: isWontDo || isCompletedNew ? markedTime : null,
+    isCompleted: isCompletedNew,
   });
 };
 
