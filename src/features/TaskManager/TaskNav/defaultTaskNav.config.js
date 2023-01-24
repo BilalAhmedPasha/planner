@@ -5,6 +5,7 @@ import {
   CloseSquareFilled,
   DeleteFilled,
   CarryOutOutlined,
+  ClockCircleOutlined,
   ProfileOutlined,
   RightSquareOutlined,
 } from "@ant-design/icons";
@@ -16,6 +17,7 @@ import {
   NEXT_7_DAYS,
   TODAY,
   TOMORROW,
+  UNDATED,
   WONT_DO,
 } from "../../../constants/app.constants";
 
@@ -49,6 +51,12 @@ export const defaultTaskNav1 = [
     icon: CarryOutOutlined,
     redirectUrl: `/tasks/${NEXT_7_DAYS}`,
     id: "next-7-days",
+  },
+  {
+    label: "Undated",
+    icon: ClockCircleOutlined,
+    redirectUrl: `/tasks/${UNDATED}`,
+    id: "undated",
   },
 ];
 

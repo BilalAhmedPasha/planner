@@ -1,10 +1,13 @@
 import dayjs from "../../../../utils/dateTime.uitls";
 import { INBOX } from "../../../../constants/app.constants";
 
+const isMarked = (task) => {
+  return task.isDeleted;
+};
 export const getAllTasks = ({ tasks }) => {
   const allTasks = [];
   for (let i = 0; i < tasks.length; i++) {
-    if (tasks[i].isDeleted === 0) {
+    if (!isMarked(tasks[i])) {
       allTasks.push(tasks[i]);
     }
   }
@@ -14,7 +17,7 @@ export const getAllTasks = ({ tasks }) => {
 export const getInboxTasks = ({ tasks }) => {
   const inboxTasks = [];
   for (let i = 0; i < tasks.length; i++) {
-    if (tasks[i].listId === INBOX && tasks[i].isDeleted === 0) {
+    if (!isMarked(tasks[i]) && tasks[i].listId === INBOX) {
       inboxTasks.push(tasks[i]);
     }
   }
@@ -26,7 +29,7 @@ export const getTasksByDate = ({ tasks, date }) => {
   const dateEnd = date.endOf("day");
   const dateTasks = [];
   for (let i = 0; i < tasks.length; i++) {
-    if (tasks[i].isDeleted === 0) {
+    if (!isMarked(tasks[i])) {
       // calculate taskDate in dayJS
       const taskDateStart = dayjs(tasks[i].taskDate).startOf("day");
       if (!tasks[i].taskDate) {
@@ -68,7 +71,7 @@ export const getTasksByNextXDays = ({ tasks, fromDate, count }) => {
   const endByDate = startFromDate.add(count, "day").endOf("day");
   const nextXDayTasks = [];
   for (let i = 0; i < tasks.length; i++) {
-    if (tasks[i].isDeleted === 0) {
+    if (!isMarked(tasks[i])) {
       // calculate taskDate in dayJS
       const taskDateStart = dayjs(tasks[i].taskDate).startOf("day");
       if (!tasks[i].taskDate) {
@@ -129,6 +132,16 @@ export const getTasksByNextXDays = ({ tasks, fromDate, count }) => {
   return nextXDayTasks;
 };
 
+export const getUndatedTasks = ({ tasks }) => {
+  const undatedTasks = [];
+  for (let i = 0; i < tasks.length; i++) {
+    if (tasks[i].taskDate === null && tasks[i].isDeleted === 0) {
+      undatedTasks.push(tasks[i]);
+    }
+  }
+  return undatedTasks;
+};
+
 export const getCompletedTasks = ({ tasks }) => {
   const completedTasks = [];
   for (let i = 0; i < tasks.length; i++) {
@@ -162,7 +175,7 @@ export const getDeletedTasks = ({ tasks }) => {
 export const getByListId = ({ tasks, listId }) => {
   const listTasks = [];
   for (let i = 0; i < tasks.length; i++) {
-    if (tasks[i].listId === listId && tasks[i].isDeleted === 0) {
+    if (tasks[i].listId === listId && !isMarked(tasks[i])) {
       listTasks.push(tasks[i]);
     }
   }
@@ -172,7 +185,7 @@ export const getByListId = ({ tasks, listId }) => {
 export const getByTagId = ({ tasks, tagId }) => {
   const tagTasks = [];
   for (let i = 0; i < tasks.length; i++) {
-    if (tasks[i].tagIds.includes(tagId) && tasks[i].isDeleted === 0) {
+    if (tasks[i].tagIds.includes(tagId) && !isMarked(tasks[i])) {
       tagTasks.push(tasks[i]);
     }
   }

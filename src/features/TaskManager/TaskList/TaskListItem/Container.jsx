@@ -3,34 +3,49 @@ import update from "immutability-helper";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDrop } from "react-dnd";
 import Card from "./Card.jsx";
+import TaskListSection from "./TaskSection.jsx";
 const ItemTypes = {
   CARD: "card",
 };
 
 const style = {
-  padding: "0rem 0.5rem",
+  padding: "0rem 1rem",
 };
 
 const Container = ({ user, tasks, selectedCardId, setSelectedCardId }) => {
-  const [cards, setCards] = useState(tasks);
+  const [currentTasks, setCurrentTasks] = useState([]);
+  const [completedTasks, setCompletedTasks] = useState([]);
+
   useEffect(() => {
-    setCards(tasks);
+    const completedTemp = [];
+    const currentTemp = [];
+    for (let i = 0; i < tasks.length; i++) {
+      if (tasks[i].isCompleted || tasks[i].isWontDo) {
+        completedTemp.push(tasks[i]);
+      } else {
+        currentTemp.push(tasks[i]);
+      }
+    }
+    setCompletedTasks(completedTemp);
+    setCurrentTasks(currentTemp);
   }, [tasks]);
-  const findCard = useCallback(
+
+  const findCurrentTask = useCallback(
     (id) => {
-      const card = cards.filter((c) => `${c.id}` === id)[0];
+      const card = currentTasks.filter((c) => `${c.id}` === id)[0];
       return {
         card,
-        index: cards.indexOf(card),
+        index: currentTasks.indexOf(card),
       };
     },
-    [cards]
+    [currentTasks]
   );
-  const moveCard = useCallback(
+
+  const moveCurrentTask = useCallback(
     (id, atIndex) => {
-      const { card, index } = findCard(id);
-      setCards(
-        update(cards, {
+      const { card, index } = findCurrentTask(id);
+      setCurrentTasks(
+        update(currentTasks, {
           $splice: [
             [index, 1],
             [atIndex, 0, card],
@@ -38,27 +53,40 @@ const Container = ({ user, tasks, selectedCardId, setSelectedCardId }) => {
         })
       );
     },
-    [findCard, cards, setCards]
+    [findCurrentTask, currentTasks, setCurrentTasks]
   );
+
   const [, drop] = useDrop(() => ({ accept: ItemTypes.CARD }));
   const [messageApi, contextHolder] = message.useMessage();
 
   return (
-    <div ref={drop} style={style}>
-      {cards.map((card) => (
-        <Card
-          user={user}
-          messageApi={messageApi}
-          key={card.id}
-          cardDetails={card}
-          moveCard={moveCard}
-          findCard={findCard}
-          selectedCardId={selectedCardId}
-          setSelectedCardId={setSelectedCardId}
-        />
-      ))}
+    <>
+      <div ref={drop} style={style}>
+      {currentTasks &&
+        currentTasks.map((card) => (
+          <Card
+            user={user}
+            messageApi={messageApi}
+            key={card.id}
+            cardDetails={card}
+            moveCard={moveCurrentTask}
+            findCard={findCurrentTask}
+            selectedCardId={selectedCardId}
+            setSelectedCardId={setSelectedCardId}
+          />
+        ))}
       {contextHolder}
-    </div>
+      </div>
+      <TaskListSection
+        sectionTitle={"Completed & Won't Do"}
+        sectionTasks={completedTasks}
+        setSectionTasks={setCompletedTasks}
+        selectedCardId={selectedCardId}
+        setSelectedCardId={setSelectedCardId}
+        messageApi={messageApi}
+        user={user}
+      />
+    </>
   );
 };
 

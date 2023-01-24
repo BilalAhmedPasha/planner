@@ -25,8 +25,10 @@ const Card = ({
 }) => {
   const { lists } = useSelector(listsSelector);
   const { tags } = useSelector(tagsSelector);
+
   const id = cardDetails.id;
   const originalIndex = findCard(id).index;
+
   const [{ isDragging }, drag] = useDrag(
     () => ({
       type: ItemTypes.CARD,
@@ -44,6 +46,7 @@ const Card = ({
     }),
     [id, originalIndex, moveCard]
   );
+
   const [, drop] = useDrop(
     () => ({
       accept: ItemTypes.CARD,
@@ -56,6 +59,7 @@ const Card = ({
     }),
     [findCard, moveCard]
   );
+
   const opacity = isDragging ? 0 : 1;
   
   return (
@@ -73,7 +77,6 @@ const Card = ({
         taskDetails={cardDetails}
         lists={lists}
         tags={tags}
-        selectedCardId={selectedCardId}
         setSelectedCardId={setSelectedCardId}
       />
     </div>
