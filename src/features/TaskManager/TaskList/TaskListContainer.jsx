@@ -53,6 +53,36 @@ import {
 import { TIME_ZONE } from "../../../constants/dateTime.constants";
 import { hardDeleteTaskAction } from "../state/userTasks/userTasks.actions";
 
+const computeSectionData = ({ tasks, currentSection }) => {
+  if (currentSection.id === ALL) {
+    return getAllTasks({ tasks });
+  } else if (currentSection.id === INBOX) {
+    return getInboxTasks({ tasks });
+  } else if (currentSection.id === TODAY) {
+    const today = dayjs.utc().tz(TIME_ZONE);
+    return getTasksByDate({ tasks, date: today });
+  } else if (currentSection.id === TOMORROW) {
+    const tomorrow = dayjs.utc().tz(TIME_ZONE).add(1, "day");
+    return getTasksByDate({ tasks, date: tomorrow });
+  } else if (currentSection.id === NEXT_7_DAYS) {
+    const tomorrow = dayjs.utc().tz(TIME_ZONE).add(1, "day");
+    return getTasksByNextXDays({ tasks, fromDate: tomorrow, count: 6 });
+  } else if (currentSection.id === UNDATED) {
+    return getUndatedTasks({ tasks });
+  } else if (currentSection.id === COMPLETED) {
+    return getCompletedTasks({ tasks });
+  } else if (currentSection.id === WONT_DO) {
+    return getWontDoTasks({ tasks });
+  } else if (currentSection.id === DELETED) {
+    return getDeletedTasks({ tasks });
+  } else if (currentSection.type === LISTS) {
+    return getByListId({ tasks, listId: currentSection.id });
+  } else if (currentSection.type === TAGS) {
+    return getByTagId({ tasks, tagId: currentSection.id });
+  }
+  return [];
+};
+
 const showAddForSections = [
   ALL,
   INBOX,
@@ -70,6 +100,7 @@ const TaskListContainer = ({
   setSelectedCardId,
   isMenuCollapsed,
   setIsMenuCollapsed,
+  setSelectedTaskDetails,
 }) => {
   const {
     token: { colorBgContainer },
@@ -85,36 +116,6 @@ const TaskListContainer = ({
   const { tasks, isLoadingTasks } = useSelector(tasksSelector);
   const [currentSectionTasks, setCurrentSectionTasks] = useState([]);
 
-  const computeSectionData = useCallback(({ tasks, currentSection }) => {
-    if (currentSection.id === ALL) {
-      return getAllTasks({ tasks });
-    } else if (currentSection.id === INBOX) {
-      return getInboxTasks({ tasks });
-    } else if (currentSection.id === TODAY) {
-      const today = dayjs.utc().tz(TIME_ZONE);
-      return getTasksByDate({ tasks, date: today });
-    } else if (currentSection.id === TOMORROW) {
-      const tomorrow = dayjs.utc().tz(TIME_ZONE).add(1, "day");
-      return getTasksByDate({ tasks, date: tomorrow });
-    } else if (currentSection.id === NEXT_7_DAYS) {
-      const tomorrow = dayjs.utc().tz(TIME_ZONE).add(1, "day");
-      return getTasksByNextXDays({ tasks, fromDate: tomorrow, count: 6 });
-    } else if (currentSection.id === UNDATED) {
-      return getUndatedTasks({ tasks });
-    } else if (currentSection.id === COMPLETED) {
-      return getCompletedTasks({ tasks });
-    } else if (currentSection.id === WONT_DO) {
-      return getWontDoTasks({ tasks });
-    } else if (currentSection.id === DELETED) {
-      return getDeletedTasks({ tasks });
-    } else if (currentSection.type === LISTS) {
-      return getByListId({ tasks, listId: currentSection.id });
-    } else if (currentSection.type === TAGS) {
-      return getByTagId({ tasks, tagId: currentSection.id });
-    }
-    return [];
-  }, []);
-
   useEffect(() => {
     if (currentSection?.label) {
       const sectionData = computeSectionData({
@@ -123,7 +124,7 @@ const TaskListContainer = ({
       });
       setCurrentSectionTasks(sectionData);
     }
-  }, [currentSection, tasks, computeSectionData]);
+  }, [currentSection, tasks]);
 
   const { confirm } = Modal;
   const deleteSuccess = ({ messageText }) => {
@@ -151,7 +152,7 @@ const TaskListContainer = ({
       }
     });
   };
-  
+
   const showDeleteConfirm = ({
     content,
     handleDelete,
@@ -266,6 +267,7 @@ const TaskListContainer = ({
             tasks={currentSectionTasks}
             selectedCardId={selectedCardId}
             setSelectedCardId={setSelectedCardId}
+            setSelectedTaskDetails={setSelectedTaskDetails}
           />
         </div>
       </Spin>

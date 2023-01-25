@@ -22,6 +22,7 @@ const Card = ({
   findCard,
   selectedCardId,
   setSelectedCardId,
+  setSelectedTaskDetails,
 }) => {
   const { lists } = useSelector(listsSelector);
   const { tags } = useSelector(tagsSelector);
@@ -61,7 +62,7 @@ const Card = ({
   );
 
   const opacity = isDragging ? 0 : 1;
-  
+
   return (
     <div
       ref={(node) => drag(drop(node))}
@@ -78,6 +79,7 @@ const Card = ({
         lists={lists}
         tags={tags}
         setSelectedCardId={setSelectedCardId}
+        setSelectedTaskDetails={setSelectedTaskDetails}
       />
     </div>
   );

@@ -203,10 +203,11 @@ export const isTaskOverdue = (task) => {
     return taskDateTS.isBefore(todayTS);
   } else if (task.taskDate !== null) {
     // If scheduled and repeating task
+    const completedMap = task.isCompletedMap;
+    // TODO
     if (task.endByDate !== null) {
       // If end by date
       const taskDateEnd = dayjs(task.endByDate).endOf("day");
-      
     } else if (task.endByRepeatCount !== null) {
       // If end by count
       const taskDateEnd = task.taskDate

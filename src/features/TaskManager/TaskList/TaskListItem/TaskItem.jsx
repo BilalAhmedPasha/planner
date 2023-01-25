@@ -113,6 +113,7 @@ const TaskItem = ({
   lists,
   tags,
   setSelectedCardId,
+  setSelectedTaskDetails,
 }) => {
   const { confirm } = Modal;
 
@@ -325,6 +326,7 @@ const TaskItem = ({
           size="small"
           onClick={(e) => {
             setSelectedCardId(taskDetails.id);
+            setSelectedTaskDetails(taskDetails);
           }}
         />
       </div>

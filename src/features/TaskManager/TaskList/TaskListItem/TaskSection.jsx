@@ -10,6 +10,7 @@ const TaskListSection = ({
   setSectionTasks,
   selectedCardId,
   setSelectedCardId,
+  setSelectedTaskDetails,
   messageApi,
   user,
 }) => {
@@ -59,6 +60,7 @@ const TaskListSection = ({
             findCard={findSectionTask}
             selectedCardId={selectedCardId}
             setSelectedCardId={setSelectedCardId}
+            setSelectedTaskDetails={setSelectedTaskDetails}
           />
         ))}
       </Collapse.Panel>

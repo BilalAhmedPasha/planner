@@ -13,7 +13,13 @@ const style = {
   padding: "0rem 1rem",
 };
 
-const Container = ({ user, tasks, selectedCardId, setSelectedCardId }) => {
+const Container = ({
+  user,
+  tasks,
+  selectedCardId,
+  setSelectedCardId,
+  setSelectedTaskDetails,
+}) => {
   const [overdueTasks, setOverdueTasks] = useState([]);
   const [currentTasks, setCurrentTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
@@ -74,6 +80,7 @@ const Container = ({ user, tasks, selectedCardId, setSelectedCardId }) => {
           setSectionTasks={setOverdueTasks}
           selectedCardId={selectedCardId}
           setSelectedCardId={setSelectedCardId}
+          setSelectedTaskDetails={setSelectedTaskDetails}
           messageApi={messageApi}
           user={user}
           isOpen={true}
@@ -86,6 +93,7 @@ const Container = ({ user, tasks, selectedCardId, setSelectedCardId }) => {
           setSectionTasks={setCurrentTasks}
           selectedCardId={selectedCardId}
           setSelectedCardId={setSelectedCardId}
+          setSelectedTaskDetails={setSelectedTaskDetails}
           messageApi={messageApi}
           user={user}
           isOpen={true}
@@ -103,11 +111,11 @@ const Container = ({ user, tasks, selectedCardId, setSelectedCardId }) => {
                 findCard={findCurrentTask}
                 selectedCardId={selectedCardId}
                 setSelectedCardId={setSelectedCardId}
+                setSelectedTaskDetails={setSelectedTaskDetails}
               />
             ))}
         </div>
       )}
-
       {contextHolder}
       {completedTasks.length > 0 ? (
         <TaskListSection
@@ -116,6 +124,7 @@ const Container = ({ user, tasks, selectedCardId, setSelectedCardId }) => {
           setSectionTasks={setCompletedTasks}
           selectedCardId={selectedCardId}
           setSelectedCardId={setSelectedCardId}
+          setSelectedTaskDetails={setSelectedTaskDetails}
           messageApi={messageApi}
           user={user}
         />

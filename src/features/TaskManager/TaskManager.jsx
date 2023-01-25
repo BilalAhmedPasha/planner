@@ -1,4 +1,4 @@
-import { Layout, Typography, theme, message, Spin } from "antd";
+import { Layout, message } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TaskNav from "./TaskNav";
@@ -7,15 +7,9 @@ import { fetchTagsAction } from "./state/userTags/userTags.actions";
 import TaskListContainer from "./TaskList";
 import { userSelector } from "../AppLayout/state/userSettings/userSettings.reducer";
 import { fetchTasksAction } from "./state/userTasks/userTasks.actions";
-import { tasksSelector } from "./state/userTasks/userTasks.reducer";
-import Loading from "../../components/Loading";
-import { LOADER_SIZE } from "../../constants/app.constants";
+import TaskDetailsContainer from "./TaskDetail";
 
 const TaskManager = ({ user }) => {
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
-
   const dispatch = useDispatch();
   const userSetting = useSelector(userSelector);
 
@@ -28,11 +22,11 @@ const TaskManager = ({ user }) => {
   }, [userSetting, dispatch, user.uid]);
 
   const [messageApi, contextHolder] = message.useMessage();
-  const { isLoadingTasks } = useSelector(tasksSelector);
   const [selectedCardId, setSelectedCardId] = useState("");
   const [currentSelectedTaskSection, setCurrentSelectedTaskSection] =
     useState();
   const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
+  const [selectedTaskDetails, setSelectedTaskDetails] = useState(null);
 
   return (
     <Layout>
@@ -51,25 +45,9 @@ const TaskManager = ({ user }) => {
         setSelectedCardId={setSelectedCardId}
         isMenuCollapsed={isMenuCollapsed}
         setIsMenuCollapsed={setIsMenuCollapsed}
+        setSelectedTaskDetails={setSelectedTaskDetails}
       />
-      <Layout.Content
-        style={{
-          marginLeft: "0.1rem",
-          padding: "1rem 1rem",
-          background: colorBgContainer,
-        }}
-      >
-        <Spin spinning={isLoadingTasks} indicator={Loading(LOADER_SIZE)}>
-          <Typography.Text
-            style={{
-              fontWeight: "bold",
-              fontSize: "24px",
-            }}
-          >
-            {"Task details"}
-          </Typography.Text>
-        </Spin>
-      </Layout.Content>
+      <TaskDetailsContainer taskDetails={selectedTaskDetails} />
       {contextHolder}
     </Layout>
   );
