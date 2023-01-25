@@ -1,13 +1,11 @@
-import { Button, Layout, Space, theme, Typography } from "antd";
-import { EditFilled, SaveOutlined, CloseOutlined } from "@ant-design/icons";
-import { useState } from "react";
-import { EDIT, VIEW } from "../../../constants/formType.constants";
+import { Layout, theme } from "antd";
+import NotTaskSelected from "./NotTaskSelected";
+import TaskDetailsView from "./TaskDetailsView";
+
 const TaskDetailsContainer = ({ taskDetails }) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-
-  const [formType, setFormType] = useState(VIEW);
 
   return (
     <Layout.Content
@@ -27,35 +25,11 @@ const TaskDetailsContainer = ({ taskDetails }) => {
           marginBottom: "0.5rem",
         }}
       >
-        {/* <Typography.Text
-          style={{
-            fontWeight: "bold",
-            fontSize: "24px",
-          }}
-        >
-          {taskDetails.name}
-        </Typography.Text>
-        {formType === VIEW ? (
-          <Button
-            type="text"
-            icon={<EditFilled />}
-            onClick={() => setFormType(EDIT)}
-          />
+        {taskDetails ? (
+          <TaskDetailsView taskDetails={taskDetails} />
         ) : (
-          <Space>
-            <Button
-              type="text"
-              icon={<CloseOutlined />}
-              onClick={() => setFormType(VIEW)}
-            />
-            <Button
-              type="text"
-              icon={<SaveOutlined />}
-              onClick={() => setFormType(VIEW)}
-            />
-          </Space>
-        )} */}
-        <Typography.Text>Select a task to show details</Typography.Text>
+          <NotTaskSelected />
+        )}
       </div>
     </Layout.Content>
   );
