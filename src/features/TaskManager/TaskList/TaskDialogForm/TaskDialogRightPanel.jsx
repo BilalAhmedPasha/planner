@@ -20,7 +20,7 @@ import {
   HIGH,
   LOW,
   MEDIUM,
-  NONE,
+  priorityOptions,
 } from "../../../../constants/priority.constants";
 import {
   HIGH_COLOR,
@@ -209,24 +209,7 @@ const TaskDialogRightPanel = ({ form, height }) => {
         >
           <Select
             onSelect={(event) => handlePriorityChange(event)}
-            options={[
-              {
-                value: HIGH,
-                label: "High",
-              },
-              {
-                value: MEDIUM,
-                label: "Medium",
-              },
-              {
-                value: LOW,
-                label: "Low",
-              },
-              {
-                value: NONE,
-                label: "None",
-              },
-            ]}
+            options={priorityOptions}
           />
         </Form.Item>
 
