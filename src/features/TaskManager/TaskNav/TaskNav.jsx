@@ -146,6 +146,7 @@ const TaskNav = ({
   setCurrentSelectedTaskSection,
   setSelectedCardId,
   collapsed,
+  setSelectedTaskDetails,
 }) => {
   const dispatch = useDispatch();
   const { lists, isLoadingLists, totalLists } = useSelector(listsSelector);
@@ -237,6 +238,7 @@ const TaskNav = ({
     ) {
       setCurrentSelectedTaskSection(e.domEvent.currentTarget.textContent);
       setSelectedCardId("");
+      setSelectedTaskDetails(null);
     }
   };
 

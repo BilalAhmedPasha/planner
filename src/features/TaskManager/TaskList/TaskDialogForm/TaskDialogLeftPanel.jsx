@@ -35,7 +35,7 @@ const TaskDialogLeftPanel = ({ height }) => {
           <Input.TextArea
             autoComplete="off"
             rows={3}
-            maxLength={100}
+            maxLength={200}
             showCount
           />
         </Form.Item>
