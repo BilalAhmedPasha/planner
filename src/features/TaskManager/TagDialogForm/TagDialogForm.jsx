@@ -25,7 +25,7 @@ const TagDialogForm = ({
           },
         ]}
       >
-        <Input autoComplete="off" />
+        <Input autoComplete="off" maxLength={20} showCount />
       </Form.Item>
       <Form.Item name="color" label="Color">
         <SliderPicker color={color} onChangeComplete={handleColorChange} />

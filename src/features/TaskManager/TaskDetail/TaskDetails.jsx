@@ -1,29 +1,48 @@
-import {
-  Button,
-  Form,
-  Input,
-  Select,
-  Space,
-  Tag,
-  theme,
-  Typography,
-} from "antd";
+import { Button, Form, Input, Select, Space, Tag, Typography } from "antd";
 import { EditFilled, SaveOutlined, CloseOutlined } from "@ant-design/icons";
 import { EDIT, VIEW } from "../../../constants/formType.constants";
 import { useSelector } from "react-redux";
 import { tagsSelector } from "../state/userTags/userTags.reducer";
 import { INBOX } from "../../../constants/app.constants";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { listsSelector } from "../state/userLists/userLists.reducer";
+import SelectField from "../../../components/SelectField/SelectField";
+import { FlagFilled } from "@ant-design/icons";
+import {
+  HIGH_COLOR,
+  LOW_COLOR,
+  MEDIUM_COLOR,
+  NONE_COLOR,
+} from "../../../constants/color.constants";
+import {
+  HIGH,
+  LOW,
+  MEDIUM,
+  priorityOptions,
+} from "../../../constants/priority.constants";
+
+const getPriorityColor = (event) => {
+  if (event === HIGH) {
+    return HIGH_COLOR;
+  } else if (event === MEDIUM) {
+    return MEDIUM_COLOR;
+  } else if (event === LOW) {
+    return LOW_COLOR;
+  } else {
+    return NONE_COLOR;
+  }
+};
 
 const TaskDetails = ({ form, formType, setFormType }) => {
+  const [priorityColor, setPriorityColor] = useState(() =>
+    getPriorityColor(form.getFieldValue("priority"))
+  );
+
   const onReset = () => {
     form.resetFields();
     setFormType(VIEW);
+    setPriorityColor(getPriorityColor(form.getFieldValue("priority")));
   };
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
 
   const { lists } = useSelector(listsSelector);
   const { tags } = useSelector(tagsSelector);
@@ -49,7 +68,7 @@ const TaskDetails = ({ form, formType, setFormType }) => {
 
   const tagRender = (props) => {
     const { label, value, closable, onClose } = props;
-    const color = tags.find((each) => each.id === value).color;
+    const color = tags.find((each) => each.id === value)?.color;
     const onPreventMouseDown = (event) => {
       event.preventDefault();
       event.stopPropagation();
@@ -69,6 +88,10 @@ const TaskDetails = ({ form, formType, setFormType }) => {
     );
   };
 
+  const handlePriorityColor = (event) => {
+    setPriorityColor(getPriorityColor(event));
+  };
+
   return (
     <>
       {formType === VIEW ? (
@@ -79,8 +102,8 @@ const TaskDetails = ({ form, formType, setFormType }) => {
               alignContent: "baseline",
               justifyContent: "space-between",
               height: "2.5rem",
-              marginBottom: "0.5rem",
               overflowX: "scroll",
+              margin: "0rem 0.5rem",
             }}
           >
             <Typography.Text
@@ -139,7 +162,6 @@ const TaskDetails = ({ form, formType, setFormType }) => {
               alignContent: "baseline",
               justifyContent: "space-between",
               height: "2.5rem",
-              marginBottom: "0.5rem",
               overflowX: "scroll",
             }}
           >
@@ -171,8 +193,7 @@ const TaskDetails = ({ form, formType, setFormType }) => {
           </div>
           <div
             style={{
-              padding: "0rem",
-              margin: "0rem",
+              overflowX: "scroll",
             }}
           >
             <Form.Item name="description">
@@ -182,20 +203,32 @@ const TaskDetails = ({ form, formType, setFormType }) => {
                 maxLength={200}
                 bordered={false}
                 autoSize={true}
+                style={{ padding: "0rem" }}
               />
             </Form.Item>
           </div>
           <div
             style={{
               display: "flex",
-              alignContent: "baseline",
               justifyContent: "space-between",
-              marginBottom: "0.5rem",
               overflowX: "scroll",
             }}
           >
-            <Form.Item name="list">
-              <Select
+            <Form.Item name="priority">
+              <Space size="small">
+                <FlagFilled style={{ color: priorityColor }} />
+                <SelectField
+                  defaultValue={form.getFieldValue("priority")}
+                  onSelect={(event) => handlePriorityColor(event)}
+                  options={priorityOptions}
+                  style={{ width: "6rem" }}
+                  bordered={false}
+                  showArrow={false}
+                />
+              </Space>
+            </Form.Item>
+            <Form.Item name="listId">
+              <SelectField
                 defaultValue={form.getFieldValue("listId")}
                 options={[
                   {
@@ -204,17 +237,22 @@ const TaskDetails = ({ form, formType, setFormType }) => {
                   },
                   ...listOptions,
                 ]}
+                style={{ width: "10rem" }}
+                bordered={false}
+                showArrow={false}
               />
             </Form.Item>
-            <Form.Item name="tags">
-              <Select
+            <Form.Item name="tagIds">
+              <SelectField
                 mode="multiple"
                 options={tagOptions}
                 maxTagCount={3}
-                maxTagTextLength={10}
+                maxTagTextLength={8}
                 tagRender={tagRender}
                 defaultValue={form.getFieldValue("tagIds")}
-                style={{ minWidth: "20vw", height:"1vh" }}
+                style={{ width: "22rem" }}
+                placeholder="Select tags here"
+                bordered={false}
               />
             </Form.Item>
           </div>
