@@ -13,7 +13,10 @@ import { Form } from "antd";
 import { NONE } from "../../../../constants/priority.constants";
 import { useParams } from "react-router-dom";
 import dayjs from "../../../../utils/dateTime.uitls";
-import { TIME_ZONE } from "../../../../constants/dateTime.constants";
+import {
+  TIME_FORMAT_IN_DB,
+  TIME_ZONE,
+} from "../../../../constants/dateTime.constants";
 import { tasksSelector } from "../../state/userTasks/userTasks.reducer";
 
 const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
@@ -47,8 +50,9 @@ const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
       tagIds: e.tags || [],
       taskDate: (e.date && e.date.startOf("day").format()) || null,
       isAllDay: e.duration?.length > 0 ? false : true,
-      startTime: (e.duration && e.duration[0].format("HH:mm:ss")) || null,
-      endTime: (e.duration && e.duration[1].format("HH:mm:ss")) || null,
+      startTime:
+        (e.duration && e.duration[0].format(TIME_FORMAT_IN_DB)) || null,
+      endTime: (e.duration && e.duration[1].format(TIME_FORMAT_IN_DB)) || null,
       isRepeating: e.repeat ? true : false,
       repeatFrequency: e.repeat || null,
       endBy: e.endBy || null,

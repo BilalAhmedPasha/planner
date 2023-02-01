@@ -3,6 +3,8 @@ import { useState } from "react";
 import { VIEW } from "../../../constants/formType.constants";
 import NotTaskSelected from "./NotTaskSelected";
 import TaskDetails from "./TaskDetails";
+import dayjs from "../../../utils/dateTime.uitls";
+import { TIME_FORMAT_IN_DB } from "../../../constants/dateTime.constants";
 
 const TaskDetailsContainer = ({ taskDetails }) => {
   const {
@@ -14,6 +16,13 @@ const TaskDetailsContainer = ({ taskDetails }) => {
 
   const FORM_VALUES = {
     ...taskDetails,
+    date: dayjs(taskDetails?.taskDate),
+    duration: [
+      dayjs(taskDetails?.startTime, TIME_FORMAT_IN_DB),
+      dayjs(taskDetails?.endTime, TIME_FORMAT_IN_DB),
+    ],
+    repeat: taskDetails?.repeatFrequency,
+    endByDate: dayjs(taskDetails?.endByDate),
   };
 
   const onSubmit = (values) => {

@@ -248,7 +248,6 @@ const TaskDialogRightPanel = ({ form, height }) => {
           <Form.Item name="date" label="Schedule">
             <DatePicker
               format={DATE_FORMAT}
-              // disabledDate={disabledStartDate}
               style={{
                 cursor: "pointer",
                 width: "100%",
