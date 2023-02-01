@@ -202,19 +202,19 @@ export const isTaskOverdue = (task) => {
     const taskDateTS = dayjs(task.taskDate).endOf("day");
     return taskDateTS.isBefore(todayTS);
   } else if (task.taskDate !== null) {
-    // If scheduled and repeating task
-    const completedMap = task.isCompletedMap;
-    // TODO
-    if (task.endByDate !== null) {
-      // If end by date
-      const taskDateEnd = dayjs(task.endByDate).endOf("day");
-    } else if (task.endByRepeatCount !== null) {
-      // If end by count
-      const taskDateEnd = task.taskDate
-        .add(task.endByRepeatCount, "day")
-        .endOf("day");
-    } else {
-      // If endless then check if completed map has the previous date
-    }
+    // // If scheduled and repeating task
+    // const completedMap = task.isCompletedMap;
+    // // TODO
+    // if (task.endByDate !== null) {
+    //   // If end by date
+    //   const taskDateEnd = dayjs(task.endByDate).endOf("day");
+    // } else if (task.endByRepeatCount !== null) {
+    //   // If end by count
+    //   const taskDateEnd = task.taskDate
+    //     .add(task.endByRepeatCount, "day")
+    //     .endOf("day");
+    // } else {
+    //   // If endless then check if completed map has the previous date
+    // }
   }
 };

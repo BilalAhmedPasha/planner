@@ -53,7 +53,13 @@ const getPriorityColor = (event) => {
   }
 };
 
-const TaskDetails = ({ form, formType, setFormType }) => {
+const TaskDetails = ({
+  form,
+  formType,
+  setFormType,
+  listOptions,
+  tagOptions,
+}) => {
   const [priorityColor, setPriorityColor] = useState(() =>
     getPriorityColor(form.getFieldValue("priority"))
   );
@@ -64,31 +70,9 @@ const TaskDetails = ({ form, formType, setFormType }) => {
     setPriorityColor(getPriorityColor(form.getFieldValue("priority")));
   };
 
-  const { lists } = useSelector(listsSelector);
-  const { tags } = useSelector(tagsSelector);
-
-  const listOptions = useMemo(() => {
-    return lists.map((each) => {
-      return {
-        value: each.id,
-        label: each.label,
-        color: each.color,
-      };
-    });
-  }, [lists]);
-
-  const tagOptions = useMemo(() => {
-    return tags.map((each) => {
-      return {
-        label: each.label,
-        value: each.id,
-      };
-    });
-  }, [tags]);
-
   const tagRender = (props) => {
     const { label, value, closable, onClose } = props;
-    const color = tags.find((each) => each.id === value)?.color;
+    const color = tagOptions.find((each) => each.id === value)?.color;
     const onPreventMouseDown = (event) => {
       event.preventDefault();
       event.stopPropagation();
@@ -155,8 +139,6 @@ const TaskDetails = ({ form, formType, setFormType }) => {
       setShowEndByDate(false);
       setshowEndByRepeatCount(false);
     }
-    // form.validateFields("endByDate");
-    // form.validateFields("endByRepeatCount");
   };
 
   const disabledEndDate = (current) => {
