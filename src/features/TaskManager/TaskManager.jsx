@@ -1,4 +1,4 @@
-import { Form, Layout, message } from "antd";
+import { Layout, message } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TaskNav from "./TaskNav";
@@ -28,12 +28,6 @@ const TaskManager = ({ user }) => {
   const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
   const [selectedTaskDetails, setSelectedTaskDetails] = useState(null);
 
-  let [detailsForm] = Form.useForm();
-  const selectedTask = (taskDetails) => {
-    setSelectedTaskDetails(taskDetails);
-    detailsForm.resetFields();
-  };
-
   return (
     <Layout>
       <TaskNav
@@ -43,7 +37,7 @@ const TaskManager = ({ user }) => {
         setCurrentSelectedTaskSection={setCurrentSelectedTaskSection}
         setSelectedCardId={setSelectedCardId}
         collapsed={isMenuCollapsed}
-        setSelectedTaskDetails={selectedTask}
+        setSelectedTaskDetails={setSelectedTaskDetails}
       />
       <TaskListContainer
         user={user}
@@ -52,12 +46,9 @@ const TaskManager = ({ user }) => {
         setSelectedCardId={setSelectedCardId}
         isMenuCollapsed={isMenuCollapsed}
         setIsMenuCollapsed={setIsMenuCollapsed}
-        setSelectedTaskDetails={selectedTask}
+        setSelectedTaskDetails={setSelectedTaskDetails}
       />
-      <TaskDetailsContainer
-        taskDetails={selectedTaskDetails}
-        form={detailsForm}
-      />
+      <TaskDetailsContainer taskDetails={selectedTaskDetails} />
       {contextHolder}
     </Layout>
   );
