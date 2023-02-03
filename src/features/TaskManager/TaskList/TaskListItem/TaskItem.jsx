@@ -66,6 +66,7 @@ const renderTags = ({ item, tags }) => {
         color="#AB98B8"
         showZero={false}
         offset={[0, 8]}
+        style={{marginRight:"0.5rem"}}
       >
         <Tag color={tagDetails.color} closable={false}>
           {tagDetails.label.length > 8
