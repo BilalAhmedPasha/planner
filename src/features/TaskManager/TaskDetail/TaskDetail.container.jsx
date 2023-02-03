@@ -49,6 +49,7 @@ const TaskDetailsContainer = ({ taskDetails }) => {
       repeat: taskDetails?.repeatFrequency,
       endByDate: taskDetails?.endByDate ? dayjs(taskDetails?.endByDate) : null,
     };
+    // eslint-disable-next-line
   }, [taskDetails?.id]);
 
   useEffect(() => {
