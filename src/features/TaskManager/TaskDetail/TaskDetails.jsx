@@ -40,6 +40,7 @@ import {
   DATE_FORMAT,
   TIME_FORMAT,
 } from "../../../constants/dateTime.constants";
+import { useEffect } from "react";
 
 const getPriorityColor = (event) => {
   if (event === HIGH) {
@@ -53,15 +54,43 @@ const getPriorityColor = (event) => {
   }
 };
 
-const TaskDetails = ({ form, formType, setFormType }) => {
-  const [priorityColor, setPriorityColor] = useState(() =>
-    getPriorityColor(form.getFieldValue("priority"))
+const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
+  const [priorityColor, setPriorityColor] = useState(
+    getPriorityColor(taskDetails["priority"])
+  );
+  const [startDate, setStartDate] = useState(form.getFieldValue("date"));
+  const [isRepeating, setIsRepeating] = useState(
+    form.getFieldValue("isRepeating")
+  );
+  const [showEndByDate, setShowEndByDate] = useState(
+    taskDetails["endByDate"] ? true : false
+  );
+  const [showEndByRepeatCount, setshowEndByRepeatCount] = useState(
+    taskDetails["endByRepeatCount"] ? true : false
+  );
+  const [isScheduled, setIsScheduled] = useState(
+    taskDetails["taskDate"] ? true : false
   );
 
   const onReset = () => {
     form.resetFields();
     setFormType(VIEW);
-    setPriorityColor(getPriorityColor(form.getFieldValue("priority")));
+    setPriorityColor(getPriorityColor(taskDetails["priority"]));
+    setIsScheduled(taskDetails["taskDate"] ? true : false);
+    setshowEndByRepeatCount(taskDetails["endByRepeatCount"] ? true : false);
+    setShowEndByDate(taskDetails["endByDate"] ? true : false);
+  };
+
+  useEffect(() => {
+    setPriorityColor(getPriorityColor(taskDetails["priority"]));
+    setIsScheduled(taskDetails["taskDate"] ? true : false);
+    setshowEndByRepeatCount(taskDetails["endByRepeatCount"] ? true : false);
+    setShowEndByDate(taskDetails["endByDate"] ? true : false);
+  }, [taskDetails]);
+
+  const handlePriorityColor = (event) => {
+    setPriorityColor(getPriorityColor(event));
+    form.setFieldValue({ priority: event });
   };
 
   const { lists } = useSelector(listsSelector);
@@ -108,25 +137,6 @@ const TaskDetails = ({ form, formType, setFormType }) => {
     );
   };
 
-  const handlePriorityColor = (event) => {
-    setPriorityColor(getPriorityColor(event));
-  };
-
-  const [startDate, setStartDate] = useState(form.getFieldValue("date"));
-  const [isRepeating, setIsRepeating] = useState(
-    form.getFieldValue("isRepeating")
-  );
-  const [showEndByDate, setShowEndByDate] = useState(
-    form.getFieldValue("endByDate") ? true : false
-  );
-  const [showEndByRepeatCount, setshowEndByRepeatCount] = useState(
-    form.getFieldValue("endByRepeatCount") ? true : false
-  );
-
-  const [isScheduled, setIsScheduled] = useState(
-    form.getFieldValue("date") ? true : false
-  );
-
   const handleStartDateChange = (e) => {
     setStartDate(e);
     if (e) {
@@ -155,8 +165,6 @@ const TaskDetails = ({ form, formType, setFormType }) => {
       setShowEndByDate(false);
       setshowEndByRepeatCount(false);
     }
-    // form.validateFields("endByDate");
-    // form.validateFields("endByRepeatCount");
   };
 
   const disabledEndDate = (current) => {
@@ -230,12 +238,9 @@ const TaskDetails = ({ form, formType, setFormType }) => {
         <Form.Item name="description">
           <Input.TextArea
             autoComplete="off"
-            rows={2}
             maxLength={200}
-            bordered={false}
-            autoSize={true}
-            style={{ padding: "0rem" }}
             disabled={formType === VIEW}
+            placeholder="Enter task description"
           />
         </Form.Item>
       </div>
@@ -243,11 +248,18 @@ const TaskDetails = ({ form, formType, setFormType }) => {
         style={{
           display: "flex",
           overflowX: "scroll",
+          justifyContent: "space-between",
         }}
       >
-        <Form.Item name="priority">
-          <Space size="small" style={{ marginRight: "1rem" }}>
-            <FlagFilled style={{ color: priorityColor }} />
+        <Space size="small" style={{ marginRight: "1rem" }}>
+          <Form.Item name="priorityColor">
+            <FlagFilled
+              style={{
+                color: priorityColor,
+              }}
+            />
+          </Form.Item>
+          <Form.Item name="priority">
             <Select
               defaultValue={form.getFieldValue("priority")}
               onSelect={(event) => handlePriorityColor(event)}
@@ -256,8 +268,8 @@ const TaskDetails = ({ form, formType, setFormType }) => {
               showArrow={false}
               disabled={formType === VIEW}
             />
-          </Space>
-        </Form.Item>
+          </Form.Item>
+        </Space>
         <Form.Item name="listId" style={{ marginRight: "1rem" }}>
           <Select
             defaultValue={form.getFieldValue("listId")}
@@ -300,7 +312,7 @@ const TaskDetails = ({ form, formType, setFormType }) => {
             format={DATE_FORMAT}
             style={{
               cursor: "pointer",
-              width: "12rem",
+              width: "13rem",
             }}
             onChange={handleStartDateChange}
             disabled={formType === VIEW}
@@ -313,7 +325,7 @@ const TaskDetails = ({ form, formType, setFormType }) => {
             minuteStep={5}
             style={{
               cursor: "pointer",
-              width: "12rem",
+              width: "13rem",
             }}
             disabled={formType === VIEW || !isScheduled}
           />
@@ -336,7 +348,7 @@ const TaskDetails = ({ form, formType, setFormType }) => {
               },
             ]}
             onChange={handleRepeatDropDownChange}
-            style={{ width: "12rem" }}
+            style={{ width: "13rem" }}
             placeholder="Repeat frequency"
             disabled={formType === VIEW || !isScheduled}
           />
@@ -367,7 +379,8 @@ const TaskDetails = ({ form, formType, setFormType }) => {
             ]}
             onChange={handleEndByDropDownChange}
             disabled={formType === VIEW || !isScheduled || !isRepeating}
-            style={{ width: "12rem" }}
+            style={{ width: "13rem" }}
+            placeholder="End condition"
           />
         </Form.Item>
         <Form.Item
@@ -393,7 +406,7 @@ const TaskDetails = ({ form, formType, setFormType }) => {
             format={DATE_FORMAT}
             style={{
               cursor: "pointer",
-              width: "12rem",
+              width: "13rem",
             }}
             placeholder="End date"
             disabledDate={disabledEndDate}
@@ -427,7 +440,7 @@ const TaskDetails = ({ form, formType, setFormType }) => {
             min={1}
             style={{
               cursor: "pointer",
-              width: "12rem",
+              width: "13rem",
             }}
             placeholder="Repeat Count"
             disabled={
