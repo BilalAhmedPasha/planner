@@ -1,11 +1,11 @@
 import { useState, useEffect, useMemo } from "react";
-import { Form, Layout, theme } from "antd";
+import { Form, Layout, message, theme } from "antd";
 import { VIEW } from "../../../constants/formType.constants";
 import NotTaskSelected from "./NotTaskSelected";
 import TaskDetails from "./TaskDetails";
 import dayjs from "../../../utils/dateTime.uitls";
 import { TIME_FORMAT_IN_DB } from "../../../constants/dateTime.constants";
-
+import { editTaskAction } from "../state/userTasks/userTasks.actions";
 import {
   HIGH_COLOR,
   LOW_COLOR,
@@ -13,6 +13,8 @@ import {
   NONE_COLOR,
 } from "../../../constants/color.constants";
 import { HIGH, LOW, MEDIUM } from "../../../constants/priority.constants";
+import { useDispatch } from "react-redux";
+import { SUCCESS } from "../../../constants/app.constants";
 
 const getPriorityColor = (event) => {
   if (event === HIGH) {
@@ -26,11 +28,10 @@ const getPriorityColor = (event) => {
   }
 };
 
-const TaskDetailsContainer = ({ taskDetails }) => {
+const TaskDetailsContainer = ({ user, taskDetails }) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-
   const [form] = Form.useForm();
   const [formType, setFormType] = useState(VIEW);
 
@@ -57,9 +58,70 @@ const TaskDetailsContainer = ({ taskDetails }) => {
     setFormType(VIEW);
   }, [form, FORM_VALUES]);
 
-  const onSubmit = (values) => {
-    console.log("Form values ", values);
-    setFormType(VIEW);
+  const dispatch = useDispatch();
+  const [messageApi] = message.useMessage();
+  const editTaskSuccess = () => {
+    messageApi.open({
+      type: "success",
+      content: "Task edited",
+      duration: 3,
+    });
+  };
+  const editTaskFailed = () => {
+    messageApi.open({
+      type: "error",
+      content: "Failed to edit task",
+      duration: 3,
+    });
+  };
+
+  const onSubmit = ({ taskDetails, formValues }) => {
+    const modifiedTime = dayjs.utc().format();
+    const modifiedTask = {
+      ...taskDetails,
+      name: formValues.name,
+      description: formValues.description || null,
+      listId: formValues.listId,
+      priority: formValues.priority,
+      tagIds: formValues.tagIds || [],
+      taskDate:
+        (formValues.date && formValues.date.startOf("day").format()) || null,
+      isAllDay: formValues.duration?.length > 0 ? false : true,
+      startTime:
+        (formValues.duration &&
+          formValues.duration[0].format(TIME_FORMAT_IN_DB)) ||
+        null,
+      endTime:
+        (formValues.duration &&
+          formValues.duration[1].format(TIME_FORMAT_IN_DB)) ||
+        null,
+      isRepeating: formValues.repeat ? true : false,
+      repeatFrequency: formValues.repeat || null,
+      endBy: formValues.endBy || null,
+      endByDate:
+        (formValues.endBy === "endByDate" &&
+          formValues.endByDate &&
+          formValues.endByDate.endOf("day").format()) ||
+        null,
+      endByRepeatCount:
+        formValues.endBy === "endByRepeatCount" &&
+        formValues.endByRepeatCount !== undefined &&
+        formValues.endByRepeatCount >= 0
+          ? formValues.endByRepeatCount
+          : null,
+      progress: formValues.progress,
+      modifiedTime: modifiedTime,
+    };
+    dispatch(editTaskAction(user.uid, modifiedTask, modifiedTask.id)).then(
+      (response) => {
+        if (response.success === SUCCESS) {
+          editTaskSuccess();
+          setFormType(VIEW);
+        } else {
+          editTaskFailed();
+        }
+      }
+    );
   };
 
   return (
@@ -74,7 +136,7 @@ const TaskDetailsContainer = ({ taskDetails }) => {
         <Form
           form={form}
           name="detail_form"
-          onFinish={onSubmit}
+          onFinish={(formValues) => onSubmit({ taskDetails, formValues })}
           initialValues={FORM_VALUES}
         >
           <TaskDetails

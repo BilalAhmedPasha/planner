@@ -3,7 +3,6 @@ import {
   DatePicker,
   Form,
   Input,
-  InputNumber,
   Select,
   Slider,
   Space,
@@ -15,8 +14,15 @@ import {
   SaveOutlined,
   CloseOutlined,
   FlagFilled,
+  UnorderedListOutlined,
+  TagTwoTone,
+  TagOutlined,
+  CalendarOutlined,
   CalendarTwoTone,
-  ClockCircleTwoTone,
+  ClockCircleOutlined,
+  StopOutlined,
+  SyncOutlined,
+  FieldNumberOutlined,
 } from "@ant-design/icons";
 import { EDIT, VIEW } from "../../../constants/formType.constants";
 import { useSelector } from "react-redux";
@@ -41,6 +47,7 @@ import {
   TIME_FORMAT,
 } from "../../../constants/dateTime.constants";
 import { useEffect } from "react";
+import NumericInput from "../../../components/NumericInput";
 
 const getPriorityColor = (event) => {
   if (event === HIGH) {
@@ -251,27 +258,41 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
           justifyContent: "space-between",
         }}
       >
-        <Space size="small" style={{ marginRight: "1rem" }}>
-          <Form.Item name="priorityColor">
-            <FlagFilled
-              style={{
-                color: priorityColor,
-              }}
-            />
-          </Form.Item>
-          <Form.Item name="priority">
-            <Select
-              defaultValue={form.getFieldValue("priority")}
-              onSelect={(event) => handlePriorityColor(event)}
-              options={priorityOptions}
-              style={{ width: "6rem" }}
-              showArrow={false}
-              disabled={formType === VIEW}
-            />
-          </Form.Item>
-        </Space>
+        <Form.Item name="priority" style={{ marginRight: "1rem" }}>
+          <Select
+            suffixIcon={
+              <FlagFilled
+                style={{
+                  color: priorityColor,
+                  fontSize: "1rem",
+                }}
+              />
+            }
+            defaultValue={form.getFieldValue("priority")}
+            onSelect={(event) => handlePriorityColor(event)}
+            options={priorityOptions}
+            style={{ width: "7rem" }}
+            disabled={formType === VIEW}
+          />
+        </Form.Item>
         <Form.Item name="listId" style={{ marginRight: "1rem" }}>
           <Select
+            suffixIcon={
+              formType === VIEW ? (
+                <UnorderedListOutlined
+                  style={{
+                    fontSize: "1rem",
+                  }}
+                />
+              ) : (
+                <UnorderedListOutlined
+                  style={{
+                    fontSize: "1rem",
+                    color: "#4096ff",
+                  }}
+                />
+              )
+            }
             defaultValue={form.getFieldValue("listId")}
             options={[
               {
@@ -281,17 +302,32 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
               ...listOptions,
             ]}
             style={{ width: "10rem" }}
-            showArrow={false}
             disabled={formType === VIEW}
           />
         </Form.Item>
         <Form.Item name="tagIds">
           <Select
+            suffixIcon={
+              formType === VIEW ? (
+                <TagOutlined
+                  style={{
+                    fontSize: "1rem",
+                  }}
+                />
+              ) : (
+                <TagTwoTone
+                  style={{
+                    fontSize: "1rem",
+                  }}
+                />
+              )
+            }
             mode="multiple"
             options={tagOptions}
             maxTagCount={3}
-            maxTagTextLength={8}
+            maxTagTextLength={6}
             tagRender={tagRender}
+            showArrow={true}
             defaultValue={form.getFieldValue("tagIds")}
             style={{ width: "22rem" }}
             placeholder="Select tags here"
@@ -308,7 +344,21 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
       >
         <Form.Item name="date" style={{ marginRight: "1rem" }}>
           <DatePicker
-            suffixIcon={<CalendarTwoTone />}
+            suffixIcon={
+              formType === VIEW ? (
+                <CalendarOutlined
+                  style={{
+                    fontSize: "1rem",
+                  }}
+                />
+              ) : (
+                <CalendarTwoTone
+                  style={{
+                    fontSize: "1rem",
+                  }}
+                />
+              )
+            }
             format={DATE_FORMAT}
             style={{
               cursor: "pointer",
@@ -320,7 +370,22 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
         </Form.Item>
         <Form.Item name="duration" style={{ marginRight: "1rem" }}>
           <TimePicker.RangePicker
-            suffixIcon={<ClockCircleTwoTone />}
+            suffixIcon={
+              formType === VIEW || !isScheduled ? (
+                <ClockCircleOutlined
+                  style={{
+                    fontSize: "1rem",
+                  }}
+                />
+              ) : (
+                <ClockCircleOutlined
+                  style={{
+                    fontSize: "1rem",
+                    color: "#4096ff",
+                  }}
+                />
+              )
+            }
             format={TIME_FORMAT}
             minuteStep={5}
             style={{
@@ -332,6 +397,22 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
         </Form.Item>
         <Form.Item name="repeat">
           <Select
+            suffixIcon={
+              formType === VIEW || !isScheduled ? (
+                <SyncOutlined
+                  style={{
+                    fontSize: "1rem",
+                  }}
+                />
+              ) : (
+                <SyncOutlined
+                  style={{
+                    fontSize: "1rem",
+                    color: "#4096ff",
+                  }}
+                />
+              )
+            }
             allowClear
             options={[
               {
@@ -363,6 +444,22 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
       >
         <Form.Item name="endBy" style={{ marginRight: "1rem" }}>
           <Select
+            suffixIcon={
+              formType === VIEW || !isScheduled || !isRepeating ? (
+                <StopOutlined
+                  style={{
+                    fontSize: "1rem",
+                  }}
+                />
+              ) : (
+                <StopOutlined
+                  style={{
+                    fontSize: "1rem",
+                    color: "#4096ff",
+                  }}
+                />
+              )
+            }
             options={[
               {
                 value: "endless",
@@ -403,18 +500,33 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
           style={{ marginRight: "1rem" }}
         >
           <DatePicker
+            suffixIcon={
+              formType === VIEW ||
+              !(isScheduled && isRepeating && showEndByDate) ? (
+                <CalendarOutlined
+                  style={{
+                    fontSize: "1rem",
+                  }}
+                />
+              ) : (
+                <CalendarOutlined
+                  style={{
+                    fontSize: "1rem",
+                    color: "#4096ff",
+                  }}
+                />
+              )
+            }
             format={DATE_FORMAT}
             style={{
               cursor: "pointer",
               width: "13rem",
             }}
-            placeholder="End date"
+            placeholder="Select end date"
             disabledDate={disabledEndDate}
             disabled={
               formType === VIEW ||
-              !isScheduled ||
-              !isRepeating ||
-              !showEndByDate
+              !(isScheduled && isRepeating && showEndByDate)
             }
           />
         </Form.Item>
@@ -436,19 +548,35 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
             },
           ]}
         >
-          <InputNumber
+          <NumericInput
+            suffix={
+              formType === VIEW ||
+              !(isScheduled && isRepeating && showEndByRepeatCount) ? (
+                <FieldNumberOutlined
+                  style={{
+                    fontSize: "1rem",
+                  }}
+                />
+              ) : (
+                <FieldNumberOutlined
+                  style={{
+                    fontSize: "1rem",
+                    color: "#4096ff",
+                  }}
+                />
+              )
+            }
             min={1}
             style={{
               cursor: "pointer",
               width: "13rem",
             }}
-            placeholder="Repeat Count"
+            placeholder="Enter repeat count"
             disabled={
               formType === VIEW ||
-              !isScheduled ||
-              !isRepeating ||
-              !showEndByRepeatCount
+              !(isScheduled && isRepeating && showEndByRepeatCount)
             }
+            maxLength={3}
           />
         </Form.Item>
       </div>

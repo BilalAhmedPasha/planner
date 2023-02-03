@@ -48,7 +48,7 @@ const TaskManager = ({ user }) => {
         setIsMenuCollapsed={setIsMenuCollapsed}
         setSelectedTaskDetails={setSelectedTaskDetails}
       />
-      <TaskDetailsContainer taskDetails={selectedTaskDetails} />
+      <TaskDetailsContainer user={user} taskDetails={selectedTaskDetails} />
       {contextHolder}
     </Layout>
   );
