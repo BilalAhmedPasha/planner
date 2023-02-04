@@ -18,6 +18,7 @@ import {
   TIME_ZONE,
 } from "../../../../constants/dateTime.constants";
 import { tasksSelector } from "../../state/userTasks/userTasks.reducer";
+import { ENDLESS } from "../../../../constants/repeating.constants";
 
 const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
   const { sectionId, documentId } = useParams();
@@ -58,8 +59,16 @@ const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
       endBy: e.endBy || null,
       endByDate: (e.endByDate && e.endByDate.endOf("day").format()) || null,
       endByRepeatCount:
-        e.endByRepeatCount !== undefined && e.endByRepeatCount >= 0
-          ? e.endByRepeatCount
+        e.endByRepeatCount !== undefined && parseInt(e.endByRepeatCount) >= 0
+          ? parseInt(e.endByRepeatCount)
+          : null,
+      endByRepeatCountDate:
+        e.endByRepeatCount !== undefined && parseInt(e.endByRepeatCount) >= 0
+          ? e.date
+              .startOf("day")
+              .add(parseInt(e.endByRepeatCount), "day")
+              .endOf("day")
+              .format()
           : null,
       isMultiDay: e.dateRange ? true : false,
       startMultiDate:
@@ -109,7 +118,7 @@ const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
     name: "",
     list: TASK_LIST,
     priority: NONE,
-    endBy: "endless",
+    endBy: ENDLESS,
     tags: TASK_TAGS,
     date: TASK_DATE,
   };

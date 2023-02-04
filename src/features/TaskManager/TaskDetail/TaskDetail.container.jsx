@@ -18,6 +18,10 @@ import { LOADER_SIZE, SUCCESS } from "../../../constants/app.constants";
 import Loading from "../../../components/Loading";
 import { tasksSelector } from "../state/userTasks/userTasks.reducer";
 import Spinner from "../../../components/Spinner";
+import {
+  END_BY_DATE,
+  END_BY_REPEAT_COUNT,
+} from "../../../constants/repeating.constants";
 
 const getPriorityColor = (event) => {
   if (event === HIGH) {
@@ -104,15 +108,24 @@ const TaskDetailsContainer = ({ user, taskDetails }) => {
       repeatFrequency: formValues.repeat || null,
       endBy: formValues.endBy || null,
       endByDate:
-        (formValues.endBy === "endByDate" &&
+        (formValues.endBy === END_BY_DATE &&
           formValues.endByDate &&
           formValues.endByDate.endOf("day").format()) ||
         null,
       endByRepeatCount:
-        formValues.endBy === "endByRepeatCount" &&
+        formValues.endBy === END_BY_REPEAT_COUNT &&
         formValues.endByRepeatCount !== undefined &&
-        formValues.endByRepeatCount >= 0
-          ? formValues.endByRepeatCount
+        parseInt(formValues.endByRepeatCount) >= 0
+          ? parseInt(formValues.endByRepeatCount)
+          : null,
+      endByRepeatCountDate:
+        formValues.endByRepeatCount !== undefined &&
+        parseInt(formValues.endByRepeatCount) >= 0
+          ? formValues.date
+              .startOf("day")
+              .add(parseInt(formValues.endByRepeatCount), "day")
+              .endOf("day")
+              .format()
           : null,
       progress: formValues.progress,
       modifiedTime: modifiedTime,

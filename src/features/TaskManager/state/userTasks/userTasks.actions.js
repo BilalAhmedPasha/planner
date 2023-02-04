@@ -201,7 +201,14 @@ export const softDeleteTaskAction =
   };
 
 export const completeTaskAction =
-  (userId, taskDetails, isCompleted, markedTime, updatedTaskDate) =>
+  (
+    userId,
+    taskDetails,
+    isCompleted,
+    markedTime,
+    updatedTaskDate,
+    shouldCreateNewTask
+  ) =>
   async (dispatch) => {
     dispatch(completeTask());
     try {
@@ -210,7 +217,8 @@ export const completeTaskAction =
         taskDetails,
         isCompleted,
         markedTime,
-        updatedTaskDate
+        updatedTaskDate,
+        shouldCreateNewTask
       );
       return dispatch(
         completeTaskSuccess({
@@ -221,6 +229,7 @@ export const completeTaskAction =
             markedTime,
             updatedTaskDate,
             newTaskId: newTask?.id,
+            shouldCreateNewTask,
           },
         })
       );

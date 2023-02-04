@@ -48,6 +48,11 @@ import {
 } from "../../../constants/dateTime.constants";
 import { useEffect } from "react";
 import NumericInput from "../../../components/NumericInput";
+import {
+  ENDLESS,
+  END_BY_DATE,
+  END_BY_REPEAT_COUNT,
+} from "../../../constants/repeating.constants";
 
 const getPriorityColor = (event) => {
   if (event === HIGH) {
@@ -70,10 +75,10 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
     form.getFieldValue("isRepeating")
   );
   const [showEndByDate, setShowEndByDate] = useState(
-    taskDetails["endByDate"] ? true : false
+    taskDetails[END_BY_DATE] ? true : false
   );
   const [showEndByRepeatCount, setshowEndByRepeatCount] = useState(
-    taskDetails["endByRepeatCount"] ? true : false
+    taskDetails[END_BY_REPEAT_COUNT] ? true : false
   );
   const [isScheduled, setIsScheduled] = useState(
     taskDetails["taskDate"] ? true : false
@@ -84,15 +89,15 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
     setFormType(VIEW);
     setPriorityColor(getPriorityColor(taskDetails["priority"]));
     setIsScheduled(taskDetails["taskDate"] ? true : false);
-    setshowEndByRepeatCount(taskDetails["endByRepeatCount"] ? true : false);
-    setShowEndByDate(taskDetails["endByDate"] ? true : false);
+    setshowEndByRepeatCount(taskDetails[END_BY_REPEAT_COUNT] ? true : false);
+    setShowEndByDate(taskDetails[END_BY_DATE] ? true : false);
   };
 
   useEffect(() => {
     setPriorityColor(getPriorityColor(taskDetails["priority"]));
     setIsScheduled(taskDetails["taskDate"] ? true : false);
-    setshowEndByRepeatCount(taskDetails["endByRepeatCount"] ? true : false);
-    setShowEndByDate(taskDetails["endByDate"] ? true : false);
+    setshowEndByRepeatCount(taskDetails[END_BY_REPEAT_COUNT] ? true : false);
+    setShowEndByDate(taskDetails[END_BY_DATE] ? true : false);
   }, [taskDetails]);
 
   const handlePriorityColor = (event) => {
@@ -162,10 +167,10 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
   };
 
   const handleEndByDropDownChange = (e) => {
-    if (e === "endByDate") {
+    if (e === END_BY_DATE) {
       setShowEndByDate(true);
       setshowEndByRepeatCount(false);
-    } else if (e === "endByRepeatCount") {
+    } else if (e === END_BY_REPEAT_COUNT) {
       setShowEndByDate(false);
       setshowEndByRepeatCount(true);
     } else {
@@ -462,15 +467,15 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
             }
             options={[
               {
-                value: "endless",
+                value: ENDLESS,
                 label: "EndLess",
               },
               {
-                value: "endByDate",
+                value: END_BY_DATE,
                 label: "End by date",
               },
               {
-                value: "endByRepeatCount",
+                value: END_BY_REPEAT_COUNT,
                 label: "End by repeat count",
               },
             ]}
@@ -481,13 +486,13 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
           />
         </Form.Item>
         <Form.Item
-          name="endByDate"
+          name={END_BY_DATE}
           rules={[
             {
               message: "End date is required",
               validator: (_, value) => {
                 if (
-                  form.getFieldValue("endBy") === "endByDate" &&
+                  form.getFieldValue("endBy") === END_BY_DATE &&
                   value === null
                 ) {
                   return Promise.reject("End date is required");
@@ -531,13 +536,13 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
           />
         </Form.Item>
         <Form.Item
-          name="endByRepeatCount"
+          name={END_BY_REPEAT_COUNT}
           rules={[
             {
               message: "Repeat count is required",
               validator: (_, value) => {
                 if (
-                  form.getFieldValue("endBy") === "endByRepeatCount" &&
+                  form.getFieldValue("endBy") === END_BY_REPEAT_COUNT &&
                   value === null
                 ) {
                   return Promise.reject("Repeat count is required");

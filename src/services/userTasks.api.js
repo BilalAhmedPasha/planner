@@ -44,7 +44,8 @@ export const completeTaskApi = (
   taskDetails,
   isCompleted,
   markedTime,
-  updatedTaskDate
+  updatedTaskDate,
+  shouldCreateNewTask
 ) => {
   const userDocRef = doc(db, "users", userId);
   const taskCollectionRef = collection(userDocRef, "tasks");
@@ -62,22 +63,37 @@ export const completeTaskApi = (
   } else {
     // Add marked task as new entry
     const isWontDoNew = isCompleted ? false : taskDetails.isWontDo;
-    updateDoc(docRef, {
-      ...taskDetails,
-      taskDate: updatedTaskDate,
-    });
-    return addDoc(taskCollectionRef, {
-      ...taskDetails,
-      isCompleted: isCompleted,
-      completedTime: markedTime,
-      modifiedTime: markedTime,
-      isWontDo: isWontDoNew,
-      isRepeating: false,
-      endBy: null,
-      endByDate: null,
-      endByRepeatCount: null,
-      repeatFrequency: null,
-    });
+    if (shouldCreateNewTask) {
+      updateDoc(docRef, {
+        ...taskDetails,
+        taskDate: updatedTaskDate,
+      });
+      return addDoc(taskCollectionRef, {
+        ...taskDetails,
+        isCompleted: isCompleted,
+        completedTime: markedTime,
+        modifiedTime: markedTime,
+        isWontDo: isWontDoNew,
+        isRepeating: false,
+        endBy: null,
+        endByDate: null,
+        endByRepeatCount: null,
+        repeatFrequency: null,
+      });
+    } else {
+      return updateDoc(docRef, {
+        ...taskDetails,
+        isCompleted: isCompleted,
+        completedTime: markedTime,
+        modifiedTime: markedTime,
+        isWontDo: isWontDoNew,
+        isRepeating: false,
+        endBy: null,
+        endByDate: null,
+        endByRepeatCount: null,
+        repeatFrequency: null,
+      });
+    }
   }
 };
 

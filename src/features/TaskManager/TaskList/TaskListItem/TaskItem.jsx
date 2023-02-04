@@ -37,6 +37,10 @@ import {
   DATE_FORMAT_IN_TASK_ITEM,
   TIME_ZONE,
 } from "../../../../constants/dateTime.constants";
+import {
+  END_BY_DATE,
+  END_BY_REPEAT_COUNT,
+} from "../../../../constants/repeating.constants";
 
 const getPriorityColor = ({ item }) => {
   if (item.priority === HIGH) {
@@ -202,14 +206,30 @@ const TaskItem = ({
 
   const markTaskComplete = (isCompleted) => {
     const markedTime = dayjs.utc().endOf("day").format();
-    const updatedTaskDate = dayjs(taskDetails.taskDate).add(1, "day").format();
+    const updatedTaskDate = dayjs(taskDetails.taskDate).add(1, "day");
+    let shouldCreateNewTask = true;
+    if (taskDetails.isRepeating) {
+      let endTaskDate = null;
+      if (taskDetails.endBy === END_BY_DATE) {
+        endTaskDate = dayjs(taskDetails.endByDate).endOf("day");
+      } else if (taskDetails.endBy === END_BY_REPEAT_COUNT) {
+        endTaskDate = dayjs(taskDetails.endByRepeatCountDate).endOf("day");
+      }
+      if (endTaskDate) {
+        if (updatedTaskDate.isAfter(endTaskDate)) {
+          shouldCreateNewTask = false;
+        }
+      }
+    }
+
     return dispatch(
       completeTaskAction(
         user.uid,
         taskDetails,
         isCompleted,
         markedTime,
-        updatedTaskDate
+        updatedTaskDate.format(),
+        shouldCreateNewTask
       )
     );
   };

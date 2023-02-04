@@ -60,6 +60,7 @@ const modifyTasksAfterComplete = ({
   completedTime,
   updatedTaskDate,
   newTaskId,
+  shouldCreateNewTask,
 }) => {
   const newArr = currentTasks.reduce((accumulator, each) => {
     if (each.id === completedTaskId) {
@@ -75,24 +76,40 @@ const modifyTasksAfterComplete = ({
         return accumulator;
       } else {
         const isWontDoNew = isCompleted ? false : each.isWontDo;
-        accumulator.push({
-          ...each,
-          taskDate: updatedTaskDate,
-        });
-        accumulator.push({
-          ...each,
-          id: newTaskId,
-          isCompleted: isCompleted,
-          completedTime: completedTime,
-          modifiedTime: completedTime,
-          isWontDo: isWontDoNew,
-          isRepeating: false,
-          endBy: null,
-          endByDate: null,
-          endByRepeatCount: null,
-          repeatFrequency: null,
-        });
-        return accumulator;
+        if (shouldCreateNewTask) {
+          accumulator.push({
+            ...each,
+            taskDate: updatedTaskDate,
+          });
+          accumulator.push({
+            ...each,
+            id: newTaskId,
+            isCompleted: isCompleted,
+            completedTime: completedTime,
+            modifiedTime: completedTime,
+            isWontDo: isWontDoNew,
+            isRepeating: false,
+            endBy: null,
+            endByDate: null,
+            endByRepeatCount: null,
+            repeatFrequency: null,
+          });
+          return accumulator;
+        } else {
+          accumulator.push({
+            ...each,
+            isCompleted: isCompleted,
+            completedTime: completedTime,
+            modifiedTime: completedTime,
+            isWontDo: isWontDoNew,
+            isRepeating: false,
+            endBy: null,
+            endByDate: null,
+            endByRepeatCount: null,
+            repeatFrequency: null,
+          });
+          return accumulator;
+        }
       }
     } else {
       accumulator.push(each);
@@ -277,6 +294,7 @@ const reducer = (state = INITIAL_STATE, action) => {
           completedTime: action.payload.markedTime,
           updatedTaskDate: action.payload.updatedTaskDate,
           newTaskId: action.payload.newTaskId,
+          shouldCreateNewTask: action.payload.shouldCreateNewTask,
         }),
       };
     }

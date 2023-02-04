@@ -38,6 +38,7 @@ import {
   TIME_ZONE,
 } from "../../../../constants/dateTime.constants";
 import dayjs from "../../../../utils/dateTime.uitls";
+import { ENDLESS, END_BY_DATE, END_BY_REPEAT_COUNT } from "../../../../constants/repeating.constants";
 
 const TaskDialogRightPanel = ({ form, height }) => {
   const { lists } = useSelector(listsSelector);
@@ -140,10 +141,10 @@ const TaskDialogRightPanel = ({ form, height }) => {
   };
 
   const handleEndByDropDownChange = (e) => {
-    if (e === "endByDate") {
+    if (e === END_BY_DATE) {
       setShowEndByDate(true);
       setshowEndByRepeatCount(false);
-    } else if (e === "endByRepeatCount") {
+    } else if (e === END_BY_REPEAT_COUNT) {
       setShowEndByDate(false);
       setshowEndByRepeatCount(true);
     } else {
@@ -317,15 +318,15 @@ const TaskDialogRightPanel = ({ form, height }) => {
             <Select
               options={[
                 {
-                  value: "endless",
+                  value: ENDLESS,
                   label: "EndLess",
                 },
                 {
-                  value: "endByDate",
+                  value: END_BY_DATE,
                   label: "End by date",
                 },
                 {
-                  value: "endByRepeatCount",
+                  value: END_BY_REPEAT_COUNT,
                   label: "End by repeat count",
                 },
               ]}
@@ -336,7 +337,7 @@ const TaskDialogRightPanel = ({ form, height }) => {
 
         {isScheduled && isRepeating && showEndByDate && (
           <Form.Item
-            name="endByDate"
+            name={END_BY_DATE}
             label="End Date"
             rules={[
               {
@@ -357,7 +358,7 @@ const TaskDialogRightPanel = ({ form, height }) => {
         )}
         {isScheduled && isRepeating && showEndByRepeatCount && (
           <Form.Item
-            name="endByRepeatCount"
+            name={END_BY_REPEAT_COUNT}
             label="Repeat Count"
             rules={[
               {
