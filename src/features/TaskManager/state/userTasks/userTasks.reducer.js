@@ -57,35 +57,48 @@ const modifyTasksAfterComplete = ({
   currentTasks,
   completedTaskId,
   isCompleted,
+  completedTime,
   updatedTaskDate,
+  newTaskId,
 }) => {
-  const newArr = currentTasks.map((each) => {
+  const newArr = currentTasks.reduce((accumulator, each) => {
     if (each.id === completedTaskId) {
       if (!each.isRepeating) {
         const isWontDoNew = isCompleted ? false : each.isWontDo;
-        return {
+        accumulator.push({
           ...each,
           isCompleted: isCompleted,
+          completedTime: isCompleted || isWontDoNew ? completedTime : null,
           isWontDo: isWontDoNew,
-        };
+          modifiedTime: completedTime,
+        });
+        return accumulator;
       } else {
-        const isWontDoNew = isCompleted ? false : each.taskDate.isWontDo;
-        return {
+        const isWontDoNew = isCompleted ? false : each.isWontDo;
+        accumulator.push({
           ...each,
-          isMarkedMap: {
-            ...each.isMarkedMap,
-            [each.taskDate]: {
-              isCompleted: isCompleted,
-              isWontDo: isWontDoNew,
-            },
-          },
           taskDate: updatedTaskDate,
-        };
+        });
+        accumulator.push({
+          ...each,
+          id: newTaskId,
+          isCompleted: isCompleted,
+          completedTime: completedTime,
+          modifiedTime: completedTime,
+          isWontDo: isWontDoNew,
+          isRepeating: false,
+          endBy: null,
+          endByDate: null,
+          endByRepeatCount: null,
+          repeatFrequency: null,
+        });
+        return accumulator;
       }
     } else {
-      return each;
+      accumulator.push(each);
+      return accumulator;
     }
-  });
+  }, []);
   return newArr;
 };
 
@@ -93,35 +106,48 @@ const modifyTasksAfterWontDo = ({
   currentTasks,
   wontDoTaskId,
   isWontDo,
+  wontDoTime,
   updatedTaskDate,
+  newTaskId,
 }) => {
-  const newArr = currentTasks.map((each) => {
+  const newArr = currentTasks.reduce((accumulator, each) => {
     if (each.id === wontDoTaskId) {
       if (!each.isRepeating) {
         const isCompletedNew = isWontDo ? false : each.isCompleted;
-        return {
+        accumulator.push({
           ...each,
+          completedTime: isWontDo || isCompletedNew ? wontDoTime : null,
           isWontDo: isWontDo,
           isCompleted: isCompletedNew,
-        };
+          modifiedTime: wontDoTime,
+        });
+        return accumulator;
       } else {
-        const isCompletedNew = isWontDo ? false : each.taskDate.isCompleted;
-        return {
+        const isCompletedNew = isWontDo ? false : each.isCompleted;
+        accumulator.push({
           ...each,
-          isMarkedMap: {
-            ...each.isMarkedMap,
-            [each.taskDate]: {
-              isCompleted: isCompletedNew,
-              isWontDo: isWontDo,
-            },
-          },
           taskDate: updatedTaskDate,
-        };
+        });
+        accumulator.push({
+          ...each,
+          id: newTaskId,
+          isCompleted: isCompletedNew,
+          completedTime: wontDoTime,
+          modifiedTime: wontDoTime,
+          isWontDo: isWontDo,
+          isRepeating: false,
+          endBy: null,
+          endByDate: null,
+          endByRepeatCount: null,
+          repeatFrequency: null,
+        });
+        return accumulator;
       }
     } else {
-      return each;
+      accumulator.push(each);
+      return accumulator;
     }
-  });
+  }, []);
   return newArr;
 };
 
@@ -245,10 +271,12 @@ const reducer = (state = INITIAL_STATE, action) => {
         completeTaskSuccess: true,
         tasks: modifyTasksAfterComplete({
           currentTasks: state.tasks,
+          taskDetails: action.payload.taskDetails,
           completedTaskId: action.payload.completedTaskId,
           isCompleted: action.payload.isCompleted,
           completedTime: action.payload.markedTime,
           updatedTaskDate: action.payload.updatedTaskDate,
+          newTaskId: action.payload.newTaskId,
         }),
       };
     }
@@ -273,10 +301,12 @@ const reducer = (state = INITIAL_STATE, action) => {
         wontDoTaskSuccess: true,
         tasks: modifyTasksAfterWontDo({
           currentTasks: state.tasks,
+          taskDetails: action.payload.taskDetails,
           wontDoTaskId: action.payload.wontDoTaskId,
           isWontDo: action.payload.isWontDo,
-          completedTime: action.payload.markedTime,
+          wontDoTime: action.payload.markedTime,
           updatedTaskDate: action.payload.updatedTaskDate,
+          newTaskId: action.payload.newTaskId,
         }),
       };
     }

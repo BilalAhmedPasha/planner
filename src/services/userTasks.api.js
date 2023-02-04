@@ -56,20 +56,27 @@ export const completeTaskApi = (
       ...taskDetails,
       isCompleted: isCompleted,
       completedTime: isCompleted || isWontDoNew ? markedTime : null,
+      modifiedTime: markedTime,
       isWontDo: isWontDoNew,
     });
   } else {
-    const isWontDoNew = isCompleted ? false : taskDetails.taskDate.isWontDo;
-    return updateDoc(docRef, {
+    // Add marked task as new entry
+    const isWontDoNew = isCompleted ? false : taskDetails.isWontDo;
+    updateDoc(docRef, {
       ...taskDetails,
-      isMarkedMap: {
-        ...taskDetails.isMarkedMap,
-        [taskDetails.taskDate]: {
-          isCompleted: isCompleted,
-          isWontDo: isWontDoNew,
-        },
-      },
       taskDate: updatedTaskDate,
+    });
+    return addDoc(taskCollectionRef, {
+      ...taskDetails,
+      isCompleted: isCompleted,
+      completedTime: markedTime,
+      modifiedTime: markedTime,
+      isWontDo: isWontDoNew,
+      isRepeating: false,
+      endBy: null,
+      endByDate: null,
+      endByRepeatCount: null,
+      repeatFrequency: null,
     });
   }
 };
@@ -91,20 +98,27 @@ export const wontDoTaskApi = (
       ...taskDetails,
       isWontDo: isWontDo,
       completedTime: isWontDo || isCompletedNew ? markedTime : null,
+      modifiedTime: markedTime,
       isCompleted: isCompletedNew,
     });
   } else {
-    const isCompletedNew = isWontDo ? false : taskDetails.taskDate.isCompleted;
-    return updateDoc(docRef, {
+    // Add marked task as new entry
+    const isCompletedNew = isWontDo ? false : taskDetails.isCompleted;
+    updateDoc(docRef, {
       ...taskDetails,
-      isMarkedMap: {
-        ...taskDetails.isMarkedMap,
-        [taskDetails.taskDate]: {
-          isCompleted: isCompletedNew,
-          isWontDo: isWontDo,
-        },
-      },
       taskDate: updatedTaskDate,
+    });
+    return addDoc(taskCollectionRef, {
+      ...taskDetails,
+      isCompleted: isCompletedNew,
+      completedTime: markedTime,
+      modifiedTime: markedTime,
+      isWontDo: isWontDo,
+      isRepeating: false,
+      endBy: null,
+      endByDate: null,
+      endByRepeatCount: null,
+      repeatFrequency: null,
     });
   }
 };

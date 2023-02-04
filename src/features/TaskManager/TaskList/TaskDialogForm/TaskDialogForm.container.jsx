@@ -67,7 +67,6 @@ const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
       endMultiDate:
         (e.dateRange && e.dateRange[1].endOf("day").format()) || null,
       isCompleted: false,
-      isMarkedMap: {},
       isWontDo: false,
       isDeleted: 0,
       completedTime: null,

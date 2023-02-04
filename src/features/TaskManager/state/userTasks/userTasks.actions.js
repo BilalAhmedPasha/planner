@@ -205,7 +205,7 @@ export const completeTaskAction =
   async (dispatch) => {
     dispatch(completeTask());
     try {
-      await completeTaskApi(
+      const newTask = await completeTaskApi(
         userId,
         taskDetails,
         isCompleted,
@@ -215,10 +215,12 @@ export const completeTaskAction =
       return dispatch(
         completeTaskSuccess({
           response: {
+            taskDetails: taskDetails,
             completedTaskId: taskDetails.id,
             isCompleted,
             markedTime,
             updatedTaskDate,
+            newTaskId: newTask?.id,
           },
         })
       );
@@ -232,7 +234,7 @@ export const wontDoTaskAction =
   async (dispatch) => {
     dispatch(wontDoTask());
     try {
-      await wontDoTaskApi(
+      const newTask = await wontDoTaskApi(
         userId,
         taskDetails,
         isWontDo,
@@ -242,10 +244,12 @@ export const wontDoTaskAction =
       return dispatch(
         wontDoTaskSuccess({
           response: {
+            taskDetails: taskDetails,
             wontDoTaskId: taskDetails.id,
             isWontDo,
             markedTime,
             updatedTaskDate,
+            newTaskId: newTask?.id,
           },
         })
       );

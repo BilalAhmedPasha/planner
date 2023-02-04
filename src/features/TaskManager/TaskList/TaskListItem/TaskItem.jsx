@@ -315,7 +315,7 @@ const TaskItem = ({
             textOverflow: "ellipsis",
           }}
         >
-          <Typography.Text>{`${taskDetails.name} (${taskDetails.id})`}</Typography.Text>
+          <Typography.Text>{`${taskDetails.name}`}</Typography.Text>
         </Space>
       </Space>
       <div
