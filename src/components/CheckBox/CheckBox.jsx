@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const CheckBoxInput = styled.input.attrs({ type: "checkbox" })`
   position: relative;
-  cursor: pointer;
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   &:hover::before {
     background-color: ${(props) => props.hoverBGColor};
   }
@@ -18,7 +18,7 @@ const CheckBoxInput = styled.input.attrs({ type: "checkbox" })`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    cursor: pointer;
+    cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
     transition: 0.3s all ease;
   }
 

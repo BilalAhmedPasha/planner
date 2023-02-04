@@ -12,3 +12,8 @@ export const LOW_BG_COLOR = "#bae0ff";
 export const NONE_BG_COLOR = "#d9d9d9";
 
 export const OVERDUE_COLOR = "#ff4d4f";
+
+export const PRIMARY_BLACK_COLOR = "#262626";
+export const COMPLETED_COLOR = "#bfbfbf";
+export const COMPLETED_BG_COLOR = "#8c8c8c";
+

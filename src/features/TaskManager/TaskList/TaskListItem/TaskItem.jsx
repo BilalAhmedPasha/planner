@@ -5,8 +5,11 @@ import {
   DeleteOutlined,
   RightOutlined,
   ExclamationCircleOutlined,
+  UndoOutlined,
 } from "@ant-design/icons";
 import {
+  COMPLETED_BG_COLOR,
+  COMPLETED_COLOR,
   HIGH_BG_COLOR,
   HIGH_COLOR,
   LOW_BG_COLOR,
@@ -15,6 +18,7 @@ import {
   MEDIUM_COLOR,
   NONE_BG_COLOR,
   NONE_COLOR,
+  PRIMARY_BLACK_COLOR,
 } from "../../../../constants/color.constants";
 import {
   COMPLETED,
@@ -28,6 +32,7 @@ import { useDispatch } from "react-redux";
 import {
   completeTaskAction,
   softDeleteTaskAction,
+  restoreTaskAction,
   wontDoTaskAction,
 } from "../../state/userTasks/userTasks.actions";
 import { useState } from "react";
@@ -43,6 +48,9 @@ import {
 } from "../../../../constants/repeating.constants";
 
 const getPriorityColor = ({ item }) => {
+  if (item.isCompleted || item.isWontDo) {
+    return { color: COMPLETED_COLOR, bgColor: COMPLETED_BG_COLOR };
+  }
   if (item.priority === HIGH) {
     return { color: HIGH_COLOR, bgColor: HIGH_BG_COLOR };
   } else if (item.priority === MEDIUM) {
@@ -56,7 +64,11 @@ const getPriorityColor = ({ item }) => {
 const renderListName = ({ item, lists }) => {
   const itemInList = lists?.find((each) => each.id === item?.listId);
   return (
-    <Typography.Text type="secondary" style={{ textTransform: "capitalize" }}>
+    <Typography.Text
+      type="secondary"
+      style={{ textTransform: "capitalize" }}
+      disabled={item.isCompleted || item.isWontDo}
+    >
       {itemInList?.label || INBOX}
     </Typography.Text>
   );
@@ -76,7 +88,14 @@ const renderTags = ({ item, tags }) => {
         offset={[0, 8]}
         style={{ marginRight: "0.5rem" }}
       >
-        <Tag color={tagDetails.color} closable={false}>
+        <Tag
+          color={
+            item.isCompleted || item.isWontDo
+              ? COMPLETED_COLOR
+              : tagDetails.color
+          }
+          closable={false}
+        >
           {tagDetails.label.length > 8
             ? `${tagDetails.label.slice(0, 5)}...`
             : tagDetails.label}
@@ -88,13 +107,31 @@ const renderTags = ({ item, tags }) => {
 
 const renderChildNodeIcon = ({ item }) => {
   if (item.childTaskIds.length > 0) {
-    return <NodeExpandOutlined style={{ color: "grey" }} />;
+    return (
+      <NodeExpandOutlined
+        style={{
+          color:
+            item.isCompleted || item.isWontDo
+              ? COMPLETED_COLOR
+              : COMPLETED_BG_COLOR,
+        }}
+      />
+    );
   }
 };
 
 const renderRepeatIcon = ({ item }) => {
   if (item.isRepeating) {
-    return <SyncOutlined style={{ color: "grey" }} />;
+    return (
+      <SyncOutlined
+        style={{
+          color:
+            item.isCompleted || item.isWontDo
+              ? COMPLETED_COLOR
+              : COMPLETED_BG_COLOR,
+        }}
+      />
+    );
   }
 };
 const renderTaskDate = ({ item }) => {
@@ -108,6 +145,7 @@ const renderTaskDate = ({ item }) => {
     return (
       <Typography.Text
         type={taskDate.endOf("day").isBefore(today) ? "danger" : "secondary"}
+        disabled={item.isCompleted || item.isWontDo}
       >
         {taskDate.format(DATE_FORMAT_IN_TASK_ITEM)}
       </Typography.Text>
@@ -118,6 +156,7 @@ const renderTaskDate = ({ item }) => {
         type={
           startMultiDate.endOf("day").isBefore(today) ? "danger" : "secondary"
         }
+        disabled={item.isCompleted || item.isWontDo}
       >
         {`${startMultiDate.format(
           DATE_FORMAT_IN_TASK_ITEM
@@ -169,14 +208,14 @@ const TaskItem = ({
   };
 
   const dispatch = useDispatch();
-  const softDeleteSuccess = ({ messageText }) => {
+  const success = ({ messageText }) => {
     messageApi.open({
       type: "success",
       content: messageText,
       duration: 3,
     });
   };
-  const softDeleteFailed = ({ messageText }) => {
+  const failed = ({ messageText }) => {
     messageApi.open({
       type: "error",
       content: messageText,
@@ -192,9 +231,24 @@ const TaskItem = ({
   }) => {
     dispatch(softDeleteAction(user.uid, currentItem)).then((response) => {
       if (response.success === SUCCESS) {
-        softDeleteSuccess({ messageText: successMessage });
+        success({ messageText: successMessage });
       } else {
-        softDeleteFailed({ messageText: failureMessage });
+        failed({ messageText: failureMessage });
+      }
+    });
+  };
+
+  const handleTaskRestore = ({
+    currentItem,
+    restoreTaskAction,
+    successMessage,
+    failureMessage,
+  }) => {
+    dispatch(restoreTaskAction(user.uid, currentItem)).then((response) => {
+      if (response.success === SUCCESS) {
+        success({ messageText: successMessage });
+      } else {
+        failed({ messageText: failureMessage });
       }
     });
   };
@@ -329,6 +383,7 @@ const TaskItem = ({
           menu={{ items: checkBoxMenuItems, onClick: handleMenuClick }}
           placement="bottomLeft"
           open={showCheckBoxMenu}
+          disabled={taskDetails.isDeleted}
         >
           <CheckBoxInput
             uniCode={checkBoxContent}
@@ -339,6 +394,7 @@ const TaskItem = ({
             onChange={handleClick}
             onContextMenu={handleRightClick}
             checked={taskDetails.isCompleted || taskDetails.isWontDo}
+            disabled={taskDetails.isDeleted}
           />
         </Dropdown>
 
@@ -351,7 +407,9 @@ const TaskItem = ({
             textOverflow: "ellipsis",
           }}
         >
-          <Typography.Text>{`${taskDetails.name}`}</Typography.Text>
+          <Typography.Text
+            disabled={taskDetails.isCompleted || taskDetails.isWontDo}
+          >{`${taskDetails.name}`}</Typography.Text>
         </Space>
       </Space>
       <div
@@ -372,24 +430,93 @@ const TaskItem = ({
           {renderRepeatIcon({ item: taskDetails })}
           {renderTaskDate({ item: taskDetails })}
         </Space>
+        {taskDetails.isDeleted ? (
+          <Button
+            type="text"
+            icon={
+              <UndoOutlined
+                style={{
+                  color:
+                    taskDetails.isCompleted || taskDetails.isWontDo
+                      ? COMPLETED_COLOR
+                      : PRIMARY_BLACK_COLOR,
+                }}
+              />
+            }
+            size="small"
+            onClick={(e) => {
+              handleTaskRestore({
+                currentItem: taskDetails,
+                restoreTaskAction: restoreTaskAction,
+                successMessage: "Task restored",
+                failureMessage: "Failed to restore task",
+              });
+            }}
+          />
+        ) : (
+          <Button
+            type="text"
+            icon={
+              <DeleteOutlined
+                style={{
+                  color:
+                    taskDetails.isCompleted || taskDetails.isWontDo
+                      ? COMPLETED_COLOR
+                      : PRIMARY_BLACK_COLOR,
+                }}
+              />
+            }
+            size="small"
+            onClick={(e) => {
+              showSoftDeleteConfirm({
+                content: "Delete this task?",
+                handleSoftDelete: handleSoftDelete,
+                currentItem: taskDetails,
+                softDeleteAction: softDeleteTaskAction,
+                successMessage: "Task deleted",
+                failureMessage: "Failed to delete task",
+              });
+            }}
+          />
+        )}
+        {taskDetails.isDeleted && (
+          <Button
+            type="text"
+            icon={
+              <DeleteOutlined
+                style={{
+                  color:
+                    taskDetails.isCompleted || taskDetails.isWontDo
+                      ? COMPLETED_COLOR
+                      : PRIMARY_BLACK_COLOR,
+                }}
+              />
+            }
+            size="small"
+            onClick={(e) => {
+              showSoftDeleteConfirm({
+                content: "Delete this task?",
+                handleSoftDelete: handleSoftDelete,
+                currentItem: taskDetails,
+                softDeleteAction: softDeleteTaskAction,
+                successMessage: "Task deleted",
+                failureMessage: "Failed to delete task",
+              });
+            }}
+          />
+        )}
         <Button
           type="text"
-          icon={<DeleteOutlined />}
-          size="small"
-          onClick={(e) => {
-            showSoftDeleteConfirm({
-              content: "Delete this task?",
-              handleSoftDelete: handleSoftDelete,
-              currentItem: taskDetails,
-              softDeleteAction: softDeleteTaskAction,
-              successMessage: "Task deleted",
-              failureMessage: "Failed to delete task",
-            });
-          }}
-        />
-        <Button
-          type="text"
-          icon={<RightOutlined />}
+          icon={
+            <RightOutlined
+              style={{
+                color:
+                  taskDetails.isCompleted || taskDetails.isWontDo
+                    ? COMPLETED_COLOR
+                    : PRIMARY_BLACK_COLOR,
+              }}
+            />
+          }
           size="small"
           onClick={(e) => {
             setSelectedCardId(taskDetails.id);

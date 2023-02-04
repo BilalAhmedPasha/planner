@@ -7,6 +7,7 @@ import {
   completeTaskApi,
   wontDoTaskApi,
   hardDeleteTaskApi,
+  restoreTaskApi,
 } from "../../../../services/userTasks.api";
 import {
   FETCH_TASKS,
@@ -18,6 +19,9 @@ import {
   SOFT_DELETE_TASK,
   SOFT_DELETE_TASK_SUCCESS,
   SOFT_DELETE_TASK_ERROR,
+  RESTORE_TASK,
+  RESTORE_TASK_SUCCESS,
+  RESTORE_TASK_ERROR,
   EDIT_TASK,
   EDIT_TASK_SUCCESS,
   EDIT_TASK_ERROR,
@@ -91,6 +95,22 @@ export const softDeleteTaskSuccess = ({ response }) => ({
 
 export const softDeleteTaskFailure = (error) => ({
   type: SOFT_DELETE_TASK_ERROR,
+  payload: { error },
+});
+
+export const restoreTask = (payload) => ({
+  type: RESTORE_TASK,
+  payload,
+});
+
+export const restoreTaskSuccess = ({ response }) => ({
+  type: RESTORE_TASK_SUCCESS,
+  payload: response,
+  success: SUCCESS,
+});
+
+export const restoreTaskFailure = (error) => ({
+  type: RESTORE_TASK_ERROR,
   payload: { error },
 });
 
@@ -199,6 +219,20 @@ export const softDeleteTaskAction =
       return dispatch(softDeleteTaskFailure(error));
     }
   };
+
+export const restoreTaskAction = (userId, currentTask) => async (dispatch) => {
+  dispatch(restoreTask());
+  try {
+    await restoreTaskApi(userId, currentTask);
+    return dispatch(
+      restoreTaskSuccess({
+        response: { id: currentTask.id },
+      })
+    );
+  } catch (error) {
+    return dispatch(restoreTaskFailure(error));
+  }
+};
 
 export const completeTaskAction =
   (

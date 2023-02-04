@@ -14,6 +14,10 @@ export const SOFT_DELETE_TASK = "SOFT_DELETE_TASK";
 export const SOFT_DELETE_TASK_SUCCESS = "SOFT_DELETE_TASK_SUCCESS";
 export const SOFT_DELETE_TASK_ERROR = "SOFT_DELETE_TASK_ERROR";
 
+export const RESTORE_TASK = "RESTORE_TASK";
+export const RESTORE_TASK_SUCCESS = "RESTORE_TASK_SUCCESS";
+export const RESTORE_TASK_ERROR = "RESTORE_TASK_ERROR";
+
 export const COMPLETE_TASK = "COMPLETE_TASK";
 export const COMPLETE_TASK_SUCCESS = "COMPLETE_TASK_SUCCESS";
 export const COMPLETE_TASK_ERROR = "COMPLETE_TASK_ERROR";
@@ -50,6 +54,12 @@ const modifyTasksAfterEdit = ({ currentTasks, editedTask }) => {
 const modifyTasksAfterSoftDelete = ({ currentTasks, deletedTask }) => {
   return currentTasks.map((each) => {
     return each.id === deletedTask.id ? { ...each, isDeleted: 1 } : each;
+  });
+};
+
+const modifyTasksAfterRestore = ({ currentTasks, restoredTask }) => {
+  return currentTasks.map((each) => {
+    return each.id === restoredTask.id ? { ...each, isDeleted: 0 } : each;
   });
 };
 
@@ -290,6 +300,32 @@ const reducer = (state = INITIAL_STATE, action) => {
         ...state,
         error: action.payload.error,
         softDeleteTaskSuccess: false,
+        isLoadingTasks: false,
+      };
+    }
+
+    case RESTORE_TASK: {
+      return fetchLoadingState({ state });
+    }
+
+    case RESTORE_TASK_SUCCESS: {
+      return {
+        ...state,
+        isLoadingTasks: false,
+        restoreTaskSuccess: true,
+        totalTasks: state.totalTasks > 0 ? state.totalTasks - 1 : 0,
+        tasks: modifyTasksAfterRestore({
+          currentTasks: state.tasks,
+          restoredTask: action.payload,
+        }),
+      };
+    }
+
+    case RESTORE_TASK_ERROR: {
+      return {
+        ...state,
+        error: action.payload.error,
+        restoreTaskSuccess: false,
         isLoadingTasks: false,
       };
     }

@@ -39,6 +39,16 @@ export const softDeleteTaskApi = (userId, currentTask) => {
   });
 };
 
+export const restoreTaskApi = (userId, currentTask) => {
+  const userDocRef = doc(db, "users", userId);
+  const taskCollectionRef = collection(userDocRef, "tasks");
+  const docRef = doc(taskCollectionRef, currentTask.id);
+  return updateDoc(docRef, {
+    ...currentTask,
+    isDeleted: 0,
+  });
+};
+
 export const completeTaskApi = (
   userId,
   taskDetails,
