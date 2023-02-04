@@ -123,7 +123,7 @@ const TaskDetailsContainer = ({ user, taskDetails }) => {
         parseInt(formValues.endByRepeatCount) >= 0
           ? formValues.date
               .startOf("day")
-              .add(parseInt(formValues.endByRepeatCount), "day")
+              .add(parseInt(formValues.endByRepeatCount -1), "day")
               .endOf("day")
               .format()
           : null,

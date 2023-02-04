@@ -236,14 +236,30 @@ const TaskItem = ({
 
   const markTaskWontDo = (isWontDo) => {
     const markedTime = dayjs.utc().endOf("day").format();
-    const updatedTaskDate = dayjs(taskDetails.taskDate).add(1, "day").format();
+    const updatedTaskDate = dayjs(taskDetails.taskDate).add(1, "day");
+    let shouldCreateNewTask = true;
+    if (taskDetails.isRepeating) {
+      let endTaskDate = null;
+      if (taskDetails.endBy === END_BY_DATE) {
+        endTaskDate = dayjs(taskDetails.endByDate).endOf("day");
+      } else if (taskDetails.endBy === END_BY_REPEAT_COUNT) {
+        endTaskDate = dayjs(taskDetails.endByRepeatCountDate).endOf("day");
+      }
+      if (endTaskDate) {
+        if (updatedTaskDate.isAfter(endTaskDate)) {
+          shouldCreateNewTask = false;
+        }
+      }
+    }
+
     return dispatch(
       wontDoTaskAction(
         user.uid,
         taskDetails,
         isWontDo,
         markedTime,
-        updatedTaskDate
+        updatedTaskDate.format(),
+        shouldCreateNewTask
       )
     );
   };

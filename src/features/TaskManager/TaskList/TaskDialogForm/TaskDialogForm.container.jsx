@@ -66,7 +66,7 @@ const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
         e.endByRepeatCount !== undefined && parseInt(e.endByRepeatCount) >= 0
           ? e.date
               .startOf("day")
-              .add(parseInt(e.endByRepeatCount), "day")
+              .add(parseInt(e.endByRepeatCount -1), "day")
               .endOf("day")
               .format()
           : null,

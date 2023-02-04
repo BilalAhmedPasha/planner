@@ -126,6 +126,7 @@ const modifyTasksAfterWontDo = ({
   wontDoTime,
   updatedTaskDate,
   newTaskId,
+  shouldCreateNewTask,
 }) => {
   const newArr = currentTasks.reduce((accumulator, each) => {
     if (each.id === wontDoTaskId) {
@@ -141,24 +142,40 @@ const modifyTasksAfterWontDo = ({
         return accumulator;
       } else {
         const isCompletedNew = isWontDo ? false : each.isCompleted;
-        accumulator.push({
-          ...each,
-          taskDate: updatedTaskDate,
-        });
-        accumulator.push({
-          ...each,
-          id: newTaskId,
-          isCompleted: isCompletedNew,
-          completedTime: wontDoTime,
-          modifiedTime: wontDoTime,
-          isWontDo: isWontDo,
-          isRepeating: false,
-          endBy: null,
-          endByDate: null,
-          endByRepeatCount: null,
-          repeatFrequency: null,
-        });
-        return accumulator;
+        if (shouldCreateNewTask) {
+          accumulator.push({
+            ...each,
+            taskDate: updatedTaskDate,
+          });
+          accumulator.push({
+            ...each,
+            id: newTaskId,
+            isCompleted: isCompletedNew,
+            completedTime: wontDoTime,
+            modifiedTime: wontDoTime,
+            isWontDo: isWontDo,
+            isRepeating: false,
+            endBy: null,
+            endByDate: null,
+            endByRepeatCount: null,
+            repeatFrequency: null,
+          });
+          return accumulator;
+        } else {
+          accumulator.push({
+            ...each,
+            isCompleted: isCompletedNew,
+            completedTime: wontDoTime,
+            modifiedTime: wontDoTime,
+            isWontDo: isWontDo,
+            isRepeating: false,
+            endBy: null,
+            endByDate: null,
+            endByRepeatCount: null,
+            repeatFrequency: null,
+          });
+          return accumulator;
+        }
       }
     } else {
       accumulator.push(each);
@@ -325,6 +342,7 @@ const reducer = (state = INITIAL_STATE, action) => {
           wontDoTime: action.payload.markedTime,
           updatedTaskDate: action.payload.updatedTaskDate,
           newTaskId: action.payload.newTaskId,
+          shouldCreateNewTask: action.payload.shouldCreateNewTask,
         }),
       };
     }

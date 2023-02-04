@@ -54,9 +54,7 @@ export const getTasksByDate = ({ tasks, date }) => {
             currentDateTasks.push(tasks[i]);
         } else if (tasks[i].endByRepeatCount >= 0) {
           // Repeating task end by count
-          const taskDateEnd = taskDateStart
-            .add(tasks[i].endByRepeatCount, "day")
-            .endOf("day");
+          const taskDateEnd = dayjs(tasks[i].endByRepeatCountDate).endOf("day");
           currentDateStart.isSameOrAfter(taskDateStart) &&
             currentDateEnd.isSameOrBefore(taskDateEnd) &&
             currentDateTasks.push(tasks[i]);
@@ -109,9 +107,7 @@ export const getTasksByNextXDays = ({ tasks, fromDate, count }) => {
           }
         } else if (tasks[i].endByRepeatCount >= 0) {
           // Repeating task end by count
-          const endDate = taskDateStart
-            .add(tasks[i].endByRepeatCount, "day")
-            .endOf("day");
+          const endDate = dayjs(tasks[i].endByRepeatCountDate).endOf("day");
           if (
             (startDate.isBefore(taskDateStart) &&
               endDate.isSameOrAfter(endDate)) ||

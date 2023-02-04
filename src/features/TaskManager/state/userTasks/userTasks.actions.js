@@ -239,7 +239,14 @@ export const completeTaskAction =
   };
 
 export const wontDoTaskAction =
-  (userId, taskDetails, isWontDo, markedTime, updatedTaskDate) =>
+  (
+    userId,
+    taskDetails,
+    isWontDo,
+    markedTime,
+    updatedTaskDate,
+    shouldCreateNewTask
+  ) =>
   async (dispatch) => {
     dispatch(wontDoTask());
     try {
@@ -248,7 +255,8 @@ export const wontDoTaskAction =
         taskDetails,
         isWontDo,
         markedTime,
-        updatedTaskDate
+        updatedTaskDate,
+        shouldCreateNewTask
       );
       return dispatch(
         wontDoTaskSuccess({
@@ -259,6 +267,7 @@ export const wontDoTaskAction =
             markedTime,
             updatedTaskDate,
             newTaskId: newTask?.id,
+            shouldCreateNewTask,
           },
         })
       );
