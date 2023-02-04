@@ -1,7 +1,8 @@
 import React from "react";
-import { Modal as ModalAnt, Spin } from "antd";
+import { Modal as ModalAnt } from "antd";
 import Loading from "../Loading";
 import { LOADER_SIZE } from "../../constants/app.constants";
+import Spinner from "../Spinner";
 
 const Modal = ({
   open,
@@ -35,9 +36,9 @@ const Modal = ({
       maskClosable={false}
       {...props}
     >
-      <Spin spinning={loading} indicator={Loading(LOADER_SIZE)}>
+      <Spinner spinning={loading} indicator={Loading(LOADER_SIZE)}>
         {children}
-      </Spin>
+      </Spinner>
     </ModalAnt>
   );
 };

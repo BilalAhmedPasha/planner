@@ -1,13 +1,4 @@
-import {
-  Button,
-  Layout,
-  message,
-  Modal,
-  Space,
-  Spin,
-  theme,
-  Typography,
-} from "antd";
+import { Button, Layout, message, Modal, Space, theme, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../../components/Loading";
@@ -52,6 +43,7 @@ import {
 } from "./TaskListItem/TaskUtils";
 import { TIME_ZONE } from "../../../constants/dateTime.constants";
 import { hardDeleteTaskAction } from "../state/userTasks/userTasks.actions";
+import Spinner from "../../../components/Spinner";
 
 const computeSectionData = ({ tasks, currentSection }) => {
   if (currentSection.id === ALL) {
@@ -196,7 +188,7 @@ const TaskListContainer = ({
         background: colorBgContainer,
       }}
     >
-      <Spin spinning={isLoadingTasks} indicator={Loading(LOADER_SIZE)}>
+      <Spinner spinning={isLoadingTasks} indicator={Loading(LOADER_SIZE)}>
         <div
           style={{
             display: "flex",
@@ -270,7 +262,7 @@ const TaskListContainer = ({
             setSelectedTaskDetails={setSelectedTaskDetails}
           />
         </div>
-      </Spin>
+      </Spinner>
     </Layout.Content>
   );
 };

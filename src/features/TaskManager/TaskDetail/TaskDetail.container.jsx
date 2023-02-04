@@ -13,8 +13,11 @@ import {
   NONE_COLOR,
 } from "../../../constants/color.constants";
 import { HIGH, LOW, MEDIUM } from "../../../constants/priority.constants";
-import { useDispatch } from "react-redux";
-import { SUCCESS } from "../../../constants/app.constants";
+import { useDispatch, useSelector } from "react-redux";
+import { LOADER_SIZE, SUCCESS } from "../../../constants/app.constants";
+import Loading from "../../../components/Loading";
+import { tasksSelector } from "../state/userTasks/userTasks.reducer";
+import Spinner from "../../../components/Spinner";
 
 const getPriorityColor = (event) => {
   if (event === HIGH) {
@@ -75,6 +78,8 @@ const TaskDetailsContainer = ({ user, taskDetails }) => {
     });
   };
 
+  const { isLoadingTasks } = useSelector(tasksSelector);
+
   const onSubmit = ({ taskDetails, formValues }) => {
     const modifiedTime = dayjs.utc().format();
     const modifiedTask = {
@@ -132,23 +137,25 @@ const TaskDetailsContainer = ({ user, taskDetails }) => {
         background: colorBgContainer,
       }}
     >
-      {taskDetails ? (
-        <Form
-          form={form}
-          name="detail_form"
-          onFinish={(formValues) => onSubmit({ taskDetails, formValues })}
-          initialValues={FORM_VALUES}
-        >
-          <TaskDetails
-            taskDetails={taskDetails}
+      <Spinner spinning={isLoadingTasks} indicator={Loading(LOADER_SIZE)}>
+        {taskDetails ? (
+          <Form
             form={form}
-            formType={formType}
-            setFormType={setFormType}
-          />
-        </Form>
-      ) : (
-        <NotTaskSelected />
-      )}
+            name="detail_form"
+            onFinish={(formValues) => onSubmit({ taskDetails, formValues })}
+            initialValues={FORM_VALUES}
+          >
+            <TaskDetails
+              taskDetails={taskDetails}
+              form={form}
+              formType={formType}
+              setFormType={setFormType}
+            />
+          </Form>
+        ) : (
+          <NotTaskSelected />
+        )}
+      </Spinner>
     </Layout.Content>
   );
 };

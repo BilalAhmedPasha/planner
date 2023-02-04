@@ -1,13 +1,4 @@
-import {
-  Badge,
-  Button,
-  Dropdown,
-  Layout,
-  Menu,
-  Modal,
-  Space,
-  Spin,
-} from "antd";
+import { Badge, Button, Dropdown, Layout, Menu, Modal, Space } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SideMenu from "../../../components/SideMenu";
@@ -35,6 +26,7 @@ import {
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import Loading from "../../../components/Loading";
+import Spinner from "../../../components/Spinner";
 
 const renderColorDot = (color) => {
   return (
@@ -322,7 +314,7 @@ const TaskNav = ({
       width="18vw"
       collapsed={collapsed}
     >
-      <Spin
+      <Spinner
         spinning={isLoadingLists || isLoadingTags}
         indicator={Loading(LOADER_SIZE)}
       >
@@ -384,7 +376,7 @@ const TaskNav = ({
             formValues={tagData}
           />
         )}
-      </Spin>
+      </Spinner>
     </Layout.Sider>
   );
 };
