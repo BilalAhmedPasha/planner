@@ -43,31 +43,70 @@ export const completeTaskApi = (
   userId,
   taskDetails,
   isCompleted,
-  markedTime
+  markedTime,
+  updatedTaskDate
 ) => {
   const userDocRef = doc(db, "users", userId);
   const taskCollectionRef = collection(userDocRef, "tasks");
   const docRef = doc(taskCollectionRef, taskDetails.id);
-  const isWontDoNew = isCompleted ? false : taskDetails.isWontDo;
-  return updateDoc(docRef, {
-    ...taskDetails,
-    isCompleted: isCompleted,
-    completedTime: isCompleted || isWontDoNew ? markedTime : null,
-    isWontDo: isWontDoNew,
-  });
+
+  if (!taskDetails.isRepeating) {
+    const isWontDoNew = isCompleted ? false : taskDetails.isWontDo;
+    return updateDoc(docRef, {
+      ...taskDetails,
+      isCompleted: isCompleted,
+      completedTime: isCompleted || isWontDoNew ? markedTime : null,
+      isWontDo: isWontDoNew,
+    });
+  } else {
+    const isWontDoNew = isCompleted ? false : taskDetails.taskDate.isWontDo;
+    return updateDoc(docRef, {
+      ...taskDetails,
+      isMarkedMap: {
+        ...taskDetails.isMarkedMap,
+        [taskDetails.taskDate]: {
+          isCompleted: isCompleted,
+          isWontDo: isWontDoNew,
+        },
+      },
+      taskDate: updatedTaskDate,
+    });
+  }
 };
 
-export const wontDoTaskApi = (userId, taskDetails, isWontDo, markedTime) => {
+export const wontDoTaskApi = (
+  userId,
+  taskDetails,
+  isWontDo,
+  markedTime,
+  updatedTaskDate
+) => {
   const userDocRef = doc(db, "users", userId);
   const taskCollectionRef = collection(userDocRef, "tasks");
   const docRef = doc(taskCollectionRef, taskDetails.id);
-  const isCompletedNew = isWontDo ? false : taskDetails.isCompleted;
-  return updateDoc(docRef, {
-    ...taskDetails,
-    isWontDo: isWontDo,
-    completedTime: isWontDo || isCompletedNew ? markedTime : null,
-    isCompleted: isCompletedNew,
-  });
+
+  if (!taskDetails.isRepeating) {
+    const isCompletedNew = isWontDo ? false : taskDetails.isCompleted;
+    return updateDoc(docRef, {
+      ...taskDetails,
+      isWontDo: isWontDo,
+      completedTime: isWontDo || isCompletedNew ? markedTime : null,
+      isCompleted: isCompletedNew,
+    });
+  } else {
+    const isCompletedNew = isWontDo ? false : taskDetails.taskDate.isCompleted;
+    return updateDoc(docRef, {
+      ...taskDetails,
+      isMarkedMap: {
+        ...taskDetails.isMarkedMap,
+        [taskDetails.taskDate]: {
+          isCompleted: isCompletedNew,
+          isWontDo: isWontDo,
+        },
+      },
+      taskDate: updatedTaskDate,
+    });
+  }
 };
 
 export const hardDeleteTaskApi = async (userId) => {

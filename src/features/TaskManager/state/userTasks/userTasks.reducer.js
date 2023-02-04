@@ -57,29 +57,71 @@ const modifyTasksAfterComplete = ({
   currentTasks,
   completedTaskId,
   isCompleted,
+  updatedTaskDate,
 }) => {
-  const newArr = currentTasks.map((each) =>
-    each.id === completedTaskId
-      ? {
+  const newArr = currentTasks.map((each) => {
+    if (each.id === completedTaskId) {
+      if (!each.isRepeating) {
+        const isWontDoNew = isCompleted ? false : each.isWontDo;
+        return {
           ...each,
           isCompleted: isCompleted,
-          isWontDo: isCompleted ? false : each.isWontDo,
-        }
-      : each
-  );
+          isWontDo: isWontDoNew,
+        };
+      } else {
+        const isWontDoNew = isCompleted ? false : each.taskDate.isWontDo;
+        return {
+          ...each,
+          isMarkedMap: {
+            ...each.isMarkedMap,
+            [each.taskDate]: {
+              isCompleted: isCompleted,
+              isWontDo: isWontDoNew,
+            },
+          },
+          taskDate: updatedTaskDate,
+        };
+      }
+    } else {
+      return each;
+    }
+  });
   return newArr;
 };
 
-const modifyTasksAfterWontDo = ({ currentTasks, wontDoTaskId, isWontDo }) => {
-  const newArr = currentTasks.map((each) =>
-    each.id === wontDoTaskId
-      ? {
+const modifyTasksAfterWontDo = ({
+  currentTasks,
+  wontDoTaskId,
+  isWontDo,
+  updatedTaskDate,
+}) => {
+  const newArr = currentTasks.map((each) => {
+    if (each.id === wontDoTaskId) {
+      if (!each.isRepeating) {
+        const isCompletedNew = isWontDo ? false : each.isCompleted;
+        return {
           ...each,
           isWontDo: isWontDo,
-          isCompleted: isWontDo ? false : each.isCompleted,
-        }
-      : each
-  );
+          isCompleted: isCompletedNew,
+        };
+      } else {
+        const isCompletedNew = isWontDo ? false : each.taskDate.isCompleted;
+        return {
+          ...each,
+          isMarkedMap: {
+            ...each.isMarkedMap,
+            [each.taskDate]: {
+              isCompleted: isCompletedNew,
+              isWontDo: isWontDo,
+            },
+          },
+          taskDate: updatedTaskDate,
+        };
+      }
+    } else {
+      return each;
+    }
+  });
   return newArr;
 };
 
@@ -206,6 +248,7 @@ const reducer = (state = INITIAL_STATE, action) => {
           completedTaskId: action.payload.completedTaskId,
           isCompleted: action.payload.isCompleted,
           completedTime: action.payload.markedTime,
+          updatedTaskDate: action.payload.updatedTaskDate,
         }),
       };
     }
@@ -233,6 +276,7 @@ const reducer = (state = INITIAL_STATE, action) => {
           wontDoTaskId: action.payload.wontDoTaskId,
           isWontDo: action.payload.isWontDo,
           completedTime: action.payload.markedTime,
+          updatedTaskDate: action.payload.updatedTaskDate,
         }),
       };
     }

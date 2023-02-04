@@ -201,16 +201,24 @@ export const softDeleteTaskAction =
   };
 
 export const completeTaskAction =
-  (userId, taskDetails, isCompleted, markedTime) => async (dispatch) => {
+  (userId, taskDetails, isCompleted, markedTime, updatedTaskDate) =>
+  async (dispatch) => {
     dispatch(completeTask());
     try {
-      await completeTaskApi(userId, taskDetails, isCompleted, markedTime);
+      await completeTaskApi(
+        userId,
+        taskDetails,
+        isCompleted,
+        markedTime,
+        updatedTaskDate
+      );
       return dispatch(
         completeTaskSuccess({
           response: {
             completedTaskId: taskDetails.id,
             isCompleted,
             markedTime,
+            updatedTaskDate,
           },
         })
       );
@@ -220,13 +228,25 @@ export const completeTaskAction =
   };
 
 export const wontDoTaskAction =
-  (userId, taskDetails, isWontDo, markedTime) => async (dispatch) => {
+  (userId, taskDetails, isWontDo, markedTime, updatedTaskDate) =>
+  async (dispatch) => {
     dispatch(wontDoTask());
     try {
-      await wontDoTaskApi(userId, taskDetails, isWontDo, markedTime);
+      await wontDoTaskApi(
+        userId,
+        taskDetails,
+        isWontDo,
+        markedTime,
+        updatedTaskDate
+      );
       return dispatch(
         wontDoTaskSuccess({
-          response: { wontDoTaskId: taskDetails.id, isWontDo, markedTime },
+          response: {
+            wontDoTaskId: taskDetails.id,
+            isWontDo,
+            markedTime,
+            updatedTaskDate,
+          },
         })
       );
     } catch (error) {

@@ -33,6 +33,10 @@ import {
 import { useState } from "react";
 import { cross, tick } from "../../../../constants/checkBox.constants";
 import CheckBoxInput from "../../../../components/CheckBox";
+import {
+  DATE_FORMAT_IN_TASK_ITEM,
+  TIME_ZONE,
+} from "../../../../constants/dateTime.constants";
 
 const getPriorityColor = ({ item }) => {
   if (item.priority === HIGH) {
@@ -66,7 +70,7 @@ const renderTags = ({ item, tags }) => {
         color="#AB98B8"
         showZero={false}
         offset={[0, 8]}
-        style={{marginRight:"0.5rem"}}
+        style={{ marginRight: "0.5rem" }}
       >
         <Tag color={tagDetails.color} closable={false}>
           {tagDetails.label.length > 8
@@ -90,18 +94,30 @@ const renderRepeatIcon = ({ item }) => {
   }
 };
 const renderTaskDate = ({ item }) => {
+  const today = dayjs.utc().tz(TIME_ZONE).startOf("day");
+
+  const taskDate = dayjs(item.taskDate);
+  const startMultiDate = dayjs(item.startMultiDate);
+  const endMultiDate = dayjs(item.endMultiDate);
+
   if (item.taskDate) {
     return (
-      <Typography.Text type="secondary">
-        {dayjs(item.taskDate).format("DD MMM")}
+      <Typography.Text
+        type={taskDate.endOf("day").isBefore(today) ? "danger" : "secondary"}
+      >
+        {taskDate.format(DATE_FORMAT_IN_TASK_ITEM)}
       </Typography.Text>
     );
   } else if (item.isMultiDay) {
     return (
-      <Typography.Text type="secondary">
-        {`${dayjs(item.startMultiDate).format("DD MMM")}-${dayjs(
-          item.endMultiDate
-        ).format("DD MMM")}`}
+      <Typography.Text
+        type={
+          startMultiDate.endOf("day").isBefore(today) ? "danger" : "secondary"
+        }
+      >
+        {`${startMultiDate.format(
+          DATE_FORMAT_IN_TASK_ITEM
+        )}-${endMultiDate.format(DATE_FORMAT_IN_TASK_ITEM)}`}
       </Typography.Text>
     );
   }
@@ -186,15 +202,29 @@ const TaskItem = ({
 
   const markTaskComplete = (isCompleted) => {
     const markedTime = dayjs.utc().endOf("day").format();
+    const updatedTaskDate = dayjs(taskDetails.taskDate).add(1, "day").format();
     return dispatch(
-      completeTaskAction(user.uid, taskDetails, isCompleted, markedTime)
+      completeTaskAction(
+        user.uid,
+        taskDetails,
+        isCompleted,
+        markedTime,
+        updatedTaskDate
+      )
     );
   };
 
   const markTaskWontDo = (isWontDo) => {
     const markedTime = dayjs.utc().endOf("day").format();
+    const updatedTaskDate = dayjs(taskDetails.taskDate).add(1, "day").format();
     return dispatch(
-      wontDoTaskAction(user.uid, taskDetails, isWontDo, markedTime)
+      wontDoTaskAction(
+        user.uid,
+        taskDetails,
+        isWontDo,
+        markedTime,
+        updatedTaskDate
+      )
     );
   };
 
@@ -285,7 +315,7 @@ const TaskItem = ({
             textOverflow: "ellipsis",
           }}
         >
-          <Typography.Text>{`${taskDetails.name}`}</Typography.Text>
+          <Typography.Text>{`${taskDetails.name} (${taskDetails.id})`}</Typography.Text>
         </Space>
       </Space>
       <div

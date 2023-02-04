@@ -10,3 +10,5 @@ export const HIGH_BG_COLOR = "#ffccc7";
 export const MEDIUM_BG_COLOR = "#ffe7ba";
 export const LOW_BG_COLOR = "#bae0ff";
 export const NONE_BG_COLOR = "#d9d9d9";
+
+export const OVERDUE_COLOR = "#ff4d4f";
