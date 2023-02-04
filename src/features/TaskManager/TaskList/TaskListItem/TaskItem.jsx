@@ -32,6 +32,7 @@ import { useDispatch } from "react-redux";
 import {
   completeTaskAction,
   softDeleteTaskAction,
+  hardDeleteSingleTaskAction,
   restoreTaskAction,
   wontDoTaskAction,
 } from "../../state/userTasks/userTasks.actions";
@@ -207,6 +208,36 @@ const TaskItem = ({
     });
   };
 
+  const showHardDeleteConfirm = ({
+    content,
+    handleHardDelete,
+    currentItem,
+    hardDeleteAction,
+    successMessage,
+    failureMessage,
+  }) => {
+    confirm({
+      icon: <ExclamationCircleOutlined />,
+      title: "Delete Forever",
+      content: content,
+      centered: true,
+      okText: "Delete",
+      okType: "danger",
+      cancelText: "Cancel",
+      onOk() {
+        handleHardDelete({
+          currentItem: currentItem,
+          hardDeleteAction: hardDeleteAction,
+          successMessage: successMessage,
+          failureMessage: failureMessage,
+        });
+      },
+      onCancel() {
+        Modal.destroyAll();
+      },
+    });
+  };
+
   const dispatch = useDispatch();
   const success = ({ messageText }) => {
     messageApi.open({
@@ -230,6 +261,21 @@ const TaskItem = ({
     failureMessage,
   }) => {
     dispatch(softDeleteAction(user.uid, currentItem)).then((response) => {
+      if (response.success === SUCCESS) {
+        success({ messageText: successMessage });
+      } else {
+        failed({ messageText: failureMessage });
+      }
+    });
+  };
+
+  const handleHardDelete = ({
+    currentItem,
+    hardDeleteAction,
+    successMessage,
+    failureMessage,
+  }) => {
+    dispatch(hardDeleteAction(user.uid, currentItem)).then((response) => {
       if (response.success === SUCCESS) {
         success({ messageText: successMessage });
       } else {
@@ -479,7 +525,7 @@ const TaskItem = ({
             }}
           />
         )}
-        {taskDetails.isDeleted && (
+        {taskDetails.isDeleted ? (
           <Button
             type="text"
             icon={
@@ -494,17 +540,17 @@ const TaskItem = ({
             }
             size="small"
             onClick={(e) => {
-              showSoftDeleteConfirm({
-                content: "Delete this task?",
-                handleSoftDelete: handleSoftDelete,
+              showHardDeleteConfirm({
+                content: "Delete this task permanently?",
+                handleHardDelete: handleHardDelete,
                 currentItem: taskDetails,
-                softDeleteAction: softDeleteTaskAction,
+                hardDeleteAction: hardDeleteSingleTaskAction,
                 successMessage: "Task deleted",
                 failureMessage: "Failed to delete task",
               });
             }}
           />
-        )}
+        ) : null}
         <Button
           type="text"
           icon={

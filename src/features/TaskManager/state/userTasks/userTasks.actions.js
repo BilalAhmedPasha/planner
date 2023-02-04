@@ -8,6 +8,7 @@ import {
   wontDoTaskApi,
   hardDeleteTaskApi,
   restoreTaskApi,
+  hardDeleteSingleTaskApi,
 } from "../../../../services/userTasks.api";
 import {
   FETCH_TASKS,
@@ -19,6 +20,9 @@ import {
   SOFT_DELETE_TASK,
   SOFT_DELETE_TASK_SUCCESS,
   SOFT_DELETE_TASK_ERROR,
+  HARD_DELETE_SINGLE_TASK,
+  HARD_DELETE_SINGLE_TASK_SUCCESS,
+  HARD_DELETE_SINGLE_TASK_ERROR,
   RESTORE_TASK,
   RESTORE_TASK_SUCCESS,
   RESTORE_TASK_ERROR,
@@ -95,6 +99,22 @@ export const softDeleteTaskSuccess = ({ response }) => ({
 
 export const softDeleteTaskFailure = (error) => ({
   type: SOFT_DELETE_TASK_ERROR,
+  payload: { error },
+});
+
+export const hardDeleteSingleTask = (payload) => ({
+  type: HARD_DELETE_SINGLE_TASK,
+  payload,
+});
+
+export const hardDeleteSingleTaskSuccess = ({ response }) => ({
+  type: HARD_DELETE_SINGLE_TASK_SUCCESS,
+  payload: response,
+  success: SUCCESS,
+});
+
+export const hardDeleteSingleTaskFailure = (error) => ({
+  type: HARD_DELETE_SINGLE_TASK_ERROR,
   payload: { error },
 });
 
@@ -233,6 +253,21 @@ export const restoreTaskAction = (userId, currentTask) => async (dispatch) => {
     return dispatch(restoreTaskFailure(error));
   }
 };
+
+export const hardDeleteSingleTaskAction =
+  (userId, currentTask) => async (dispatch) => {
+    dispatch(hardDeleteSingleTask());
+    try {
+      await hardDeleteSingleTaskApi(userId, currentTask);
+      return dispatch(
+        hardDeleteSingleTaskSuccess({
+          response: { id: currentTask.id },
+        })
+      );
+    } catch (error) {
+      return dispatch(hardDeleteSingleTaskFailure(error));
+    }
+  };
 
 export const completeTaskAction =
   (

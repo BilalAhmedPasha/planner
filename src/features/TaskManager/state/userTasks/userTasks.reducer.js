@@ -30,6 +30,11 @@ export const HARD_DELETE_TASK = "HARD_DELETE_TASK";
 export const HARD_DELETE_TASK_SUCCESS = "HARD_DELETE_TASK_SUCCESS";
 export const HARD_DELETE_TASK_ERROR = "HARD_DELETE_TASK_ERROR";
 
+export const HARD_DELETE_SINGLE_TASK = "HARD_DELETE_SINGLE_TASK";
+export const HARD_DELETE_SINGLE_TASK_SUCCESS =
+  "HARD_DELETE_SINGLE_TASK_SUCCESS";
+export const HARD_DELETE_SINGLE_TASK_ERROR = "HARD_DELETE_SINGLE_TASK_ERROR";
+
 export const INITIAL_STATE = {
   isLoadingTasks: false,
   totalTasks: 0,
@@ -198,6 +203,12 @@ const modifyTasksAfterWontDo = ({
 const modifyTasksAfterHardDelete = ({ currentTasks }) => {
   return currentTasks.filter((each) => {
     return each.isDeleted === 0;
+  });
+};
+
+const modifyAfterHardDeleteSingleTask = ({ currentTasks, deletedTask }) => {
+  return currentTasks.filter((each) => {
+    return each.id !== deletedTask.id;
   });
 };
 
@@ -412,7 +423,33 @@ const reducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         error: action.payload.error,
-        hardDeleteTaskSuccess: false,
+        hardDeleteSingleTaskSuccess: false,
+        isLoadingTasks: false,
+      };
+    }
+
+    case HARD_DELETE_SINGLE_TASK: {
+      return fetchLoadingState({ state });
+    }
+
+    case HARD_DELETE_SINGLE_TASK_SUCCESS: {
+      return {
+        ...state,
+        isLoadingTasks: false,
+        hardDeleteSingleTaskSuccess: true,
+        totalTasks: countRemainingTasks({ currentTasks: state.tasks }),
+        tasks: modifyAfterHardDeleteSingleTask({
+          currentTasks: state.tasks,
+          deletedTask: action.payload,
+        }),
+      };
+    }
+
+    case HARD_DELETE_SINGLE_TASK_ERROR: {
+      return {
+        ...state,
+        error: action.payload.error,
+        hardDeleteSingleTaskSuccess: false,
         isLoadingTasks: false,
       };
     }

@@ -176,3 +176,10 @@ export const hardDeleteTaskApi = async (userId) => {
     await deleteDoc(docRef);
   });
 };
+
+export const hardDeleteSingleTaskApi = async (userId, currentTask) => {
+  const userDocRef = doc(db, "users", userId);
+  const taskCollectionRef = collection(userDocRef, "tasks");
+  const docRef = doc(taskCollectionRef, currentTask.id);
+  return deleteDoc(docRef);
+};
