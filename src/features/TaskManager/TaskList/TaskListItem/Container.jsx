@@ -126,32 +126,18 @@ const Container = ({
   }, [sectionalTasks]);
 
   const [messageApi, contextHolder] = message.useMessage();
-  const { sectionId } = useParams();
   return (
     <>
-      {Object.keys(sectionalTasks).map((each) => {
-        return sectionalTasks[each].tasks.length > 0 ? (
-          <TaskListSection
-            sectionTitle={sectionalTasks[each].sectionTitle}
-            sectionId={each}
-            sectionTasks={sectionalTasks[each].tasks}
-            setSectionTasks={setSectionalTasks}
-            selectedCardId={selectedCardId}
-            setSelectedCardId={setSelectedCardId}
-            setSelectedTaskDetails={setSelectedTaskDetails}
-            messageApi={messageApi}
-            user={user}
-            isOpen={sectionalTasks[each].isOpenByDefault}
-            showInCollapse={
-              sectionId === COMPLETED ||
-              sectionId === WONT_DO ||
-              sectionId === DELETED
-                ? false
-                : sectionCount > 1 || each === MARKED || each === OVERDUE
-            }
-          />
-        ) : null;
-      })}
+      <TaskListSection
+        sectionalTasks={sectionalTasks}
+        setSectionTasks={setSectionalTasks}
+        selectedCardId={selectedCardId}
+        setSelectedCardId={setSelectedCardId}
+        setSelectedTaskDetails={setSelectedTaskDetails}
+        messageApi={messageApi}
+        user={user}
+        sectionCount={sectionCount}
+      />
       {contextHolder}
     </>
   );
