@@ -1,7 +1,9 @@
 import React from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { DELETED } from "../../../../constants/app.constants";
 import {
   TASK_CARD_BG_HOVER_COLOR,
   TASK_CARD_BG_SELECTED_COLOR,
@@ -82,10 +84,11 @@ const Card = ({
   );
 
   const opacity = isDragging ? 0 : 1;
+  const { sectionId } = useParams();
 
   return (
     <StyledDiv
-      ref={(node) => drag(drop(node))}
+      ref={sectionId === DELETED ? null : (node) => drag(drop(node)) || null}
       opacity={opacity}
       isSelected={selectedCardId === id}
       isInCollapse={isInCollapse}
