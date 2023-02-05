@@ -192,7 +192,7 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
           display: "flex",
           alignContent: "baseline",
           justifyContent: "space-between",
-          height: "2.5rem",
+          height: "2rem",
           overflowX: "scroll",
         }}
       >
@@ -234,7 +234,7 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
           </Space>
         )}
       </div>
-      <Form.Item name="progress">
+      <Form.Item name="progress" style={{ marginBottom: "0.25rem" }}>
         <Slider
           initialvalues={form.getFieldValue("progress")}
           step={10}
@@ -247,7 +247,7 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
           overflowX: "scroll",
         }}
       >
-        <Form.Item name="description">
+        <Form.Item name="description" style={{ marginBottom: "1rem" }}>
           <Input.TextArea
             autoComplete="off"
             maxLength={200}
@@ -263,7 +263,10 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
           justifyContent: "space-between",
         }}
       >
-        <Form.Item name="priority" style={{ marginRight: "1rem" }}>
+        <Form.Item
+          name="priority"
+          style={{ marginRight: "1rem", marginBottom: "1rem" }}
+        >
           <Select
             suffixIcon={
               <FlagFilled
@@ -280,7 +283,10 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
             disabled={formType === VIEW}
           />
         </Form.Item>
-        <Form.Item name="listId" style={{ marginRight: "1rem" }}>
+        <Form.Item
+          name="listId"
+          style={{ marginRight: "1rem", marginBottom: "1rem" }}
+        >
           <Select
             suffixIcon={
               formType === VIEW ? (
@@ -310,7 +316,7 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
             disabled={formType === VIEW}
           />
         </Form.Item>
-        <Form.Item name="tagIds">
+        <Form.Item name="tagIds" style={{ marginBottom: "1rem" }}>
           <Select
             suffixIcon={
               formType === VIEW ? (
@@ -347,7 +353,10 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
           overflowX: "scroll",
         }}
       >
-        <Form.Item name="date" style={{ marginRight: "1rem" }}>
+        <Form.Item
+          name="date"
+          style={{ marginRight: "1rem", marginBottom: "1rem" }}
+        >
           <DatePicker
             suffixIcon={
               formType === VIEW ? (
@@ -373,7 +382,10 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
             disabled={formType === VIEW}
           />
         </Form.Item>
-        <Form.Item name="duration" style={{ marginRight: "1rem" }}>
+        <Form.Item
+          name="duration"
+          style={{ marginRight: "1rem", marginBottom: "1rem" }}
+        >
           <TimePicker.RangePicker
             suffixIcon={
               formType === VIEW || !isScheduled ? (
@@ -400,7 +412,7 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
             disabled={formType === VIEW || !isScheduled}
           />
         </Form.Item>
-        <Form.Item name="repeat">
+        <Form.Item name="repeat" style={{ marginBottom: "1rem" }}>
           <Select
             suffixIcon={
               formType === VIEW || !isScheduled ? (
@@ -447,7 +459,10 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
           overflowX: "scroll",
         }}
       >
-        <Form.Item name="endBy" style={{ marginRight: "1rem" }}>
+        <Form.Item
+          name="endBy"
+          style={{ marginRight: "1rem", marginBottom: "1rem" }}
+        >
           <Select
             suffixIcon={
               formType === VIEW || !isScheduled || !isRepeating ? (
@@ -502,7 +517,7 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
               },
             },
           ]}
-          style={{ marginRight: "1rem" }}
+          style={{ marginRight: "1rem", marginBottom: "1rem" }}
         >
           <DatePicker
             suffixIcon={
@@ -552,6 +567,7 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
               },
             },
           ]}
+          style={{ marginBottom: "1rem" }}
         >
           <NumericInput
             suffix={
