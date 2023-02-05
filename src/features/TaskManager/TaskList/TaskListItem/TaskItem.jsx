@@ -19,6 +19,7 @@ import {
   NONE_BG_COLOR,
   NONE_COLOR,
   PRIMARY_BLACK_COLOR,
+  TASK_ITEM_BADGE_COLOR,
 } from "../../../../constants/color.constants";
 import {
   COMPLETED,
@@ -84,7 +85,7 @@ const renderTags = ({ item, tags }) => {
         size="small"
         count={item.tagIds.length - 1}
         overflowCount={3}
-        color="#AB98B8"
+        color={TASK_ITEM_BADGE_COLOR}
         showZero={false}
         offset={[0, 8]}
         style={{ marginRight: "0.5rem" }}

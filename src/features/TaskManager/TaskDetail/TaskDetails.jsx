@@ -35,6 +35,7 @@ import {
   LOW_COLOR,
   MEDIUM_COLOR,
   NONE_COLOR,
+  TASK_DETAIL_INPUT_EDIT_COLOR,
 } from "../../../constants/color.constants";
 import {
   HIGH,
@@ -236,7 +237,7 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
       </div>
       <Form.Item name="progress">
         <Slider
-          defaultValue={form.getFieldValue("progress")}
+          initialvalues={form.getFieldValue("progress")}
           step={10}
           trackStyle={{ height: "3px" }}
           disabled={formType === VIEW}
@@ -273,7 +274,7 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
                 }}
               />
             }
-            defaultValue={form.getFieldValue("priority")}
+            initialvalues={form.getFieldValue("priority")}
             onSelect={(event) => handlePriorityColor(event)}
             options={priorityOptions}
             style={{ width: "7rem" }}
@@ -293,12 +294,12 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
                 <UnorderedListOutlined
                   style={{
                     fontSize: "1rem",
-                    color: "#4096ff",
+                    color: TASK_DETAIL_INPUT_EDIT_COLOR,
                   }}
                 />
               )
             }
-            defaultValue={form.getFieldValue("listId")}
+            initialvalues={form.getFieldValue("listId")}
             options={[
               {
                 value: INBOX,
@@ -333,7 +334,7 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
             maxTagTextLength={6}
             tagRender={tagRender}
             showArrow={true}
-            defaultValue={form.getFieldValue("tagIds")}
+            initialvalues={form.getFieldValue("tagIds")}
             style={{ width: "22rem" }}
             placeholder="Select tags here"
             disabled={formType === VIEW}
@@ -386,7 +387,7 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
                 <ClockCircleOutlined
                   style={{
                     fontSize: "1rem",
-                    color: "#4096ff",
+                    color: TASK_DETAIL_INPUT_EDIT_COLOR,
                   }}
                 />
               )
@@ -413,7 +414,7 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
                 <SyncOutlined
                   style={{
                     fontSize: "1rem",
-                    color: "#4096ff",
+                    color: TASK_DETAIL_INPUT_EDIT_COLOR,
                   }}
                 />
               )
@@ -460,7 +461,7 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
                 <StopOutlined
                   style={{
                     fontSize: "1rem",
-                    color: "#4096ff",
+                    color: TASK_DETAIL_INPUT_EDIT_COLOR,
                   }}
                 />
               )
@@ -517,7 +518,7 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
                 <CalendarOutlined
                   style={{
                     fontSize: "1rem",
-                    color: "#4096ff",
+                    color: TASK_DETAIL_INPUT_EDIT_COLOR,
                   }}
                 />
               )
@@ -566,7 +567,7 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
                 <FieldNumberOutlined
                   style={{
                     fontSize: "1rem",
-                    color: "#4096ff",
+                    color: TASK_DETAIL_INPUT_EDIT_COLOR,
                   }}
                 />
               )

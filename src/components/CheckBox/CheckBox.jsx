@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { CHECK_BOX_BG_COLOR } from "../../constants/color.constants";
 
 const CheckBoxInput = styled.input.attrs({ type: "checkbox" })`
   position: relative;
@@ -12,7 +13,7 @@ const CheckBoxInput = styled.input.attrs({ type: "checkbox" })`
     content: "";
     height: 1rem;
     width: 1rem;
-    background-color: #fff;
+    background-color: ${CHECK_BOX_BG_COLOR};
     border: 1.5px solid ${(props) => props.checkBoxColor};
     border-radius: 20%;
     top: 50%;

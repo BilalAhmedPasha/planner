@@ -1,19 +1,37 @@
 import React from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { useSelector } from "react-redux";
+import styled from "styled-components";
+import {
+  TASK_CARD_BG_HOVER_COLOR,
+  TASK_CARD_BG_SELECTED_COLOR,
+  TASK_CARD_BOX_SHADOW_COLOR,
+  WHITE,
+} from "../../../../constants/color.constants";
 import { listsSelector } from "../../state/userLists/userLists.reducer";
 import { tagsSelector } from "../../state/userTags/userTags.reducer";
 import TaskItem from "./TaskItem";
+
+const StyledDiv = styled.div`
+  padding: 0.75rem 1rem;
+  margin: 0.25rem 0rem;
+  boxshadow: 0px 2px 8px 0px ${TASK_CARD_BOX_SHADOW_COLOR};
+  background-color: ${(props) =>
+    props.isSelected ? TASK_CARD_BG_SELECTED_COLOR : WHITE};
+  opacity: ${(props) => props.opacity};
+
+  :hover {
+    background-color: ${(props) =>
+      props.isSelected
+        ? TASK_CARD_BG_SELECTED_COLOR
+        : TASK_CARD_BG_HOVER_COLOR};
+  }
+`;
 
 const ItemTypes = {
   CARD: "card",
 };
 
-const style = {
-  padding: "0.75rem 1rem",
-  margin: "0.25rem 0rem",
-  boxShadow: "0px 2px 8px 0px #E8E8E8",
-};
 const Card = ({
   user,
   messageApi,
@@ -64,13 +82,10 @@ const Card = ({
   const opacity = isDragging ? 0 : 1;
 
   return (
-    <div
+    <StyledDiv
       ref={(node) => drag(drop(node))}
-      style={{
-        ...style,
-        opacity,
-        backgroundColor: selectedCardId === id ? "#e6f4ff" : "white",
-      }}
+      opacity={opacity}
+      isSelected={selectedCardId === id}
     >
       <TaskItem
         user={user}
@@ -81,7 +96,7 @@ const Card = ({
         setSelectedCardId={setSelectedCardId}
         setSelectedTaskDetails={setSelectedTaskDetails}
       />
-    </div>
+    </StyledDiv>
   );
 };
 

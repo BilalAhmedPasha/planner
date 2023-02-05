@@ -27,6 +27,7 @@ import {
 } from "@ant-design/icons";
 import Loading from "../../../components/Loading";
 import Spinner from "../../../components/Spinner";
+import { TASK_NAV_BADGE_COLOR } from "../../../constants/color.constants";
 
 const renderColorDot = (color) => {
   return (
@@ -89,7 +90,7 @@ const renderSubMenuItems = ({
             <Badge
               count={itemCount}
               showZero
-              color="#aaaaaa"
+              color={TASK_NAV_BADGE_COLOR}
               overflowCount={10}
             />
             <Button icon={<PlusOutlined />} type="text" onClick={onAddClick} />

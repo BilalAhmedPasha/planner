@@ -1,4 +1,4 @@
-import { Collapse, Typography } from "antd";
+import { Collapse, Typography, theme } from "antd";
 import { useCallback } from "react";
 import update from "immutability-helper";
 import Card from "./Card";
@@ -14,6 +14,7 @@ const TaskListSection = ({
   messageApi,
   user,
 }) => {
+  const { token } = theme.useToken();
   const findSectionTask = useCallback(
     (id) => {
       const card = sectionTasks.filter((c) => `${c.id}` === id)[0];
@@ -42,9 +43,11 @@ const TaskListSection = ({
 
   return (
     <Collapse
-      ghost={true}
-      style={{ padding: "0rem", margin: "0rem" }}
+      bordered={false}
       defaultActiveKey={isOpen ? ["1"] : []}
+      style={{
+        background: token.colorBgContainer,
+      }}
     >
       <Collapse.Panel
         header={<Typography.Text strong>{sectionTitle}</Typography.Text>}
