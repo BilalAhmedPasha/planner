@@ -2,13 +2,10 @@ import dayjs from "../../../../utils/dateTime.uitls";
 import { INBOX } from "../../../../constants/app.constants";
 import { TIME_ZONE } from "../../../../constants/dateTime.constants";
 
-const isMarked = (task) => {
-  return task.isDeleted;
-};
 export const getAllTasks = ({ tasks }) => {
   const allTasks = [];
   for (let i = 0; i < tasks.length; i++) {
-    if (!isMarked(tasks[i])) {
+    if (!tasks[i].isDeleted) {
       allTasks.push(tasks[i]);
     }
   }
@@ -18,19 +15,19 @@ export const getAllTasks = ({ tasks }) => {
 export const getInboxTasks = ({ tasks }) => {
   const inboxTasks = [];
   for (let i = 0; i < tasks.length; i++) {
-    if (!isMarked(tasks[i]) && tasks[i].listId === INBOX) {
+    if (!tasks[i].isDeleted && tasks[i].listId === INBOX) {
       inboxTasks.push(tasks[i]);
     }
   }
   return inboxTasks;
 };
 
-export const getTasksByDate = ({ tasks, date }) => {
+export const getTasksByDate = ({ tasks, date, includeOverDue }) => {
   const currentDateStart = date.startOf("day");
   const currentDateEnd = date.endOf("day");
   const currentDateTasks = [];
   for (let i = 0; i < tasks.length; i++) {
-    if (!isMarked(tasks[i])) {
+    if (!tasks[i].isDeleted) {
       // calculate taskDate in dayJS
       const taskDateStart = dayjs(tasks[i].taskDate).startOf("day");
       if (!tasks[i].taskDate) {
@@ -39,6 +36,9 @@ export const getTasksByDate = ({ tasks, date }) => {
       } else if (currentDateEnd.isBefore(taskDateStart)) {
         // taskDate is future date
         continue;
+      } else if (includeOverDue && currentDateEnd.isAfter(taskDateStart)) {
+        // taskDate is overdue
+        currentDateTasks.push(tasks[i]);
       } else if (
         !tasks[i].isRepeating &&
         currentDateStart.isSame(taskDateStart)
@@ -74,7 +74,7 @@ export const getTasksByNextXDays = ({ tasks, fromDate, count }) => {
   const endDate = startDate.add(count, "day").endOf("day");
   const nextXDayTasks = [];
   for (let i = 0; i < tasks.length; i++) {
-    if (!isMarked(tasks[i])) {
+    if (!tasks[i].isDeleted) {
       // calculate taskDate in dayJS
       const taskDateStart = dayjs(tasks[i].taskDate).startOf("day");
       if (!tasks[i].taskDate) {
@@ -174,7 +174,7 @@ export const getDeletedTasks = ({ tasks }) => {
 export const getByListId = ({ tasks, listId }) => {
   const listTasks = [];
   for (let i = 0; i < tasks.length; i++) {
-    if (tasks[i].listId === listId && !isMarked(tasks[i])) {
+    if (tasks[i].listId === listId && !tasks[i].isDeleted) {
       listTasks.push(tasks[i]);
     }
   }
@@ -184,7 +184,7 @@ export const getByListId = ({ tasks, listId }) => {
 export const getByTagId = ({ tasks, tagId }) => {
   const tagTasks = [];
   for (let i = 0; i < tasks.length; i++) {
-    if (tasks[i].tagIds.includes(tagId) && !isMarked(tasks[i])) {
+    if (tasks[i].tagIds.includes(tagId) && !tasks[i].isDeleted) {
       tagTasks.push(tasks[i]);
     }
   }

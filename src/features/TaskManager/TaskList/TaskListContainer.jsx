@@ -67,10 +67,10 @@ const computeSectionData = ({ tasks, currentSection }) => {
     return getInboxTasks({ tasks });
   } else if (currentSection.id === TODAY) {
     const today = dayjs.utc().tz(TIME_ZONE);
-    return getTasksByDate({ tasks, date: today });
+    return getTasksByDate({ tasks, date: today, includeOverDue: true });
   } else if (currentSection.id === TOMORROW) {
     const tomorrow = dayjs.utc().tz(TIME_ZONE).add(1, "day");
-    return getTasksByDate({ tasks, date: tomorrow });
+    return getTasksByDate({ tasks, date: tomorrow, includeOverDue: false });
   } else if (currentSection.id === NEXT_7_DAYS) {
     const tomorrow = dayjs.utc().tz(TIME_ZONE).add(1, "day");
     return getTasksByNextXDays({ tasks, fromDate: tomorrow, count: 6 });
