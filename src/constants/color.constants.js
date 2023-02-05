@@ -29,3 +29,4 @@ export const TASK_ITEM_BADGE_COLOR = "#ab98B8";
 export const TASK_CARD_BOX_SHADOW_COLOR = "#e8e8e8";
 export const TASK_CARD_BG_HOVER_COLOR = "#f4faff";
 export const TASK_CARD_BG_SELECTED_COLOR = "#e6f4ff";
+export const TASK_CARD_BOX_BOTTOM_BORDER_COLOR = "#f0f0f0";

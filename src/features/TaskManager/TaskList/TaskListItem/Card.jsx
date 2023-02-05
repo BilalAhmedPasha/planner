@@ -7,6 +7,7 @@ import { DELETED } from "../../../../constants/app.constants";
 import {
   TASK_CARD_BG_HOVER_COLOR,
   TASK_CARD_BG_SELECTED_COLOR,
+  TASK_CARD_BOX_BOTTOM_BORDER_COLOR,
   TASK_CARD_BOX_SHADOW_COLOR,
   WHITE,
 } from "../../../../constants/color.constants";
@@ -16,13 +17,13 @@ import TaskItem from "./TaskItem";
 
 const StyledDiv = styled.div`
   padding: 0.75rem 1rem;
-  margin: 0.25rem ${(props) => (props.isInCollapse ? "0rem" : "1rem")};
+  margin: 0rem ${(props) => (props.isInCollapse ? "0rem" : "1rem")};
   opacity: ${(props) => props.opacity};
+  border-bottom: 1px solid ${TASK_CARD_BOX_BOTTOM_BORDER_COLOR};
   boxshadow: 0px 2px 8px 0px ${TASK_CARD_BOX_SHADOW_COLOR};
   background-color: ${(props) =>
     props.isSelected ? TASK_CARD_BG_SELECTED_COLOR : WHITE};
   opacity: ${(props) => props.opacity};
-
   :hover {
     background-color: ${(props) =>
       props.isSelected
@@ -88,7 +89,7 @@ const Card = ({
 
   // TODO
   const enableDragAndDrop = false;
-  
+
   return (
     <StyledDiv
       ref={

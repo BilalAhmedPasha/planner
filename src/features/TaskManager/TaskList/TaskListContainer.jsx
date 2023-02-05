@@ -124,11 +124,12 @@ const moreMenuItemList = [
       />
     ),
   },
-  {
-    label: "Title",
-    key: TITLE,
-    icon: <Icon component={SortTextSvg} style={{ fontSize: "1.25rem" }} />,
-  },
+  // TODO
+  // {
+  //   label: "Title",
+  //   key: TITLE,
+  //   icon: <Icon component={SortTextSvg} style={{ fontSize: "1.25rem" }} />,
+  // },
 ];
 
 const TaskListContainer = ({
