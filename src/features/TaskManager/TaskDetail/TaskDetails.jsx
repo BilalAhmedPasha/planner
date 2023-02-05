@@ -28,7 +28,7 @@ import { EDIT, VIEW } from "../../../constants/formType.constants";
 import { useSelector } from "react-redux";
 import { tagsSelector } from "../state/userTags/userTags.reducer";
 import { INBOX } from "../../../constants/app.constants";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { listsSelector } from "../state/userLists/userLists.reducer";
 import {
   HIGH_COLOR,
@@ -47,7 +47,6 @@ import {
   DATE_FORMAT,
   TIME_FORMAT,
 } from "../../../constants/dateTime.constants";
-import { useEffect } from "react";
 import NumericInput from "../../../components/NumericInput";
 import {
   ENDLESS,
