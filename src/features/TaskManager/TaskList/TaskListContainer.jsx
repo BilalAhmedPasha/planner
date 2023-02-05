@@ -256,7 +256,7 @@ const TaskListContainer = ({
     <Layout.Content
       style={{
         marginRight: "0.1rem",
-        padding: "1rem 1rem",
+        paddingTop: "1rem",
         background: colorBgContainer,
       }}
     >
@@ -267,20 +267,31 @@ const TaskListContainer = ({
             flexWrap: "wrap",
             alignItems: "center",
             justifyContent: "space-between",
-            height: "2.5rem",
-            marginBottom: "0.5rem",
+            padding: "0rem 0.5rem",
           }}
         >
-          <Space>
+          <Space size="small">
             <Button
               type="text"
               icon={
-                isMenuCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />
+                isMenuCollapsed ? (
+                  <MenuUnfoldOutlined
+                    style={{
+                      fontSize: "20px",
+                    }}
+                  />
+                ) : (
+                  <MenuFoldOutlined
+                    style={{
+                      fontSize: "20px",
+                    }}
+                  />
+                )
               }
               onClick={() => {
                 setIsMenuCollapsed((prevState) => !prevState);
               }}
-              size="large"
+              size="medium"
             />
             <Typography.Text
               style={{
@@ -355,7 +366,7 @@ const TaskListContainer = ({
           style={{
             overflowY: "scroll",
             height: "90vh",
-            padding: "0rem 1rem",
+            padding: "0rem 0rem",
             marginTop: "0.5rem",
           }}
         >
