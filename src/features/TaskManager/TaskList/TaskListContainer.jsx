@@ -83,6 +83,7 @@ const showAddForSections = [
   NEXT_7_DAYS,
   LISTS,
   TAGS,
+  NO_DATE
 ];
 
 const TaskListContainer = ({

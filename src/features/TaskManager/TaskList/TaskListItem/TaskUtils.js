@@ -199,3 +199,12 @@ export const isTaskOverdue = (task) => {
     return taskDateTS.isBefore(todayTS);
   }
 };
+
+export const isTaskToday = (task) => {
+  const todayTS = dayjs.utc().tz(TIME_ZONE).startOf("day");
+  if (task.taskDate !== null) {
+    // If scheduled
+    const taskDateTS = dayjs(task.taskDate).startOf("day");
+    return taskDateTS.isSame(todayTS);
+  }
+};

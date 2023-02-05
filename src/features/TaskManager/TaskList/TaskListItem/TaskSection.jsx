@@ -8,6 +8,7 @@ const TaskListSection = ({
   sectionId,
   sectionTasks,
   isOpen = false,
+  showInCollapse,
   setSectionTasks,
   selectedCardId,
   setSelectedCardId,
@@ -49,23 +50,42 @@ const TaskListSection = ({
   );
 
   return (
-    <Collapse
-      bordered={false}
-      defaultActiveKey={isOpen ? [sectionTitle] : []}
-      style={{
-        background: token.colorBgContainer,
-      }}
-    >
-      <Collapse.Panel
-        header={
-          <Space size="small">
-            <Typography.Text strong>{`${sectionTitle}`}</Typography.Text>
-            <Typography.Text type="secondary">{`${sectionTasks.length}`}</Typography.Text>
-          </Space>
-        }
-        key={sectionTitle}
-      >
-        {sectionTasks.map((card) => (
+    <>
+      {showInCollapse ? (
+        <Collapse
+          bordered={false}
+          defaultActiveKey={isOpen ? [sectionTitle] : []}
+          style={{
+            background: token.colorBgContainer,
+          }}
+        >
+          <Collapse.Panel
+            header={
+              <Space size="small">
+                <Typography.Text strong>{`${sectionTitle}`}</Typography.Text>
+                <Typography.Text type="secondary">{`${sectionTasks.length}`}</Typography.Text>
+              </Space>
+            }
+            key={sectionTitle}
+          >
+            {sectionTasks.map((card) => (
+              <Card
+                user={user}
+                messageApi={messageApi}
+                key={card.id}
+                cardDetails={card}
+                moveCard={moveSectionTask}
+                findCard={findSectionTask}
+                selectedCardId={selectedCardId}
+                setSelectedCardId={setSelectedCardId}
+                setSelectedTaskDetails={setSelectedTaskDetails}
+                isInCollapse={showInCollapse}
+              />
+            ))}
+          </Collapse.Panel>
+        </Collapse>
+      ) : (
+        sectionTasks.map((card) => (
           <Card
             user={user}
             messageApi={messageApi}
@@ -76,10 +96,11 @@ const TaskListSection = ({
             selectedCardId={selectedCardId}
             setSelectedCardId={setSelectedCardId}
             setSelectedTaskDetails={setSelectedTaskDetails}
+            isInCollapse={showInCollapse}
           />
-        ))}
-      </Collapse.Panel>
-    </Collapse>
+        ))
+      )}
+    </>
   );
 };
 

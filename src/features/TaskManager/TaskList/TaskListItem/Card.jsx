@@ -14,7 +14,8 @@ import TaskItem from "./TaskItem";
 
 const StyledDiv = styled.div`
   padding: 0.75rem 1rem;
-  margin: 0.25rem 0rem;
+  margin: 0.25rem ${(props) => (props.isInCollapse ? "0rem" : "1rem")};
+  opacity: ${(props) => props.opacity};
   boxshadow: 0px 2px 8px 0px ${TASK_CARD_BOX_SHADOW_COLOR};
   background-color: ${(props) =>
     props.isSelected ? TASK_CARD_BG_SELECTED_COLOR : WHITE};
@@ -41,6 +42,7 @@ const Card = ({
   selectedCardId,
   setSelectedCardId,
   setSelectedTaskDetails,
+  isInCollapse,
 }) => {
   const { lists } = useSelector(listsSelector);
   const { tags } = useSelector(tagsSelector);
@@ -86,6 +88,7 @@ const Card = ({
       ref={(node) => drag(drop(node))}
       opacity={opacity}
       isSelected={selectedCardId === id}
+      isInCollapse={isInCollapse}
     >
       <TaskItem
         user={user}

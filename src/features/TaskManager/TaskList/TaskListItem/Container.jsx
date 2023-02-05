@@ -1,5 +1,11 @@
 import { message } from "antd";
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import {
+  COMPLETED,
+  DELETED,
+  WONT_DO,
+} from "../../../../constants/app.constants.js";
 import {
   MARKED,
   INITIAL_SECTIONS,
@@ -9,7 +15,7 @@ import {
   TODAY,
 } from "../../../../constants/section.constants.js";
 import TaskListSection from "./TaskSection.jsx";
-import { isTaskOverdue } from "./TaskUtils.js";
+import { isTaskOverdue, isTaskToday } from "./TaskUtils.js";
 
 const Container = ({
   user,
@@ -19,12 +25,14 @@ const Container = ({
   setSelectedTaskDetails,
 }) => {
   const [sectionalTasks, setSectionalTasks] = useState(INITIAL_SECTIONS);
-
+  const [sectionCount, setSectionCount] = useState(0);
   useEffect(() => {
     const overdueTemp = [];
-    const currentTemp = [];
+    const todayTemp = [];
+    const laterTemp = [];
     const completedTemp = [];
     const noDateTemp = [];
+
     for (let i = 0; i < tasks.length; i++) {
       if (tasks[i].isCompleted || tasks[i].isWontDo) {
         completedTemp.push(tasks[i]);
@@ -32,21 +40,34 @@ const Container = ({
         noDateTemp.push(tasks[i]);
       } else if (isTaskOverdue(tasks[i])) {
         overdueTemp.push(tasks[i]);
+      } else if (isTaskToday(tasks[i])) {
+        todayTemp.push(tasks[i]);
       } else {
-        currentTemp.push(tasks[i]);
+        laterTemp.push(tasks[i]);
       }
     }
+
     setSectionalTasks({
       [OVERDUE]: { ...INITIAL_SECTIONS[OVERDUE], tasks: overdueTemp },
-      [TODAY]: { ...INITIAL_SECTIONS[TODAY], tasks: currentTemp },
-      [LATER]: { ...INITIAL_SECTIONS[LATER], tasks: currentTemp },
+      [TODAY]: { ...INITIAL_SECTIONS[TODAY], tasks: todayTemp },
+      [LATER]: { ...INITIAL_SECTIONS[LATER], tasks: laterTemp },
       [NODATE]: { ...INITIAL_SECTIONS[NODATE], tasks: noDateTemp },
       [MARKED]: { ...INITIAL_SECTIONS[MARKED], tasks: completedTemp },
     });
   }, [tasks]);
 
-  const [messageApi, contextHolder] = message.useMessage();
+  useEffect(() => {
+    let count = 0;
+    Object.keys(sectionalTasks).forEach((each) => {
+      if (sectionalTasks[each].tasks.length > 0 && each !== MARKED) {
+        count++;
+      }
+    });
+    setSectionCount(count);
+  }, [sectionalTasks]);
 
+  const [messageApi, contextHolder] = message.useMessage();
+  const { sectionId } = useParams();
   return (
     <>
       {Object.keys(sectionalTasks).map((each) => {
@@ -61,7 +82,14 @@ const Container = ({
             setSelectedTaskDetails={setSelectedTaskDetails}
             messageApi={messageApi}
             user={user}
-            isOpen={true}
+            isOpen={sectionalTasks[each].isOpenByDefault}
+            showInCollapse={
+              sectionId === COMPLETED ||
+              sectionId === WONT_DO ||
+              sectionId === DELETED
+                ? false
+                : sectionCount > 1 || each === MARKED || each === OVERDUE
+            }
           />
         ) : null;
       })}

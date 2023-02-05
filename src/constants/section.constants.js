@@ -5,9 +5,13 @@ export const NODATE = "noDate";
 export const MARKED = "marked";
 
 export const INITIAL_SECTIONS = {
-  [OVERDUE]: { sectionTitle: "OverDue", tasks: [] },
-  [TODAY]: { sectionTitle: "Today", tasks: [] },
-  [LATER]: { sectionTitle: "Later", tasks: [] },
-  [NODATE]: { sectionTitle: "No Date", tasks: [] },
-  [MARKED]: { sectionTitle: "Completed & Won't Do", tasks: [] },
+  [OVERDUE]: { sectionTitle: "OverDue", tasks: [], isOpenByDefault: true },
+  [TODAY]: { sectionTitle: "Today", tasks: [], isOpenByDefault: true },
+  [LATER]: { sectionTitle: "Later", tasks: [], isOpenByDefault: false },
+  [NODATE]: { sectionTitle: "No Date", tasks: [], isOpenByDefault: false },
+  [MARKED]: {
+    sectionTitle: "Completed & Won't Do",
+    tasks: [],
+    isOpenByDefault: false,
+  },
 };
