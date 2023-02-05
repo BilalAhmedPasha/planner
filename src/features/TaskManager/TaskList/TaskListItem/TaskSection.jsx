@@ -5,6 +5,7 @@ import Card from "./Card";
 
 const TaskListSection = ({
   sectionTitle,
+  sectionId,
   sectionTasks,
   isOpen = false,
   setSectionTasks,
@@ -29,16 +30,22 @@ const TaskListSection = ({
   const moveSectionTask = useCallback(
     (id, atIndex) => {
       const { card, index } = findSectionTask(id);
-      setSectionTasks(
-        update(sectionTasks, {
-          $splice: [
-            [index, 1],
-            [atIndex, 0, card],
-          ],
-        })
-      );
+      setSectionTasks((prevSectionTasks) => {
+        return {
+          ...prevSectionTasks,
+          [sectionId]: {
+            ...prevSectionTasks[sectionId],
+            tasks: update(sectionTasks, {
+              $splice: [
+                [index, 1],
+                [atIndex, 0, card],
+              ],
+            }),
+          },
+        };
+      });
     },
-    [findSectionTask, sectionTasks, setSectionTasks]
+    [findSectionTask, sectionTasks, sectionId, setSectionTasks]
   );
 
   return (
