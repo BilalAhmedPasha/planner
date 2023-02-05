@@ -1,4 +1,13 @@
-import { Button, Layout, message, Modal, Space, theme, Typography } from "antd";
+import {
+  Button,
+  Dropdown,
+  Layout,
+  message,
+  Modal,
+  Space,
+  theme,
+  Typography,
+} from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../../components/Loading";
@@ -27,7 +36,12 @@ import {
   MenuUnfoldOutlined,
   ClearOutlined,
   ExclamationCircleOutlined,
+  FlagOutlined,
+  ClockCircleOutlined,
 } from "@ant-design/icons";
+import Icon from "@ant-design/icons";
+import { ReactComponent as SortSvg } from "../../../svg/sort-arrow.svg";
+import { ReactComponent as SortTextSvg } from "../../../svg/sort-text.svg";
 import dayjs from "../../../utils/dateTime.uitls";
 import {
   getAllTasks,
@@ -44,6 +58,7 @@ import {
 import { TIME_ZONE } from "../../../constants/dateTime.constants";
 import { hardDeleteTaskAction } from "../state/userTasks/userTasks.actions";
 import Spinner from "../../../components/Spinner";
+import { PRIORITY, TIME, TITLE } from "../../../constants/sort.constants";
 
 const computeSectionData = ({ tasks, currentSection }) => {
   if (currentSection.id === ALL) {
@@ -83,7 +98,37 @@ const showAddForSections = [
   NEXT_7_DAYS,
   LISTS,
   TAGS,
-  NO_DATE
+  NO_DATE,
+];
+
+const moreMenuItemList = [
+  {
+    label: "Time",
+    key: TIME,
+    icon: (
+      <ClockCircleOutlined
+        style={{
+          fontSize: "1rem",
+        }}
+      />
+    ),
+  },
+  {
+    label: "Priority",
+    key: PRIORITY,
+    icon: (
+      <FlagOutlined
+        style={{
+          fontSize: "1rem",
+        }}
+      />
+    ),
+  },
+  {
+    label: "Title",
+    key: TITLE,
+    icon: <Icon component={SortTextSvg} style={{ fontSize: "1.25rem" }} />,
+  },
 ];
 
 const TaskListContainer = ({
@@ -106,8 +151,14 @@ const TaskListContainer = ({
     setOpenAddTaskDialog(true);
   };
 
+  const [sortBy, setSortBy] = useState(TIME);
+  const handleSortMenuClick = (e) => {
+    setSortBy(e.key);
+  };
+
   const { tasks, isLoadingTasks } = useSelector(tasksSelector);
   const [currentSectionTasks, setCurrentSectionTasks] = useState([]);
+  const [sortedSectionTasks, setSortedSectionTasks] = useState([]);
 
   useEffect(() => {
     if (currentSection?.label) {
@@ -115,9 +166,28 @@ const TaskListContainer = ({
         tasks,
         currentSection,
       });
+
       setCurrentSectionTasks(sectionData);
     }
   }, [currentSection, tasks]);
+
+  useEffect(() => {
+    let currentSectionTasksTemp = [];
+    if (sortBy === TITLE) {
+      currentSectionTasksTemp = currentSectionTasks.sort((a, b) =>
+        a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+      );
+    } else if (sortBy === PRIORITY) {
+      currentSectionTasksTemp = currentSectionTasks.sort((a, b) =>
+        a.priority < b.priority ? 1 : b.priority > a.priority ? -1 : 0
+      );
+    } else {
+      currentSectionTasksTemp = currentSectionTasks.sort((a, b) =>
+        a.taskDate > b.taskDate ? 1 : b.taskDate > a.taskDate ? -1 : 0
+      );
+    }
+    setSortedSectionTasks(currentSectionTasksTemp);
+  }, [sortBy, currentSectionTasks]);
 
   const { confirm } = Modal;
   const deleteSuccess = ({ messageText }) => {
@@ -220,14 +290,47 @@ const TaskListContainer = ({
               {currentSection?.label}
             </Typography.Text>
           </Space>
+
           {(showAddForSections.includes(currentSection?.id) ||
             showAddForSections.includes(currentSection?.type)) && (
-            <Button
-              size="small"
-              type="primary"
-              icon={<PlusOutlined />}
-              onClick={handleAddTask}
-            />
+            <Space size="small">
+              <Dropdown
+                menu={{
+                  items: moreMenuItemList,
+                  onClick: handleSortMenuClick,
+                }}
+                trigger={["hover"]}
+                placement="bottomLeft"
+              >
+                <div>
+                  {sortBy === TIME ? (
+                    <ClockCircleOutlined
+                      style={{
+                        fontSize: "1rem",
+                      }}
+                    />
+                  ) : sortBy === PRIORITY ? (
+                    <FlagOutlined
+                      style={{
+                        fontSize: "1rem",
+                      }}
+                    />
+                  ) : (
+                    <Icon
+                      component={SortTextSvg}
+                      style={{ fontSize: "1.25rem" }}
+                    />
+                  )}
+                  <Icon component={SortSvg} style={{ fontSize: "1.25rem" }} />
+                </div>
+              </Dropdown>
+              <Button
+                size="small"
+                type="primary"
+                icon={<PlusOutlined />}
+                onClick={handleAddTask}
+              />
+            </Space>
           )}
           {currentSection?.id === DELETED && (
             <Button
@@ -257,7 +360,8 @@ const TaskListContainer = ({
         >
           <Container
             user={user}
-            tasks={currentSectionTasks}
+            tasks={sortedSectionTasks}
+            sortBy={sortBy}
             selectedCardId={selectedCardId}
             setSelectedCardId={setSelectedCardId}
             setSelectedTaskDetails={setSelectedTaskDetails}
