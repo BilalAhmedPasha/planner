@@ -97,33 +97,44 @@ const TaskDetailsContainer = ({ user, taskDetails }) => {
         (formValues.date && formValues.date.startOf("day").format()) || null,
       isAllDay: formValues.duration?.length > 0 ? false : true,
       startTime:
-        (formValues.duration &&
-          formValues.duration[0].format(TIME_FORMAT_IN_DB)) ||
-        null,
+        formValues.date && formValues.duration
+          ? formValues.duration[0].format(TIME_FORMAT_IN_DB)
+          : null,
       endTime:
-        (formValues.duration &&
-          formValues.duration[1].format(TIME_FORMAT_IN_DB)) ||
-        null,
-      isRepeating: formValues.repeat ? true : false,
-      repeatFrequency: formValues.repeat || null,
-      endBy: formValues.endBy || null,
+        formValues.date && formValues.duration
+          ? formValues.duration[1].format(TIME_FORMAT_IN_DB)
+          : null,
+      isRepeating: formValues.date && formValues.repeat ? true : false,
+      repeatFrequency:
+        formValues.date && formValues.repeat ? formValues.repeat : null,
+      endBy:
+        formValues.date && formValues.repeat && formValues.endBy
+          ? formValues.endBy
+          : null,
       endByDate:
-        (formValues.endBy === END_BY_DATE &&
-          formValues.endByDate &&
-          formValues.endByDate.endOf("day").format()) ||
-        null,
+        formValues.date &&
+        formValues.repeat &&
+        formValues.endBy === END_BY_DATE &&
+        formValues.endByDate
+          ? formValues.endByDate.endOf("day").format()
+          : null,
       endByRepeatCount:
+        formValues.date &&
+        formValues.repeat &&
         formValues.endBy === END_BY_REPEAT_COUNT &&
         formValues.endByRepeatCount !== undefined &&
         parseInt(formValues.endByRepeatCount) >= 0
           ? parseInt(formValues.endByRepeatCount)
           : null,
       endByRepeatCountDate:
+        formValues.date &&
+        formValues.repeat &&
+        formValues.endBy === END_BY_REPEAT_COUNT &&
         formValues.endByRepeatCount !== undefined &&
         parseInt(formValues.endByRepeatCount) >= 0
           ? formValues.date
               .startOf("day")
-              .add(parseInt(formValues.endByRepeatCount -1), "day")
+              .add(parseInt(formValues.endByRepeatCount - 1), "day")
               .endOf("day")
               .format()
           : null,

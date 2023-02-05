@@ -36,6 +36,7 @@ import {
   MEDIUM_COLOR,
   NONE_COLOR,
   TASK_DETAIL_INPUT_EDIT_COLOR,
+  TASK_NAV_BADGE_COLOR,
 } from "../../../constants/color.constants";
 import {
   HIGH,
@@ -74,6 +75,16 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
   const [isRepeating, setIsRepeating] = useState(
     form.getFieldValue("isRepeating")
   );
+
+  const [openTaskDatePicker, setOpenTaskDatePicker] = useState(false);
+  const [openTaskEndDatePicker, setOpenTaskEndDatePicker] = useState(false);
+  useEffect(() => {
+    if (formType === EDIT) {
+      setOpenTaskDatePicker(false);
+      setOpenTaskEndDatePicker(false);
+    }
+  }, [formType]);
+
   const [showEndByDate, setShowEndByDate] = useState(
     taskDetails[END_BY_DATE] ? true : false
   );
@@ -127,8 +138,8 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
     });
   }, [tags]);
 
-  const tagRender = (props) => {
-    const { label, value, closable, onClose } = props;
+  const tagRender = (closable, props) => {
+    const { label, value, onClose } = props;
     const color = tags.find((each) => each.id === value)?.color;
     const onPreventMouseDown = (event) => {
       event.preventDefault();
@@ -251,8 +262,9 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
           <Input.TextArea
             autoComplete="off"
             maxLength={200}
-            disabled={formType === VIEW}
+            // disabled={formType === VIEW}
             placeholder="Enter task description"
+            readOnly={formType === VIEW}
           />
         </Form.Item>
       </div>
@@ -280,7 +292,9 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
             onSelect={(event) => handlePriorityColor(event)}
             options={priorityOptions}
             style={{ width: "7rem" }}
-            disabled={formType === VIEW}
+            // disabled={formType === VIEW}
+            readOnly={true}
+            open={formType === VIEW ? false : undefined}
           />
         </Form.Item>
         <Form.Item
@@ -313,7 +327,8 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
               ...listOptions,
             ]}
             style={{ width: "10rem" }}
-            disabled={formType === VIEW}
+            // disabled={formType === VIEW}
+            open={formType === VIEW ? false : undefined}
           />
         </Form.Item>
         <Form.Item name="tagIds" style={{ marginBottom: "1rem" }}>
@@ -337,12 +352,13 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
             options={tagOptions}
             maxTagCount={3}
             maxTagTextLength={6}
-            tagRender={tagRender}
+            tagRender={(props) => tagRender(formType !== VIEW, props)}
             showArrow={true}
             initialvalues={form.getFieldValue("tagIds")}
             style={{ width: "22rem" }}
             placeholder="Select tags here"
-            disabled={formType === VIEW}
+            // disabled={formType === VIEW}
+            open={formType === VIEW ? false : undefined}
           />
         </Form.Item>
       </div>
@@ -379,7 +395,11 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
               width: "13rem",
             }}
             onChange={handleStartDateChange}
-            disabled={formType === VIEW}
+            // disabled={formType === VIEW}
+            open={formType === VIEW ? false : openTaskDatePicker}
+            onOpenChange={(e) => setOpenTaskDatePicker(!openTaskDatePicker)}
+            allowClear={formType !== VIEW}
+            inputReadOnly={true}
           />
         </Form.Item>
         <Form.Item
@@ -409,7 +429,10 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
               cursor: "pointer",
               width: "13rem",
             }}
-            disabled={formType === VIEW || !isScheduled}
+            disabled={formType !== VIEW && !isScheduled}
+            open={formType === VIEW ? false : undefined}
+            allowClear={formType !== VIEW}
+            inputReadOnly={true}
           />
         </Form.Item>
         <Form.Item name="repeat" style={{ marginBottom: "1rem" }}>
@@ -430,7 +453,6 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
                 />
               )
             }
-            allowClear
             options={[
               {
                 value: "daily",
@@ -448,7 +470,9 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
             onChange={handleRepeatDropDownChange}
             style={{ width: "13rem" }}
             placeholder="Repeat frequency"
-            disabled={formType === VIEW || !isScheduled}
+            disabled={formType !== VIEW && !isScheduled}
+            open={formType === VIEW ? false : undefined}
+            allowClear={formType !== VIEW}
           />
         </Form.Item>
       </div>
@@ -495,7 +519,8 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
               },
             ]}
             onChange={handleEndByDropDownChange}
-            disabled={formType === VIEW || !isScheduled || !isRepeating}
+            open={formType === VIEW ? false : undefined}
+            disabled={formType !== VIEW && (!isScheduled || !isRepeating)}
             style={{ width: "13rem" }}
             placeholder="End condition"
           />
@@ -545,9 +570,13 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
             placeholder="Select end date"
             disabledDate={disabledEndDate}
             disabled={
-              formType === VIEW ||
+              formType !== VIEW &&
               !(isScheduled && isRepeating && showEndByDate)
             }
+            open={formType === VIEW ? false : openTaskEndDatePicker}
+            onOpenChange={(e) => setOpenTaskEndDatePicker(!openTaskEndDatePicker)}
+            allowClear={formType !== VIEW}
+            inputReadOnly={true}
           />
         </Form.Item>
         <Form.Item
@@ -576,6 +605,7 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
                 <FieldNumberOutlined
                   style={{
                     fontSize: "1rem",
+                    color: TASK_NAV_BADGE_COLOR,
                   }}
                 />
               ) : (
@@ -594,10 +624,11 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
             }}
             placeholder="Enter repeat count"
             disabled={
-              formType === VIEW ||
+              formType !== VIEW &&
               !(isScheduled && isRepeating && showEndByRepeatCount)
             }
             maxLength={3}
+            readOnly={formType === VIEW}
           />
         </Form.Item>
       </div>

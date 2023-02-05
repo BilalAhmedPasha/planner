@@ -23,7 +23,6 @@ export const CHECK_BOX_BG_COLOR = "#fff";
 export const TASK_DETAIL_INPUT_EDIT_COLOR = "#4096ff";
 
 export const TASK_NAV_BADGE_COLOR = "#aaaaaa";
-
 export const TASK_ITEM_BADGE_COLOR = "#ab98B8";
 
 export const TASK_CARD_BOX_SHADOW_COLOR = "#e8e8e8";
