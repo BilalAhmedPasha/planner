@@ -85,7 +85,7 @@ const TaskListSection = ({
     <>
       {sectionCount === 1
         ? Object.keys(sectionalTasks).map((each) => {
-            if (each !== MARKED) {
+            if (each !== MARKED && each !== OVERDUE) {
               return renderCardOutsideCollapse({
                 tasks: sectionalTasks[each].tasks,
                 user,
@@ -98,6 +98,7 @@ const TaskListSection = ({
                 findSectionTask,
               });
             }
+            return null;
           })
         : null}
       {sectionId !== DELETED &&
@@ -106,7 +107,6 @@ const TaskListSection = ({
         <Collapse
           ghost={true}
           bordered={false}
-          defaultActiveKey={["Overdue"]}
           style={{
             background: token.colorBgContainer,
           }}

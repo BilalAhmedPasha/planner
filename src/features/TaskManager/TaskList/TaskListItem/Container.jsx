@@ -1,12 +1,6 @@
 import { message } from "antd";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import {
-  ALL,
-  COMPLETED,
-  DELETED,
-  WONT_DO,
-} from "../../../../constants/app.constants.js";
+import { ALL } from "../../../../constants/app.constants.js";
 import {
   HIGH,
   LOW,

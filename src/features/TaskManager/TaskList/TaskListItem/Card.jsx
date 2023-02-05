@@ -86,9 +86,16 @@ const Card = ({
   const opacity = isDragging ? 0 : 1;
   const { sectionId } = useParams();
 
+  // TODO
+  const enableDragAndDrop = false;
+  
   return (
     <StyledDiv
-      ref={sectionId === DELETED ? null : (node) => drag(drop(node)) || null}
+      ref={
+        !enableDragAndDrop || sectionId === DELETED
+          ? null
+          : (node) => drag(drop(node)) || null
+      }
       opacity={opacity}
       isSelected={selectedCardId === id}
       isInCollapse={isInCollapse}
