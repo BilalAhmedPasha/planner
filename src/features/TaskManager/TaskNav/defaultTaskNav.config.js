@@ -17,7 +17,7 @@ import {
   NEXT_7_DAYS,
   TODAY,
   TOMORROW,
-  UNDATED,
+  NO_DATE,
   WONT_DO,
 } from "../../../constants/app.constants";
 
@@ -53,10 +53,10 @@ export const defaultTaskNav1 = [
     id: "next-7-days",
   },
   {
-    label: "Undated",
+    label: "No Date",
     icon: ClockCircleOutlined,
-    redirectUrl: `/tasks/${UNDATED}`,
-    id: "undated",
+    redirectUrl: `/tasks/${NO_DATE}`,
+    id: "no-date",
   },
 ];
 

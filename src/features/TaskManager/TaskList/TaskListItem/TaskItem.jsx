@@ -63,16 +63,35 @@ const getPriorityColor = ({ item }) => {
   return { color: NONE_COLOR, bgColor: NONE_BG_COLOR };
 };
 
-const renderListName = ({ item, lists }) => {
-  const itemInList = lists?.find((each) => each.id === item?.listId);
+const renderColorDot = (color) => {
   return (
-    <Typography.Text
-      type="secondary"
-      style={{ textTransform: "capitalize" }}
-      disabled={item.isCompleted || item.isWontDo}
-    >
-      {itemInList?.label || INBOX}
-    </Typography.Text>
+    <span
+      style={{
+        height: "0.5rem",
+        width: "0.5rem",
+        borderRadius: "50%",
+        backgroundColor: `${color}`,
+        display: "inline-block",
+      }}
+    />
+  );
+};
+
+const renderList = ({ item, lists }) => {
+  const itemInList = lists?.find((each) => each.id === item?.listId);
+  const listColor =
+    item.isCompleted || item.isWontDo ? COMPLETED_COLOR : itemInList?.color;
+  return (
+    <Space size="small" align="center">
+      {itemInList?.color ? renderColorDot(listColor) : null}
+      <Typography.Text
+        type="secondary"
+        style={{ textTransform: "capitalize" }}
+        disabled={item.isCompleted || item.isWontDo}
+      >
+        {itemInList?.label || INBOX}
+      </Typography.Text>
+    </Space>
   );
 };
 
@@ -468,7 +487,7 @@ const TaskItem = ({
         }}
       >
         <Space size="small" style={{ paddingRight: "0.25rem" }}>
-          {renderListName({ item: taskDetails, lists: lists })}
+          {renderList({ item: taskDetails, lists: lists })}
           {renderTags({
             item: taskDetails,
             tags: tags,

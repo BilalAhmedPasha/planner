@@ -14,7 +14,7 @@ import {
   TAGS,
   TODAY,
   TOMORROW,
-  UNDATED,
+  NO_DATE,
   WONT_DO,
 } from "../../../constants/app.constants";
 import { CREATE } from "../../../constants/formType.constants";
@@ -38,7 +38,7 @@ import {
   getInboxTasks,
   getTasksByDate,
   getTasksByNextXDays,
-  getUndatedTasks,
+  getNoDateTasks,
   getWontDoTasks,
 } from "./TaskListItem/TaskUtils";
 import { TIME_ZONE } from "../../../constants/dateTime.constants";
@@ -59,8 +59,8 @@ const computeSectionData = ({ tasks, currentSection }) => {
   } else if (currentSection.id === NEXT_7_DAYS) {
     const tomorrow = dayjs.utc().tz(TIME_ZONE).add(1, "day");
     return getTasksByNextXDays({ tasks, fromDate: tomorrow, count: 6 });
-  } else if (currentSection.id === UNDATED) {
-    return getUndatedTasks({ tasks });
+  } else if (currentSection.id === NO_DATE) {
+    return getNoDateTasks({ tasks });
   } else if (currentSection.id === COMPLETED) {
     return getCompletedTasks({ tasks });
   } else if (currentSection.id === WONT_DO) {

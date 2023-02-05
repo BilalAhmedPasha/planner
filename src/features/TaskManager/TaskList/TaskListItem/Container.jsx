@@ -116,7 +116,6 @@ const Container = ({
             ))}
         </div>
       )}
-      {contextHolder}
       {completedTasks.length > 0 ? (
         <TaskListSection
           sectionTitle={"Completed & Won't Do"}
@@ -129,6 +128,7 @@ const Container = ({
           user={user}
         />
       ) : null}
+      {contextHolder}
     </>
   );
 };

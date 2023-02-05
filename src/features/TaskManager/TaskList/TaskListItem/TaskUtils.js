@@ -131,14 +131,14 @@ export const getTasksByNextXDays = ({ tasks, fromDate, count }) => {
   return nextXDayTasks;
 };
 
-export const getUndatedTasks = ({ tasks }) => {
-  const undatedTasks = [];
+export const getNoDateTasks = ({ tasks }) => {
+  const noDateTasks = [];
   for (let i = 0; i < tasks.length; i++) {
     if (tasks[i].taskDate === null && tasks[i].isDeleted === 0) {
-      undatedTasks.push(tasks[i]);
+      noDateTasks.push(tasks[i]);
     }
   }
-  return undatedTasks;
+  return noDateTasks;
 };
 
 export const getCompletedTasks = ({ tasks }) => {
