@@ -68,7 +68,13 @@ const getPriorityColor = (event) => {
   }
 };
 
-const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
+const TaskDetails = ({
+  taskDetails,
+  form,
+  formType,
+  setFormType,
+  resetValues,
+}) => {
   const [priorityColor, setPriorityColor] = useState(
     getPriorityColor(taskDetails["priority"])
   );
@@ -192,9 +198,7 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
   };
 
   const disabledEndDate = (current) => {
-    return (
-      startDate && current.startOf(DAY).isBefore(startDate.startOf(DAY))
-    );
+    return startDate && current.startOf(DAY).isBefore(startDate.startOf(DAY));
   };
 
   return (

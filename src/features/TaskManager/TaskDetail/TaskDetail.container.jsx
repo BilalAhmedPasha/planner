@@ -17,33 +17,38 @@ import {
   repeatMapping,
 } from "../../../constants/repeating.constants";
 
+const getFormValueFromTaskDetail = ({ taskDetails }) => {
+  return {
+    ...taskDetails,
+    taskDate: taskDetails?.taskDate ? dayjs(taskDetails?.taskDate) : null,
+    duration:
+      taskDetails?.startTime && taskDetails?.endTime
+        ? [
+            dayjs(taskDetails.startTime, TIME_FORMAT_IN_DB),
+            dayjs(taskDetails.endTime, TIME_FORMAT_IN_DB),
+          ]
+        : null,
+    endByDate: taskDetails?.endByDate ? dayjs(taskDetails?.endByDate) : null,
+  };
+};
+
 const TaskDetailsContainer = ({ user, taskDetails }) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
   const [form] = Form.useForm();
   const [formType, setFormType] = useState(VIEW);
 
-  const FORM_VALUES = useMemo(() => {
-    return {
-      ...taskDetails,
-      taskDate: taskDetails?.taskDate ? dayjs(taskDetails?.taskDate) : null,
-      duration:
-        taskDetails?.startTime && taskDetails?.endTime
-          ? [
-              dayjs(taskDetails.startTime, TIME_FORMAT_IN_DB),
-              dayjs(taskDetails.endTime, TIME_FORMAT_IN_DB),
-            ]
-          : null,
-      endByDate: taskDetails?.endByDate ? dayjs(taskDetails?.endByDate) : null,
-    };
+  const formValues = useMemo(() => {
+    return getFormValueFromTaskDetail({ taskDetails: taskDetails });
     // eslint-disable-next-line
   }, [taskDetails]);
 
   useEffect(() => {
-    form.setFieldsValue(FORM_VALUES);
+    form.setFieldsValue(formValues);
     setFormType(VIEW);
-  }, [form, FORM_VALUES]);
+  }, [form, formValues]);
 
   const dispatch = useDispatch();
   const [messageApi] = message.useMessage();
@@ -85,9 +90,12 @@ const TaskDetailsContainer = ({ user, taskDetails }) => {
         formValues.taskDate && formValues.duration
           ? formValues.duration[1].format(TIME_FORMAT_IN_DB)
           : null,
-      isRepeating: formValues.taskDate && formValues.repeatFrequency ? true : false,
+      isRepeating:
+        formValues.taskDate && formValues.repeatFrequency ? true : false,
       repeatFrequency:
-        formValues.taskDate && formValues.repeatFrequency ? formValues.repeatFrequency : null,
+        formValues.taskDate && formValues.repeatFrequency
+          ? formValues.repeatFrequency
+          : null,
       endBy:
         formValues.taskDate && formValues.repeatFrequency && formValues.endBy
           ? formValues.endBy
@@ -130,22 +138,9 @@ const TaskDetailsContainer = ({ user, taskDetails }) => {
         if (response.success === SUCCESS) {
           editTaskSuccess();
           setFormType(VIEW);
-          form.setFieldsValue({
-            ...modifiedTask,
-            taskDate: modifiedTask?.taskDate
-              ? dayjs(modifiedTask?.taskDate)
-              : null,
-            duration:
-              modifiedTask?.modifiedTask && modifiedTask?.endTime
-                ? [
-                    dayjs(modifiedTask.startTime, TIME_FORMAT_IN_DB),
-                    dayjs(modifiedTask.endTime, TIME_FORMAT_IN_DB),
-                  ]
-                : null,
-            endByDate: modifiedTask?.endByDate
-              ? dayjs(modifiedTask?.endByDate)
-              : null,
-          });
+          form.setFieldsValue(
+            getFormValueFromTaskDetail({ taskDetails: modifiedTask })
+          );
         } else {
           editTaskFailed();
         }
@@ -167,7 +162,7 @@ const TaskDetailsContainer = ({ user, taskDetails }) => {
             form={form}
             name="detail_form"
             onFinish={(formValues) => onSubmit({ taskDetails, formValues })}
-            initialValues={FORM_VALUES}
+            initialValues={formValues}
           >
             <TaskDetails
               taskDetails={taskDetails}
