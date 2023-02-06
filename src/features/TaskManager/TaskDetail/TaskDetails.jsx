@@ -79,6 +79,7 @@ const TaskDetails = ({
     getPriorityColor(taskDetails["priority"])
   );
   const [startDate, setStartDate] = useState(form.getFieldValue("taskDate"));
+
   const [isRepeating, setIsRepeating] = useState(
     form.getFieldValue("isRepeating")
   );
@@ -491,6 +492,21 @@ const TaskDetails = ({
         <Form.Item
           name="endBy"
           style={{ marginRight: "1rem", marginBottom: "1rem" }}
+          rules={[
+            {
+              message: "End condition is required",
+              validator: (_, value) => {
+                if (
+                  form.getFieldValue("repeatFrequency") !== null &&
+                  value === null
+                ) {
+                  return Promise.reject("End condition is required");
+                } else {
+                  return Promise.resolve();
+                }
+              },
+            },
+          ]}
         >
           <Select
             suffixIcon={
@@ -636,6 +652,7 @@ const TaskDetails = ({
             }
             maxLength={3}
             readOnly={formType === VIEW}
+            autoComplete="off"
           />
         </Form.Item>
       </div>
