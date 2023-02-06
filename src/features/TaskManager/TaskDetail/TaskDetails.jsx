@@ -72,7 +72,7 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
   const [priorityColor, setPriorityColor] = useState(
     getPriorityColor(taskDetails["priority"])
   );
-  const [startDate, setStartDate] = useState(form.getFieldValue("date"));
+  const [startDate, setStartDate] = useState(form.getFieldValue("taskDate"));
   const [isRepeating, setIsRepeating] = useState(
     form.getFieldValue("isRepeating")
   );
@@ -371,7 +371,7 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
         }}
       >
         <Form.Item
-          name="date"
+          name="taskDate"
           style={{ marginRight: "1rem", marginBottom: "1rem" }}
         >
           <DatePicker
@@ -436,7 +436,7 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
             inputReadOnly={true}
           />
         </Form.Item>
-        <Form.Item name="repeat" style={{ marginBottom: "1rem" }}>
+        <Form.Item name="repeatFrequency" style={{ marginBottom: "1rem" }}>
           <Select
             suffixIcon={
               formType === VIEW || !isScheduled ? (
@@ -575,7 +575,9 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
               !(isScheduled && isRepeating && showEndByDate)
             }
             open={formType === VIEW ? false : openTaskEndDatePicker}
-            onOpenChange={(e) => setOpenTaskEndDatePicker(!openTaskEndDatePicker)}
+            onOpenChange={(e) =>
+              setOpenTaskEndDatePicker(!openTaskEndDatePicker)
+            }
             allowClear={formType !== VIEW}
             inputReadOnly={true}
           />
