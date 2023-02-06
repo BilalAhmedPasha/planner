@@ -83,24 +83,26 @@ const TaskListSection = ({
   const { sectionId } = useParams();
   return (
     <>
-      {sectionCount === 1
-        ? Object.keys(sectionalTasks).map((each) => {
-            if (each !== MARKED && each !== OVERDUE) {
-              return renderCardOutsideCollapse({
-                tasks: sectionalTasks[each].tasks,
-                user,
-                messageApi,
-                selectedCardId,
-                setSelectedCardId,
-                setSelectedTaskDetails,
-                sectionId: each,
-                moveSectionTask,
-                findSectionTask,
-              });
-            }
-            return null;
-          })
-        : null}
+      {sectionCount === 1 &&
+        Object.keys(sectionalTasks).map((each) => {
+          if (each !== MARKED && each !== OVERDUE) {
+            return (
+              <div key={each}>
+                {renderCardOutsideCollapse({
+                  tasks: sectionalTasks[each].tasks,
+                  user,
+                  messageApi,
+                  selectedCardId,
+                  setSelectedCardId,
+                  setSelectedTaskDetails,
+                  sectionId: each,
+                  moveSectionTask,
+                  findSectionTask,
+                })}
+              </div>
+            );
+          }
+        })}
       {sectionId !== DELETED &&
       sectionId !== COMPLETED &&
       sectionId !== WONT_DO ? (
