@@ -102,6 +102,7 @@ const TaskListSection = ({
               </div>
             );
           }
+          return null;
         })}
       {sectionId !== DELETED &&
       sectionId !== COMPLETED &&
