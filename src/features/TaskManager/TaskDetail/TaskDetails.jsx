@@ -73,7 +73,7 @@ const TaskDetails = ({
   form,
   formType,
   setFormType,
-  resetValues,
+  lastSavedFormValues,
 }) => {
   const [priorityColor, setPriorityColor] = useState(
     getPriorityColor(taskDetails["priority"])
@@ -103,7 +103,7 @@ const TaskDetails = ({
   );
 
   const onReset = () => {
-    form.resetFields();
+    form.setFieldsValue(lastSavedFormValues);
     setFormType(VIEW);
     setPriorityColor(getPriorityColor(taskDetails["priority"]));
     setIsScheduled(taskDetails["taskDate"] ? true : false);

@@ -45,6 +45,10 @@ const TaskDetailsContainer = ({ user, taskDetails }) => {
     // eslint-disable-next-line
   }, [taskDetails]);
 
+  const [lastSavedFormValues, setLastSavedFormValues] = useState(
+    getFormValueFromTaskDetail({ taskDetails: taskDetails })
+  );
+
   useEffect(() => {
     form.setFieldsValue(formValues);
     setFormType(VIEW);
@@ -52,6 +56,7 @@ const TaskDetailsContainer = ({ user, taskDetails }) => {
 
   const dispatch = useDispatch();
   const [messageApi] = message.useMessage();
+
   const editTaskSuccess = () => {
     messageApi.open({
       type: "success",
@@ -59,6 +64,7 @@ const TaskDetailsContainer = ({ user, taskDetails }) => {
       duration: 3,
     });
   };
+
   const editTaskFailed = () => {
     messageApi.open({
       type: "error",
@@ -136,11 +142,13 @@ const TaskDetailsContainer = ({ user, taskDetails }) => {
     dispatch(editTaskAction(user.uid, modifiedTask, modifiedTask.id)).then(
       (response) => {
         if (response.success === SUCCESS) {
+          const newFormValues = getFormValueFromTaskDetail({
+            taskDetails: modifiedTask,
+          });
           editTaskSuccess();
           setFormType(VIEW);
-          form.setFieldsValue(
-            getFormValueFromTaskDetail({ taskDetails: modifiedTask })
-          );
+          form.setFieldsValue(newFormValues);
+          setLastSavedFormValues(newFormValues);
         } else {
           editTaskFailed();
         }
@@ -169,6 +177,7 @@ const TaskDetailsContainer = ({ user, taskDetails }) => {
               form={form}
               formType={formType}
               setFormType={setFormType}
+              lastSavedFormValues={lastSavedFormValues}
             />
           </Form>
         ) : (
