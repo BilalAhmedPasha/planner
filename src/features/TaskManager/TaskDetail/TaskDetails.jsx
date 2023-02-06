@@ -46,6 +46,7 @@ import {
 } from "../../../constants/priority.constants";
 import {
   DATE_FORMAT,
+  DAY,
   TIME_FORMAT,
 } from "../../../constants/dateTime.constants";
 import NumericInput from "../../../components/NumericInput";
@@ -192,7 +193,7 @@ const TaskDetails = ({ taskDetails, form, formType, setFormType }) => {
 
   const disabledEndDate = (current) => {
     return (
-      startDate && current.startOf("day").isBefore(startDate.startOf("day"))
+      startDate && current.startOf(DAY).isBefore(startDate.startOf(DAY))
     );
   };
 

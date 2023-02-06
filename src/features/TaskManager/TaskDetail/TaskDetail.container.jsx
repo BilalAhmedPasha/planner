@@ -4,7 +4,7 @@ import { VIEW } from "../../../constants/formType.constants";
 import NotTaskSelected from "./NotTaskSelected";
 import TaskDetails from "./TaskDetails";
 import dayjs from "../../../utils/dateTime.uitls";
-import { TIME_FORMAT_IN_DB } from "../../../constants/dateTime.constants";
+import { DAY, TIME_FORMAT_IN_DB } from "../../../constants/dateTime.constants";
 import { editTaskAction } from "../state/userTasks/userTasks.actions";
 import {
   HIGH_COLOR,
@@ -21,6 +21,7 @@ import Spinner from "../../../components/Spinner";
 import {
   END_BY_DATE,
   END_BY_REPEAT_COUNT,
+  repeatMapping,
 } from "../../../constants/repeating.constants";
 
 const getPriorityColor = (event) => {
@@ -84,6 +85,7 @@ const TaskDetailsContainer = ({ user, taskDetails }) => {
 
   const { isLoadingTasks } = useSelector(tasksSelector);
 
+
   const onSubmit = ({ taskDetails, formValues }) => {
     const modifiedTime = dayjs.utc().format();
     const modifiedTask = {
@@ -94,7 +96,7 @@ const TaskDetailsContainer = ({ user, taskDetails }) => {
       priority: formValues.priority,
       tagIds: formValues.tagIds || [],
       taskDate:
-        (formValues.date && formValues.date.startOf("day").format()) || null,
+        (formValues.date && formValues.date.startOf(DAY).format()) || null,
       isAllDay: formValues.duration?.length > 0 ? false : true,
       startTime:
         formValues.date && formValues.duration
@@ -116,7 +118,7 @@ const TaskDetailsContainer = ({ user, taskDetails }) => {
         formValues.repeat &&
         formValues.endBy === END_BY_DATE &&
         formValues.endByDate
-          ? formValues.endByDate.endOf("day").format()
+          ? formValues.endByDate.endOf(DAY).format()
           : null,
       endByRepeatCount:
         formValues.date &&
@@ -133,12 +135,15 @@ const TaskDetailsContainer = ({ user, taskDetails }) => {
         formValues.endByRepeatCount !== undefined &&
         parseInt(formValues.endByRepeatCount) >= 0
           ? formValues.date
-              .startOf("day")
-              .add(parseInt(formValues.endByRepeatCount - 1), "day")
-              .endOf("day")
+              .startOf(DAY)
+              .add(
+                parseInt(formValues.endByRepeatCount - 1),
+                repeatMapping[formValues.repeat]
+              )
+              .endOf(DAY)
               .format()
           : null,
-      progress: formValues.progress,
+      progress: parseInt(formValues.progress),
       modifiedTime: modifiedTime,
     };
     dispatch(editTaskAction(user.uid, modifiedTask, modifiedTask.id)).then(

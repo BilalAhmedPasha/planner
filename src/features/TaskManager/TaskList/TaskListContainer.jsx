@@ -30,7 +30,7 @@ import { CREATE } from "../../../constants/formType.constants";
 import { tasksSelector } from "../state/userTasks/userTasks.reducer";
 import TaskDialogForm from "./TaskDialogForm";
 import Container from "./TaskListItem/Container";
-import {
+import Icon, {
   PlusOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -39,7 +39,6 @@ import {
   FlagOutlined,
   ClockCircleOutlined,
 } from "@ant-design/icons";
-import Icon from "@ant-design/icons";
 import { ReactComponent as SortSvg } from "../../../svg/sort-arrow.svg";
 import { ReactComponent as SortTextSvg } from "../../../svg/sort-text.svg";
 import dayjs from "../../../utils/dateTime.uitls";
@@ -55,7 +54,7 @@ import {
   getNoDateTasks,
   getWontDoTasks,
 } from "./TaskListItem/TaskUtils";
-import { TIME_ZONE } from "../../../constants/dateTime.constants";
+import { DAY, TIME_ZONE } from "../../../constants/dateTime.constants";
 import { hardDeleteTaskAction } from "../state/userTasks/userTasks.actions";
 import Spinner from "../../../components/Spinner";
 import { PRIORITY, TIME, TITLE } from "../../../constants/sort.constants";
@@ -69,10 +68,10 @@ const computeSectionData = ({ tasks, currentSection }) => {
     const today = dayjs.utc().tz(TIME_ZONE);
     return getTasksByDate({ tasks, date: today, includeOverDue: true });
   } else if (currentSection.id === TOMORROW) {
-    const tomorrow = dayjs.utc().tz(TIME_ZONE).add(1, "day");
+    const tomorrow = dayjs.utc().tz(TIME_ZONE).add(1, DAY);
     return getTasksByDate({ tasks, date: tomorrow, includeOverDue: false });
   } else if (currentSection.id === NEXT_7_DAYS) {
-    const tomorrow = dayjs.utc().tz(TIME_ZONE).add(1, "day");
+    const tomorrow = dayjs.utc().tz(TIME_ZONE).add(1, DAY);
     return getTasksByNextXDays({ tasks, fromDate: tomorrow, count: 6 });
   } else if (currentSection.id === NO_DATE) {
     return getNoDateTasks({ tasks });

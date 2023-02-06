@@ -34,6 +34,7 @@ import {
 } from "../../../../constants/app.constants";
 import {
   DATE_FORMAT,
+  DAY,
   TIME_FORMAT,
   TIME_ZONE,
 } from "../../../../constants/dateTime.constants";
@@ -154,13 +155,13 @@ const TaskDialogRightPanel = ({ form, height }) => {
   };
 
   const disabledStartDate = (current) => {
-    const today = dayjs.utc().tz(TIME_ZONE).startOf("day");
-    return current.startOf("day").isBefore(today);
+    const today = dayjs.utc().tz(TIME_ZONE).startOf(DAY);
+    return current.startOf(DAY).isBefore(today);
   };
 
   const disabledEndDate = (current) => {
     return (
-      startDate && current.startOf("day").isBefore(startDate.startOf("day"))
+      startDate && current.startOf(DAY).isBefore(startDate.startOf(DAY))
     );
   };
 

@@ -1,6 +1,6 @@
 import dayjs from "../../../../utils/dateTime.uitls";
 import { INBOX } from "../../../../constants/app.constants";
-import { TIME_ZONE } from "../../../../constants/dateTime.constants";
+import { DAY, TIME_ZONE } from "../../../../constants/dateTime.constants";
 
 export const getAllTasks = ({ tasks }) => {
   const allTasks = [];
@@ -23,13 +23,13 @@ export const getInboxTasks = ({ tasks }) => {
 };
 
 export const getTasksByDate = ({ tasks, date, includeOverDue }) => {
-  const currentDateStart = date.startOf("day");
-  const currentDateEnd = date.endOf("day");
+  const currentDateStart = date.startOf(DAY);
+  const currentDateEnd = date.endOf(DAY);
   const currentDateTasks = [];
   for (let i = 0; i < tasks.length; i++) {
     if (!tasks[i].isDeleted) {
       // calculate taskDate in dayJS
-      const taskDateStart = dayjs(tasks[i].taskDate).startOf("day");
+      const taskDateStart = dayjs(tasks[i].taskDate).startOf(DAY);
       if (!tasks[i].taskDate) {
         // Not dated tasks
         continue;
@@ -48,13 +48,13 @@ export const getTasksByDate = ({ tasks, date, includeOverDue }) => {
       } else if (tasks[i].isRepeating) {
         if (tasks[i].endByDate) {
           // Repeating task end by date
-          const taskDateEnd = dayjs(tasks[i].endByDate).endOf("day");
+          const taskDateEnd = dayjs(tasks[i].endByDate).endOf(DAY);
           currentDateStart.isSameOrAfter(taskDateStart) &&
             currentDateEnd.isSameOrBefore(taskDateEnd) &&
             currentDateTasks.push(tasks[i]);
         } else if (tasks[i].endByRepeatCount >= 0) {
           // Repeating task end by count
-          const taskDateEnd = dayjs(tasks[i].endByRepeatCountDate).endOf("day");
+          const taskDateEnd = dayjs(tasks[i].endByRepeatCountDate).endOf(DAY);
           currentDateStart.isSameOrAfter(taskDateStart) &&
             currentDateEnd.isSameOrBefore(taskDateEnd) &&
             currentDateTasks.push(tasks[i]);
@@ -70,13 +70,13 @@ export const getTasksByDate = ({ tasks, date, includeOverDue }) => {
 };
 
 export const getTasksByNextXDays = ({ tasks, fromDate, count }) => {
-  const startDate = fromDate.startOf("day");
-  const endDate = startDate.add(count, "day").endOf("day");
+  const startDate = fromDate.startOf(DAY);
+  const endDate = startDate.add(count,DAY).endOf(DAY);
   const nextXDayTasks = [];
   for (let i = 0; i < tasks.length; i++) {
     if (!tasks[i].isDeleted) {
       // calculate taskDate in dayJS
-      const taskDateStart = dayjs(tasks[i].taskDate).startOf("day");
+      const taskDateStart = dayjs(tasks[i].taskDate).startOf(DAY);
       if (!tasks[i].taskDate) {
         // Not dated tasks
         continue;
@@ -93,7 +93,7 @@ export const getTasksByNextXDays = ({ tasks, fromDate, count }) => {
       } else if (tasks[i].isRepeating) {
         if (tasks[i].endByDate) {
           // Repeating task end by date
-          const endDate = dayjs(tasks[i].endByDate).endOf("day");
+          const endDate = dayjs(tasks[i].endByDate).endOf(DAY);
           if (
             (startDate.isBefore(taskDateStart) &&
               endDate.isSameOrAfter(endDate)) ||
@@ -107,7 +107,7 @@ export const getTasksByNextXDays = ({ tasks, fromDate, count }) => {
           }
         } else if (tasks[i].endByRepeatCount >= 0) {
           // Repeating task end by count
-          const endDate = dayjs(tasks[i].endByRepeatCountDate).endOf("day");
+          const endDate = dayjs(tasks[i].endByRepeatCountDate).endOf(DAY);
           if (
             (startDate.isBefore(taskDateStart) &&
               endDate.isSameOrAfter(endDate)) ||
@@ -192,19 +192,19 @@ export const getByTagId = ({ tasks, tagId }) => {
 };
 
 export const isTaskOverdue = (task) => {
-  const todayTS = dayjs.utc().tz(TIME_ZONE).startOf("day");
+  const todayTS = dayjs.utc().tz(TIME_ZONE).startOf(DAY);
   if (task.taskDate !== null) {
     // If scheduled
-    const taskDateTS = dayjs(task.taskDate).endOf("day");
+    const taskDateTS = dayjs(task.taskDate).endOf(DAY);
     return taskDateTS.isBefore(todayTS);
   }
 };
 
 export const isTaskToday = (task) => {
-  const todayTS = dayjs.utc().tz(TIME_ZONE).startOf("day");
+  const todayTS = dayjs.utc().tz(TIME_ZONE).startOf(DAY);
   if (task.taskDate !== null) {
     // If scheduled
-    const taskDateTS = dayjs(task.taskDate).startOf("day");
+    const taskDateTS = dayjs(task.taskDate).startOf(DAY);
     return taskDateTS.isSame(todayTS);
   }
 };

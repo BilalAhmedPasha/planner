@@ -42,11 +42,13 @@ import { cross, tick } from "../../../../constants/checkBox.constants";
 import CheckBoxInput from "../../../../components/CheckBox";
 import {
   DATE_FORMAT_IN_TASK_ITEM,
+  DAY,
   TIME_ZONE,
 } from "../../../../constants/dateTime.constants";
 import {
   END_BY_DATE,
   END_BY_REPEAT_COUNT,
+  repeatMapping,
 } from "../../../../constants/repeating.constants";
 
 const getPriorityColor = ({ item }) => {
@@ -156,7 +158,7 @@ const renderRepeatIcon = ({ item }) => {
   }
 };
 const renderTaskDate = ({ item }) => {
-  const today = dayjs.utc().tz(TIME_ZONE).startOf("day");
+  const today = dayjs.utc().tz(TIME_ZONE).startOf(DAY);
 
   const taskDate = dayjs(item.taskDate);
   const startMultiDate = dayjs(item.startMultiDate);
@@ -165,7 +167,7 @@ const renderTaskDate = ({ item }) => {
   if (item.taskDate) {
     return (
       <Typography.Text
-        type={taskDate.endOf("day").isBefore(today) ? "danger" : "secondary"}
+        type={taskDate.endOf(DAY).isBefore(today) ? "danger" : "secondary"}
         disabled={item.isCompleted || item.isWontDo}
       >
         {taskDate.format(DATE_FORMAT_IN_TASK_ITEM)}
@@ -175,7 +177,7 @@ const renderTaskDate = ({ item }) => {
     return (
       <Typography.Text
         type={
-          startMultiDate.endOf("day").isBefore(today) ? "danger" : "secondary"
+          startMultiDate.endOf(DAY).isBefore(today) ? "danger" : "secondary"
         }
         disabled={item.isCompleted || item.isWontDo}
       >
@@ -325,15 +327,19 @@ const TaskItem = ({
   );
 
   const markTaskComplete = (isCompleted) => {
-    const markedTime = dayjs.utc().endOf("day").format();
-    const updatedTaskDate = dayjs(taskDetails.taskDate).add(1, "day");
+    const markedTime = dayjs.utc().endOf(DAY).format();
     let shouldCreateNewTask = true;
+    let updatedTaskDate = null;
     if (taskDetails.isRepeating) {
+      updatedTaskDate = dayjs(taskDetails.taskDate).add(
+        1,
+        repeatMapping[taskDetails.repeatFrequency]
+      );
       let endTaskDate = null;
       if (taskDetails.endBy === END_BY_DATE) {
-        endTaskDate = dayjs(taskDetails.endByDate).endOf("day");
+        endTaskDate = dayjs(taskDetails.endByDate).endOf(DAY);
       } else if (taskDetails.endBy === END_BY_REPEAT_COUNT) {
-        endTaskDate = dayjs(taskDetails.endByRepeatCountDate).endOf("day");
+        endTaskDate = dayjs(taskDetails.endByRepeatCountDate).endOf(DAY);
       }
       if (endTaskDate) {
         if (updatedTaskDate.isAfter(endTaskDate)) {
@@ -348,22 +354,27 @@ const TaskItem = ({
         taskDetails,
         isCompleted,
         markedTime,
-        updatedTaskDate.format(),
+        updatedTaskDate?.format(),
         shouldCreateNewTask
       )
     );
   };
 
   const markTaskWontDo = (isWontDo) => {
-    const markedTime = dayjs.utc().endOf("day").format();
-    const updatedTaskDate = dayjs(taskDetails.taskDate).add(1, "day");
+    const markedTime = dayjs.utc().endOf(DAY).format();
     let shouldCreateNewTask = true;
+    let updatedTaskDate = null;
+
     if (taskDetails.isRepeating) {
+      updatedTaskDate = dayjs(taskDetails.taskDate).add(
+        1,
+        repeatMapping[taskDetails.repeatFrequency]
+      );
       let endTaskDate = null;
       if (taskDetails.endBy === END_BY_DATE) {
-        endTaskDate = dayjs(taskDetails.endByDate).endOf("day");
+        endTaskDate = dayjs(taskDetails.endByDate).endOf(DAY);
       } else if (taskDetails.endBy === END_BY_REPEAT_COUNT) {
-        endTaskDate = dayjs(taskDetails.endByRepeatCountDate).endOf("day");
+        endTaskDate = dayjs(taskDetails.endByRepeatCountDate).endOf(DAY);
       }
       if (endTaskDate) {
         if (updatedTaskDate.isAfter(endTaskDate)) {
@@ -378,7 +389,7 @@ const TaskItem = ({
         taskDetails,
         isWontDo,
         markedTime,
-        updatedTaskDate.format(),
+        updatedTaskDate?.format(),
         shouldCreateNewTask
       )
     );
@@ -475,7 +486,7 @@ const TaskItem = ({
         >
           <Typography.Text
             disabled={taskDetails.isCompleted || taskDetails.isWontDo}
-          >{`${taskDetails.name}`}</Typography.Text>
+          >{`${taskDetails.name} (${taskDetails.id})`}</Typography.Text>
         </Space>
       </Space>
       <div
