@@ -103,9 +103,9 @@ const TaskDialogRightPanel = ({ form, height }) => {
     }
   };
 
-  const [startDate, setStartDate] = useState(form.getFieldValue("date"));
+  const [startDate, setStartDate] = useState(form.getFieldValue("taskDate"));
   const [isScheduled, setIsScheduled] = useState(
-    form.getFieldValue("date") ? true : false
+    form.getFieldValue("taskDate") ? true : false
   );
   const [isMultiDay, setIsMultiDay] = useState(false);
   const [isRepeating, setIsRepeating] = useState(false);
@@ -128,8 +128,8 @@ const TaskDialogRightPanel = ({ form, height }) => {
     if (e === true) {
       form.setFieldValue("dateRange", null);
     } else {
-      form.setFieldValue("date", null);
-      form.setFieldValue("repeat", null);
+      form.setFieldValue("taskDate", null);
+      form.setFieldValue("repeatFrequency", null);
     }
   };
 
@@ -247,7 +247,7 @@ const TaskDialogRightPanel = ({ form, height }) => {
           </Form.Item>
         )}
         {!isMultiDay && (
-          <Form.Item name="date" label="Schedule">
+          <Form.Item name="taskDate" label="Schedule">
             <DatePicker
               format={DATE_FORMAT}
               style={{
@@ -293,7 +293,7 @@ const TaskDialogRightPanel = ({ form, height }) => {
           </Form.Item>
         )}
         {!isMultiDay && isScheduled && (
-          <Form.Item name="repeat" label="Repeat">
+          <Form.Item name="repeatFrequency" label="Repeat">
             <Select
               allowClear
               options={[

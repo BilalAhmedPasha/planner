@@ -55,44 +55,54 @@ const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
       listId: e.list,
       priority: e.priority,
       tagIds: e.tags || [],
-      taskDate: (e.date && e.date.startOf(DAY).format()) || null,
+      taskDate: (e.taskDate && e.taskDate.startOf(DAY).format()) || null,
       isAllDay: e.duration?.length > 0 ? false : true,
       startTime:
-        e.date && e.duration ? e.duration[0].format(TIME_FORMAT_IN_DB) : null,
+        e.taskDate && e.duration
+          ? e.duration[0].format(TIME_FORMAT_IN_DB)
+          : null,
       endTime:
-        e.date && e.duration ? e.duration[1].format(TIME_FORMAT_IN_DB) : null,
-      isRepeating: e.date && e.repeat ? true : false,
-      repeatFrequency: e.date && e.repeat ? e.repeat : null,
-      endBy: e.date && e.repeat && e.endBy ? e.endBy : null,
+        e.taskDate && e.duration
+          ? e.duration[1].format(TIME_FORMAT_IN_DB)
+          : null,
+      isRepeating: e.taskDate && e.repeatFrequency ? true : false,
+      repeatFrequency:
+        e.taskDate && e.repeatFrequency ? e.repeatFrequency : null,
+      endBy: e.taskDate && e.repeatFrequency && e.endBy ? e.endBy : null,
       endByDate:
-        e.date && e.repeat && e.endBy === END_BY_DATE && e.endByDate
+        e.taskDate &&
+        e.repeatFrequency &&
+        e.endBy === END_BY_DATE &&
+        e.endByDate
           ? e.endByDate.endOf(DAY).format()
           : null,
       endByRepeatCount:
-        e.date &&
-        e.repeat &&
+        e.taskDate &&
+        e.repeatFrequency &&
         e.endBy === END_BY_REPEAT_COUNT &&
         e.endByRepeatCount !== undefined &&
         parseInt(e.endByRepeatCount) >= 0
           ? parseInt(e.endByRepeatCount)
           : null,
       endByRepeatCountDate:
-        e.date &&
-        e.repeat &&
+        e.taskDate &&
+        e.repeatFrequency &&
         e.endBy === END_BY_REPEAT_COUNT &&
         e.endByRepeatCount !== undefined &&
         parseInt(e.endByRepeatCount) >= 0
-          ? e.date
+          ? e.taskDate
               .startOf(DAY)
-              .add(parseInt(e.endByRepeatCount - 1), repeatMapping[e.repeat])
+              .add(
+                parseInt(e.endByRepeatCount - 1),
+                repeatMapping[e.repeatFrequency]
+              )
               .endOf(DAY)
               .format()
           : null,
       isMultiDay: e.dateRange ? true : false,
       startMultiDate:
         (e.dateRange && e.dateRange[0].startOf(DAY).format()) || null,
-      endMultiDate:
-        (e.dateRange && e.dateRange[1].endOf(DAY).format()) || null,
+      endMultiDate: (e.dateRange && e.dateRange[1].endOf(DAY).format()) || null,
       isCompleted: false,
       isWontDo: false,
       isDeleted: 0,
@@ -138,7 +148,7 @@ const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
     priority: NONE,
     endBy: ENDLESS,
     tags: TASK_TAGS,
-    date: TASK_DATE,
+    taskDate: TASK_DATE,
   };
 
   const [form] = Form.useForm();
