@@ -178,6 +178,7 @@ const TaskDetails = ({
   };
 
   const handleRepeatDropDownChange = (e) => {
+    form.validateFields();
     if (e) {
       setIsRepeating(true);
     } else {
@@ -186,6 +187,7 @@ const TaskDetails = ({
   };
 
   const handleEndByDropDownChange = (e) => {
+    form.validateFields();
     if (e === END_BY_DATE) {
       setShowEndByDate(true);
       setshowEndByRepeatCount(false);
