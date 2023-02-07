@@ -106,10 +106,10 @@ const TaskDetails = ({
   const onReset = () => {
     form.setFieldsValue(lastSavedFormValues);
     setFormType(VIEW);
-    setPriorityColor(getPriorityColor(taskDetails["priority"]));
-    setIsScheduled(taskDetails["taskDate"] ? true : false);
-    setshowEndByRepeatCount(taskDetails[END_BY_REPEAT_COUNT] ? true : false);
-    setShowEndByDate(taskDetails[END_BY_DATE] ? true : false);
+    setPriorityColor(getPriorityColor(lastSavedFormValues["priority"]));
+    setIsScheduled(lastSavedFormValues["taskDate"] ? true : false);
+    setshowEndByRepeatCount(lastSavedFormValues[END_BY_REPEAT_COUNT] ? true : false);
+    setShowEndByDate(lastSavedFormValues[END_BY_DATE] ? true : false);
   };
 
   useEffect(() => {
