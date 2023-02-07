@@ -39,7 +39,11 @@ import {
   TIME_ZONE,
 } from "../../../../constants/dateTime.constants";
 import dayjs from "../../../../utils/dateTime.uitls";
-import { ENDLESS, END_BY_DATE, END_BY_REPEAT_COUNT } from "../../../../constants/repeating.constants";
+import {
+  ENDLESS,
+  END_BY_DATE,
+  END_BY_REPEAT_COUNT,
+} from "../../../../constants/repeating.constants";
 
 const TaskDialogRightPanel = ({ form, height }) => {
   const { lists } = useSelector(listsSelector);
@@ -160,9 +164,7 @@ const TaskDialogRightPanel = ({ form, height }) => {
   };
 
   const disabledEndDate = (current) => {
-    return (
-      startDate && current.startOf(DAY).isBefore(startDate.startOf(DAY))
-    );
+    return startDate && current.startOf(DAY).isBefore(startDate.startOf(DAY));
   };
 
   const handleDateRangeChange = (e) => {
@@ -183,7 +185,7 @@ const TaskDialogRightPanel = ({ form, height }) => {
       <div
         style={{
           height: height,
-          overflowY: "scroll",
+          overflowY: "auto",
           overflowX: "hidden",
           padding: "1rem 1.5rem",
         }}

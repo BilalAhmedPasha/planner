@@ -474,25 +474,14 @@ const TaskItem = ({
             disabled={taskDetails.isDeleted}
           />
         </Dropdown>
-
-        <Space
-          size="middle"
-          style={{
-            flex: "1",
-            whiteSpace: "nowrap",
-            overflowX: "scroll",
-            textOverflow: "ellipsis",
-          }}
-        >
-          <Typography.Text
-            disabled={taskDetails.isCompleted || taskDetails.isWontDo}
-          >{`${taskDetails.name} (${taskDetails.id})`}</Typography.Text>
-        </Space>
+        <Typography.Text
+          disabled={taskDetails.isCompleted || taskDetails.isWontDo}
+        >{`${taskDetails.name}`}</Typography.Text>
       </Space>
       <div
         style={{
           whiteSpace: "nowrap",
-          overflowX: "scroll",
+          overflowX: "auto",
           textOverflow: "ellipsis",
           paddingLeft: "0.25rem",
         }}

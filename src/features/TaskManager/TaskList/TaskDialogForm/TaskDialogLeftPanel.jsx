@@ -15,7 +15,7 @@ const TaskDialogLeftPanel = ({ height }) => {
       <div
         style={{
           height: height,
-          overflowY: "scroll",
+          overflowY: "auto",
           padding: "1rem 1.5rem",
         }}
       >
