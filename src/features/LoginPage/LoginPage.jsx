@@ -27,7 +27,7 @@ const LoginPage = () => {
   }, [welcomeIndex, welcomeText]);
 
   const [loginText, selLoginText] = useState("");
-  const fullLoginText = "Login to continue.";
+  const fullLoginText = "Login to continue";
   const [loginIndex, setLoginIndex] = useState(0);
 
   useEffect(() => {
@@ -80,36 +80,35 @@ const LoginPage = () => {
       >
         <Space direction="vertical" style={{ alignItems: "center" }}>
           <Typography.Text
-            strong
             style={{
-              fontFamily: "fantasy",
+              fontFamily: "monospace",
               fontSize: "6vw",
             }}
           >
             {welcomeText}
           </Typography.Text>
           <Typography.Text
-            strong
-            style={{ fontFamily: "fantasy", fontSize: "3vw" }}
+            style={{
+              fontFamily: "monospace",
+              fontSize: "3vw",
+            }}
           >
             {loginText}
           </Typography.Text>
           <Button
             size="large"
-            style={{ opacity: showLoginButton }}
+            style={{
+              opacity: showLoginButton,
+              margin: "1rem",
+              fontSize: "1vw",
+              fontFamily: "monospace",
+              fontWeight: "bold",
+            }}
             type="dashed"
             icon={<GoogleOutlined />}
             onClick={handleGoogleSignIn}
           >
-            <Typography.Text
-              strong
-              style={{
-                fontFamily: "fantasy",
-                fontSize: "1.25vw",
-              }}
-            >
-              Login with Google
-            </Typography.Text>
+            {"Login with Google"}
           </Button>
         </Space>
       </div>

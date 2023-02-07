@@ -1,7 +1,28 @@
-@import url("https://fonts.googleapis.com/css?family=Open+Sans");
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans");
+@import url("https://fonts.googleapis.com/css?family=fantasy");
+
 .App {
-  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-family: "Open Sans", Arial, Verdana, Helvetica, sans-serif;
 }
+
 .content {
   padding: 1rem;
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #bfbfbf;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #bfbfbf;
 }
