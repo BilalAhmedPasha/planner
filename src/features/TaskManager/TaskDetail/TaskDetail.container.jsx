@@ -50,6 +50,13 @@ const TaskDetailsContainer = ({ user, taskDetails }) => {
   );
 
   useEffect(() => {
+    setLastSavedFormValues(
+      getFormValueFromTaskDetail({ taskDetails: taskDetails })
+    );
+    // eslint-disable-next-line
+  }, [taskDetails?.id]);
+
+  useEffect(() => {
     form.setFieldsValue(formValues);
     setFormType(VIEW);
   }, [form, formValues]);
