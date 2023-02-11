@@ -3,7 +3,7 @@ import {
   SyncOutlined,
   NodeExpandOutlined,
   DeleteOutlined,
-  RightOutlined,
+  DeleteFilled,
   ExclamationCircleOutlined,
   UndoOutlined,
 } from "@ant-design/icons";
@@ -19,6 +19,7 @@ import {
   NONE_BG_COLOR,
   NONE_COLOR,
   PRIMARY_BLACK_COLOR,
+  PRIMARY_RED_COLOR,
   TASK_ITEM_BADGE_COLOR,
 } from "../../../../constants/color.constants";
 import {
@@ -396,6 +397,7 @@ const TaskItem = ({
   };
 
   const handleClick = (e) => {
+    e.stopPropagation();
     markTaskComplete(e.target.checked).then((response) => {
       if (response.success === SUCCESS) {
         setShowCheckBoxMenu(false);
@@ -404,8 +406,9 @@ const TaskItem = ({
     });
   };
 
-  const handleRightClick = (e) => {
+  const handleRightClick = ({ e, taskDetails }) => {
     e.preventDefault();
+    if (taskDetails.isDeleted) return false;
     setShowCheckBoxMenu((prevState) => !prevState);
   };
 
@@ -450,8 +453,13 @@ const TaskItem = ({
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
+        cursor: "pointer",
       }}
-      onClick={() => setShowCheckBoxMenu(false)}
+      onClick={() => {
+        setShowCheckBoxMenu(false);
+        setSelectedCardId(taskDetails.id);
+        setSelectedTaskDetails(taskDetails);
+      }}
       onKeyDown={keyPress}
     >
       <Space size="middle">
@@ -468,7 +476,7 @@ const TaskItem = ({
             checkBoxColor={getPriorityColor({ item: taskDetails }).color}
             hoverBGColor={getPriorityColor({ item: taskDetails }).bgColor}
             onChange={handleClick}
-            onContextMenu={handleRightClick}
+            onContextMenu={(e) => handleRightClick({ e, taskDetails })}
             checked={taskDetails.isCompleted || taskDetails.isWontDo}
             disabled={taskDetails.isDeleted}
           />
@@ -510,6 +518,7 @@ const TaskItem = ({
             }
             size="small"
             onClick={(e) => {
+              e.stopPropagation();
               handleTaskRestore({
                 currentItem: taskDetails,
                 restoreTaskAction: restoreTaskAction,
@@ -533,6 +542,7 @@ const TaskItem = ({
             }
             size="small"
             onClick={(e) => {
+              e.stopPropagation();
               showSoftDeleteConfirm({
                 content: "Delete this task?",
                 handleSoftDelete: handleSoftDelete,
@@ -546,19 +556,20 @@ const TaskItem = ({
         )}
         {taskDetails.isDeleted ? (
           <Button
-            type="text"
+            type="danger"
             icon={
-              <DeleteOutlined
+              <DeleteFilled
                 style={{
                   color:
                     taskDetails.isCompleted || taskDetails.isWontDo
                       ? COMPLETED_COLOR
-                      : PRIMARY_BLACK_COLOR,
+                      : PRIMARY_RED_COLOR,
                 }}
               />
             }
             size="small"
             onClick={(e) => {
+              e.stopPropagation();
               showHardDeleteConfirm({
                 content: "Delete this task permanently?",
                 handleHardDelete: handleHardDelete,
@@ -570,24 +581,6 @@ const TaskItem = ({
             }}
           />
         ) : null}
-        <Button
-          type="text"
-          icon={
-            <RightOutlined
-              style={{
-                color:
-                  taskDetails.isCompleted || taskDetails.isWontDo
-                    ? COMPLETED_COLOR
-                    : PRIMARY_BLACK_COLOR,
-              }}
-            />
-          }
-          size="small"
-          onClick={(e) => {
-            setSelectedCardId(taskDetails.id);
-            setSelectedTaskDetails(taskDetails);
-          }}
-        />
       </div>
     </div>
   );

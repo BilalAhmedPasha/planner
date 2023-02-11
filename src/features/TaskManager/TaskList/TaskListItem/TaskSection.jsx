@@ -84,6 +84,9 @@ const TaskListSection = ({
   return (
     <>
       {sectionCount === 1 &&
+        sectionId !== DELETED &&
+        sectionId !== COMPLETED &&
+        sectionId !== WONT_DO &&
         Object.keys(sectionalTasks).map((each) => {
           if (each !== MARKED && each !== OVERDUE) {
             return (
