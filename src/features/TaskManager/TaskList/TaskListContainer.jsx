@@ -275,7 +275,7 @@ const TaskListContainer = ({
             padding: "0rem 0.5rem",
           }}
         >
-          <Space size="small" style={{ height: "2.5rem" }}>
+          <Space size="small">
             <Button
               type="text"
               icon={
