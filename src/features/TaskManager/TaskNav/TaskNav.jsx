@@ -80,7 +80,6 @@ const renderSubMenuItems = ({
         <div
           style={{
             display: "flex",
-            flexWrap: "wrap",
             alignItems: "center",
             justifyContent: "space-between",
           }}
@@ -105,9 +104,9 @@ const renderSubMenuItems = ({
             <div
               style={{
                 display: "flex",
-                flexWrap: "wrap",
                 alignItems: "center",
                 justifyContent: "space-between",
+                overflow: "auto",
               }}
             >
               <Link to={`/tasks/${key}/${each.id}`}>{each.label}</Link>

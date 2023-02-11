@@ -448,7 +448,6 @@ const TaskItem = ({
     <div
       style={{
         display: "flex",
-        flexWrap: "wrap",
         alignItems: "center",
         justifyContent: "space-between",
       }}
