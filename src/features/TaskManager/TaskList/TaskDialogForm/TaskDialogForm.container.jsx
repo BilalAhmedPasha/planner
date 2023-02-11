@@ -12,7 +12,7 @@ import { addTaskAction } from "../../state/userTasks/userTasks.actions";
 import { Form } from "antd";
 import { NONE } from "../../../../constants/priority.constants";
 import { useParams } from "react-router-dom";
-import dayjs from "../../../../utils/dateTime.uitls";
+import dayjs from "../../../../utils/dateTime.utils";
 import {
   DAY,
   TIME_FORMAT_IN_DB,

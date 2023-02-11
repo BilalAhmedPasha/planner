@@ -1,6 +1,6 @@
-import dayjs from "../../../../utils/dateTime.uitls";
-import { INBOX } from "../../../../constants/app.constants";
-import { DAY, TIME_ZONE } from "../../../../constants/dateTime.constants";
+import dayjs from "../../../utils/dateTime.utils";
+import { INBOX } from "../../../constants/app.constants";
+import { DAY, TIME_ZONE } from "../../../constants/dateTime.constants";
 
 export const getAllTasks = ({ tasks }) => {
   const allTasks = [];

@@ -10,7 +10,7 @@ import {
 import { DEFAULT_TAG_COLOR } from "../../../constants/color.constants";
 import { CREATE, EDIT } from "../../../constants/formType.constants";
 import { Form } from "antd";
-import dayjs from "../../../utils/dateTime.uitls";
+import dayjs from "../../../utils/dateTime.utils";
 import { tagsSelector } from "../state/userTags/userTags.reducer";
 
 const TagDialog = ({

@@ -1,12 +1,12 @@
 import { message } from "antd";
 import React, { useEffect, useState } from "react";
-import { ALL } from "../../../../constants/app.constants.js";
+import { ALL } from "../../../constants/app.constants.js";
 import {
   HIGH,
   LOW,
   MEDIUM,
   NONE,
-} from "../../../../constants/priority.constants.js";
+} from "../../../constants/priority.constants.js";
 import {
   MARKED,
   LATER,
@@ -16,8 +16,8 @@ import {
   TIME_SECTIONS,
   TITLE_SECTIONS,
   PRIORITY_SECTIONS,
-} from "../../../../constants/section.constants.js";
-import { PRIORITY, TITLE } from "../../../../constants/sort.constants.js";
+} from "../../../constants/section.constants.js";
+import { PRIORITY, TITLE } from "../../../constants/sort.constants.js";
 import TaskListSection from "./TaskSection.jsx";
 import { isTaskOverdue, isTaskToday } from "./TaskUtils.js";
 

@@ -38,7 +38,7 @@ import {
   TIME_FORMAT,
   TIME_ZONE,
 } from "../../../../constants/dateTime.constants";
-import dayjs from "../../../../utils/dateTime.uitls";
+import dayjs from "../../../../utils/dateTime.utils";
 import {
   ENDLESS,
   END_BY_DATE,
@@ -184,7 +184,7 @@ const TaskDialogRightPanel = ({ form, height }) => {
     >
       <div
         style={{
-          height: height,
+          height: `${height}vh`,
           overflowY: "auto",
           overflowX: "hidden",
           padding: "1rem 1.5rem",

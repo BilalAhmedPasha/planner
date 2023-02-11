@@ -1,9 +1,34 @@
-import { Form, Input, Layout, theme } from "antd";
+import { Button, Divider, Form, Input, Layout, theme } from "antd";
+import { NodeExpandOutlined } from "@ant-design/icons";
+import { useState } from "react";
+import SubTaskPanel from "./SubTaskPanel";
+import styled from "styled-components";
+
+const StyledFormItem = styled(Form.Item)`
+  // TODO
+  // margin: 0.5rem 0rem;
+`;
 
 const TaskDialogLeftPanel = ({ height }) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
+  const [subTasks, setSubTasks] = useState([]);
+
+  const [subTaskPanelHeight, setSubTaskPanelHeight] = useState(0);
+  const [disabledAddSubTask, setDisabledAddSubTask] = useState(false);
+
+  const openSubTaskPanel = () => {
+    setSubTaskPanelHeight(`${height / 3}vh`);
+    setDisabledAddSubTask(true);
+  };
+
+  const closeSubTaskPanel = () => {
+    setSubTaskPanelHeight(0);
+    setDisabledAddSubTask(false);
+  };
+
   return (
     <Layout.Content
       style={{
@@ -14,14 +39,13 @@ const TaskDialogLeftPanel = ({ height }) => {
     >
       <div
         style={{
-          height: height,
+          height: `${height}vh`,
           overflowY: "auto",
           padding: "1rem 1.5rem",
         }}
       >
-        <Form.Item
+        <StyledFormItem
           name="name"
-          label="Name"
           rules={[
             {
               required: true,
@@ -29,16 +53,35 @@ const TaskDialogLeftPanel = ({ height }) => {
             },
           ]}
         >
-          <Input autoComplete="off" maxLength={25} showCount />
-        </Form.Item>
-        <Form.Item name="description" label="Desciption">
+          <Input autoComplete="off" maxLength={25} placeholder={"Task name"} />
+        </StyledFormItem>
+        <StyledFormItem name="description">
           <Input.TextArea
             autoComplete="off"
             rows={3}
             maxLength={200}
-            showCount
+            placeholder={"Desciption"}
+            autoSize={{
+              minRows: 3,
+              maxRows: 3,
+            }}
           />
-        </Form.Item>
+        </StyledFormItem>
+        <Divider style={{ margin: "1rem 0rem" }} />
+        <Button
+          type="text"
+          icon={<NodeExpandOutlined />}
+          onClick={openSubTaskPanel}
+          disabled={disabledAddSubTask}
+        >
+          {"Add Subtask"}
+        </Button>
+        <SubTaskPanel
+          subTaskPanelHeight={subTaskPanelHeight}
+          closeSubTaskPanel={closeSubTaskPanel}
+        />
+        {/* SubTasks list hersubTaskPanelHeighte */}
+        {/* <div style={{ overflow: "auto", height: `${height / 2}vh` }}></div> */}
       </div>
     </Layout.Content>
   );

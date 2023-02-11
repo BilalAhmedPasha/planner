@@ -6,8 +6,8 @@ import {
   COMPLETED,
   DELETED,
   WONT_DO,
-} from "../../../../constants/app.constants";
-import { MARKED, OVERDUE } from "../../../../constants/section.constants";
+} from "../../../constants/app.constants";
+import { MARKED, OVERDUE } from "../../../constants/section.constants";
 
 const renderCardOutsideCollapse = ({
   tasks,

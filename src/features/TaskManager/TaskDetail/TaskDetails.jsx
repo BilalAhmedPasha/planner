@@ -1,6 +1,7 @@
 import {
   Button,
   DatePicker,
+  Divider,
   Form,
   Input,
   Select,
@@ -23,6 +24,7 @@ import {
   StopOutlined,
   SyncOutlined,
   FieldNumberOutlined,
+  NodeExpandOutlined,
 } from "@ant-design/icons";
 import { EDIT, VIEW } from "../../../constants/formType.constants";
 import { useSelector } from "react-redux";
@@ -55,6 +57,7 @@ import {
   END_BY_DATE,
   END_BY_REPEAT_COUNT,
 } from "../../../constants/repeating.constants";
+import SubTaskInDetails from "./SubTaskInDetails";
 
 const getPriorityColor = (event) => {
   if (event === HIGH) {
@@ -206,6 +209,15 @@ const TaskDetails = ({
     return startDate && current.startOf(DAY).isBefore(startDate.startOf(DAY));
   };
 
+  const [subTasks, setSubTasks] = useState([]);
+  const onAddSubTask = () => {
+    setSubTasks((prevState) => [...prevState, 1]);
+  };
+
+  useEffect(() => {
+    setSubTasks([]);
+  }, [taskDetails]);
+
   return (
     <>
       <div
@@ -264,13 +276,23 @@ const TaskDetails = ({
         />
       </Form.Item>
 
-      <Form.Item name="description" style={{ marginBottom: "1.5rem" }}>
+      <Form.Item
+        name="description"
+        style={{
+          margin: "0rem 0rem 1.5rem 0rem",
+        }}
+      >
         <Input.TextArea
           autoComplete="off"
           maxLength={200}
-          // disabled={formType === VIEW}
+          autoSize={{
+            minRows: 1,
+            maxRows: 3,
+          }}
           placeholder="Task description"
           readOnly={formType === VIEW}
+          style={{ padding: "0rem" }}
+          bordered={false}
         />
       </Form.Item>
 
@@ -658,6 +680,16 @@ const TaskDetails = ({
             autoComplete="off"
           />
         </Form.Item>
+      </div>
+      <Divider />
+      {/* <div style={{ overflow: "auto" }}> */}
+      <Button type="text" icon={<NodeExpandOutlined />} onClick={onAddSubTask}>
+        {"Add Subtask"}
+      </Button>
+      <div style={{ overflow: "auto", height: "55vh" }}>
+        {subTasks.map((each, index) => (
+          <SubTaskInDetails key={index} taskDetails={taskDetails} />
+        ))}
       </div>
     </>
   );

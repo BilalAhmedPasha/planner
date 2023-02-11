@@ -21,15 +21,15 @@ import {
   PRIMARY_BLACK_COLOR,
   PRIMARY_RED_COLOR,
   TASK_ITEM_BADGE_COLOR,
-} from "../../../../constants/color.constants";
+} from "../../../constants/color.constants";
 import {
   COMPLETED,
   INBOX,
   SUCCESS,
   WONT_DO,
-} from "../../../../constants/app.constants";
-import dayjs from "../../../../utils/dateTime.uitls";
-import { HIGH, LOW, MEDIUM } from "../../../../constants/priority.constants";
+} from "../../../constants/app.constants";
+import dayjs from "../../../utils/dateTime.utils";
+import { HIGH, LOW, MEDIUM } from "../../../constants/priority.constants";
 import { useDispatch } from "react-redux";
 import {
   completeTaskAction,
@@ -37,20 +37,20 @@ import {
   hardDeleteSingleTaskAction,
   restoreTaskAction,
   wontDoTaskAction,
-} from "../../state/userTasks/userTasks.actions";
+} from "../state/userTasks/userTasks.actions";
 import { useState } from "react";
-import { cross, tick } from "../../../../constants/checkBox.constants";
-import CheckBoxInput from "../../../../components/CheckBox";
+import { cross, tick } from "../../../constants/checkBox.constants";
+import CheckBoxInput from "../../../components/CheckBox";
 import {
   DATE_FORMAT_IN_TASK_ITEM,
   DAY,
   TIME_ZONE,
-} from "../../../../constants/dateTime.constants";
+} from "../../../constants/dateTime.constants";
 import {
   END_BY_DATE,
   END_BY_REPEAT_COUNT,
   repeatMapping,
-} from "../../../../constants/repeating.constants";
+} from "../../../constants/repeating.constants";
 
 const getPriorityColor = ({ item }) => {
   if (item.isCompleted || item.isWontDo) {
