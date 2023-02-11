@@ -8,7 +8,7 @@ import {
   theme,
   Typography,
 } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../../components/Loading";
 import {
@@ -251,6 +251,13 @@ const TaskListContainer = ({
     });
   };
 
+  const showAddIcons = useMemo(() => {
+    return (
+      showAddForSections.includes(currentSection?.id) ||
+      showAddForSections.includes(currentSection?.type)
+    );
+  }, [currentSection]);
+
   return (
     <Layout.Content
       style={{
@@ -263,13 +270,12 @@ const TaskListContainer = ({
         <div
           style={{
             display: "flex",
-            flexWrap: "wrap",
             alignItems: "center",
             justifyContent: "space-between",
             padding: "0rem 0.5rem",
           }}
         >
-          <Space size="small">
+          <Space size="small" style={{ height: "2.5rem" }}>
             <Button
               type="text"
               icon={
@@ -301,48 +307,50 @@ const TaskListContainer = ({
               {currentSection?.label}
             </Typography.Text>
           </Space>
-
-          {(showAddForSections.includes(currentSection?.id) ||
-            showAddForSections.includes(currentSection?.type)) && (
-            <Space size="small">
-              <Dropdown
-                menu={{
-                  items: moreMenuItemList,
-                  onClick: handleSortMenuClick,
-                }}
-                trigger={["hover"]}
-                placement="bottomLeft"
-              >
-                <div>
-                  {sortBy === TIME ? (
-                    <ClockCircleOutlined
-                      style={{
-                        fontSize: "1rem",
-                      }}
-                    />
-                  ) : sortBy === PRIORITY ? (
-                    <FlagOutlined
-                      style={{
-                        fontSize: "1rem",
-                      }}
-                    />
-                  ) : (
-                    <Icon
-                      component={SortTextSvg}
-                      style={{ fontSize: "1.25rem" }}
-                    />
-                  )}
-                  <Icon component={SortSvg} style={{ fontSize: "1.25rem" }} />
-                </div>
-              </Dropdown>
-              <Button
-                size="small"
-                type="primary"
-                icon={<PlusOutlined />}
-                onClick={handleAddTask}
-              />
-            </Space>
-          )}
+          <Space
+            size="small"
+            direction="horizontal"
+            style={{
+              display: showAddIcons ? "flex" : "none",
+            }}
+          >
+            <Dropdown
+              menu={{
+                items: moreMenuItemList,
+                onClick: handleSortMenuClick,
+              }}
+              trigger={["hover"]}
+              placement="bottomLeft"
+            >
+              <div>
+                {sortBy === TIME ? (
+                  <ClockCircleOutlined
+                    style={{
+                      fontSize: "1rem",
+                    }}
+                  />
+                ) : sortBy === PRIORITY ? (
+                  <FlagOutlined
+                    style={{
+                      fontSize: "1rem",
+                    }}
+                  />
+                ) : (
+                  <Icon
+                    component={SortTextSvg}
+                    style={{ fontSize: "1.25rem" }}
+                  />
+                )}
+                <Icon component={SortSvg} style={{ fontSize: "1.25rem" }} />
+              </div>
+            </Dropdown>
+            <Button
+              size="small"
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={handleAddTask}
+            />
+          </Space>
           {currentSection?.id === DELETED && (
             <Button
               size="large"
