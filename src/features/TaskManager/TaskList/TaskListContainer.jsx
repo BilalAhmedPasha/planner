@@ -273,6 +273,7 @@ const TaskListContainer = ({
             alignItems: "center",
             justifyContent: "space-between",
             padding: "0rem 0.5rem",
+            height: "2.5rem",
           }}
         >
           <Space size="small">
