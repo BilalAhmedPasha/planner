@@ -242,10 +242,11 @@ const TaskListContainer = ({
     });
   };
 
-  const hideAddIcons = useMemo(() => {
-    return (
+  const [hideAddIcon, setHideAddIcon] = useState(false);
+  useEffect(() => {
+    setHideAddIcon(
       hideAddForSections.includes(currentSection?.id) ||
-      hideAddForSections.includes(currentSection?.type)
+        hideAddForSections.includes(currentSection?.type)
     );
   }, [currentSection]);
 
@@ -299,7 +300,7 @@ const TaskListContainer = ({
               {currentSection?.label}
             </Typography.Text>
           </Space>
-          {!hideAddIcons && (
+          {!hideAddIcon && (
             <Space size="small" direction="horizontal">
               <Dropdown
                 menu={{
