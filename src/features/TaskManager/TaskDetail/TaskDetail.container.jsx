@@ -3,7 +3,7 @@ import { Form, Layout, message, theme } from "antd";
 import { VIEW } from "../../../constants/formType.constants";
 import NotTaskSelected from "./NotTaskSelected";
 import TaskDetails from "./TaskDetails";
-import dayjs from "../../../utils/dateTime.uitls";
+import dayjs from "../../../utils/dateTime.utils";
 import { DAY, TIME_FORMAT_IN_DB } from "../../../constants/dateTime.constants";
 import { editTaskAction } from "../state/userTasks/userTasks.actions";
 import { useDispatch, useSelector } from "react-redux";

@@ -10,7 +10,7 @@ import {
   editListAction,
 } from "../state/userLists/userLists.actions";
 import { Form } from "antd";
-import dayjs from "../../../utils/dateTime.uitls";
+import dayjs from "../../../utils/dateTime.utils";
 import { listsSelector } from "../state/userLists/userLists.reducer";
 
 const ListDialog = ({

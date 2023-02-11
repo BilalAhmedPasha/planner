@@ -29,7 +29,7 @@ import {
 import { CREATE } from "../../../constants/formType.constants";
 import { tasksSelector } from "../state/userTasks/userTasks.reducer";
 import TaskDialogForm from "./TaskDialogForm";
-import Container from "./TaskListItem/Container";
+import Container from "../TaskListItem/Container";
 import Icon, {
   PlusOutlined,
   MenuFoldOutlined,
@@ -41,7 +41,7 @@ import Icon, {
 } from "@ant-design/icons";
 import { ReactComponent as SortSvg } from "../../../svg/sort-arrow.svg";
 import { ReactComponent as SortTextSvg } from "../../../svg/sort-text.svg";
-import dayjs from "../../../utils/dateTime.uitls";
+import dayjs from "../../../utils/dateTime.utils";
 import {
   getAllTasks,
   getByListId,
@@ -53,7 +53,7 @@ import {
   getTasksByNextXDays,
   getNoDateTasks,
   getWontDoTasks,
-} from "./TaskListItem/TaskUtils";
+} from "../TaskListItem/TaskUtils";
 import { DAY, TIME_ZONE } from "../../../constants/dateTime.constants";
 import { hardDeleteTaskAction } from "../state/userTasks/userTasks.actions";
 import Spinner from "../../../components/Spinner";

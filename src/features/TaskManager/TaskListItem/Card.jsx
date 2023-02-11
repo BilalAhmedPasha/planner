@@ -3,16 +3,16 @@ import { useDrag, useDrop } from "react-dnd";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { DELETED } from "../../../../constants/app.constants";
+import { DELETED } from "../../../constants/app.constants";
 import {
   TASK_CARD_BG_HOVER_COLOR,
   TASK_CARD_BG_SELECTED_COLOR,
   TASK_CARD_BOX_BOTTOM_BORDER_COLOR,
   TASK_CARD_BOX_SHADOW_COLOR,
   WHITE,
-} from "../../../../constants/color.constants";
-import { listsSelector } from "../../state/userLists/userLists.reducer";
-import { tagsSelector } from "../../state/userTags/userTags.reducer";
+} from "../../../constants/color.constants";
+import { listsSelector } from "../state/userLists/userLists.reducer";
+import { tagsSelector } from "../state/userTags/userTags.reducer";
 import TaskItem from "./TaskItem";
 
 const StyledDiv = styled.div`
@@ -51,7 +51,7 @@ const Card = ({
   const { tags } = useSelector(tagsSelector);
 
   const id = cardDetails.id;
-  const originalIndex = findCard(id).index;
+  const originalIndex = findCard(id)?.index;
 
   const [{ isDragging }, drag] = useDrag(
     () => ({
