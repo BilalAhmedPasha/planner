@@ -108,7 +108,9 @@ const TaskDetails = ({
     setFormType(VIEW);
     setPriorityColor(getPriorityColor(lastSavedFormValues["priority"]));
     setIsScheduled(lastSavedFormValues["taskDate"] ? true : false);
-    setshowEndByRepeatCount(lastSavedFormValues[END_BY_REPEAT_COUNT] ? true : false);
+    setshowEndByRepeatCount(
+      lastSavedFormValues[END_BY_REPEAT_COUNT] ? true : false
+    );
     setShowEndByDate(lastSavedFormValues[END_BY_DATE] ? true : false);
   };
 
@@ -267,7 +269,7 @@ const TaskDetails = ({
           autoComplete="off"
           maxLength={200}
           // disabled={formType === VIEW}
-          placeholder="Enter task description"
+          placeholder="Task description"
           readOnly={formType === VIEW}
         />
       </Form.Item>
@@ -361,7 +363,7 @@ const TaskDetails = ({
             showArrow={true}
             initialvalues={form.getFieldValue("tagIds")}
             style={{ width: "22rem" }}
-            placeholder="Select tags here"
+            placeholder="Tags"
             // disabled={formType === VIEW}
             open={formType === VIEW ? false : undefined}
           />
@@ -589,7 +591,7 @@ const TaskDetails = ({
               cursor: "pointer",
               width: "13rem",
             }}
-            placeholder="Select end date"
+            placeholder="End date"
             disabledDate={disabledEndDate}
             disabled={
               formType !== VIEW &&
@@ -646,7 +648,7 @@ const TaskDetails = ({
               cursor: "pointer",
               width: "13rem",
             }}
-            placeholder="Enter repeat count"
+            placeholder="Repeat count"
             disabled={
               formType !== VIEW &&
               !(isScheduled && isRepeating && showEndByRepeatCount)
