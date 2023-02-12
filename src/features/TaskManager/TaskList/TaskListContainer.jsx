@@ -307,7 +307,7 @@ const TaskListContainer = ({
                   items: moreMenuItemList,
                   onClick: handleSortMenuClick,
                 }}
-                trigger={["hover"]}
+                trigger={["click"]}
                 placement="bottomLeft"
               >
                 <div>

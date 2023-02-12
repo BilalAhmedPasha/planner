@@ -7,35 +7,91 @@ export const LATER = "later";
 export const NODATE = "noDate";
 export const MARKED = "marked";
 
+export const OVERDUE_TITLE = "OverDue";
+export const TODAY_TITLE = "Today";
+export const LATER_TITLE = "Later";
+export const NODATE_TITLE = "No Date";
+export const MARKED_TITLE = "Completed & Won't Do";
+
 export const TIME_SECTIONS = {
-  [OVERDUE]: { sectionTitle: "OverDue", tasks: [], isOpenByDefault: true },
-  [TODAY]: { sectionTitle: "Today", tasks: [], isOpenByDefault: true },
-  [LATER]: { sectionTitle: "Later", tasks: [], isOpenByDefault: false },
-  [NODATE]: { sectionTitle: "No Date", tasks: [], isOpenByDefault: false },
+  [OVERDUE]: {
+    sectionKey: OVERDUE,
+    sectionTitle: OVERDUE_TITLE,
+    tasks: [],
+    isOpenByDefault: true,
+  },
+  [TODAY]: {
+    sectionKey: TODAY,
+    sectionTitle: TODAY_TITLE,
+    tasks: [],
+    isOpenByDefault: true,
+  },
+  [LATER]: {
+    sectionKey: LATER,
+    sectionTitle: LATER_TITLE,
+    tasks: [],
+    isOpenByDefault: false,
+  },
+  [NODATE]: {
+    sectionKey: NODATE,
+    sectionTitle: NODATE_TITLE,
+    tasks: [],
+    isOpenByDefault: false,
+  },
   [MARKED]: {
-    sectionTitle: "Completed & Won't Do",
+    sectionKey: MARKED,
+    sectionTitle: MARKED_TITLE,
     tasks: [],
     isOpenByDefault: false,
   },
 };
 
 export const PRIORITY_SECTIONS = {
-  [HIGH]: { sectionTitle: "High", tasks: [], isOpenByDefault: true },
-  [MEDIUM]: { sectionTitle: "Medium", tasks: [], isOpenByDefault: true },
-  [LOW]: { sectionTitle: "Low", tasks: [], isOpenByDefault: true },
-  [NONE]: { sectionTitle: "None", tasks: [], isOpenByDefault: true },
+  [HIGH]: {
+    sectionKey: HIGH,
+    sectionTitle: HIGH,
+    tasks: [],
+    isOpenByDefault: true,
+  },
+  [MEDIUM]: {
+    sectionKey: MEDIUM,
+    sectionTitle: MEDIUM,
+    tasks: [],
+    isOpenByDefault: true,
+  },
+  [LOW]: {
+    sectionKey: LOW,
+    sectionTitle: LOW,
+    tasks: [],
+    isOpenByDefault: true,
+  },
+  [NONE]: {
+    sectionKey: NONE,
+    sectionTitle: NONE,
+    tasks: [],
+    isOpenByDefault: true,
+  },
   [MARKED]: {
-    sectionTitle: "Completed & Won't Do",
+    sectionKey: MARKED,
+    sectionTitle: MARKED_TITLE,
     tasks: [],
     isOpenByDefault: false,
   },
 };
 
 export const TITLE_SECTIONS = {
-  [ALL]: { sectionTitle: "All", tasks: [], isOpenByDefault: true },
+  [ALL]: {
+    sectionKey: ALL,
+    sectionTitle: "All",
+    tasks: [],
+    isOpenByDefault: true,
+  },
   [MARKED]: {
-    sectionTitle: "Completed & Won't Do",
+    sectionKey: MARKED,
+    sectionTitle: MARKED_TITLE,
     tasks: [],
     isOpenByDefault: false,
   },
 };
+
+export const activePanel = [OVERDUE, TODAY, LATER, NODATE, HIGH, MEDIUM, LOW, NONE];

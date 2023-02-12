@@ -2,12 +2,12 @@ import { Collapse, Typography, theme, Space } from "antd";
 import update from "immutability-helper";
 import Card from "./Card";
 import { useParams } from "react-router-dom";
+import { COMPLETED, DELETED, WONT_DO } from "../../../constants/app.constants";
 import {
-  COMPLETED,
-  DELETED,
-  WONT_DO,
-} from "../../../constants/app.constants";
-import { MARKED, OVERDUE } from "../../../constants/section.constants";
+  activePanel,
+  MARKED,
+  OVERDUE,
+} from "../../../constants/section.constants";
 
 const renderCardOutsideCollapse = ({
   tasks,
@@ -81,6 +81,7 @@ const TaskListSection = ({
   };
 
   const { sectionId } = useParams();
+
   return (
     <>
       {sectionCount === 1 &&
@@ -116,6 +117,7 @@ const TaskListSection = ({
           style={{
             background: token.colorBgContainer,
           }}
+          defaultActiveKey={activePanel}
         >
           {Object.keys(sectionalTasks).map((each) => {
             if (
@@ -132,7 +134,7 @@ const TaskListSection = ({
                       <Typography.Text type="secondary">{`${sectionalTasks[each].tasks.length}`}</Typography.Text>
                     </Space>
                   }
-                  key={sectionalTasks[each].sectionTitle}
+                  key={sectionalTasks[each].sectionKey}
                 >
                   <div style={{ marginTop: "-1rem", marginBottom: "-1rem" }}>
                     {sectionalTasks[each].tasks.map((card) => (

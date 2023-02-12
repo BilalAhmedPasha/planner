@@ -103,7 +103,7 @@ const AppNav = ({ setCurrentTitle }) => {
       collapsedWidth={70}
       collapsed
     >
-      <Dropdown menu={menuProps} placement="bottomLeft">
+      <Dropdown menu={menuProps} placement="bottomLeft" trigger={["click"]}>
         <Avatar
           size={50}
           shape="square"
