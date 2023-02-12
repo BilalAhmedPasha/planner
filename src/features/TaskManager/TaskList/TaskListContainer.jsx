@@ -28,7 +28,7 @@ import {
 } from "../../../constants/app.constants";
 import { CREATE } from "../../../constants/formType.constants";
 import { tasksSelector } from "../state/userTasks/userTasks.reducer";
-import TaskDialogForm from "./TaskDialogForm";
+import TaskDialogForm from "../TaskDialogForm";
 import Container from "../TaskListItem/Container";
 import Icon, {
   PlusOutlined,
