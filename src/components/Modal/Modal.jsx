@@ -14,6 +14,7 @@ const Modal = ({
   children,
   form,
   loading,
+  disableOk,
   ...props
 }) => {
   return (
@@ -31,6 +32,9 @@ const Modal = ({
           .catch((info) => {
             console.log("Validate Failed:", info);
           });
+      }}
+      okButtonProps={{
+        disabled: disableOk,
       }}
       onCancel={onCancel}
       maskClosable={false}

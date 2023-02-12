@@ -225,6 +225,7 @@ const TaskDialogRightPanel = ({ form, height }) => {
             maxTagCount={2}
             maxTagTextLength={5}
             tagRender={tagRender}
+            placeholder="Select tags"
           />
         </Form.Item>
         {MULTI_DATE_AVAILABLE && (
@@ -313,6 +314,7 @@ const TaskDialogRightPanel = ({ form, height }) => {
                 },
               ]}
               onChange={handleRepeatDropDownChange}
+              placeholder="Select repeat frequency"
             />
           </Form.Item>
         )}
@@ -356,6 +358,7 @@ const TaskDialogRightPanel = ({ form, height }) => {
                 width: "100%",
               }}
               disabledDate={disabledEndDate}
+              placeholder="Select end date"
             />
           </Form.Item>
         )}
@@ -376,6 +379,7 @@ const TaskDialogRightPanel = ({ form, height }) => {
                 cursor: "pointer",
                 width: "100%",
               }}
+              placeholder="Enter repeat count"
             />
           </Form.Item>
         )}

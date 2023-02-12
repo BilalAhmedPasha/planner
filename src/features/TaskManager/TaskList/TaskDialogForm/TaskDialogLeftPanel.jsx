@@ -9,12 +9,10 @@ const StyledFormItem = styled(Form.Item)`
   // margin: 0.5rem 0rem;
 `;
 
-const TaskDialogLeftPanel = ({ height }) => {
+const TaskDialogLeftPanel = ({ form, height, setDisableAddButton }) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-
-  const [subTasks, setSubTasks] = useState([]);
 
   const [subTaskPanelHeight, setSubTaskPanelHeight] = useState(0);
   const [disabledAddSubTask, setDisabledAddSubTask] = useState(false);
@@ -27,6 +25,15 @@ const TaskDialogLeftPanel = ({ height }) => {
   const closeSubTaskPanel = () => {
     setSubTaskPanelHeight(0);
     setDisabledAddSubTask(false);
+  };
+
+  const handleTaskNameChange = (e) => {
+    form.setFieldValue("name", e.target.value);
+    if (e.target.value && e.target.value.length > 0) {
+      setDisableAddButton(false);
+    } else {
+      setDisableAddButton(true);
+    }
   };
 
   return (
@@ -44,16 +51,13 @@ const TaskDialogLeftPanel = ({ height }) => {
           padding: "1rem 1.5rem",
         }}
       >
-        <StyledFormItem
-          name="name"
-          rules={[
-            {
-              required: true,
-              message: "Task name is required",
-            },
-          ]}
-        >
-          <Input autoComplete="off" maxLength={25} placeholder={"Task name"} />
+        <StyledFormItem name="name">
+          <Input
+            autoComplete="off"
+            maxLength={25}
+            placeholder={"Task name"}
+            onInput={handleTaskNameChange}
+          />
         </StyledFormItem>
         <StyledFormItem name="description">
           <Input.TextArea
@@ -79,9 +83,8 @@ const TaskDialogLeftPanel = ({ height }) => {
         <SubTaskPanel
           subTaskPanelHeight={subTaskPanelHeight}
           closeSubTaskPanel={closeSubTaskPanel}
+          form={form}
         />
-        {/* SubTasks list hersubTaskPanelHeighte */}
-        {/* <div style={{ overflow: "auto", height: `${height / 2}vh` }}></div> */}
       </div>
     </Layout.Content>
   );
