@@ -5,10 +5,10 @@ import {
   NONE_COLOR,
 } from "./color.constants";
 
-export const HIGH = "HIGH";
-export const MEDIUM = "MEDIUM";
-export const LOW = "LOW";
-export const NONE = "NONE";
+export const HIGH = "High";
+export const MEDIUM = "Medium";
+export const LOW = "Low";
+export const NONE = "None";
 
 export const priorityOptions = [
   {

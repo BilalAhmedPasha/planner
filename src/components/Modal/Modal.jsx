@@ -38,6 +38,7 @@ const Modal = ({
       }}
       onCancel={onCancel}
       maskClosable={false}
+      keyboard={false}
       {...props}
     >
       <Spinner spinning={loading} indicator={Loading(LOADER_SIZE)}>

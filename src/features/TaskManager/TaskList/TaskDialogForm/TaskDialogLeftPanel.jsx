@@ -51,7 +51,7 @@ const TaskDialogLeftPanel = ({ form, height, setDisableAddButton }) => {
           padding: "1rem 1.5rem",
         }}
       >
-        <StyledFormItem name="name">
+        <StyledFormItem name="name" lable="Task name">
           <Input
             autoComplete="off"
             maxLength={25}
