@@ -17,12 +17,7 @@ import {
   priorityColorMappings,
   priorityOptions,
 } from "../../../../constants/priority.constants";
-import {
-  FlagFilled,
-  ClockCircleOutlined,
-  SaveOutlined,
-  CloseOutlined,
-} from "@ant-design/icons";
+import { FlagFilled, ClockCircleOutlined } from "@ant-design/icons";
 import { NONE_COLOR } from "../../../../constants/color.constants";
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
