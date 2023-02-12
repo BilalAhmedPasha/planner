@@ -245,10 +245,9 @@ const TaskDetails = ({
               fontSize: "24px",
               padding: "0rem",
               margin: "0rem",
-              color: "black",
             }}
+            readOnly={formType === VIEW}
             bordered={false}
-            disabled={formType === VIEW}
           />
         </Form.Item>
         {formType === VIEW ? (

@@ -1,16 +1,10 @@
+import { theme } from "antd";
 import React from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { DELETED } from "../../../constants/app.constants";
-import {
-  TASK_CARD_BG_HOVER_COLOR,
-  TASK_CARD_BG_SELECTED_COLOR,
-  TASK_CARD_BOX_BOTTOM_BORDER_COLOR,
-  TASK_CARD_BOX_SHADOW_COLOR,
-  WHITE,
-} from "../../../constants/color.constants";
 import { listsSelector } from "../state/userLists/userLists.reducer";
 import { tagsSelector } from "../state/userTags/userTags.reducer";
 import TaskItem from "./TaskItem";
@@ -19,17 +13,14 @@ const StyledDiv = styled.div`
   padding: 0.75rem 1rem;
   margin: 0rem ${(props) => (props.isInCollapse ? "0rem" : "1rem")};
   opacity: ${(props) => props.opacity};
-  border-bottom: 1px solid ${TASK_CARD_BOX_BOTTOM_BORDER_COLOR};
-  boxshadow: 0px 2px 8px 0px ${TASK_CARD_BOX_SHADOW_COLOR};
-  background-color: ${(props) =>
-    props.isSelected ? TASK_CARD_BG_SELECTED_COLOR : WHITE};
+  border-bottom: 0.5px solid ${(props) => props.colorBorder};
   opacity: ${(props) => props.opacity};
   :hover {
     background-color: ${(props) =>
-      props.isSelected
-        ? TASK_CARD_BG_SELECTED_COLOR
-        : TASK_CARD_BG_HOVER_COLOR};
+      props.isSelected ? props.colorPrimaryBg : props.colorBgTextHover};
   }
+  background-color: ${(props) =>
+    props.isSelected ? props.colorPrimaryBg : props.colorBgContainer};
 `;
 
 const ItemTypes = {
@@ -47,6 +38,16 @@ const Card = ({
   setSelectedTaskDetails,
   isInCollapse,
 }) => {
+  const {
+    token: {
+      colorBgContainer,
+      controlItemBgHover,
+      colorPrimaryBg,
+      colorBgTextHover,
+      colorBorder,
+    },
+  } = theme.useToken();
+
   const { lists } = useSelector(listsSelector);
   const { tags } = useSelector(tagsSelector);
 
@@ -100,6 +101,11 @@ const Card = ({
       opacity={opacity}
       isSelected={selectedCardId === id}
       isInCollapse={isInCollapse}
+      colorBgContainer={colorBgContainer}
+      colorPrimaryBg={colorPrimaryBg}
+      controlItemBgHover={controlItemBgHover}
+      colorBgTextHover={colorBgTextHover}
+      colorBorder={colorBorder}
     >
       <TaskItem
         user={user}

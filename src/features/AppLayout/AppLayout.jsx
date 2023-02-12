@@ -61,7 +61,7 @@ const AppLayout = ({ setCurrentTitle, children }) => {
   return (
     <ConfigProvider
       theme={{
-        algorithm: false ? darkAlgorithm : defaultAlgorithm,
+        algorithm: true ? darkAlgorithm : defaultAlgorithm,
       }}
     >
       <Layout>
