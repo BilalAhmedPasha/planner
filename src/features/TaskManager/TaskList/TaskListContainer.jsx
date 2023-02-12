@@ -38,8 +38,8 @@ import Icon, {
   ExclamationCircleOutlined,
   FlagOutlined,
   ClockCircleOutlined,
+  ArrowDownOutlined,
 } from "@ant-design/icons";
-import { ReactComponent as SortSvg } from "../../../svg/sort-arrow.svg";
 import { ReactComponent as SortTextSvg } from "../../../svg/sort-text.svg";
 import dayjs from "../../../utils/dateTime.utils";
 import {
@@ -132,7 +132,7 @@ const TaskListContainer = ({
   setSelectedTaskDetails,
 }) => {
   const {
-    token: { colorBgContainer },
+    token: { colorBgContainer, colorTextBase },
   } = theme.useToken();
 
   const [messageApi] = message.useMessage();
@@ -315,12 +315,14 @@ const TaskListContainer = ({
                     <ClockCircleOutlined
                       style={{
                         fontSize: "1rem",
+                        color: colorTextBase,
                       }}
                     />
                   ) : sortBy === PRIORITY ? (
                     <FlagOutlined
                       style={{
                         fontSize: "1rem",
+                        color: colorTextBase,
                       }}
                     />
                   ) : (
@@ -329,7 +331,17 @@ const TaskListContainer = ({
                       style={{ fontSize: "1.25rem" }}
                     />
                   )}
-                  <Icon component={SortSvg} style={{ fontSize: "1.25rem" }} />
+                  <ArrowDownOutlined
+                    style={{
+                      fontSize: "1rem",
+                      color: colorTextBase,
+                      marginLeft: "0.2rem",
+                    }}
+                  />
+                  {/* <Icon
+                    component={SortSvg}
+                    style={{ fontSize: "1.25rem", color: colorTextBase }}
+                  /> */}
                 </div>
               </Dropdown>
               <Button
