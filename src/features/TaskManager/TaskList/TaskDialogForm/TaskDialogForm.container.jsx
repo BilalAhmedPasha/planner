@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../../../components/Modal";
 import TaskDialogForm from "./TaskDialogForm";
@@ -137,7 +137,7 @@ const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
       const today = dayjs.utc().tz(TIME_ZONE);
       return today;
     } else if (sectionId === "tomorrow") {
-      const tomorrow = dayjs.utc().tz(TIME_ZONE).add(1,DAY);
+      const tomorrow = dayjs.utc().tz(TIME_ZONE).add(1, DAY);
       return tomorrow;
     }
   }, [sectionId]);
@@ -152,6 +152,8 @@ const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
   };
 
   const [form] = Form.useForm();
+
+  const [disableAddButton, setDisableAddButton] = useState(true);
 
   const { isLoadingTasks } = useSelector(tasksSelector);
   return (
@@ -169,11 +171,13 @@ const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
         width="50vw"
         destroyOnClose={true}
         loading={isLoadingTasks}
+        disableOk={disableAddButton}
       >
         <TaskDialogForm
           layout="vertical"
           form={form}
           initialValues={FORM_VALUES}
+          setDisableAddButton={setDisableAddButton}
         />
       </Modal>
     )
