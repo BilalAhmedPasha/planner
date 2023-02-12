@@ -32,6 +32,7 @@ import {
   END_BY_DATE,
   END_BY_REPEAT_COUNT,
 } from "../../../../constants/repeating.constants";
+import dayjs from "../../../../utils/dateTime.utils";
 
 const StyledDiv = styled.div`
   border: 0.1px solid #bfbfbf;
@@ -340,7 +341,7 @@ const SubTaskPanel = ({ form, subTaskPanelHeight, closeSubTaskPanel }) => {
               showArrow={false}
             >
               <Button type="default" icon={<ClockCircleOutlined />}>
-                {"Schedule"}
+                {startDate ? dayjs(startDate).format(DATE_FORMAT) : "Schedule"}
               </Button>
             </Popover>
           </Space>
