@@ -5,18 +5,18 @@ import timezone from "dayjs/plugin/timezone";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import CustomToolbar from "./CustomToolBar/CustomToolBar";
-import { fetchListsAction } from "../TaskManager/state/userLists/userLists.actions";
-import { fetchTagsAction } from "../TaskManager/state/userTags/userTags.actions";
-import { fetchTasksAction } from "../TaskManager/state/userTasks/userTasks.actions";
+import { fetchListsAction } from "../state/userLists/userLists.actions";
+import { fetchTagsAction } from "../state/userTags/userTags.actions";
+import { fetchTasksAction } from "../state/userTasks/userTasks.actions";
 import { useDispatch, useSelector } from "react-redux";
-import { userSelector } from "../AppLayout/state/userSettings/userSettings.reducer";
-import { listsSelector } from "../TaskManager/state/userLists/userLists.reducer";
-import { tasksSelector } from "../TaskManager/state/userTasks/userTasks.reducer";
-import { INBOX_LIST_COLOR } from "../../constants/color.constants";
+import { userSelector } from "../../AppLayout/state/userSettings/userSettings.reducer";
+import { listsSelector } from "../state/userLists/userLists.reducer";
+import { tasksSelector } from "../state/userTasks/userTasks.reducer";
+import { INBOX_LIST_COLOR } from "../../../constants/color.constants";
 import { BgColorsOutlined } from "@ant-design/icons";
-import { PRIORITY } from "../../constants/sort.constants";
-import { LISTS } from "../../constants/app.constants";
-import { priorityColorMappings } from "../../constants/priority.constants";
+import { PRIORITY } from "../../../constants/sort.constants";
+import { LISTS } from "../../../constants/app.constants";
+import { priorityColorMappings } from "../../../constants/priority.constants";
 
 dayjs.extend(timezone);
 
