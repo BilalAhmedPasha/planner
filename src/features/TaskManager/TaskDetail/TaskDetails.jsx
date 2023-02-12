@@ -29,7 +29,7 @@ import {
 import { EDIT, VIEW } from "../../../constants/formType.constants";
 import { useSelector } from "react-redux";
 import { tagsSelector } from "../state/userTags/userTags.reducer";
-import { INBOX } from "../../../constants/app.constants";
+import { INBOX, showSubTasks } from "../../../constants/app.constants";
 import { useMemo, useState, useEffect } from "react";
 import { listsSelector } from "../state/userLists/userLists.reducer";
 import {
@@ -683,9 +683,15 @@ const TaskDetails = ({
       </div>
       <Divider />
       {/* <div style={{ overflow: "auto" }}> */}
-      <Button type="text" icon={<NodeExpandOutlined />} onClick={onAddSubTask}>
-        {"Add Subtask"}
-      </Button>
+      {showSubTasks && (
+        <Button
+          type="text"
+          icon={<NodeExpandOutlined />}
+          onClick={onAddSubTask}
+        >
+          {"Add Subtask"}
+        </Button>
+      )}
       <div style={{ overflow: "auto", height: "55vh" }}>
         {subTasks.map((each, index) => (
           <SubTaskInDetails key={index} taskDetails={taskDetails} />

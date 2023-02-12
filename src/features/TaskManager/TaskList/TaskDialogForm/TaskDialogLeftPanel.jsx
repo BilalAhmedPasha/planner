@@ -3,6 +3,7 @@ import { NodeExpandOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import SubTaskPanel from "./SubTaskPanel";
 import styled from "styled-components";
+import { showSubTasks } from "../../../../constants/app.constants";
 
 const StyledFormItem = styled(Form.Item)`
   // TODO
@@ -72,19 +73,23 @@ const TaskDialogLeftPanel = ({ form, height, setDisableAddButton }) => {
           />
         </StyledFormItem>
         <Divider style={{ margin: "1rem 0rem" }} />
-        <Button
-          type="text"
-          icon={<NodeExpandOutlined />}
-          onClick={openSubTaskPanel}
-          disabled={disabledAddSubTask}
-        >
-          {"Add Subtask"}
-        </Button>
-        <SubTaskPanel
-          subTaskPanelHeight={subTaskPanelHeight}
-          closeSubTaskPanel={closeSubTaskPanel}
-          form={form}
-        />
+        {showSubTasks && (
+          <>
+            <Button
+              type="text"
+              icon={<NodeExpandOutlined />}
+              onClick={openSubTaskPanel}
+              disabled={disabledAddSubTask}
+            >
+              {"Add Subtask"}
+            </Button>
+            <SubTaskPanel
+              subTaskPanelHeight={subTaskPanelHeight}
+              closeSubTaskPanel={closeSubTaskPanel}
+              form={form}
+            />
+          </>
+        )}
       </div>
     </Layout.Content>
   );
