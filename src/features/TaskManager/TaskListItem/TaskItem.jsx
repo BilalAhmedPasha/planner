@@ -1,4 +1,13 @@
-import { Badge, Button, Dropdown, Modal, Space, Tag, Typography } from "antd";
+import {
+  Badge,
+  Button,
+  Dropdown,
+  Modal,
+  Space,
+  Tag,
+  theme,
+  Typography,
+} from "antd";
 import {
   SyncOutlined,
   NodeExpandOutlined,
@@ -8,8 +17,6 @@ import {
   UndoOutlined,
 } from "@ant-design/icons";
 import {
-  COMPLETED_BG_COLOR,
-  COMPLETED_COLOR,
   HIGH_BG_COLOR,
   HIGH_COLOR,
   LOW_BG_COLOR,
@@ -18,9 +25,6 @@ import {
   MEDIUM_COLOR,
   NONE_BG_COLOR,
   NONE_COLOR,
-  PRIMARY_BLACK_COLOR,
-  PRIMARY_RED_COLOR,
-  TASK_ITEM_BADGE_COLOR,
 } from "../../../constants/color.constants";
 import {
   COMPLETED,
@@ -52,9 +56,9 @@ import {
   repeatMapping,
 } from "../../../constants/repeating.constants";
 
-const getPriorityColor = ({ item }) => {
+const getPriorityColor = ({ item, completedColor, completedBGColor }) => {
   if (item.isCompleted || item.isWontDo) {
-    return { color: COMPLETED_COLOR, bgColor: COMPLETED_BG_COLOR };
+    return { color: completedColor, bgColor: completedBGColor };
   }
   if (item.priority === HIGH) {
     return { color: HIGH_COLOR, bgColor: HIGH_BG_COLOR };
@@ -80,10 +84,10 @@ const renderColorDot = (color) => {
   );
 };
 
-const renderList = ({ item, lists }) => {
+const renderList = ({ item, lists, colorBorder }) => {
   const itemInList = lists?.find((each) => each.id === item?.listId);
   const listColor =
-    item.isCompleted || item.isWontDo ? COMPLETED_COLOR : itemInList?.color;
+    item.isCompleted || item.isWontDo ? colorBorder : itemInList?.color;
   return (
     <Space size="small" align="center">
       {itemInList?.color ? renderColorDot(listColor) : null}
@@ -98,7 +102,7 @@ const renderList = ({ item, lists }) => {
   );
 };
 
-const renderTags = ({ item, tags }) => {
+const renderTags = ({ item, tags, colorBorder, colorInfo }) => {
   if (item?.tagIds?.length > 0) {
     const tagId = item.tagIds[0];
     const tagDetails = tags.find((each) => each.id === tagId);
@@ -107,16 +111,14 @@ const renderTags = ({ item, tags }) => {
         size="small"
         count={item.tagIds.length - 1}
         overflowCount={3}
-        color={TASK_ITEM_BADGE_COLOR}
+        color={item.isCompleted || item.isWontDo ? colorBorder : colorInfo}
         showZero={false}
         offset={[0, 8]}
         style={{ marginRight: "0.5rem" }}
       >
         <Tag
           color={
-            item.isCompleted || item.isWontDo
-              ? COMPLETED_COLOR
-              : tagDetails.color
+            item.isCompleted || item.isWontDo ? colorBorder : tagDetails.color
           }
           closable={false}
         >
@@ -129,30 +131,26 @@ const renderTags = ({ item, tags }) => {
   }
 };
 
-const renderChildNodeIcon = ({ item }) => {
+const renderChildNodeIcon = ({ item, colorBorder, colorTextLabel }) => {
   if (item.childTaskIds.length > 0) {
     return (
       <NodeExpandOutlined
         style={{
           color:
-            item.isCompleted || item.isWontDo
-              ? COMPLETED_COLOR
-              : COMPLETED_BG_COLOR,
+            item.isCompleted || item.isWontDo ? colorBorder : colorTextLabel,
         }}
       />
     );
   }
 };
 
-const renderRepeatIcon = ({ item }) => {
+const renderRepeatIcon = ({ item, colorBorder, colorTextLabel }) => {
   if (item.isRepeating) {
     return (
       <SyncOutlined
         style={{
           color:
-            item.isCompleted || item.isWontDo
-              ? COMPLETED_COLOR
-              : COMPLETED_BG_COLOR,
+            item.isCompleted || item.isWontDo ? colorBorder : colorTextLabel,
         }}
       />
     );
@@ -447,6 +445,17 @@ const TaskItem = ({
     },
   ];
 
+  const {
+    token: {
+      colorBgContainer,
+      colorBorder,
+      colorBorderSecondary,
+      colorTextLabel,
+      colorError,
+      colorInfo,
+    },
+  } = theme.useToken();
+
   return (
     <div
       style={{
@@ -471,14 +480,39 @@ const TaskItem = ({
         >
           <CheckBoxInput
             uniCode={checkBoxContent}
-            backgroundColor={getPriorityColor({ item: taskDetails }).color}
-            borderColor={getPriorityColor({ item: taskDetails }).color}
-            checkBoxColor={getPriorityColor({ item: taskDetails }).color}
-            hoverBGColor={getPriorityColor({ item: taskDetails }).bgColor}
+            backgroundColor={
+              getPriorityColor({
+                item: taskDetails,
+                completedColor: colorBorder,
+                completedBGColor: colorBorderSecondary,
+              }).color
+            }
+            borderColor={
+              getPriorityColor({
+                item: taskDetails,
+                completedColor: colorBorder,
+                completedBGColor: colorBorderSecondary,
+              }).color
+            }
+            checkBoxColor={
+              getPriorityColor({
+                item: taskDetails,
+                completedColor: colorBorder,
+                completedBGColor: colorBorderSecondary,
+              }).color
+            }
+            hoverBGColor={
+              getPriorityColor({
+                item: taskDetails,
+                completedColor: colorBorder,
+                completedBGColor: colorBorderSecondary,
+              }).bgColor
+            }
             onChange={handleClick}
             onContextMenu={(e) => handleRightClick({ e, taskDetails })}
             checked={taskDetails.isCompleted || taskDetails.isWontDo}
             disabled={taskDetails.isDeleted}
+            colorBgContainer={colorBgContainer}
           />
         </Dropdown>
         <Typography.Text
@@ -494,13 +528,27 @@ const TaskItem = ({
         }}
       >
         <Space size="small" style={{ paddingRight: "0.25rem" }}>
-          {renderList({ item: taskDetails, lists: lists })}
+          {renderList({
+            item: taskDetails,
+            lists: lists,
+            colorBorder: colorBorder,
+          })}
           {renderTags({
             item: taskDetails,
             tags: tags,
+            colorBorder: colorBorder,
+            colorInfo: colorInfo,
           })}
-          {renderChildNodeIcon({ item: taskDetails })}
-          {renderRepeatIcon({ item: taskDetails })}
+          {renderChildNodeIcon({
+            item: taskDetails,
+            colorTextLabel,
+            colorBorder,
+          })}
+          {renderRepeatIcon({
+            item: taskDetails,
+            colorTextLabel,
+            colorBorder,
+          })}
           {renderTaskDate({ item: taskDetails })}
         </Space>
         {taskDetails.isDeleted ? (
@@ -511,8 +559,8 @@ const TaskItem = ({
                 style={{
                   color:
                     taskDetails.isCompleted || taskDetails.isWontDo
-                      ? COMPLETED_COLOR
-                      : PRIMARY_BLACK_COLOR,
+                      ? colorBorder
+                      : colorTextLabel,
                 }}
               />
             }
@@ -535,8 +583,8 @@ const TaskItem = ({
                 style={{
                   color:
                     taskDetails.isCompleted || taskDetails.isWontDo
-                      ? COMPLETED_COLOR
-                      : PRIMARY_BLACK_COLOR,
+                      ? colorBorder
+                      : colorTextLabel,
                 }}
               />
             }
@@ -562,8 +610,8 @@ const TaskItem = ({
                 style={{
                   color:
                     taskDetails.isCompleted || taskDetails.isWontDo
-                      ? COMPLETED_COLOR
-                      : PRIMARY_RED_COLOR,
+                      ? colorBorder
+                      : colorError,
                 }}
               />
             }

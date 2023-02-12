@@ -8,6 +8,7 @@ import {
   Slider,
   Space,
   Tag,
+  theme,
   TimePicker,
 } from "antd";
 import {
@@ -37,8 +38,6 @@ import {
   LOW_COLOR,
   MEDIUM_COLOR,
   NONE_COLOR,
-  TASK_DETAIL_INPUT_EDIT_COLOR,
-  TASK_NAV_BADGE_COLOR,
 } from "../../../constants/color.constants";
 import {
   HIGH,
@@ -218,6 +217,10 @@ const TaskDetails = ({
     setSubTasks([]);
   }, [taskDetails]);
 
+  const {
+    token: { colorInfoText, colorBorder },
+  } = theme.useToken();
+
   return (
     <>
       <div
@@ -341,7 +344,7 @@ const TaskDetails = ({
                 <UnorderedListOutlined
                   style={{
                     fontSize: "1rem",
-                    color: TASK_DETAIL_INPUT_EDIT_COLOR,
+                    color: colorInfoText,
                   }}
                 />
               )
@@ -447,7 +450,7 @@ const TaskDetails = ({
                 <ClockCircleOutlined
                   style={{
                     fontSize: "1rem",
-                    color: TASK_DETAIL_INPUT_EDIT_COLOR,
+                    color: colorInfoText,
                   }}
                 />
               )
@@ -477,7 +480,7 @@ const TaskDetails = ({
                 <SyncOutlined
                   style={{
                     fontSize: "1rem",
-                    color: TASK_DETAIL_INPUT_EDIT_COLOR,
+                    color: colorInfoText,
                   }}
                 />
               )
@@ -544,7 +547,7 @@ const TaskDetails = ({
                 <StopOutlined
                   style={{
                     fontSize: "1rem",
-                    color: TASK_DETAIL_INPUT_EDIT_COLOR,
+                    color: colorInfoText,
                   }}
                 />
               )
@@ -602,7 +605,7 @@ const TaskDetails = ({
                 <CalendarOutlined
                   style={{
                     fontSize: "1rem",
-                    color: TASK_DETAIL_INPUT_EDIT_COLOR,
+                    color: colorInfoText,
                   }}
                 />
               )
@@ -652,14 +655,14 @@ const TaskDetails = ({
                 <FieldNumberOutlined
                   style={{
                     fontSize: "1rem",
-                    color: TASK_NAV_BADGE_COLOR,
+                    color: colorBorder,
                   }}
                 />
               ) : (
                 <FieldNumberOutlined
                   style={{
                     fontSize: "1rem",
-                    color: TASK_DETAIL_INPUT_EDIT_COLOR,
+                    color: colorInfoText,
                   }}
                 />
               )
