@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
-import Calendar from "./features/Calendar";
+import Calendar from "./features/TaskManager/Calendar";
 import HabitTracker from "./features/HabitTracker";
 import AppLayout from "./features/AppLayout";
 import TaskManager from "./features/TaskManager";
