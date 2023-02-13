@@ -8,7 +8,7 @@ import {
   theme,
   Typography,
 } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../../components/Loading";
 import {
@@ -58,6 +58,7 @@ import { DAY, TIME_ZONE } from "../../../constants/dateTime.constants";
 import { hardDeleteTaskAction } from "../state/userTasks/userTasks.actions";
 import Spinner from "../../../components/Spinner";
 import { PRIORITY, TIME, TITLE } from "../../../constants/sort.constants";
+import { useParams } from "react-router-dom";
 
 const computeSectionData = ({ tasks, currentSection }) => {
   if (currentSection.id === ALL) {
@@ -250,6 +251,18 @@ const TaskListContainer = ({
     );
   }, [currentSection]);
 
+  const { sectionId } = useParams();
+
+  const TASK_DATE = useMemo(() => {
+    if (sectionId === "today") {
+      const today = dayjs.utc().tz(TIME_ZONE);
+      return today;
+    } else if (sectionId === "tomorrow") {
+      const tomorrow = dayjs.utc().tz(TIME_ZONE).add(1, DAY);
+      return tomorrow;
+    }
+  }, [sectionId]);
+
   return (
     <Layout.Content
       style={{
@@ -368,6 +381,7 @@ const TaskListContainer = ({
             openDialog={openAddTaskDialog}
             setOpenDialog={setOpenAddTaskDialog}
             formType={CREATE}
+            taskDate={TASK_DATE}
           />
         )}
         <div

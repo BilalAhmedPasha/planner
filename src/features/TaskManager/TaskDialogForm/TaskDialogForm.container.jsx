@@ -2,12 +2,7 @@ import React, { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../../components/Modal";
 import TaskDialogForm from "./TaskDialogForm";
-import {
-  INBOX,
-  LISTS,
-  SUCCESS,
-  TAGS,
-} from "../../../constants/app.constants";
+import { INBOX, LISTS, SUCCESS, TAGS } from "../../../constants/app.constants";
 import { addTaskAction } from "../state/userTasks/userTasks.actions";
 import { Form } from "antd";
 import { NONE } from "../../../constants/priority.constants";
@@ -26,7 +21,13 @@ import {
   repeatMapping,
 } from "../../../constants/repeating.constants";
 
-const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
+const TaskDialog = ({
+  user,
+  messageApi,
+  openDialog,
+  setOpenDialog,
+  taskDate,
+}) => {
   const { sectionId, documentId } = useParams();
 
   const dispatch = useDispatch();
@@ -132,23 +133,13 @@ const TaskDialog = ({ user, messageApi, openDialog, setOpenDialog }) => {
     return [];
   }, [documentId, sectionId]);
 
-  const TASK_DATE = useMemo(() => {
-    if (sectionId === "today") {
-      const today = dayjs.utc().tz(TIME_ZONE);
-      return today;
-    } else if (sectionId === "tomorrow") {
-      const tomorrow = dayjs.utc().tz(TIME_ZONE).add(1, DAY);
-      return tomorrow;
-    }
-  }, [sectionId]);
-
   const FORM_VALUES = {
     name: "",
     list: TASK_LIST,
     priority: NONE,
     endBy: ENDLESS,
     tags: TASK_TAGS,
-    taskDate: TASK_DATE,
+    taskDate: taskDate,
   };
 
   const [form] = Form.useForm();

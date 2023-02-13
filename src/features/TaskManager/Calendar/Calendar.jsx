@@ -1,8 +1,22 @@
-import { Layout, Typography, theme, Space, Dropdown } from "antd";
+import {
+  Layout,
+  Typography,
+  theme,
+  Space,
+  Dropdown,
+  message,
+  Button,
+} from "antd";
 import { Calendar, dayjsLocalizer, Views } from "react-big-calendar";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import CustomToolbar from "./CustomToolBar/CustomToolBar";
 import { fetchListsAction } from "../state/userLists/userLists.actions";
@@ -15,8 +29,12 @@ import { tasksSelector } from "../state/userTasks/userTasks.reducer";
 import { INBOX_LIST_COLOR } from "../../../constants/color.constants";
 import { BgColorsOutlined } from "@ant-design/icons";
 import { PRIORITY } from "../../../constants/sort.constants";
-import { LISTS } from "../../../constants/app.constants";
+import { LISTS, LOADER_SIZE } from "../../../constants/app.constants";
 import { priorityColorMappings } from "../../../constants/priority.constants";
+import TaskDialogForm from "../TaskDialogForm";
+import { CREATE } from "../../../constants/formType.constants";
+import Spinner from "../../../components/Spinner";
+import Loading from "../../../components/Loading";
 
 dayjs.extend(timezone);
 
@@ -37,7 +55,7 @@ const CalendarView = ({ user }) => {
   }, [userSetting, dispatch, user.uid]);
 
   const { lists } = useSelector(listsSelector);
-  const { tasks } = useSelector(tasksSelector);
+  const { tasks, isLoadingTasks } = useSelector(tasksSelector);
 
   const localizer = useMemo(() => dayjsLocalizer(dayjs), []);
 
@@ -142,6 +160,23 @@ const CalendarView = ({ user }) => {
     [lists, colorBy]
   );
 
+  const clickRef = useRef(null);
+  useEffect(() => {
+    return () => {
+      window.clearTimeout(clickRef?.current);
+    };
+  }, []);
+
+  const onSelecting = useCallback((range) => {
+    window.clearTimeout(clickRef?.current);
+    clickRef.current = window.setTimeout(() => {
+      setOpenAddTaskDialog(true);
+    }, 250);
+  }, []);
+
+  const [messageApi] = message.useMessage();
+  const [openAddTaskDialog, setOpenAddTaskDialog] = useState(false);
+
   return (
     <Layout.Content
       style={{
@@ -150,59 +185,74 @@ const CalendarView = ({ user }) => {
         height: "100vh",
       }}
     >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Typography.Text
+      <Spinner spinning={isLoadingTasks} indicator={Loading(LOADER_SIZE)}>
+        <div
           style={{
-            fontWeight: "bold",
-            fontSize: "24px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-          {"Calendar"}
-        </Typography.Text>
-        <Space>
-          <Dropdown
-            menu={{
-              items: colorByMenuItemList,
-              selectable: true,
-              defaultSelectedKeys: [LISTS],
-              onClick: handleColorByMenuClick,
+          <Typography.Text
+            style={{
+              fontWeight: "bold",
+              fontSize: "24px",
             }}
-            trigger={["click"]}
-            placement="bottomLeft"
           >
-            <Space>
-              <Typography.Text>{"Color by"}</Typography.Text>
-              <BgColorsOutlined style={{ fontSize: "16px" }} />
-            </Space>
-          </Dropdown>
-        </Space>
-      </div>
-      <div style={{ height: "85vh", margin: "1rem 0rem" }}>
-        <Calendar
-          events={taskEvents}
-          localizer={localizer}
-          defaultView={Views.WEEK}
-          views={views}
-          components={{
-            toolbar: CustomToolbar,
-          }}
-          timeslots={2}
-          step={30}
-          slotGroupPropGetter={slotGroupPropGetter}
-          min={new Date(0, 0, 0, 0, 0, 0)}
-          max={new Date(0, 0, 0, 23, 59, 59)}
-          scrollToTime={new Date(0, 0, 0, 9, 0, 0)}
-          eventPropGetter={eventPropGetter}
-          dayLayoutAlgorithm="no-overlap"
-          formats={formats}
-        />
-      </div>
+            {"Calendar"}
+          </Typography.Text>
+          <Space>
+            <Dropdown
+              menu={{
+                items: colorByMenuItemList,
+                selectable: true,
+                defaultSelectedKeys: [LISTS],
+                onClick: handleColorByMenuClick,
+              }}
+              trigger={["click"]}
+              placement="bottomLeft"
+            >
+              <Space style={{ cursor: "pointer" }}>
+                <Button type="text" size="small" icon={<BgColorsOutlined />}>
+                  {"Color by"}
+                </Button>
+              </Space>
+            </Dropdown>
+          </Space>
+        </div>
+        <div style={{ height: "85vh", margin: "1rem 0rem" }}>
+          <Calendar
+            events={taskEvents}
+            localizer={localizer}
+            defaultView={Views.WEEK}
+            views={views}
+            components={{
+              toolbar: CustomToolbar,
+            }}
+            timeslots={4}
+            step={15}
+            slotGroupPropGetter={slotGroupPropGetter}
+            min={new Date(0, 0, 0, 0, 0, 0)}
+            max={new Date(0, 0, 0, 23, 59, 59)}
+            scrollToTime={new Date(0, 0, 0, 9, 0, 0)}
+            eventPropGetter={eventPropGetter}
+            dayLayoutAlgorithm="no-overlap"
+            formats={formats}
+            selectable={true}
+            onSelecting={onSelecting}
+            longPressThreshold={20}
+          />
+          {openAddTaskDialog && (
+            <TaskDialogForm
+              user={user}
+              messageApi={messageApi}
+              openDialog={openAddTaskDialog}
+              setOpenDialog={setOpenAddTaskDialog}
+              formType={CREATE}
+            />
+          )}
+        </div>
+      </Spinner>
     </Layout.Content>
   );
 };
