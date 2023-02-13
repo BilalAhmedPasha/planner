@@ -44,6 +44,8 @@ import {
   END_BY_DATE,
   END_BY_REPEAT_COUNT,
 } from "../../../constants/repeating.constants";
+import "./Calendar.css"
+
 
 dayjs.extend(timezone);
 
