@@ -59,6 +59,8 @@ import { hardDeleteTaskAction } from "../state/userTasks/userTasks.actions";
 import Spinner from "../../../components/Spinner";
 import { PRIORITY, TIME, TITLE } from "../../../constants/sort.constants";
 import { useParams } from "react-router-dom";
+import { NONE } from "../../../constants/priority.constants";
+import { ENDLESS } from "../../../constants/repeating.constants";
 
 const computeSectionData = ({ tasks, currentSection }) => {
   if (currentSection.id === ALL) {
@@ -251,7 +253,7 @@ const TaskListContainer = ({
     );
   }, [currentSection]);
 
-  const { sectionId } = useParams();
+  const { sectionId, documentId } = useParams();
 
   const TASK_DATE = useMemo(() => {
     if (sectionId === "today") {
@@ -262,6 +264,23 @@ const TaskListContainer = ({
       return tomorrow;
     }
   }, [sectionId]);
+
+  const TASK_LIST = sectionId === LISTS ? documentId : INBOX;
+  const TASK_TAGS = useMemo(() => {
+    if (sectionId === TAGS) {
+      return [documentId];
+    }
+    return [];
+  }, [documentId, sectionId]);
+
+  const FORM_VALUES = {
+    name: "",
+    list: TASK_LIST,
+    priority: NONE,
+    endBy: ENDLESS,
+    tags: TASK_TAGS,
+    taskDate: TASK_DATE,
+  };
 
   return (
     <Layout.Content
@@ -381,7 +400,9 @@ const TaskListContainer = ({
             openDialog={openAddTaskDialog}
             setOpenDialog={setOpenAddTaskDialog}
             formType={CREATE}
-            taskDate={TASK_DATE}
+            formValues={FORM_VALUES}
+            disableDateSelection={false}
+            disableTimeSelection={false}
           />
         )}
         <div

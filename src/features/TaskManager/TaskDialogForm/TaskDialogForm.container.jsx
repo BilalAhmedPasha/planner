@@ -1,21 +1,14 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../../components/Modal";
 import TaskDialogForm from "./TaskDialogForm";
-import { INBOX, LISTS, SUCCESS, TAGS } from "../../../constants/app.constants";
+import { SUCCESS } from "../../../constants/app.constants";
 import { addTaskAction } from "../state/userTasks/userTasks.actions";
 import { Form } from "antd";
-import { NONE } from "../../../constants/priority.constants";
-import { useParams } from "react-router-dom";
 import dayjs from "../../../utils/dateTime.utils";
-import {
-  DAY,
-  TIME_FORMAT_IN_DB,
-  TIME_ZONE,
-} from "../../../constants/dateTime.constants";
+import { DAY, TIME_FORMAT_IN_DB } from "../../../constants/dateTime.constants";
 import { tasksSelector } from "../state/userTasks/userTasks.reducer";
 import {
-  ENDLESS,
   END_BY_DATE,
   END_BY_REPEAT_COUNT,
   repeatMapping,
@@ -26,10 +19,9 @@ const TaskDialog = ({
   messageApi,
   openDialog,
   setOpenDialog,
-  taskDate,
+  formValues,
+  ...props
 }) => {
-  const { sectionId, documentId } = useParams();
-
   const dispatch = useDispatch();
 
   const createTaskSuccess = () => {
@@ -124,24 +116,6 @@ const TaskDialog = ({
     });
   };
 
-  const TASK_LIST = sectionId === LISTS ? documentId : INBOX;
-
-  const TASK_TAGS = useMemo(() => {
-    if (sectionId === TAGS) {
-      return [documentId];
-    }
-    return [];
-  }, [documentId, sectionId]);
-
-  const FORM_VALUES = {
-    name: "",
-    list: TASK_LIST,
-    priority: NONE,
-    endBy: ENDLESS,
-    tags: TASK_TAGS,
-    taskDate: taskDate,
-  };
-
   const [form] = Form.useForm();
 
   const [disableAddButton, setDisableAddButton] = useState(true);
@@ -167,8 +141,9 @@ const TaskDialog = ({
         <TaskDialogForm
           layout="vertical"
           form={form}
-          initialValues={FORM_VALUES}
+          initialValues={formValues}
           setDisableAddButton={setDisableAddButton}
+          {...props}
         />
       </Modal>
     )

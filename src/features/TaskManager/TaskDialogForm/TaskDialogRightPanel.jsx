@@ -28,10 +28,7 @@ import {
   MEDIUM_COLOR,
   NONE_COLOR,
 } from "../../../constants/color.constants";
-import {
-  INBOX,
-  MULTI_DATE_AVAILABLE,
-} from "../../../constants/app.constants";
+import { INBOX, MULTI_DATE_AVAILABLE } from "../../../constants/app.constants";
 import {
   DATE_FORMAT,
   DAY,
@@ -45,7 +42,7 @@ import {
   END_BY_REPEAT_COUNT,
 } from "../../../constants/repeating.constants";
 
-const TaskDialogRightPanel = ({ form, height }) => {
+const TaskDialogRightPanel = ({ form, height, ...props }) => {
   const { lists } = useSelector(listsSelector);
   const { tags } = useSelector(tagsSelector);
 
@@ -258,6 +255,9 @@ const TaskDialogRightPanel = ({ form, height }) => {
                 width: "100%",
               }}
               onChange={handleStartDateChange}
+              open={props.disableDateSelection ? false : undefined}
+              allowClear={!props.disableDateSelection}
+              inputReadOnly={true}
             />
           </Form.Item>
         )}
@@ -292,6 +292,9 @@ const TaskDialogRightPanel = ({ form, height }) => {
                 cursor: "pointer",
                 width: "100%",
               }}
+              open={props.disableTimeSelection ? false : undefined}
+              allowClear={!props.disableTimeSelection}
+              inputReadOnly={true}
             />
           </Form.Item>
         )}

@@ -29,12 +29,16 @@ import { tasksSelector } from "../state/userTasks/userTasks.reducer";
 import { INBOX_LIST_COLOR } from "../../../constants/color.constants";
 import { BgColorsOutlined } from "@ant-design/icons";
 import { PRIORITY } from "../../../constants/sort.constants";
-import { LISTS, LOADER_SIZE } from "../../../constants/app.constants";
-import { priorityColorMappings } from "../../../constants/priority.constants";
+import { INBOX, LISTS, LOADER_SIZE } from "../../../constants/app.constants";
+import {
+  NONE,
+  priorityColorMappings,
+} from "../../../constants/priority.constants";
 import TaskDialogForm from "../TaskDialogForm";
 import { CREATE } from "../../../constants/formType.constants";
 import Spinner from "../../../components/Spinner";
 import Loading from "../../../components/Loading";
+import { ENDLESS } from "../../../constants/repeating.constants";
 
 dayjs.extend(timezone);
 
@@ -167,15 +171,48 @@ const CalendarView = ({ user }) => {
     };
   }, []);
 
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState({
+    date: undefined,
+    startTime: undefined,
+    endTime: undefined,
+  });
+
+  useEffect(() => {
+    if (selectedTimeSlot.date !== undefined) {
+      setOpenAddTaskDialog(true);
+    }
+  }, [selectedTimeSlot]);
+
   const onSelecting = useCallback((range) => {
     window.clearTimeout(clickRef?.current);
     clickRef.current = window.setTimeout(() => {
-      setOpenAddTaskDialog(true);
+      const selectedDate = dayjs(range.start).startOf("day");
+      const startTime = dayjs(range.start);
+      const endTime = dayjs(range.end);
+      setSelectedTimeSlot(() => {
+        return {
+          date: selectedDate,
+          startTime: startTime,
+          endTime: endTime,
+        };
+      });
     }, 250);
   }, []);
 
   const [messageApi] = message.useMessage();
   const [openAddTaskDialog, setOpenAddTaskDialog] = useState(false);
+
+  const FORM_VALUES = useMemo(() => {
+    return {
+      name: "",
+      list: INBOX,
+      priority: NONE,
+      endBy: ENDLESS,
+      tags: [],
+      taskDate: selectedTimeSlot.date,
+      duration: [selectedTimeSlot.startTime, selectedTimeSlot.endTime],
+    };
+  }, [selectedTimeSlot]);
 
   return (
     <Layout.Content
@@ -249,6 +286,9 @@ const CalendarView = ({ user }) => {
               openDialog={openAddTaskDialog}
               setOpenDialog={setOpenAddTaskDialog}
               formType={CREATE}
+              formValues={FORM_VALUES}
+              disableDateSelection={true}
+              disableTimeSelection={true}
             />
           )}
         </div>

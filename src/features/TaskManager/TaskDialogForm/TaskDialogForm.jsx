@@ -7,6 +7,7 @@ const TaskDialogForm = ({
   layout,
   initialValues,
   setDisableAddButton,
+  ...props
 }) => {
   return (
     <Form
@@ -22,7 +23,7 @@ const TaskDialogForm = ({
           height={72}
           setDisableAddButton={setDisableAddButton}
         />
-        <TaskDialogRightPanel form={form} height={72} />
+        <TaskDialogRightPanel form={form} height={72} {...props} />
       </Layout>
     </Form>
   );
