@@ -29,7 +29,7 @@ export const getFormValueFromTaskDetail = ({ taskDetails }) => {
 };
 
 export const handleAddTask = ({
-  e,
+  formValues,
   dispatch,
   user,
   createTaskSuccess,
@@ -38,51 +38,70 @@ export const handleAddTask = ({
 }) => {
   const createdTime = dayjs.utc().format();
   const newTask = {
-    name: e.name,
-    description: e.description || null,
-    listId: e.list,
-    priority: e.priority,
-    tagIds: e.tags || [],
-    taskDate: (e.taskDate && e.taskDate.startOf(DAY).format()) || null,
-    isAllDay: e.duration?.length > 0 ? false : true,
+    name: formValues.name,
+    description: formValues.description || null,
+    listId: formValues.listId,
+    priority: formValues.priority,
+    tagIds: formValues.tagIds || [],
+    taskDate:
+      (formValues.taskDate && formValues.taskDate.startOf(DAY).format()) ||
+      null,
+    isAllDay: formValues.duration?.length > 0 ? false : true,
     startTime:
-      e.taskDate && e.duration ? e.duration[0].format(TIME_FORMAT_IN_DB) : null,
+      formValues.taskDate && formValues.duration
+        ? formValues.duration[0].format(TIME_FORMAT_IN_DB)
+        : null,
     endTime:
-      e.taskDate && e.duration ? e.duration[1].format(TIME_FORMAT_IN_DB) : null,
-    isRepeating: e.taskDate && e.repeatFrequency ? true : false,
-    repeatFrequency: e.taskDate && e.repeatFrequency ? e.repeatFrequency : null,
-    endBy: e.taskDate && e.repeatFrequency && e.endBy ? e.endBy : null,
+      formValues.taskDate && formValues.duration
+        ? formValues.duration[1].format(TIME_FORMAT_IN_DB)
+        : null,
+    isRepeating:
+      formValues.taskDate && formValues.repeatFrequency ? true : false,
+    repeatFrequency:
+      formValues.taskDate && formValues.repeatFrequency
+        ? formValues.repeatFrequency
+        : null,
+    endBy:
+      formValues.taskDate && formValues.repeatFrequency && formValues.endBy
+        ? formValues.endBy
+        : null,
     endByDate:
-      e.taskDate && e.repeatFrequency && e.endBy === END_BY_DATE && e.endByDate
-        ? e.endByDate.endOf(DAY).format()
+      formValues.taskDate &&
+      formValues.repeatFrequency &&
+      formValues.endBy === END_BY_DATE &&
+      formValues.endByDate
+        ? formValues.endByDate.endOf(DAY).format()
         : null,
     endByRepeatCount:
-      e.taskDate &&
-      e.repeatFrequency &&
-      e.endBy === END_BY_REPEAT_COUNT &&
-      e.endByRepeatCount !== undefined &&
-      parseInt(e.endByRepeatCount) >= 0
-        ? parseInt(e.endByRepeatCount)
+      formValues.taskDate &&
+      formValues.repeatFrequency &&
+      formValues.endBy === END_BY_REPEAT_COUNT &&
+      formValues.endByRepeatCount !== undefined &&
+      parseInt(formValues.endByRepeatCount) >= 0
+        ? parseInt(formValues.endByRepeatCount)
         : null,
     endByRepeatCountDate:
-      e.taskDate &&
-      e.repeatFrequency &&
-      e.endBy === END_BY_REPEAT_COUNT &&
-      e.endByRepeatCount !== undefined &&
-      parseInt(e.endByRepeatCount) >= 0
-        ? e.taskDate
+      formValues.taskDate &&
+      formValues.repeatFrequency &&
+      formValues.endBy === END_BY_REPEAT_COUNT &&
+      formValues.endByRepeatCount !== undefined &&
+      parseInt(formValues.endByRepeatCount) >= 0
+        ? formValues.taskDate
             .startOf(DAY)
             .add(
-              parseInt(e.endByRepeatCount - 1),
-              repeatMapping[e.repeatFrequency]
+              parseInt(formValues.endByRepeatCount - 1),
+              repeatMapping[formValues.repeatFrequency]
             )
             .endOf(DAY)
             .format()
         : null,
-    isMultiDay: e.dateRange ? true : false,
+    isMultiDay: formValues.dateRange ? true : false,
     startMultiDate:
-      (e.dateRange && e.dateRange[0].startOf(DAY).format()) || null,
-    endMultiDate: (e.dateRange && e.dateRange[1].endOf(DAY).format()) || null,
+      (formValues.dateRange && formValues.dateRange[0].startOf(DAY).format()) ||
+      null,
+    endMultiDate:
+      (formValues.dateRange && formValues.dateRange[1].endOf(DAY).format()) ||
+      null,
     isCompleted: false,
     isWontDo: false,
     isDeleted: 0,
@@ -109,10 +128,12 @@ export const handleEditTask = ({
   dispatch,
   user,
   editTaskSuccess,
-  setFormType,
-  form,
-  setLastSavedFormValues,
   editTaskFailed,
+  form,
+  setFormType,
+  setLastSavedFormValues,
+  isFromCalendar = false,
+  setOpenDialog,
 }) => {
   const modifiedTime = dayjs.utc().format();
   const modifiedTask = {
@@ -184,13 +205,16 @@ export const handleEditTask = ({
           taskDetails: modifiedTask,
         });
         editTaskSuccess();
-        setFormType(VIEW);
-        form.setFieldsValue(newFormValues);
-        setLastSavedFormValues(newFormValues);
+        if (isFromCalendar) {
+          // setOpenDialog(false);
+        } else {
+          setFormType(VIEW);
+          form.setFieldsValue(newFormValues);
+          setLastSavedFormValues(newFormValues);
+        }
       } else {
         editTaskFailed();
       }
     }
   );
 };
-

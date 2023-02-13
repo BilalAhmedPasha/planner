@@ -74,11 +74,11 @@ const CalendarView = ({ user }) => {
       if (!tasks[i].isDeleted) {
         if (tasks[i].isAllDay) {
           taskEventList.push({
+            ...tasks[i],
             title: tasks[i].name,
             start: dayjs(tasks[i].taskDate).toDate(),
             end: dayjs(tasks[i].taskDate).toDate(),
             allDay: true,
-            ...tasks[i],
           });
         } else {
           const startTimeStamp = tasks[i].taskDate.replace(
@@ -91,11 +91,11 @@ const CalendarView = ({ user }) => {
           );
 
           taskEventList.push({
+            ...tasks[i],
             title: tasks[i].name,
             start: dayjs(startTimeStamp).toDate(),
             end: dayjs(endTimeStamp).toDate(),
             allDay: false,
-            ...tasks[i],
           });
         }
       }
@@ -179,10 +179,10 @@ const CalendarView = ({ user }) => {
   const initalFormValues = useMemo(() => {
     return {
       name: "",
-      list: INBOX,
+      listId: INBOX,
       priority: NONE,
       endBy: ENDLESS,
-      tags: [],
+      tagIds: [],
       taskDate: undefined,
       duration: [undefined, undefined],
     };
@@ -199,10 +199,12 @@ const CalendarView = ({ user }) => {
   const [spinner, setSpinner] = useState(false);
 
   const [formType, setFormType] = useState(CREATE);
+  const [taskDetails, setTaskDetails] = useState();
   const onSelectEvent = useCallback(
     (event) => {
       setSpinner(true);
       setFormType(EDIT);
+      setTaskDetails(event);
       window.clearTimeout(clickRef?.current);
       clickRef.current = window.setTimeout(() => {
         setFormValues(() => {
@@ -210,7 +212,7 @@ const CalendarView = ({ user }) => {
             ...initalFormValues,
             name: event.name,
             description: event.description,
-            list: event.listId,
+            listId: event.listId,
             priority: event.priority,
             tags: event.tagIds,
             taskDate: dayjs(event.taskDate),
@@ -331,6 +333,8 @@ const CalendarView = ({ user }) => {
               setOpenDialog={setOpenAddTaskDialog}
               formType={formType}
               formValues={formValues}
+              taskDetails={taskDetails}
+              isFromCalendar={true}
               disableDateSelection={formType === CREATE}
               disableTimeSelection={formType === CREATE}
             />
