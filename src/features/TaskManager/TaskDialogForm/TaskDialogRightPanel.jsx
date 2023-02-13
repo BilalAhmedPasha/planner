@@ -21,6 +21,7 @@ import {
   LOW,
   MEDIUM,
   priorityOptions,
+  priorityColorMappings,
 } from "../../../constants/priority.constants";
 import {
   HIGH_COLOR,
@@ -91,7 +92,9 @@ const TaskDialogRightPanel = ({ form, height, ...props }) => {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const [priorityColor, setPriorityColor] = useState(NONE_COLOR);
+  const [priorityColor, setPriorityColor] = useState(
+    priorityColorMappings[form.getFieldValue("priority")]
+  );
   const handlePriorityChange = (event) => {
     if (event === HIGH) {
       setPriorityColor(HIGH_COLOR);
@@ -109,9 +112,15 @@ const TaskDialogRightPanel = ({ form, height, ...props }) => {
     form.getFieldValue("taskDate") ? true : false
   );
   const [isMultiDay, setIsMultiDay] = useState(false);
-  const [isRepeating, setIsRepeating] = useState(false);
-  const [showEndByDate, setShowEndByDate] = useState(false);
-  const [showEndByRepeatCount, setshowEndByRepeatCount] = useState(false);
+  const [isRepeating, setIsRepeating] = useState(
+    form.getFieldValue("repeatFrequency")
+  );
+  const [showEndByDate, setShowEndByDate] = useState(
+    form.getFieldValue("endBy") === END_BY_DATE
+  );
+  const [showEndByRepeatCount, setshowEndByRepeatCount] = useState(
+    form.getFieldValue("endBy") === END_BY_REPEAT_COUNT
+  );
 
   const handleStartDateChange = (e) => {
     setStartDate(e);
