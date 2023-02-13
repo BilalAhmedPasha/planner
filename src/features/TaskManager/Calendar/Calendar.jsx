@@ -205,7 +205,7 @@ const CalendarView = ({ user }) => {
       setFormType(EDIT);
       window.clearTimeout(clickRef?.current);
       clickRef.current = window.setTimeout(() => {
-        setFormValues((prevFormValues) => {
+        setFormValues(() => {
           return {
             ...initalFormValues,
             name: event.name,
@@ -238,7 +238,7 @@ const CalendarView = ({ user }) => {
         const selectedDate = dayjs(range.start).startOf("day");
         const startTime = dayjs(range.start);
         const endTime = dayjs(range.end);
-        setFormValues((prevFormValues) => {
+        setFormValues(() => {
           return {
             ...initalFormValues,
             taskDate: selectedDate,
