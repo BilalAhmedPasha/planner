@@ -38,10 +38,6 @@ const CustomToolbar = (props) => {
         alignItems: "center",
       }}
     >
-      <Segmented options={[WEEK, DAY]} onChange={handleViewChange} />
-      <Typography.Text strong style={{ fontSize: "1.25rem" }}>
-        {props.label}
-      </Typography.Text>
       <div>
         <Button
           type="text"
@@ -59,6 +55,10 @@ const CustomToolbar = (props) => {
           icon={<CaretRightOutlined />}
         />
       </div>
+      <Typography.Text strong style={{ fontSize: "1.25rem" }}>
+        {props.label}
+      </Typography.Text>
+      <Segmented options={[WEEK, DAY]} onChange={handleViewChange} />
     </div>
   );
 };
