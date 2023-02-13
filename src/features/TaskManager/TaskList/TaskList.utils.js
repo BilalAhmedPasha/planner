@@ -206,7 +206,7 @@ export const handleEditTask = ({
         });
         editTaskSuccess();
         if (isFromCalendar) {
-          // setOpenDialog(false);
+          setOpenDialog(false);
         } else {
           setFormType(VIEW);
           form.setFieldsValue(newFormValues);

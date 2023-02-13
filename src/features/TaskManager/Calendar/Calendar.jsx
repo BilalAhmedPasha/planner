@@ -222,7 +222,7 @@ const CalendarView = ({ user }) => {
             ],
             repeatFrequency: event.repeatFrequency,
             endBy: event.endBy,
-            [END_BY_DATE]: dayjs(event.endByDate),
+            [END_BY_DATE]: event.endByDate ? dayjs(event.endByDate) : undefined,
             [END_BY_REPEAT_COUNT]: event.endByRepeatCount,
           };
         });
