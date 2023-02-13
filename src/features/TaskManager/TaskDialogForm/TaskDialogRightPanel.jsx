@@ -196,7 +196,7 @@ const TaskDialogRightPanel = ({ form, height, ...props }) => {
           padding: "1rem 1.5rem",
         }}
       >
-        <Form.Item name="list" label="List">
+        <Form.Item name="listId" label="List">
           <Select
             options={[
               {
@@ -223,7 +223,7 @@ const TaskDialogRightPanel = ({ form, height, ...props }) => {
           />
         </Form.Item>
 
-        <Form.Item name="tags" label="Tags">
+        <Form.Item name="tagIds" label="Tags">
           <Select
             mode="multiple"
             allowClear

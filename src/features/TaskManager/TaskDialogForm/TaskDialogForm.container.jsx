@@ -4,8 +4,8 @@ import Modal from "../../../components/Modal";
 import TaskDialogForm from "./TaskDialogForm";
 import { Form } from "antd";
 import { tasksSelector } from "../state/userTasks/userTasks.reducer";
-import { CREATE } from "../../../constants/formType.constants";
-import { handleAddTask } from "../TaskList/TaskList.utils";
+import { CREATE, EDIT } from "../../../constants/formType.constants";
+import { handleAddTask, handleEditTask } from "../TaskList/TaskList.utils";
 
 const TaskDialog = ({
   user,
@@ -14,6 +14,8 @@ const TaskDialog = ({
   setOpenDialog,
   formValues,
   formType,
+  taskDetails,
+  isFromCalendar = false,
   ...props
 }) => {
   const dispatch = useDispatch();
@@ -34,21 +36,54 @@ const TaskDialog = ({
     });
   };
 
+  const editTaskSuccess = () => {
+    messageApi.open({
+      type: "success",
+      content: "Task edited",
+      duration: 3,
+    });
+  };
+
+  const editTaskFailed = () => {
+    messageApi.open({
+      type: "error",
+      content: "Failed to edit task",
+      duration: 3,
+    });
+  };
+
   const [form] = Form.useForm();
 
   const [disableAddButton, setDisableAddButton] = useState(
     formValues.name.length === 0
   );
 
-  const handleOnOk = (e) => {
-    handleAddTask({
-      e,
-      dispatch,
-      user,
-      createTaskSuccess,
-      setOpenDialog,
-      createTaskFailed,
-    });
+  const handleOnOk = (formValues) => {
+    if (formType === CREATE) {
+      handleAddTask({
+        formValues,
+        dispatch,
+        user,
+        createTaskSuccess,
+        setOpenDialog,
+        createTaskFailed,
+      });
+    } else if (formType === EDIT) {
+      if (isFromCalendar) {
+        delete taskDetails.start;
+        delete taskDetails.end;
+      }
+      handleEditTask({
+        taskDetails: taskDetails,
+        formValues,
+        dispatch,
+        user,
+        editTaskSuccess,
+        setOpenDialog,
+        editTaskFailed,
+        isFromCalendar,
+      });
+    }
   };
 
   const { isLoadingTasks } = useSelector(tasksSelector);

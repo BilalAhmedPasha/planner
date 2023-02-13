@@ -275,10 +275,10 @@ const TaskListContainer = ({
 
   const FORM_VALUES = {
     name: "",
-    list: TASK_LIST,
+    listId: TASK_LIST,
     priority: NONE,
     endBy: ENDLESS,
-    tags: TASK_TAGS,
+    tagIds: TASK_TAGS,
     taskDate: TASK_DATE,
   };
 
