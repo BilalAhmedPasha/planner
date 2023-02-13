@@ -39,7 +39,6 @@ const Modal = ({
       onCancel={onCancel}
       maskClosable={false}
       keyboard={false}
-      closable={false}
       destroyOnClose={true}
       {...props}
     >

@@ -5,7 +5,7 @@ export const WHITE = "#ffffff";
 export const HIGH_COLOR = "#ff7875";
 export const MEDIUM_COLOR = "#faad14";
 export const LOW_COLOR = "#4096ff";
-export const NONE_COLOR = "#a0d911";
+export const NONE_COLOR = "#7cb305";
 
 export const HIGH_BG_COLOR = "#ffccc7";
 export const MEDIUM_BG_COLOR = "#ffe58f";
