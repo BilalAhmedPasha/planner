@@ -1,0 +1,9 @@
+.rbc-current-time-indicator {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #1f1f1f;
+  pointer-events: none;
+}
