@@ -262,7 +262,6 @@ const CalendarView = ({ user }) => {
       style={{
         padding: "1rem 3rem",
         background: colorBgContainer,
-        height: "100vh",
       }}
     >
       <Spinner

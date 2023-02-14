@@ -305,8 +305,6 @@ const TaskNav = ({
       theme="light"
       style={{
         overflow: "auto",
-        paddingTop: "1vh",
-        height: "100vh",
         position: "sticky",
         top: 0,
         left: 0,
