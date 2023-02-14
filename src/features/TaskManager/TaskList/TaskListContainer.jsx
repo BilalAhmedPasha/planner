@@ -285,9 +285,9 @@ const TaskListContainer = ({
   return (
     <Layout.Content
       style={{
-        marginRight: "0.1rem",
-        paddingTop: "1rem",
+        overflow: "auto",
         background: colorBgContainer,
+        position: "relative",
       }}
     >
       <Spinner spinning={isLoadingTasks} indicator={Loading(LOADER_SIZE)}>
@@ -296,8 +296,11 @@ const TaskListContainer = ({
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            padding: "0rem 0.5rem",
-            height: "2.5rem",
+            padding: "0.5rem",
+            top: 0,
+            zIndex: 1,
+            background: colorBgContainer,
+            position: "sticky",
           }}
         >
           <Space size="small">
@@ -405,23 +408,15 @@ const TaskListContainer = ({
             disableTimeSelection={false}
           />
         )}
-        <div
-          style={{
-            overflowY: "auto",
-            height: "90vh",
-            padding: "0rem 0rem",
-            marginTop: "0.5rem",
-          }}
-        >
-          <Container
-            user={user}
-            tasks={sortedSectionTasks}
-            sortBy={sortBy}
-            selectedCardId={selectedCardId}
-            setSelectedCardId={setSelectedCardId}
-            setSelectedTaskDetails={setSelectedTaskDetails}
-          />
-        </div>
+
+        <Container
+          user={user}
+          tasks={sortedSectionTasks}
+          sortBy={sortBy}
+          selectedCardId={selectedCardId}
+          setSelectedCardId={setSelectedCardId}
+          setSelectedTaskDetails={setSelectedTaskDetails}
+        />
       </Spinner>
     </Layout.Content>
   );

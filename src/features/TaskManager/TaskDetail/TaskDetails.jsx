@@ -694,11 +694,11 @@ const TaskDetails = ({
           {"Add Subtask"}
         </Button>
       )}
-      <div style={{ overflow: "auto", height: "55vh" }}>
+      {/* <div style={{ overflow: "auto", height: "55vh" }}>
         {subTasks.map((each, index) => (
           <SubTaskInDetails key={index} taskDetails={taskDetails} />
         ))}
-      </div>
+      </div> */}
     </>
   );
 };

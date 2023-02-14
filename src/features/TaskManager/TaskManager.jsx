@@ -29,7 +29,7 @@ const TaskManager = ({ user }) => {
   const [selectedTaskDetails, setSelectedTaskDetails] = useState(null);
 
   return (
-    <Layout>
+    <>
       <TaskNav
         user={user}
         messageApi={messageApi}
@@ -50,7 +50,7 @@ const TaskManager = ({ user }) => {
       />
       <TaskDetailsContainer user={user} taskDetails={selectedTaskDetails} />
       {contextHolder}
-    </Layout>
+    </>
   );
 };
 export default React.memo(TaskManager);

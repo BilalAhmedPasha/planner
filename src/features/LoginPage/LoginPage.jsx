@@ -74,8 +74,7 @@ const LoginPage = () => {
         style={{
           display: "flex",
           justifyContent: "center",
-          height: "100%",
-          paddingTop: "7%",
+          paddingTop: "10vh",
         }}
       >
         <Space direction="vertical" style={{ alignItems: "center" }}>

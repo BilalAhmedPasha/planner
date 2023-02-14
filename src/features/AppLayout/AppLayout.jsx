@@ -64,7 +64,7 @@ const AppLayout = ({ setCurrentTitle, children }) => {
         algorithm: false ? darkAlgorithm : defaultAlgorithm,
       }}
     >
-      <Layout>
+      <Layout style={{ height: "100vh" }}>
         <AppNav setCurrentTitle={setCurrentTitle} />
         {childrenWithProps}
       </Layout>
