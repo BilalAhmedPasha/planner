@@ -5,12 +5,13 @@ import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: API_KEY,
-  authDomain: "todoapp-737a4.firebaseapp.com",
-  projectId: "todoapp-737a4",
-  storageBucket: "todoapp-737a4.appspot.com",
-  messagingSenderId: "472378828933",
-  appId: "1:472378828933:web:daf612cb58e5fd0bdea1ec",
+  authDomain: "planner-1da50.firebaseapp.com",
+  projectId: "planner-1da50",
+  storageBucket: "planner-1da50.appspot.com",
+  messagingSenderId: "761215467752",
+  appId: "1:761215467752:web:58f444a648c62d333f895d",
 };
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
