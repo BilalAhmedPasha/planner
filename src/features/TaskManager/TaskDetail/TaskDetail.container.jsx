@@ -67,7 +67,7 @@ const TaskDetailsContainer = ({ user, taskDetails }) => {
     <Layout.Content
       style={{
         marginLeft: "0.1rem",
-        padding: "1rem 1rem 0rem 1rem",
+        padding: "0.5rem 1rem",
         overflow: "auto",
         background: colorBgContainer,
       }}
