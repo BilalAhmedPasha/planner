@@ -517,7 +517,7 @@ const TaskItem = ({
         </Dropdown>
         <Typography.Text
           disabled={taskDetails.isCompleted || taskDetails.isWontDo}
-        >{`${taskDetails.name} (${taskDetails.id})`}</Typography.Text>
+        >{`${taskDetails.name}`}</Typography.Text>
       </Space>
       <div
         style={{
