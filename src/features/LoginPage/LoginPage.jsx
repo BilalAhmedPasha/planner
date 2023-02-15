@@ -17,7 +17,7 @@ const StyledDiv = styled.div`
 `;
 
 const LoginCard = styled.div`
-  height: ${(props) => (props.showSignIn ? "33rem" : "35rem")};
+  height: ${(props) => (props.showSignIn ? "38rem" : "38rem")};
   overflow: auto;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 3px 6px 0px;
   transition: 0.3s;
@@ -28,7 +28,7 @@ const LoginCard = styled.div`
 
 const LoginPage = () => {
   const history = useHistory();
-  const { googleSignIn, user, loading } = UserAuth();
+  const { user, loading } = UserAuth();
 
   useEffect(() => {
     if (user !== null) {
@@ -36,15 +36,12 @@ const LoginPage = () => {
     }
   }, [history, user]);
 
-  const handleGoogleSignIn = async () => {
-    try {
-      await googleSignIn();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const [showSignIn, setShowSignIn] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    setErrorMessage("");
+  }, [showSignIn]);
 
   return (
     <StyledDiv>
@@ -60,13 +57,17 @@ const LoginPage = () => {
         <Spinner spinning={loading} indicator={Loading(LOADER_SIZE)} delay={0}>
           {showSignIn ? (
             <SignInForm
-              handleGoogleSignIn={handleGoogleSignIn}
               setShowSignIn={setShowSignIn}
+              showSignIn={showSignIn}
+              errorMessage={errorMessage}
+              setErrorMessage={setErrorMessage}
             />
           ) : (
             <SignUpForm
-              handleGoogleSignIn={handleGoogleSignIn}
               setShowSignIn={setShowSignIn}
+              showSignIn={showSignIn}
+              errorMessage={errorMessage}
+              setErrorMessage={setErrorMessage}
             />
           )}
         </Spinner>
