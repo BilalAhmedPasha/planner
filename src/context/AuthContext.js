@@ -8,6 +8,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
+  GithubAuthProvider,
 } from "firebase/auth";
 import { auth } from "../firebase";
 
@@ -15,6 +16,8 @@ const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState({});
+  const [loading, setLoading] = useState();
+  const [error, setError] = useState("");
 
   // Google auth
   const googleSignIn = () => {
@@ -22,7 +25,32 @@ export const AuthContextProvider = ({ children }) => {
     provider.setCustomParameters({
       prompt: "select_account",
     });
-    signInWithPopup(auth, provider);
+    setLoading(true);
+    signInWithPopup(auth, provider)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        setError(error.code);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  // Github auth
+  const githubSignIn = () => {
+    setLoading(true);
+    signInWithPopup(auth, new GithubAuthProvider())
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        setError(error.code);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const logOut = () => {
@@ -41,10 +69,6 @@ export const AuthContextProvider = ({ children }) => {
       unsubscribe();
     };
   }, []);
-
-  // Email and password login
-  const [loading, setLoading] = useState();
-  const [error, setError] = useState("");
 
   const registerUserWithEmailAndPassword = (name, email, password) => {
     setLoading(true);
@@ -92,6 +116,7 @@ export const AuthContextProvider = ({ children }) => {
         forgotPassword,
         loading,
         error,
+        githubSignIn,
       }}
     >
       {children}

@@ -1,6 +1,11 @@
 import { Alert, Button, Divider, Form, Input, Typography } from "antd";
 import styled from "styled-components";
-import { MailOutlined, LockOutlined, GoogleOutlined } from "@ant-design/icons";
+import {
+  MailOutlined,
+  LockOutlined,
+  GoogleOutlined,
+  GithubOutlined,
+} from "@ant-design/icons";
 import { UserAuth } from "../../context/AuthContext";
 import { useEffect, useState } from "react";
 import { errorMessages } from "../../constants/error.constants";
@@ -9,8 +14,19 @@ const StyledFormItem = styled(Form.Item)`
   margin: 1.5rem 2rem;
 `;
 
-const SignInForm = ({ handleGoogleSignIn, setShowSignIn }) => {
-  const { signInUserWithEmailAndPassword, forgotPassword, error } = UserAuth();
+const SignInForm = ({
+  setShowSignIn,
+  showSignIn,
+  errorMessage,
+  setErrorMessage,
+}) => {
+  const {
+    googleSignIn,
+    githubSignIn,
+    signInUserWithEmailAndPassword,
+    forgotPassword,
+    error,
+  } = UserAuth();
 
   const onFinish = (values) => {
     const email = values.email;
@@ -39,7 +55,9 @@ const SignInForm = ({ handleGoogleSignIn, setShowSignIn }) => {
           );
         })
         .catch((error) => {
-          setErrorMessage(errorMessages[error.code]);
+          if (error) {
+            setErrorMessage(errorMessages[error.code]);
+          }
         });
     } else {
       setErrorMessage("Enter an email to reset password");
@@ -50,13 +68,11 @@ const SignInForm = ({ handleGoogleSignIn, setShowSignIn }) => {
     setShowSignIn(false);
   };
 
-  const [errorMessage, setErrorMessage] = useState("");
-
   useEffect(() => {
     if (error) {
       setErrorMessage(errorMessages[error.code]);
     }
-  }, [error]);
+  }, [error, setErrorMessage]);
 
   const onErrorMessageClose = () => {
     setErrorMessage("");
@@ -134,11 +150,21 @@ const SignInForm = ({ handleGoogleSignIn, setShowSignIn }) => {
       <StyledFormItem>
         <Button
           type="default"
-          onClick={handleGoogleSignIn}
+          onClick={googleSignIn}
           block
           icon={<GoogleOutlined />}
         >
           {"Google"}
+        </Button>
+      </StyledFormItem>
+      <StyledFormItem>
+        <Button
+          type="default"
+          onClick={githubSignIn}
+          block
+          icon={<GithubOutlined />}
+        >
+          {"Github"}
         </Button>
       </StyledFormItem>
       <StyledFormItem>

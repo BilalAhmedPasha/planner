@@ -5,17 +5,28 @@ import {
   MailOutlined,
   LockOutlined,
   GoogleOutlined,
+  GithubOutlined,
 } from "@ant-design/icons";
 import { UserAuth } from "../../context/AuthContext";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { errorMessages } from "../../constants/error.constants";
 
 const StyledFormItem = styled(Form.Item)`
   margin: 1.5rem 2rem;
 `;
 
-const SignUpForm = ({ handleGoogleSignIn, setShowSignIn }) => {
-  const { registerUserWithEmailAndPassword, error } = UserAuth();
+const SignUpForm = ({
+  setShowSignIn,
+  showSignIn,
+  errorMessage,
+  setErrorMessage,
+}) => {
+  const {
+    googleSignIn,
+    githubSignIn,
+    registerUserWithEmailAndPassword,
+    error,
+  } = UserAuth();
 
   const onFinish = (values) => {
     const name = values.username;
@@ -30,13 +41,11 @@ const SignUpForm = ({ handleGoogleSignIn, setShowSignIn }) => {
     setShowSignIn(true);
   };
 
-  const [errorMessage, setErrorMessage] = useState("");
-
   useEffect(() => {
     if (error) {
       setErrorMessage(errorMessages[error.code]);
     }
-  }, [error]);
+  }, [error, setErrorMessage]);
 
   const onErrorMessageClose = () => {
     setErrorMessage("");
@@ -112,11 +121,21 @@ const SignUpForm = ({ handleGoogleSignIn, setShowSignIn }) => {
         <StyledFormItem>
           <Button
             type="default"
-            onClick={handleGoogleSignIn}
+            onClick={googleSignIn}
             block
             icon={<GoogleOutlined />}
           >
             {"Google"}
+          </Button>
+        </StyledFormItem>
+        <StyledFormItem>
+          <Button
+            type="default"
+            onClick={githubSignIn}
+            block
+            icon={<GithubOutlined />}
+          >
+            {"Github"}
           </Button>
         </StyledFormItem>
       </Form>
