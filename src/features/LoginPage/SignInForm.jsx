@@ -1,34 +1,69 @@
-import { Button, Divider, Form, Input, Typography } from "antd";
+import { Alert, Button, Divider, Form, Input, Typography } from "antd";
 import styled from "styled-components";
 import { MailOutlined, LockOutlined, GoogleOutlined } from "@ant-design/icons";
+import { UserAuth } from "../../context/AuthContext";
+import { useEffect, useState } from "react";
+import { errorMessages } from "../../constants/error.constants";
 
 const StyledFormItem = styled(Form.Item)`
   margin: 1.5rem 2rem;
 `;
 
 const SignInForm = ({ handleGoogleSignIn, setShowSignIn }) => {
+  const { signInUserWithEmailAndPassword, forgotPassword, error } = UserAuth();
+
   const onFinish = (values) => {
-    alert("Implement email login");
+    const email = values.email;
+    const password = values.password;
+    if (email && password) {
+      signInUserWithEmailAndPassword(email, password);
+    }
   };
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+
+  const [form] = Form.useForm();
+
+  const [passwordResetSuccessMessage, setPasswordResetSuccessMessage] =
+    useState("");
+
+  const onPasswordResetMessageClose = () => {
+    setPasswordResetSuccessMessage("");
+  };
+
+  const onForgotPassword = () => {
+    const email = form.getFieldValue("email");
+    if (email) {
+      forgotPassword(email)
+        .then(() => {
+          setPasswordResetSuccessMessage(
+            "Password reset link is sent to your email"
+          );
+        })
+        .catch((error) => {
+          setErrorMessage(errorMessages[error.code]);
+        });
+    } else {
+      setErrorMessage("Enter an email to reset password");
+    }
   };
 
   const onSignUpClick = () => {
     setShowSignIn(false);
   };
 
-  const onForgotPassword = () => {
-    alert("Implement forgot password");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    if (error) {
+      setErrorMessage(errorMessages[error.code]);
+    }
+  }, [error]);
+
+  const onErrorMessageClose = () => {
+    setErrorMessage("");
   };
 
   return (
-    <Form
-      name="basic"
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      autoComplete="off"
-    >
+    <Form form={form} name="signInForm" onFinish={onFinish} autoComplete="off">
       <StyledFormItem
         name="email"
         rules={[
@@ -60,6 +95,26 @@ const SignInForm = ({ handleGoogleSignIn, setShowSignIn }) => {
           prefix={<LockOutlined style={{ marginRight: "0.5rem" }} />}
         />
       </StyledFormItem>
+      {passwordResetSuccessMessage?.length > 0 && (
+        <Alert
+          message={passwordResetSuccessMessage}
+          type="success"
+          showIcon
+          style={{ margin: "1.5rem 2rem" }}
+          closable
+          afterClose={onPasswordResetMessageClose}
+        />
+      )}
+      {errorMessage?.length > 0 && (
+        <Alert
+          message={errorMessage}
+          type="error"
+          showIcon
+          style={{ margin: "1.5rem 2rem" }}
+          closable
+          afterClose={onErrorMessageClose}
+        />
+      )}
       <StyledFormItem>
         <Button type="primary" htmlType="submit" block>
           {"Sign In"}
