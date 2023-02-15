@@ -6,6 +6,9 @@ import appLogo from "../../assets/appLogo.png";
 
 import SignUpForm from "./SignUpForm";
 import SignInForm from "./SignInForm";
+import Spinner from "../../components/Spinner";
+import Loading from "../../components/Loading";
+import { LOADER_SIZE } from "../../constants/app.constants";
 
 const StyledDiv = styled.div`
   margin: 5rem auto;
@@ -14,7 +17,7 @@ const StyledDiv = styled.div`
 `;
 
 const LoginCard = styled.div`
-  height: ${(props) => (props.showSignIn ? "28rem" : "30rem")};
+  height: ${(props) => (props.showSignIn ? "33rem" : "35rem")};
   overflow: auto;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 3px 6px 0px;
   transition: 0.3s;
@@ -25,7 +28,8 @@ const LoginCard = styled.div`
 
 const LoginPage = () => {
   const history = useHistory();
-  const { googleSignIn, user } = UserAuth();
+  const { googleSignIn, user, loading } = UserAuth();
+
   useEffect(() => {
     if (user !== null) {
       history.push("/tasks/inbox");
@@ -53,17 +57,19 @@ const LoginPage = () => {
         }}
       />
       <LoginCard showSignIn={showSignIn}>
-        {showSignIn ? (
-          <SignInForm
-            handleGoogleSignIn={handleGoogleSignIn}
-            setShowSignIn={setShowSignIn}
-          />
-        ) : (
-          <SignUpForm
-            handleGoogleSignIn={handleGoogleSignIn}
-            setShowSignIn={setShowSignIn}
-          />
-        )}
+        <Spinner spinning={loading} indicator={Loading(LOADER_SIZE)} delay={0}>
+          {showSignIn ? (
+            <SignInForm
+              handleGoogleSignIn={handleGoogleSignIn}
+              setShowSignIn={setShowSignIn}
+            />
+          ) : (
+            <SignUpForm
+              handleGoogleSignIn={handleGoogleSignIn}
+              setShowSignIn={setShowSignIn}
+            />
+          )}
+        </Spinner>
       </LoginCard>
     </StyledDiv>
   );
