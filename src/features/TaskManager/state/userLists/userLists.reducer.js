@@ -35,9 +35,9 @@ const modifyListsAfterEdit = ({ currentLists, editedList }) => {
   );
 };
 
-const modifyListsAfterDelete = ({ currentLists, deletedList }) => {
+const modifyListsAfterDelete = ({ currentLists, deletedListId }) => {
   return currentLists.filter((each) => {
-    return each.id !== deletedList.id;
+    return each.id !== deletedListId;
   });
 };
 
@@ -124,7 +124,7 @@ const reducer = (state = INITIAL_STATE, action) => {
         totalLists: state.totalLists > 0 ? state.totalLists - 1 : 0,
         lists: modifyListsAfterDelete({
           currentLists: state.lists,
-          deletedList: action.payload,
+          deletedListId: action.payload,
         }),
       };
     }
