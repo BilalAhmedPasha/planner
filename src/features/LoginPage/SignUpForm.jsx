@@ -8,8 +8,6 @@ import {
   GithubOutlined,
 } from "@ant-design/icons";
 import { UserAuth } from "../../context/AuthContext";
-import { useEffect } from "react";
-import { errorMessages } from "../../constants/error.constants";
 
 const StyledFormItem = styled(Form.Item)`
   margin: 1.5rem 2rem;
@@ -17,7 +15,6 @@ const StyledFormItem = styled(Form.Item)`
 
 const SignUpForm = ({
   setShowSignIn,
-  showSignIn,
   errorMessage,
   setErrorMessage,
 }) => {
@@ -25,7 +22,6 @@ const SignUpForm = ({
     googleSignIn,
     githubSignIn,
     registerUserWithEmailAndPassword,
-    error,
   } = UserAuth();
 
   const onFinish = (values) => {
@@ -41,11 +37,6 @@ const SignUpForm = ({
     setShowSignIn(true);
   };
 
-  useEffect(() => {
-    if (error) {
-      setErrorMessage(errorMessages[error.code]);
-    }
-  }, [error, setErrorMessage]);
 
   const onErrorMessageClose = () => {
     setErrorMessage("");

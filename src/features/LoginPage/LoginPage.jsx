@@ -3,12 +3,12 @@ import { UserAuth } from "../../context/AuthContext";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import appLogo from "../../assets/appLogo.png";
-
 import SignUpForm from "./SignUpForm";
 import SignInForm from "./SignInForm";
 import Spinner from "../../components/Spinner";
 import Loading from "../../components/Loading";
 import { LOADER_SIZE } from "../../constants/app.constants";
+import { errorMessagesMap } from "../../constants/error.constants";
 
 const StyledDiv = styled.div`
   margin: 5rem auto;
@@ -17,7 +17,7 @@ const StyledDiv = styled.div`
 `;
 
 const LoginCard = styled.div`
-  height: ${(props) => (props.showSignIn ? "38rem" : "38rem")};
+  height: ${(props) => (props.showSignIn ? "38rem" : "40rem")};
   overflow: auto;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 3px 6px 0px;
   transition: 0.3s;
@@ -28,7 +28,7 @@ const LoginCard = styled.div`
 
 const LoginPage = () => {
   const history = useHistory();
-  const { user, loading } = UserAuth();
+  const { user, loading, error } = UserAuth();
 
   useEffect(() => {
     if (user !== null) {
@@ -42,6 +42,12 @@ const LoginPage = () => {
   useEffect(() => {
     setErrorMessage("");
   }, [showSignIn]);
+
+  useEffect(() => {
+    if (error) {
+      setErrorMessage(errorMessagesMap[error.code]);
+    }
+  }, [error]);
 
   return (
     <StyledDiv>
