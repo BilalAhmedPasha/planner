@@ -28,7 +28,7 @@ import {
 import Loading from "../../../components/Loading";
 import Spinner from "../../../components/Spinner";
 import { TASK_NAV_BADGE_COLOR } from "../../../constants/color.constants";
-import { hardDeleteListTaskAction } from "../state/userTasks/userTasks.actions";
+import { hardDeleteListTaskAction, deleteTaskTagAction } from "../state/userTasks/userTasks.actions";
 
 const renderColorDot = (color) => {
   return (
@@ -174,10 +174,11 @@ const TaskNav = ({
   const handleDelete = ({
     currentItem,
     deleteAction,
+    modifyTaskAction,
     successMessage,
     failureMessage,
   }) => {
-    dispatch(hardDeleteListTaskAction(user.uid, currentItem))
+    dispatch(modifyTaskAction(user.uid, currentItem))
       .then((response) => {
         if (response.success === SUCCESS) {
           return dispatch(deleteAction(user.uid, currentItem));
@@ -207,20 +208,22 @@ const TaskNav = ({
         showDeleteConfirm({
           currentItem: currentItem,
           deleteAction: deleteTagAction,
+          modifyTaskAction: deleteTaskTagAction,
           successMessage: "Tag deleted",
           failureMessage: "Failed to delete tag",
           content:
-            "The tag will be deleted and removed in all tasks. Delete the tag?",
+            "This tag will be removed in all tasks. Delete the tag?",
           handleDelete: handleDelete,
         });
       } else if (e.keyPath.includes(LISTS)) {
         showDeleteConfirm({
           currentItem: currentItem,
           deleteAction: deleteListAction,
+          modifyTaskAction: hardDeleteListTaskAction,
           successMessage: "List deleted",
           failureMessage: "Failed to delete list",
           content:
-            "The list will be deleted along with its tasks. Delete the list?",
+            "The tasks in this list will be permanently deleted. Delete the list?",
           handleDelete: handleDelete,
         });
       }
@@ -254,6 +257,7 @@ const TaskNav = ({
     handleDelete,
     currentItem,
     deleteAction,
+    modifyTaskAction,
     successMessage,
     failureMessage,
   }) => {
@@ -269,6 +273,7 @@ const TaskNav = ({
         handleDelete({
           currentItem: currentItem,
           deleteAction: deleteAction,
+          modifyTaskAction: modifyTaskAction,
           successMessage: successMessage,
           failureMessage: failureMessage,
         });

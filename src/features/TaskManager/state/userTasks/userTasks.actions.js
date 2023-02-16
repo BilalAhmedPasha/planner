@@ -10,6 +10,7 @@ import {
   restoreTaskApi,
   hardDeleteSingleTaskApi,
   hardDeleteListTaskApi,
+  deleteTaskTagApi,
 } from "../../../../services/userTasks.api";
 import {
   FETCH_TASKS,
@@ -42,6 +43,9 @@ import {
   HARD_DELETE_LIST_TASK,
   HARD_DELETE_LIST_TASK_SUCCESS,
   HARD_DELETE_LIST_TASK_ERROR,
+  DELETE_TASK_TAG,
+  DELETE_TASK_TAG_SUCCESS,
+  DELETE_TASK_TAG_ERROR,
 } from "./userTasks.reducer";
 
 export const fetchTasks = () => ({
@@ -198,6 +202,22 @@ export const hardDeleteListTaskSuccess = (payload) => ({
 
 export const hardDeleteListTaskFailure = (error) => ({
   type: HARD_DELETE_LIST_TASK_ERROR,
+  payload: { error },
+});
+
+export const deleteTaskTag = (payload) => ({
+  type: DELETE_TASK_TAG,
+  payload,
+});
+
+export const deleteTaskTagSuccess = (payload) => ({
+  type: DELETE_TASK_TAG_SUCCESS,
+  payload: payload,
+  success: SUCCESS,
+});
+
+export const deleteTaskTagFailure = (error) => ({
+  type: DELETE_TASK_TAG_ERROR,
   payload: { error },
 });
 
@@ -385,3 +405,13 @@ export const hardDeleteListTaskAction =
       return dispatch(hardDeleteListTaskFailure(error));
     }
   };
+
+export const deleteTaskTagAction = (userId, currentTag) => async (dispatch) => {
+  dispatch(deleteTaskTag());
+  try {
+    await deleteTaskTagApi(userId, currentTag);
+    return dispatch(deleteTaskTagSuccess(currentTag.id));
+  } catch (error) {
+    return dispatch(deleteTaskTagFailure(error));
+  }
+};

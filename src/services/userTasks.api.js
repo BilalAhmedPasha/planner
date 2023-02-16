@@ -196,3 +196,22 @@ export const hardDeleteListTaskApi = async (userId, currentList) => {
     await deleteDoc(docRef);
   });
 };
+
+export const deleteTaskTagApi = async (userId, currentTag) => {
+  const userDocRef = doc(db, "users", userId);
+  const taskCollectionRef = collection(userDocRef, TASKS);
+  const q = query(
+    taskCollectionRef,
+    where("tagIds", "array-contains", currentTag.id)
+  );
+  const snapShot = await getDocs(q);
+  const tagTasks = snapShot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+  tagTasks.forEach(async (task) => {
+    const docRef = doc(db, "users", userId, TASKS, task.id);
+    const modifiedTask = {
+      ...task,
+      tagIds: task.tagIds.filter((tag) => tag !== currentTag.id),
+    };
+    await updateDoc(docRef, modifiedTask);
+  });
+};

@@ -39,6 +39,10 @@ export const HARD_DELETE_LIST_TASK = "HARD_DELETE_LIST_TASK";
 export const HARD_DELETE_LIST_TASK_SUCCESS = "HARD_DELETE_LIST_TASK_SUCCESS";
 export const HARD_DELETE_LIST_TASK_ERROR = "HARD_DELETE_LIST_TASK_ERROR";
 
+export const DELETE_TASK_TAG = "DELETE_TASK_TAG";
+export const DELETE_TASK_TAG_SUCCESS = "DELETE_TASK_TAG_SUCCESS";
+export const DELETE_TASK_TAG_ERROR = "DELETE_TASK_TAG_ERROR";
+
 export const INITIAL_STATE = {
   isLoadingTasks: false,
   totalTasks: 0,
@@ -74,6 +78,12 @@ const modifyTasksAfterRestore = ({ currentTasks, restoredTask }) => {
 
 const modifyTasksAfterListDelete = ({ currentTasks, listId }) => {
   return currentTasks.filter((each) => each.listId !== listId);
+};
+
+const modifyTasksAfterTagDelete = ({ currentTasks, tagId }) => {
+  return currentTasks.map((each) => {
+    return { ...each, tagIds: each.tagIds.filter((tag) => tag !== tagId) };
+  });
 };
 
 const modifyTasksAfterComplete = ({
@@ -484,6 +494,32 @@ const reducer = (state = INITIAL_STATE, action) => {
         ...state,
         error: action.payload.error,
         hardDeleteListTaskSuccess: false,
+        isLoadingTasks: false,
+      };
+    }
+
+    case DELETE_TASK_TAG: {
+      return fetchLoadingState({ state });
+    }
+
+    case DELETE_TASK_TAG_SUCCESS: {
+      return {
+        ...state,
+        isLoadingTasks: false,
+        deleteTaskTagSuccess: true,
+        totalTasks: countRemainingTasks({ currentTasks: state.tasks }),
+        tasks: modifyTasksAfterTagDelete({
+          currentTasks: state.tasks,
+          tagId: action.payload,
+        }),
+      };
+    }
+
+    case DELETE_TASK_TAG_ERROR: {
+      return {
+        ...state,
+        error: action.payload.error,
+        deleteTaskTagSuccess: false,
         isLoadingTasks: false,
       };
     }
