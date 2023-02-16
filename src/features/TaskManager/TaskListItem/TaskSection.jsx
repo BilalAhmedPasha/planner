@@ -13,8 +13,7 @@ const renderCardOutsideCollapse = ({
   tasks,
   user,
   messageApi,
-  selectedCardId,
-  setSelectedCardId,
+  selectedTaskDetails,
   setSelectedTaskDetails,
   sectionId,
   moveSectionTask,
@@ -32,8 +31,7 @@ const renderCardOutsideCollapse = ({
             moveSectionTask(id, atIndex, tasks, sectionId)
           }
           findCard={(id) => findSectionTask(id, tasks)}
-          selectedCardId={selectedCardId}
-          setSelectedCardId={setSelectedCardId}
+          selectedTaskDetails={selectedTaskDetails}
           setSelectedTaskDetails={setSelectedTaskDetails}
           isInCollapse={false}
         />
@@ -45,8 +43,7 @@ const renderCardOutsideCollapse = ({
 const TaskListSection = ({
   sectionalTasks,
   setSectionTasks,
-  selectedCardId,
-  setSelectedCardId,
+  selectedTaskDetails,
   setSelectedTaskDetails,
   messageApi,
   user,
@@ -96,8 +93,7 @@ const TaskListSection = ({
                   tasks: sectionalTasks[each].tasks,
                   user,
                   messageApi,
-                  selectedCardId,
-                  setSelectedCardId,
+                  selectedTaskDetails,
                   setSelectedTaskDetails,
                   sectionId: each,
                   moveSectionTask,
@@ -154,8 +150,7 @@ const TaskListSection = ({
                         findCard={(id) =>
                           findSectionTask(id, sectionalTasks[each].tasks)
                         }
-                        selectedCardId={selectedCardId}
-                        setSelectedCardId={setSelectedCardId}
+                        selectedTaskDetails={selectedTaskDetails}
                         setSelectedTaskDetails={setSelectedTaskDetails}
                         isInCollapse={true}
                       />
@@ -173,8 +168,7 @@ const TaskListSection = ({
             tasks: sectionalTasks[each].tasks,
             user,
             messageApi,
-            selectedCardId,
-            setSelectedCardId,
+            selectedTaskDetails,
             setSelectedTaskDetails,
             sectionId: each,
             moveSectionTask,

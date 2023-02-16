@@ -194,7 +194,7 @@ const TaskItem = ({
   taskDetails,
   lists,
   tags,
-  setSelectedCardId,
+  selectedTaskDetails,
   setSelectedTaskDetails,
 }) => {
   const { confirm } = Modal;
@@ -464,10 +464,24 @@ const TaskItem = ({
         justifyContent: "space-between",
         cursor: "pointer",
       }}
-      onClick={() => {
+      onClick={(e) => {
+        e.stopPropagation();
         setShowCheckBoxMenu(false);
-        setSelectedCardId(taskDetails.id);
-        setSelectedTaskDetails(taskDetails);
+        if (e.nativeEvent.shiftKey) {
+          setSelectedTaskDetails((prevState) => {
+            if (!prevState.find((each) => each.id === taskDetails.id)) {
+              return [...prevState, taskDetails];
+            } else {
+              if (selectedTaskDetails.length !== 1) {
+                return prevState.filter((each) => each.id !== taskDetails.id);
+              } else {
+                return [...prevState];
+              }
+            }
+          });
+        } else {
+          setSelectedTaskDetails([taskDetails]);
+        }
       }}
       onKeyDown={keyPress}
     >

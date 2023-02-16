@@ -21,6 +21,7 @@ const StyledDiv = styled.div`
   }
   background-color: ${(props) =>
     props.isSelected ? props.colorPrimaryBg : props.colorBgContainer};
+  user-select: none;
 `;
 
 const ItemTypes = {
@@ -33,8 +34,7 @@ const Card = ({
   cardDetails,
   moveCard,
   findCard,
-  selectedCardId,
-  setSelectedCardId,
+  selectedTaskDetails,
   setSelectedTaskDetails,
   isInCollapse,
 }) => {
@@ -91,6 +91,10 @@ const Card = ({
   // TODO
   const enableDragAndDrop = false;
 
+  const checkIfSelected = (id) => {
+    return selectedTaskDetails?.find((each) => each.id === id);
+  };
+
   return (
     <StyledDiv
       ref={
@@ -99,7 +103,7 @@ const Card = ({
           : (node) => drag(drop(node)) || null
       }
       opacity={opacity}
-      isSelected={selectedCardId === id}
+      isSelected={checkIfSelected(id)}
       isInCollapse={isInCollapse}
       colorBgContainer={colorBgContainer}
       colorPrimaryBg={colorPrimaryBg}
@@ -113,7 +117,7 @@ const Card = ({
         taskDetails={cardDetails}
         lists={lists}
         tags={tags}
-        setSelectedCardId={setSelectedCardId}
+        selectedTaskDetails={selectedTaskDetails}
         setSelectedTaskDetails={setSelectedTaskDetails}
       />
     </StyledDiv>

@@ -128,10 +128,9 @@ const moreMenuItemList = [
 const TaskListContainer = ({
   user,
   currentSection,
-  selectedCardId,
-  setSelectedCardId,
   isMenuCollapsed,
   setIsMenuCollapsed,
+  selectedTaskDetails,
   setSelectedTaskDetails,
 }) => {
   const {
@@ -413,8 +412,7 @@ const TaskListContainer = ({
           user={user}
           tasks={sortedSectionTasks}
           sortBy={sortBy}
-          selectedCardId={selectedCardId}
-          setSelectedCardId={setSelectedCardId}
+          selectedTaskDetails={selectedTaskDetails}
           setSelectedTaskDetails={setSelectedTaskDetails}
         />
       </Spinner>
