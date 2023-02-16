@@ -105,7 +105,7 @@ const TaskDetailsContainer = ({ user, selectedTaskDetails }) => {
             />
           </Form>
         ) : (
-          <NotTaskSelected />
+          <NotTaskSelected selectedTaskDetails={selectedTaskDetails} />
         )}
       </Spinner>
     </Layout.Content>
