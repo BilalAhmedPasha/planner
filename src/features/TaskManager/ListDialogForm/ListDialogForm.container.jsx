@@ -62,7 +62,6 @@ const ListDialog = ({
       color: e.color?.hex,
       createdTime: dayjs.utc().format(),
       modifiedTime: dayjs.utc().format(),
-      hidden: e.hidden,
       type: LISTS,
     };
     dispatch(addListAction(user.uid, newList)).then((response) => {
@@ -82,7 +81,6 @@ const ListDialog = ({
       color: e.color?.hex,
       createdTime: formValues.createdTime,
       modifiedTime: dayjs.utc().format(),
-      hidden: e.hidden,
       type: LISTS,
     };
     dispatch(editListAction(user.uid, modifiedList, formValues.id)).then(
@@ -103,22 +101,16 @@ const ListDialog = ({
       : { hex: formValues.color }
   );
 
-  const [checkedHidden, setCheckedHidden] = useState(
-    formType === CREATE ? false : formValues.hidden
-  );
-
   const DEFAULT_VALUES = useMemo(() => {
     if (formType === CREATE) {
       return {
         name: "",
         color: { hex: DEFAULT_LIST_COLOR },
-        hidden: false,
       };
     } else if (formType === EDIT) {
       return {
         name: formValues.label,
         color: { hex: formValues.color },
-        hidden: formValues.hidden,
       };
     }
   }, [formType, formValues]);
@@ -161,8 +153,6 @@ const ListDialog = ({
           handleColorChange={(color) => {
             return setColor(color);
           }}
-          hidden={checkedHidden}
-          handleHiddenChange={() => setCheckedHidden(!checkedHidden)}
           initialValues={DEFAULT_VALUES}
           layout="vertical"
         />
