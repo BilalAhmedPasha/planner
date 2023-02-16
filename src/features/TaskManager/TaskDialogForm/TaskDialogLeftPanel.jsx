@@ -58,6 +58,7 @@ const TaskDialogLeftPanel = ({ form, height, setDisableAddButton }) => {
             maxLength={25}
             placeholder={"Task name"}
             onInput={handleTaskNameChange}
+            showCount
           />
         </StyledFormItem>
         <StyledFormItem name="description">

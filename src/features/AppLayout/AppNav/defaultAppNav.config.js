@@ -1,15 +1,15 @@
 import {
   FormOutlined,
   CalendarOutlined,
-  RedoOutlined,
+  // RedoOutlined,
 } from "@ant-design/icons";
 
 export const defaultAppNav = [
   {
-    label: "Inbox",
+    label: "Tasks",
     icon: FormOutlined,
-    redirectUrl: "/tasks/inbox",
-    id: "inbox",
+    redirectUrl: "/tasks/all",
+    id: "tasks",
   },
   {
     label: "Calendar",
@@ -17,10 +17,10 @@ export const defaultAppNav = [
     redirectUrl: "/calendar",
     id: "calendar",
   },
-  {
-    label: "Habits",
-    icon: RedoOutlined,
-    redirectUrl: "/habits",
-    id: "habits",
-  },
+  // {
+  //   label: "Habits",
+  //   icon: RedoOutlined,
+  //   redirectUrl: "/habits",
+  //   id: "habits",
+  // },
 ];
