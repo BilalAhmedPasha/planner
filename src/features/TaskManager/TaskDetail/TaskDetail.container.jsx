@@ -13,7 +13,7 @@ import {
   handleEditTask,
 } from "../TaskList/TaskList.utils";
 
-const TaskDetailsContainer = ({ user, taskDetails }) => {
+const TaskDetailsContainer = ({ user, selectedTaskDetails }) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -22,20 +22,24 @@ const TaskDetailsContainer = ({ user, taskDetails }) => {
   const [formType, setFormType] = useState(VIEW);
 
   const formValues = useMemo(() => {
-    return getFormValueFromTaskDetail({ taskDetails: taskDetails });
-    // eslint-disable-next-line
-  }, [taskDetails]);
+    if (selectedTaskDetails.length === 1) {
+      return getFormValueFromTaskDetail({
+        taskDetails: selectedTaskDetails[0],
+      });
+    }
+  }, [selectedTaskDetails]);
 
   const [lastSavedFormValues, setLastSavedFormValues] = useState(
-    getFormValueFromTaskDetail({ taskDetails: taskDetails })
+    selectedTaskDetails.length === 1 &&
+      getFormValueFromTaskDetail({ taskDetails: selectedTaskDetails[0] })
   );
 
   useEffect(() => {
-    setLastSavedFormValues(
-      getFormValueFromTaskDetail({ taskDetails: taskDetails })
-    );
-    // eslint-disable-next-line
-  }, [taskDetails?.id]);
+    selectedTaskDetails.length === 1 &&
+      setLastSavedFormValues(
+        getFormValueFromTaskDetail({ taskDetails: selectedTaskDetails[0] })
+      );
+  }, [selectedTaskDetails]);
 
   useEffect(() => {
     form.setFieldsValue(formValues);
@@ -73,13 +77,13 @@ const TaskDetailsContainer = ({ user, taskDetails }) => {
       }}
     >
       <Spinner spinning={isLoadingTasks} indicator={Loading(LOADER_SIZE)}>
-        {taskDetails ? (
+        {selectedTaskDetails.length === 1 ? (
           <Form
             form={form}
             name="detail_form"
             onFinish={(formValues) =>
               handleEditTask({
-                taskDetails,
+                taskDetails: selectedTaskDetails[0],
                 formValues,
                 dispatch,
                 user,
@@ -93,7 +97,7 @@ const TaskDetailsContainer = ({ user, taskDetails }) => {
             initialValues={formValues}
           >
             <TaskDetails
-              taskDetails={taskDetails}
+              taskDetails={selectedTaskDetails[0]}
               form={form}
               formType={formType}
               setFormType={setFormType}

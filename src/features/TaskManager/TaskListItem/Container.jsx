@@ -25,8 +25,7 @@ const Container = ({
   user,
   tasks,
   sortBy,
-  selectedCardId,
-  setSelectedCardId,
+  selectedTaskDetails,
   setSelectedTaskDetails,
 }) => {
   const [sectionalTasks, setSectionalTasks] = useState(
@@ -125,8 +124,7 @@ const Container = ({
       <TaskListSection
         sectionalTasks={sectionalTasks}
         setSectionTasks={setSectionalTasks}
-        selectedCardId={selectedCardId}
-        setSelectedCardId={setSelectedCardId}
+        selectedTaskDetails={selectedTaskDetails}
         setSelectedTaskDetails={setSelectedTaskDetails}
         messageApi={messageApi}
         user={user}

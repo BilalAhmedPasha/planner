@@ -22,11 +22,10 @@ const TaskManager = ({ user }) => {
   }, [userSetting, dispatch, user.uid]);
 
   const [messageApi, contextHolder] = message.useMessage();
-  const [selectedCardId, setSelectedCardId] = useState("");
   const [currentSelectedTaskSection, setCurrentSelectedTaskSection] =
     useState();
   const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
-  const [selectedTaskDetails, setSelectedTaskDetails] = useState(null);
+  const [selectedTaskDetails, setSelectedTaskDetails] = useState([]);
 
   return (
     <>
@@ -35,20 +34,21 @@ const TaskManager = ({ user }) => {
         messageApi={messageApi}
         currentSelectedTaskSection={currentSelectedTaskSection}
         setCurrentSelectedTaskSection={setCurrentSelectedTaskSection}
-        setSelectedCardId={setSelectedCardId}
         collapsed={isMenuCollapsed}
         setSelectedTaskDetails={setSelectedTaskDetails}
       />
       <TaskListContainer
         user={user}
         currentSection={currentSelectedTaskSection}
-        selectedCardId={selectedCardId}
-        setSelectedCardId={setSelectedCardId}
         isMenuCollapsed={isMenuCollapsed}
         setIsMenuCollapsed={setIsMenuCollapsed}
+        selectedTaskDetails={selectedTaskDetails}
         setSelectedTaskDetails={setSelectedTaskDetails}
       />
-      <TaskDetailsContainer user={user} taskDetails={selectedTaskDetails} />
+      <TaskDetailsContainer
+        user={user}
+        selectedTaskDetails={selectedTaskDetails}
+      />
       {contextHolder}
     </>
   );
