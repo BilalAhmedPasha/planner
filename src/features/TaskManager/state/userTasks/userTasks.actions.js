@@ -12,6 +12,7 @@ import {
   hardDeleteListTaskApi,
   deleteTaskTagApi,
   softDeleteMultipleTaskApi,
+  hardDeleteMultipleTaskApi,
   softRestoreMultipleTaskApi,
 } from "../../../../services/userTasks.api";
 import {
@@ -54,6 +55,9 @@ import {
   SOFT_RESTORE_MULTIPLE_TASK,
   SOFT_RESTORE_MULTIPLE_TASK_SUCCESS,
   SOFT_RESTORE_MULTIPLE_TASK_ERROR,
+  HARD_DELETE_MULTIPLE_TASK,
+  HARD_DELETE_MULTIPLE_TASK_SUCCESS,
+  HARD_DELETE_MULTIPLE_TASK_ERROR,
 } from "./userTasks.reducer";
 
 export const fetchTasks = () => ({
@@ -258,6 +262,22 @@ export const softRestoreMultipleTaskSuccess = (payload) => ({
 
 export const softRestoreMultipleTaskFailure = (error) => ({
   type: SOFT_RESTORE_MULTIPLE_TASK_ERROR,
+  payload: { error },
+});
+
+export const hardDeleteMultipleTask = (payload) => ({
+  type: HARD_DELETE_MULTIPLE_TASK,
+  payload,
+});
+
+export const hardDeleteMultipleTaskSuccess = (payload) => ({
+  type: HARD_DELETE_MULTIPLE_TASK_SUCCESS,
+  payload: payload,
+  success: SUCCESS,
+});
+
+export const hardDeleteMultipleTaskFailure = (error) => ({
+  type: HARD_DELETE_MULTIPLE_TASK_ERROR,
   payload: { error },
 });
 
@@ -475,5 +495,16 @@ export const softRestoreMultipleTaskAction =
       return dispatch(softRestoreMultipleTaskSuccess(selectedTasks));
     } catch (error) {
       return dispatch(softRestoreMultipleTaskFailure(error));
+    }
+  };
+
+export const hardDeleteMultipleTaskAction =
+  (userId, selectedTasks) => async (dispatch) => {
+    dispatch(hardDeleteMultipleTask());
+    try {
+      await hardDeleteMultipleTaskApi(userId, selectedTasks);
+      return dispatch(hardDeleteMultipleTaskSuccess(selectedTasks));
+    } catch (error) {
+      return dispatch(hardDeleteMultipleTaskFailure(error));
     }
   };
