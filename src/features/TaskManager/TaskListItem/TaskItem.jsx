@@ -575,6 +575,8 @@ const TaskItem = ({
                     taskDetails.isCompleted || taskDetails.isWontDo
                       ? colorBorder
                       : colorTextLabel,
+                  opacity: selectedTaskDetails.length > 1 ? 0.3 : 1,
+                  transition: "0.3s all ease",
                 }}
               />
             }
@@ -588,6 +590,7 @@ const TaskItem = ({
                 failureMessage: "Failed to restore task",
               });
             }}
+            disabled={selectedTaskDetails.length > 1}
           />
         ) : (
           <Button
@@ -599,6 +602,8 @@ const TaskItem = ({
                     taskDetails.isCompleted || taskDetails.isWontDo
                       ? colorBorder
                       : colorTextLabel,
+                  opacity: selectedTaskDetails.length > 1 ? 0.3 : 1,
+                  transition: "0.3s all ease",
                 }}
               />
             }
@@ -614,11 +619,12 @@ const TaskItem = ({
                 failureMessage: "Failed to delete task",
               });
             }}
+            disabled={selectedTaskDetails.length > 1}
           />
         )}
         {taskDetails.isDeleted ? (
           <Button
-            type="danger"
+            type="text"
             icon={
               <DeleteFilled
                 style={{
@@ -626,6 +632,8 @@ const TaskItem = ({
                     taskDetails.isCompleted || taskDetails.isWontDo
                       ? colorBorder
                       : colorError,
+                  opacity: selectedTaskDetails.length > 1 ? 0.3 : 1,
+                  transition: "0.3s all ease",
                 }}
               />
             }
@@ -641,6 +649,7 @@ const TaskItem = ({
                 failureMessage: "Failed to delete task",
               });
             }}
+            disabled={selectedTaskDetails.length > 1}
           />
         ) : null}
       </div>
