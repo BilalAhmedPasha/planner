@@ -11,6 +11,8 @@ import {
   hardDeleteSingleTaskApi,
   hardDeleteListTaskApi,
   deleteTaskTagApi,
+  softDeleteMultipleTaskApi,
+  softRestoreMultipleTaskApi,
 } from "../../../../services/userTasks.api";
 import {
   FETCH_TASKS,
@@ -46,6 +48,12 @@ import {
   DELETE_TASK_TAG,
   DELETE_TASK_TAG_SUCCESS,
   DELETE_TASK_TAG_ERROR,
+  SOFT_DELETE_MULTIPLE_TASK,
+  SOFT_DELETE_MULTIPLE_TASK_SUCCESS,
+  SOFT_DELETE_MULTIPLE_TASK_ERROR,
+  SOFT_RESTORE_MULTIPLE_TASK,
+  SOFT_RESTORE_MULTIPLE_TASK_SUCCESS,
+  SOFT_RESTORE_MULTIPLE_TASK_ERROR,
 } from "./userTasks.reducer";
 
 export const fetchTasks = () => ({
@@ -218,6 +226,38 @@ export const deleteTaskTagSuccess = (payload) => ({
 
 export const deleteTaskTagFailure = (error) => ({
   type: DELETE_TASK_TAG_ERROR,
+  payload: { error },
+});
+
+export const softDeleteMultipleTask = (payload) => ({
+  type: SOFT_DELETE_MULTIPLE_TASK,
+  payload,
+});
+
+export const softDeleteMultipleTaskSuccess = (payload) => ({
+  type: SOFT_DELETE_MULTIPLE_TASK_SUCCESS,
+  payload: payload,
+  success: SUCCESS,
+});
+
+export const softDeleteMultipleTaskFailure = (error) => ({
+  type: SOFT_DELETE_MULTIPLE_TASK_ERROR,
+  payload: { error },
+});
+
+export const softRestoreMultipleTask = (payload) => ({
+  type: SOFT_RESTORE_MULTIPLE_TASK,
+  payload,
+});
+
+export const softRestoreMultipleTaskSuccess = (payload) => ({
+  type: SOFT_RESTORE_MULTIPLE_TASK_SUCCESS,
+  payload: payload,
+  success: SUCCESS,
+});
+
+export const softRestoreMultipleTaskFailure = (error) => ({
+  type: SOFT_RESTORE_MULTIPLE_TASK_ERROR,
   payload: { error },
 });
 
@@ -415,3 +455,25 @@ export const deleteTaskTagAction = (userId, currentTag) => async (dispatch) => {
     return dispatch(deleteTaskTagFailure(error));
   }
 };
+
+export const softDeleteMultipleTaskAction =
+  (userId, selectedTasks) => async (dispatch) => {
+    dispatch(softDeleteMultipleTask());
+    try {
+      await softDeleteMultipleTaskApi(userId, selectedTasks);
+      return dispatch(softDeleteMultipleTaskSuccess(selectedTasks));
+    } catch (error) {
+      return dispatch(softDeleteMultipleTaskFailure(error));
+    }
+  };
+
+export const softRestoreMultipleTaskAction =
+  (userId, selectedTasks) => async (dispatch) => {
+    dispatch(softRestoreMultipleTask());
+    try {
+      await softRestoreMultipleTaskApi(userId, selectedTasks);
+      return dispatch(softRestoreMultipleTaskSuccess(selectedTasks));
+    } catch (error) {
+      return dispatch(softRestoreMultipleTaskFailure(error));
+    }
+  };

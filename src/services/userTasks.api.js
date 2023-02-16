@@ -215,3 +215,21 @@ export const deleteTaskTagApi = async (userId, currentTag) => {
     await updateDoc(docRef, modifiedTask);
   });
 };
+
+export const softDeleteMultipleTaskApi = async (userId, selectedTasks) => {
+  const userDocRef = doc(db, "users", userId);
+  const taskCollectionRef = collection(userDocRef, TASKS);
+  selectedTasks.forEach(async (task) => {
+    const docRef = doc(taskCollectionRef, task.id);
+    await updateDoc(docRef, { ...task, isDeleted: 1 });
+  });
+};
+
+export const softRestoreMultipleTaskApi = async (userId, selectedTasks) => {
+  const userDocRef = doc(db, "users", userId);
+  const taskCollectionRef = collection(userDocRef, TASKS);
+  selectedTasks.forEach(async (task) => {
+    const docRef = doc(taskCollectionRef, task.id);
+    await updateDoc(docRef, { ...task, isDeleted: 0 });
+  });
+};

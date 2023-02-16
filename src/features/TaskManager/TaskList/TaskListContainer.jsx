@@ -39,6 +39,8 @@ import Icon, {
   FlagOutlined,
   ClockCircleOutlined,
   ArrowDownOutlined,
+  DeleteFilled,
+  UndoOutlined,
 } from "@ant-design/icons";
 import { ReactComponent as SortTextSvg } from "../../../svg/sort-text.svg";
 import dayjs from "../../../utils/dateTime.utils";
@@ -55,7 +57,11 @@ import {
   getWontDoTasks,
 } from "../TaskListItem/TaskUtils";
 import { DAY, TIME_ZONE } from "../../../constants/dateTime.constants";
-import { hardDeleteTaskAction } from "../state/userTasks/userTasks.actions";
+import {
+  hardDeleteTaskAction,
+  softDeleteMultipleTaskAction,
+  softRestoreMultipleTaskAction,
+} from "../state/userTasks/userTasks.actions";
 import Spinner from "../../../components/Spinner";
 import { PRIORITY, TIME, TITLE } from "../../../constants/sort.constants";
 import { useParams } from "react-router-dom";
@@ -244,6 +250,52 @@ const TaskListContainer = ({
     });
   };
 
+  const handleMultipleSelection = ({
+    successMessage,
+    failureMessage,
+    dispatchAction,
+  }) => {
+    dispatch(dispatchAction(user.uid, selectedTaskDetails)).then((response) => {
+      setSelectedTaskDetails([]);
+      if (response.success === SUCCESS) {
+        deleteSuccess({ messageText: successMessage });
+      } else {
+        deleteFailed({ messageText: failureMessage });
+      }
+    });
+  };
+
+  const showMultiSelectConfirm = ({
+    content,
+    successMessage,
+    failureMessage,
+    onOkHandler,
+    dispatchAction,
+    title,
+    okText,
+    okType
+  }) => {
+    confirm({
+      icon: <ExclamationCircleOutlined />,
+      title: title,
+      content: content,
+      centered: true,
+      okText: okText,
+      okType: okType,
+      cancelText: "Cancel",
+      onOk() {
+        onOkHandler({
+          successMessage: successMessage,
+          failureMessage: failureMessage,
+          dispatchAction: dispatchAction,
+        });
+      },
+      onCancel() {
+        Modal.destroyAll();
+      },
+    });
+  };
+
   const [hideAddIcon, setHideAddIcon] = useState(false);
   useEffect(() => {
     setHideAddIcon(
@@ -334,8 +386,33 @@ const TaskListContainer = ({
               {currentSection?.label}
             </Typography.Text>
           </Space>
+
           {!hideAddIcon && (
             <Space size="small" direction="horizontal">
+              {currentSection?.id !== DELETED && (
+                <Button
+                  type="text"
+                  icon={<DeleteFilled style={{ fontSize: "1rem" }} />}
+                  danger
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    showMultiSelectConfirm({
+                      content: `Delete these ${selectedTaskDetails.length} tasks?`,
+                      successMessage: `${selectedTaskDetails.length} tasks deleted`,
+                      failureMessage: `Failed to delete ${selectedTaskDetails.length} tasks`,
+                      onOkHandler: handleMultipleSelection,
+                      dispatchAction: softDeleteMultipleTaskAction,
+                      title: "Delete",
+                      okText: "Delete",
+                      okType: "danger",
+                    });
+                  }}
+                  style={{
+                    opacity: selectedTaskDetails.length > 1 ? 1 : 0,
+                    transition: "0.3s all ease",
+                  }}
+                />
+              )}
               <Dropdown
                 menu={{
                   items: moreMenuItemList,
@@ -372,10 +449,6 @@ const TaskListContainer = ({
                       marginLeft: "0.2rem",
                     }}
                   />
-                  {/* <Icon
-                    component={SortSvg}
-                    style={{ fontSize: "1.25rem", color: colorTextBase }}
-                  /> */}
                 </div>
               </Dropdown>
               <Button
@@ -387,12 +460,36 @@ const TaskListContainer = ({
             </Space>
           )}
           {currentSection?.id === DELETED && (
-            <Button
-              size="large"
-              type="text"
-              icon={<ClearOutlined />}
-              onClick={handlePermanentDelete}
-            />
+            <Space size="small">
+              <Button
+                type="text"
+                icon={<UndoOutlined style={{ fontSize: "1rem" }} />}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  showMultiSelectConfirm({
+                    content: `Restore these ${selectedTaskDetails.length} tasks?`,
+                    successMessage: `${selectedTaskDetails.length} tasks restored`,
+                    failureMessage: `Failed to restore ${selectedTaskDetails.length} tasks`,
+                    onOkHandler: handleMultipleSelection,
+                    dispatchAction: softRestoreMultipleTaskAction,
+                    title: "Restore",
+                    okText: "Restore",
+                    okType: "primary",
+                  });
+                }}
+                style={{
+                  opacity: selectedTaskDetails.length > 1 ? 1 : 0,
+                  transition: "0.3s all ease",
+                }}
+              />
+
+              <Button
+                size="large"
+                type="text"
+                icon={<ClearOutlined />}
+                onClick={handlePermanentDelete}
+              />
+            </Space>
           )}
         </div>
         {openAddTaskDialog && (
