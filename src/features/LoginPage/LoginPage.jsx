@@ -32,7 +32,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (user !== null) {
-      history.push("/tasks/inbox");
+      history.push("/tasks/all");
     }
   }, [history, user]);
 
