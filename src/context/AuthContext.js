@@ -1,4 +1,4 @@
-import { useContext, createContext, useEffect, useState } from "react";
+import { useContext, createContext, useEffect, useState, useMemo } from "react";
 import {
   GoogleAuthProvider,
   signInWithPopup,
@@ -21,17 +21,17 @@ export const AuthContextProvider = ({ children }) => {
 
   // Google auth
   const googleSignIn = () => {
+    setLoading(true);
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({
       prompt: "select_account",
     });
-    setLoading(true);
     signInWithPopup(auth, provider)
       .then((res) => {
         console.log(res);
       })
       .catch((error) => {
-        setError(error.code);
+        setError(error);
       })
       .finally(() => {
         setLoading(false);
@@ -41,12 +41,16 @@ export const AuthContextProvider = ({ children }) => {
   // Github auth
   const githubSignIn = () => {
     setLoading(true);
-    signInWithPopup(auth, new GithubAuthProvider())
+    const provider = new GithubAuthProvider();
+    provider.setCustomParameters({
+      prompt: "select_account",
+    });
+    signInWithPopup(auth, provider)
       .then((res) => {
         console.log(res);
       })
       .catch((error) => {
-        setError(error.code);
+        setError(error);
       })
       .finally(() => {
         setLoading(false);
@@ -105,22 +109,22 @@ export const AuthContextProvider = ({ children }) => {
     return sendPasswordResetEmail(auth, email);
   };
 
+  const contextValue = useMemo(() => {
+    return {
+      googleSignIn,
+      logOut,
+      user,
+      registerUserWithEmailAndPassword,
+      signInUserWithEmailAndPassword,
+      forgotPassword,
+      loading,
+      error,
+      githubSignIn,
+    };
+  }, [error, loading, user]);
+
   return (
-    <AuthContext.Provider
-      value={{
-        googleSignIn,
-        logOut,
-        user,
-        registerUserWithEmailAndPassword,
-        signInUserWithEmailAndPassword,
-        forgotPassword,
-        loading,
-        error,
-        githubSignIn,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };
 
