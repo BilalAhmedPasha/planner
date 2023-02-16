@@ -28,6 +28,7 @@ import {
 import Loading from "../../../components/Loading";
 import Spinner from "../../../components/Spinner";
 import { TASK_NAV_BADGE_COLOR } from "../../../constants/color.constants";
+import { hardDeleteListTaskAction } from "../state/userTasks/userTasks.actions";
 
 const renderColorDot = (color) => {
   return (
@@ -169,22 +170,34 @@ const TaskNav = ({
 
   const history = useHistory();
   const { documentId } = useParams();
+
   const handleDelete = ({
     currentItem,
     deleteAction,
     successMessage,
     failureMessage,
   }) => {
-    dispatch(deleteAction(user.uid, currentItem)).then((response) => {
-      if (response.success === SUCCESS) {
-        deleteSuccess({ messageText: successMessage });
-        if (documentId === currentItem.id) {
-          history.push("/tasks/inbox");
+    dispatch(hardDeleteListTaskAction(user.uid, currentItem))
+      .then((response) => {
+        if (response.success === SUCCESS) {
+          return dispatch(deleteAction(user.uid, currentItem));
+        } else {
+          deleteFailed({ messageText: failureMessage });
         }
-      } else {
+      })
+      .then((response) => {
+        if (response.success === SUCCESS) {
+          deleteSuccess({ messageText: successMessage });
+          if (documentId === currentItem.id) {
+            history.push("/tasks/all");
+          }
+        } else {
+          deleteFailed({ messageText: failureMessage });
+        }
+      })
+      .catch(() => {
         deleteFailed({ messageText: failureMessage });
-      }
-    });
+      });
   };
 
   const handleMoreMenu = ({ e, currentItem }) => {

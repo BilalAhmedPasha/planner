@@ -9,29 +9,30 @@ import {
   query,
   where,
 } from "@firebase/firestore";
+import { TASKS } from "../constants/app.constants";
 
 export const fetchTasksApi = async (userId) => {
   const userDocRef = doc(db, "users", userId);
-  const taskCollectionRef = collection(userDocRef, "tasks");
+  const taskCollectionRef = collection(userDocRef, TASKS);
   return getDocs(taskCollectionRef);
 };
 
 export const addTaskApi = (userId, newTask) => {
   const userDocRef = doc(db, "users", userId);
-  const taskCollectionRef = collection(userDocRef, "tasks");
+  const taskCollectionRef = collection(userDocRef, TASKS);
   return addDoc(taskCollectionRef, newTask);
 };
 
 export const editTaskApi = (userId, modifiedTask, taskId) => {
   const userDocRef = doc(db, "users", userId);
-  const taskCollectionRef = collection(userDocRef, "tasks");
+  const taskCollectionRef = collection(userDocRef, TASKS);
   const docRef = doc(taskCollectionRef, taskId);
   return updateDoc(docRef, modifiedTask);
 };
 
 export const softDeleteTaskApi = (userId, currentTask) => {
   const userDocRef = doc(db, "users", userId);
-  const taskCollectionRef = collection(userDocRef, "tasks");
+  const taskCollectionRef = collection(userDocRef, TASKS);
   const docRef = doc(taskCollectionRef, currentTask.id);
   return updateDoc(docRef, {
     ...currentTask,
@@ -41,7 +42,7 @@ export const softDeleteTaskApi = (userId, currentTask) => {
 
 export const restoreTaskApi = (userId, currentTask) => {
   const userDocRef = doc(db, "users", userId);
-  const taskCollectionRef = collection(userDocRef, "tasks");
+  const taskCollectionRef = collection(userDocRef, TASKS);
   const docRef = doc(taskCollectionRef, currentTask.id);
   return updateDoc(docRef, {
     ...currentTask,
@@ -58,7 +59,7 @@ export const completeTaskApi = (
   shouldCreateNewTask
 ) => {
   const userDocRef = doc(db, "users", userId);
-  const taskCollectionRef = collection(userDocRef, "tasks");
+  const taskCollectionRef = collection(userDocRef, TASKS);
   const docRef = doc(taskCollectionRef, taskDetails.id);
 
   if (!taskDetails.isRepeating) {
@@ -116,7 +117,7 @@ export const wontDoTaskApi = (
   shouldCreateNewTask
 ) => {
   const userDocRef = doc(db, "users", userId);
-  const taskCollectionRef = collection(userDocRef, "tasks");
+  const taskCollectionRef = collection(userDocRef, TASKS);
   const docRef = doc(taskCollectionRef, taskDetails.id);
 
   if (!taskDetails.isRepeating) {
@@ -167,19 +168,31 @@ export const wontDoTaskApi = (
 
 export const hardDeleteTaskApi = async (userId) => {
   const userDocRef = doc(db, "users", userId);
-  const taskCollectionRef = collection(userDocRef, "tasks");
+  const taskCollectionRef = collection(userDocRef, TASKS);
   const q = query(taskCollectionRef, where("isDeleted", "==", 1));
   const snapShot = await getDocs(q);
-  const results = snapShot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+  const results = snapShot.docs.map((doc) => ({ id: doc.id }));
   results.forEach(async (result) => {
-    const docRef = doc(db, "users", userId, "tasks", result.id);
+    const docRef = doc(db, "users", userId, TASKS, result.id);
     await deleteDoc(docRef);
   });
 };
 
 export const hardDeleteSingleTaskApi = async (userId, currentTask) => {
   const userDocRef = doc(db, "users", userId);
-  const taskCollectionRef = collection(userDocRef, "tasks");
+  const taskCollectionRef = collection(userDocRef, TASKS);
   const docRef = doc(taskCollectionRef, currentTask.id);
   return deleteDoc(docRef);
+};
+
+export const hardDeleteListTaskApi = async (userId, currentList) => {
+  const userDocRef = doc(db, "users", userId);
+  const taskCollectionRef = collection(userDocRef, TASKS);
+  const q = query(taskCollectionRef, where("listId", "==", currentList.id));
+  const snapShot = await getDocs(q);
+  const listTasks = snapShot.docs.map((doc) => ({ id: doc.id }));
+  listTasks.forEach(async (task) => {
+    const docRef = doc(db, "users", userId, TASKS, task.id);
+    await deleteDoc(docRef);
+  });
 };

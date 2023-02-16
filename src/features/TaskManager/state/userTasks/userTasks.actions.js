@@ -9,6 +9,7 @@ import {
   hardDeleteTaskApi,
   restoreTaskApi,
   hardDeleteSingleTaskApi,
+  hardDeleteListTaskApi,
 } from "../../../../services/userTasks.api";
 import {
   FETCH_TASKS,
@@ -38,6 +39,9 @@ import {
   HARD_DELETE_TASK,
   HARD_DELETE_TASK_SUCCESS,
   HARD_DELETE_TASK_ERROR,
+  HARD_DELETE_LIST_TASK,
+  HARD_DELETE_LIST_TASK_SUCCESS,
+  HARD_DELETE_LIST_TASK_ERROR,
 } from "./userTasks.reducer";
 
 export const fetchTasks = () => ({
@@ -178,6 +182,22 @@ export const hardDeleteTaskSuccess = () => ({
 
 export const hardDeleteTaskFailure = (error) => ({
   type: HARD_DELETE_TASK_ERROR,
+  payload: { error },
+});
+
+export const hardDeleteListTask = (payload) => ({
+  type: HARD_DELETE_LIST_TASK,
+  payload,
+});
+
+export const hardDeleteListTaskSuccess = (payload) => ({
+  type: HARD_DELETE_LIST_TASK_SUCCESS,
+  payload: payload,
+  success: SUCCESS,
+});
+
+export const hardDeleteListTaskFailure = (error) => ({
+  type: HARD_DELETE_LIST_TASK_ERROR,
   payload: { error },
 });
 
@@ -354,3 +374,14 @@ export const hardDeleteTaskAction = (userId) => async (dispatch) => {
     return dispatch(hardDeleteTaskFailure(error));
   }
 };
+
+export const hardDeleteListTaskAction =
+  (userId, currentList) => async (dispatch) => {
+    dispatch(hardDeleteListTask());
+    try {
+      await hardDeleteListTaskApi(userId, currentList);
+      return dispatch(hardDeleteListTaskSuccess(currentList.id));
+    } catch (error) {
+      return dispatch(hardDeleteListTaskFailure(error));
+    }
+  };

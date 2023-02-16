@@ -71,9 +71,9 @@ export const deleteList = (payload) => ({
   payload,
 });
 
-export const deleteListSuccess = ({ response }) => ({
+export const deleteListSuccess = (payload) => ({
   type: DELETE_LIST_SUCCESS,
-  payload: response,
+  payload: payload,
   success: SUCCESS,
 });
 
@@ -130,11 +130,7 @@ export const deleteListAction = (userId, currentList) => async (dispatch) => {
   dispatch(deleteList());
   try {
     await deleteListApi(userId, currentList);
-    return dispatch(
-      deleteListSuccess({
-        response: { id: currentList.id },
-      })
-    );
+    return dispatch(deleteListSuccess(currentList.id));
   } catch (error) {
     return dispatch(deleteListFailure(error));
   }
