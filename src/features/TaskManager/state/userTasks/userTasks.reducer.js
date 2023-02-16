@@ -55,6 +55,12 @@ export const SOFT_RESTORE_MULTIPLE_TASK_SUCCESS =
 export const SOFT_RESTORE_MULTIPLE_TASK_ERROR =
   "SOFT_RESTORE_MULTIPLE_TASK_ERROR";
 
+export const HARD_DELETE_MULTIPLE_TASK = "HARD_DELETE_MULTIPLE_TASK";
+export const HARD_DELETE_MULTIPLE_TASK_SUCCESS =
+  "HARD_DELETE_MULTIPLE_TASK_SUCCESS";
+export const HARD_DELETE_MULTIPLE_TASK_ERROR =
+  "HARD_DELETE_MULTIPLE_TASK_ERROR";
+
 export const INITIAL_STATE = {
   isLoadingTasks: false,
   totalTasks: 0,
@@ -256,6 +262,12 @@ const modifyTasksAfterMultipleSoftDelete = ({ currentTasks, deletedTasks }) => {
       return task;
     }
   });
+};
+
+const modifyTasksAfterMultipleHardDelete = ({ currentTasks, deletedTasks }) => {
+  return currentTasks.filter(
+    (task) => !deletedTasks.some((deletedTask) => task.id === deletedTask.id)
+  );
 };
 
 const modifyTasksAfterMultipleSoftRestore = ({
@@ -613,6 +625,35 @@ const reducer = (state = INITIAL_STATE, action) => {
         ...state,
         error: action.payload.error,
         softRestoreMultipleTaskSuccess: false,
+        isLoadingTasks: true,
+      };
+    }
+
+    case HARD_DELETE_MULTIPLE_TASK: {
+      return fetchLoadingState({ state });
+    }
+
+    case HARD_DELETE_MULTIPLE_TASK_SUCCESS: {
+      return {
+        ...state,
+        isLoadingTasks: false,
+        hardDeleteMultipleTaskSuccess: true,
+        totalTasks:
+          state.tasks.length > 0
+            ? state.tasks.length - action.payload.length
+            : 0,
+        tasks: modifyTasksAfterMultipleHardDelete({
+          currentTasks: state.tasks,
+          deletedTasks: action.payload,
+        }),
+      };
+    }
+
+    case HARD_DELETE_MULTIPLE_TASK_ERROR: {
+      return {
+        ...state,
+        error: action.payload.error,
+        hardDeleteMultipleTaskSuccess: false,
         isLoadingTasks: true,
       };
     }

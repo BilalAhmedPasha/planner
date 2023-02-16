@@ -60,6 +60,7 @@ import { DAY, TIME_ZONE } from "../../../constants/dateTime.constants";
 import {
   hardDeleteTaskAction,
   softDeleteMultipleTaskAction,
+  hardDeleteMultipleTaskAction,
   softRestoreMultipleTaskAction,
 } from "../state/userTasks/userTasks.actions";
 import Spinner from "../../../components/Spinner";
@@ -273,7 +274,7 @@ const TaskListContainer = ({
     dispatchAction,
     title,
     okText,
-    okType
+    okType,
   }) => {
     confirm({
       icon: <ExclamationCircleOutlined />,
@@ -475,6 +476,29 @@ const TaskListContainer = ({
                     title: "Restore",
                     okText: "Restore",
                     okType: "primary",
+                  });
+                }}
+                style={{
+                  opacity: selectedTaskDetails.length > 1 ? 1 : 0,
+                  transition: "0.3s all ease",
+                }}
+              />
+
+              <Button
+                type="text"
+                icon={<DeleteFilled style={{ fontSize: "1rem" }} />}
+                danger
+                onClick={(e) => {
+                  e.stopPropagation();
+                  showMultiSelectConfirm({
+                    content: `Permanently delete these ${selectedTaskDetails.length} tasks?`,
+                    successMessage: `${selectedTaskDetails.length} tasks deleted`,
+                    failureMessage: `Failed to delete ${selectedTaskDetails.length} tasks`,
+                    onOkHandler: handleMultipleSelection,
+                    dispatchAction: hardDeleteMultipleTaskAction,
+                    title: "Delete",
+                    okText: "Delete",
+                    okType: "danger",
                   });
                 }}
                 style={{

@@ -233,3 +233,12 @@ export const softRestoreMultipleTaskApi = async (userId, selectedTasks) => {
     await updateDoc(docRef, { ...task, isDeleted: 0 });
   });
 };
+
+export const hardDeleteMultipleTaskApi = async (userId, selectedTasks) => {
+  const userDocRef = doc(db, "users", userId);
+  const taskCollectionRef = collection(userDocRef, TASKS);
+  selectedTasks.forEach(async (task) => {
+    const docRef = doc(taskCollectionRef, task.id);
+    await deleteDoc(docRef);
+  });
+};
