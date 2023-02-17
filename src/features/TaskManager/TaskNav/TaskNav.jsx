@@ -118,7 +118,7 @@ const renderSubMenuItems = ({
                     items: moreMenuItemList,
                     onClick: (e) => onMoreClick({ e, currentItem: each }),
                   }}
-                  trigger={["hover"]}
+                  trigger={["click"]}
                   placement="bottomLeft"
                 >
                   <Button icon={<MoreOutlined />} type="text" size="small" />

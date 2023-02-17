@@ -118,7 +118,9 @@ const renderTags = ({ item, tags, colorBorder, colorInfo }) => {
       >
         <Tag
           color={
-            item.isCompleted || item.isWontDo ? colorBorder : tagDetails.color
+            item.isCompleted || item.isWontDo
+              ? colorBorder
+              : tagDetails?.color || colorBorder
           }
           closable={false}
         >

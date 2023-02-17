@@ -22,7 +22,7 @@ const NotTaskSelected = ({ selectedTaskDetails }) => {
       <Typography.Text style={{ fontSize: "1rem" }} type="secondary">
         {selectedTaskDetails.length > 1
           ? "Select only a single task to view details"
-          : "Click on a task to view details"}
+          : "Click on a task to view details. To multi select tasks hold shift key."}
       </Typography.Text>
     </div>
   );
