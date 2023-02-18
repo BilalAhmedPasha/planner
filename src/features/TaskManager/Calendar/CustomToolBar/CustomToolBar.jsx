@@ -3,6 +3,8 @@ import { Navigate } from "react-big-calendar";
 import { Button, Segmented, Typography } from "antd";
 import { DAY, WEEK } from "../../../../constants/calendar.constants";
 import { CaretLeftOutlined, CaretRightOutlined } from "@ant-design/icons";
+import { useMemo } from "react";
+import { isOnSmallScreen } from "../../../../utils/app.utils";
 
 const CustomToolbar = (props) => {
   const goToDayView = () => {
@@ -29,6 +31,10 @@ const CustomToolbar = (props) => {
     else goToDayView();
   };
 
+  const buttonOptions = useMemo(() => {
+    return isOnSmallScreen() ? [DAY] : [WEEK, DAY];
+  }, []);
+
   return (
     <div
       style={{
@@ -38,6 +44,9 @@ const CustomToolbar = (props) => {
         alignItems: "center",
       }}
     >
+      <Typography.Text strong style={{ fontSize: "1.25rem" }}>
+        {props.label}
+      </Typography.Text>
       <div>
         <Button
           type="text"
@@ -54,11 +63,8 @@ const CustomToolbar = (props) => {
           onClick={goToNext}
           icon={<CaretRightOutlined />}
         />
+        <Segmented options={buttonOptions} onChange={handleViewChange} />
       </div>
-      <Typography.Text strong style={{ fontSize: "1.25rem" }}>
-        {props.label}
-      </Typography.Text>
-      <Segmented options={[WEEK, DAY]} onChange={handleViewChange} />
     </div>
   );
 };

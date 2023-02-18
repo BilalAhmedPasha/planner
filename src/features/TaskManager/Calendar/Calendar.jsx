@@ -44,8 +44,8 @@ import {
   END_BY_DATE,
   END_BY_REPEAT_COUNT,
 } from "../../../constants/repeating.constants";
-import "./Calendar.css"
-
+import "./Calendar.css";
+import { isOnSmallScreen } from "../../../utils/app.utils";
 
 dayjs.extend(timezone);
 
@@ -307,7 +307,7 @@ const CalendarView = ({ user }) => {
           <Calendar
             events={taskEvents}
             localizer={localizer}
-            defaultView={Views.WEEK}
+            defaultView={isOnSmallScreen() ? Views.DAY : Views.WEEK}
             views={views}
             components={{
               toolbar: CustomToolbar,
@@ -323,7 +323,7 @@ const CalendarView = ({ user }) => {
             formats={formats}
             selectable={true}
             onSelecting={onSelecting}
-            longPressThreshold={20}
+            longPressThreshold={250}
             onSelectEvent={onSelectEvent}
           />
           {openAddTaskDialog && (
