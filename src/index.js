@@ -7,6 +7,7 @@ import App from "./App";
 import store from "./store";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -21,3 +22,5 @@ root.render(
     </BrowserRouter>
   </Provider>
 );
+
+serviceWorkerRegistration.register();
