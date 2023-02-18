@@ -226,9 +226,10 @@ const TaskDetails = ({
       <div
         style={{
           display: "flex",
-          alignContent: "baseline",
+          alignContent: "center",
           justifyContent: "space-between",
-          height: "2rem",
+          overflowX: "auto",
+          alignItems: "center",
         }}
       >
         <Form.Item
@@ -239,10 +240,11 @@ const TaskDetails = ({
               message: "Task name is required",
             },
           ]}
+          style={{ height: "1rem", width:"35rem", marginRight:"1rem" }}
         >
           <Input
             autoComplete="off"
-            maxLength={25}
+            maxLength={50}
             style={{
               fontWeight: "bold",
               fontSize: "24px",
@@ -268,7 +270,6 @@ const TaskDetails = ({
           </Space>
         )}
       </div>
-
       <Form.Item name="progress" style={{ marginBottom: "0.25rem" }}>
         <Slider
           initialvalues={form.getFieldValue("progress")}

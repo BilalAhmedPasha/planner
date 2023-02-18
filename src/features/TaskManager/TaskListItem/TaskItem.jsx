@@ -124,9 +124,9 @@ const renderTags = ({ item, tags, colorBorder, colorInfo }) => {
           }
           closable={false}
         >
-          {tagDetails.label.length > 8
-            ? `${tagDetails.label.slice(0, 5)}...`
-            : tagDetails.label}
+          {tagDetails?.label.length > 8
+            ? `${tagDetails.label?.slice(0, 5)}...`
+            : tagDetails?.label}
         </Tag>
       </Badge>
     );

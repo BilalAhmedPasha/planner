@@ -22,6 +22,32 @@ export const getInboxTasks = ({ tasks }) => {
   return inboxTasks;
 };
 
+export const isTaskOverdue = (task) => {
+  const todayTS = dayjs.utc().tz(TIME_ZONE).startOf(DAY);
+  if (task.taskDate !== null) {
+    // If scheduled
+    const taskDateTS = dayjs(task.taskDate).endOf(DAY);
+    return taskDateTS.isBefore(todayTS);
+  }
+};
+
+export const isTaskToday = (task) => {
+  const todayTS = dayjs.utc().tz(TIME_ZONE).startOf(DAY);
+  if (task.taskDate !== null) {
+    // If scheduled
+    const taskDateTS = dayjs(task.taskDate).startOf(DAY);
+    return taskDateTS.isSame(todayTS);
+  }
+};
+
+export const isTaskOverdueForGivenDate = (task, currentDateStartTS) => {
+  if (task.taskDate !== null) {
+    // If scheduled
+    const taskDateTS = dayjs(task.taskDate).endOf(DAY);
+    return taskDateTS.isBefore(currentDateStartTS);
+  }
+};
+
 export const getTasksByDate = ({ tasks, date, includeOverDue }) => {
   const currentDateStart = date.startOf(DAY);
   const currentDateEnd = date.endOf(DAY);
@@ -46,13 +72,22 @@ export const getTasksByDate = ({ tasks, date, includeOverDue }) => {
         // taskDate is date
         currentDateTasks.push(tasks[i]);
       } else if (tasks[i].isRepeating) {
+        if (
+          includeOverDue === false &&
+          isTaskOverdueForGivenDate(tasks[i], currentDateStart)
+        ) {
+          continue;
+        }
         if (tasks[i].endByDate) {
           // Repeating task end by date
           const taskDateEnd = dayjs(tasks[i].endByDate).endOf(DAY);
           currentDateStart.isSameOrAfter(taskDateStart) &&
             currentDateEnd.isSameOrBefore(taskDateEnd) &&
             currentDateTasks.push(tasks[i]);
-        } else if (tasks[i].endByRepeatCount >= 0) {
+        } else if (
+          tasks[i].endByRepeatCount &&
+          tasks[i].endByRepeatCount >= 0
+        ) {
           // Repeating task end by count
           const taskDateEnd = dayjs(tasks[i].endByRepeatCountDate).endOf(DAY);
           currentDateStart.isSameOrAfter(taskDateStart) &&
@@ -71,7 +106,7 @@ export const getTasksByDate = ({ tasks, date, includeOverDue }) => {
 
 export const getTasksByNextXDays = ({ tasks, fromDate, count }) => {
   const startDate = fromDate.startOf(DAY);
-  const endDate = startDate.add(count,DAY).endOf(DAY);
+  const endDate = startDate.add(count, DAY).endOf(DAY);
   const nextXDayTasks = [];
   for (let i = 0; i < tasks.length; i++) {
     if (!tasks[i].isDeleted) {
@@ -91,6 +126,9 @@ export const getTasksByNextXDays = ({ tasks, fromDate, count }) => {
         // taskDate is in given range
         nextXDayTasks.push(tasks[i]);
       } else if (tasks[i].isRepeating) {
+        if (isTaskOverdueForGivenDate(tasks[i], startDate)) {
+          continue;
+        }
         if (tasks[i].endByDate) {
           // Repeating task end by date
           const endDate = dayjs(tasks[i].endByDate).endOf(DAY);
@@ -105,7 +143,10 @@ export const getTasksByNextXDays = ({ tasks, fromDate, count }) => {
           ) {
             nextXDayTasks.push(tasks[i]);
           }
-        } else if (tasks[i].endByRepeatCount >= 0) {
+        } else if (
+          tasks[i].endByRepeatCount &&
+          tasks[i].endByRepeatCount >= 0
+        ) {
           // Repeating task end by count
           const endDate = dayjs(tasks[i].endByRepeatCountDate).endOf(DAY);
           if (
@@ -189,22 +230,4 @@ export const getByTagId = ({ tasks, tagId }) => {
     }
   }
   return tagTasks;
-};
-
-export const isTaskOverdue = (task) => {
-  const todayTS = dayjs.utc().tz(TIME_ZONE).startOf(DAY);
-  if (task.taskDate !== null) {
-    // If scheduled
-    const taskDateTS = dayjs(task.taskDate).endOf(DAY);
-    return taskDateTS.isBefore(todayTS);
-  }
-};
-
-export const isTaskToday = (task) => {
-  const todayTS = dayjs.utc().tz(TIME_ZONE).startOf(DAY);
-  if (task.taskDate !== null) {
-    // If scheduled
-    const taskDateTS = dayjs(task.taskDate).startOf(DAY);
-    return taskDateTS.isSame(todayTS);
-  }
 };

@@ -273,7 +273,7 @@ const SubTaskPanel = ({ form, subTaskPanelHeight, closeSubTaskPanel }) => {
         <StyledFormItem name="subTaskName" marginVertical="0rem">
           <Input
             autoComplete="off"
-            maxLength={25}
+            maxLength={50}
             bordered={false}
             placeholder={"Task name"}
             style={{ padding: "0.5rem 0rem 0rem 0rem" }}
