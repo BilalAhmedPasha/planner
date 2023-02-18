@@ -32,7 +32,18 @@ const CustomToolbar = (props) => {
   };
 
   const buttonOptions = useMemo(() => {
-    return isOnSmallScreen() ? [DAY] : [WEEK, DAY];
+    return [
+      {
+        label: WEEK,
+        value: WEEK,
+        disabled: isOnSmallScreen() ? true : false,
+      },
+      {
+        label: DAY,
+        value: DAY,
+        disabled: false,
+      },
+    ];
   }, []);
 
   return (
@@ -63,7 +74,11 @@ const CustomToolbar = (props) => {
           onClick={goToNext}
           icon={<CaretRightOutlined />}
         />
-        <Segmented options={buttonOptions} onChange={handleViewChange} />
+        <Segmented
+          defaultValue={isOnSmallScreen() ? DAY : WEEK}
+          options={buttonOptions}
+          onChange={handleViewChange}
+        />
       </div>
     </div>
   );
