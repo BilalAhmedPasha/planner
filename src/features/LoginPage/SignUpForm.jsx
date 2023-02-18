@@ -59,6 +59,7 @@ const SignUpForm = ({
             placeholder="User name"
             prefix={<UserOutlined style={{ marginRight: "0.5rem" }} />}
             style={{ marginTop: "2rem" }}
+            autoComplete="off"
           />
         </StyledFormItem>
         <StyledFormItem
@@ -74,6 +75,7 @@ const SignUpForm = ({
             size="large"
             placeholder="Email"
             prefix={<MailOutlined style={{ marginRight: "0.5rem" }} />}
+            autoComplete="off"
           />
         </StyledFormItem>
         <StyledFormItem
@@ -89,6 +91,7 @@ const SignUpForm = ({
             size="large"
             placeholder="Password"
             prefix={<LockOutlined style={{ marginRight: "0.5rem" }} />}
+            autoComplete="off"
           />
         </StyledFormItem>
         {errorMessage?.length > 0 && (

@@ -82,6 +82,7 @@ const SignInForm = ({ setShowSignIn, errorMessage, setErrorMessage }) => {
           placeholder="Email"
           prefix={<MailOutlined style={{ marginRight: "0.5rem" }} />}
           style={{ marginTop: "2rem" }}
+          autoComplete="off"
         />
       </StyledFormItem>
       <StyledFormItem
@@ -97,6 +98,7 @@ const SignInForm = ({ setShowSignIn, errorMessage, setErrorMessage }) => {
           size="large"
           placeholder="Password"
           prefix={<LockOutlined style={{ marginRight: "0.5rem" }} />}
+          autoComplete="off"
         />
       </StyledFormItem>
       {passwordResetSuccessMessage?.length > 0 && (
