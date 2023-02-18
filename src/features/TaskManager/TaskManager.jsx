@@ -24,9 +24,19 @@ const TaskManager = ({ user }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [currentSelectedTaskSection, setCurrentSelectedTaskSection] =
     useState();
-  const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
-  const [selectedTaskDetails, setSelectedTaskDetails] = useState([]);
 
+  const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
+  const [isNavDrawerCollapsed, setIsNavDrawerCollapsed] = useState(true);
+  const [selectedTaskDetails, setSelectedTaskDetails] = useState([]);
+  const [isTaskDetailsDrawerCollapsed, setIsTaskDetailsDrawerCollapsed] =
+    useState(true);
+
+  useEffect(() => {
+    selectedTaskDetails.length === 1
+      ? setIsTaskDetailsDrawerCollapsed(false)
+      : setIsTaskDetailsDrawerCollapsed(true);
+  }, [selectedTaskDetails]);
+  
   return (
     <>
       <TaskNav
@@ -34,20 +44,27 @@ const TaskManager = ({ user }) => {
         messageApi={messageApi}
         currentSelectedTaskSection={currentSelectedTaskSection}
         setCurrentSelectedTaskSection={setCurrentSelectedTaskSection}
-        collapsed={isMenuCollapsed}
         setSelectedTaskDetails={setSelectedTaskDetails}
+        isMenuCollapsed={isMenuCollapsed}
+        isNavDrawerCollapsed={isNavDrawerCollapsed}
+        setIsNavDrawerCollapsed={setIsNavDrawerCollapsed}
       />
       <TaskListContainer
         user={user}
         currentSection={currentSelectedTaskSection}
-        isMenuCollapsed={isMenuCollapsed}
-        setIsMenuCollapsed={setIsMenuCollapsed}
         selectedTaskDetails={selectedTaskDetails}
         setSelectedTaskDetails={setSelectedTaskDetails}
+        isMenuCollapsed={isMenuCollapsed}
+        setIsMenuCollapsed={setIsMenuCollapsed}
+        isNavDrawerCollapsed={isNavDrawerCollapsed}
+        setIsNavDrawerCollapsed={setIsNavDrawerCollapsed}
+        setIsTaskDetailsDrawerCollapsed={setIsTaskDetailsDrawerCollapsed}
       />
       <TaskDetailsContainer
         user={user}
         selectedTaskDetails={selectedTaskDetails}
+        isTaskDetailsDrawerCollapsed={isTaskDetailsDrawerCollapsed}
+        setIsTaskDetailsDrawerCollapsed={setIsTaskDetailsDrawerCollapsed}
       />
       {contextHolder}
     </>

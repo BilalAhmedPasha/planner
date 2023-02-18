@@ -1,6 +1,7 @@
-import { Form, Layout } from "antd";
-import TaskDialogLeftPanel from "./TaskDialogLeftPanel";
-import TaskDialogRightPanel from "./TaskDialogRightPanel";
+import { Form, Layout, theme } from "antd";
+import { isOnSmallScreen } from "../../../utils/app.utils";
+import TaskDialogPrimaryPanel from "./TaskDialogPrimaryPanel";
+import TaskDialogSecondaryPanel from "./TaskDialogSecondaryPanel";
 
 const TaskDialogForm = ({
   form,
@@ -9,6 +10,12 @@ const TaskDialogForm = ({
   setDisableAddButton,
   ...props
 }) => {
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken();
+
+  const smallScreen = isOnSmallScreen();
+
   return (
     <Form
       form={form}
@@ -18,12 +25,38 @@ const TaskDialogForm = ({
     >
       <Layout>
         <Layout.Sider collapsed collapsedWidth={0} />
-        <TaskDialogLeftPanel
-          form={form}
-          height={72}
-          setDisableAddButton={setDisableAddButton}
-        />
-        <TaskDialogRightPanel form={form} height={72} {...props} />
+        <Layout.Content
+          style={{
+            marginRight: smallScreen ? "0rem" : "0.1rem",
+            background: colorBgContainer,
+            width: "12vw",
+          }}
+        >
+          <TaskDialogPrimaryPanel
+            form={form}
+            height={72}
+            smallScreen={smallScreen}
+            setDisableAddButton={setDisableAddButton}
+          />
+          {smallScreen && (
+            <TaskDialogSecondaryPanel
+              form={form}
+              height={72}
+              smallScreen={smallScreen}
+              {...props}
+            />
+          )}
+        </Layout.Content>
+        {!smallScreen && (
+          <Layout.Content
+            style={{
+              marginLeft: "0.1rem",
+              background: colorBgContainer,
+            }}
+          >
+            <TaskDialogSecondaryPanel form={form} height={72} {...props} />
+          </Layout.Content>
+        )}
       </Layout>
     </Form>
   );

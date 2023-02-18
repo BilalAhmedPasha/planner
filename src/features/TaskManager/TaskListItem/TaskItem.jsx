@@ -459,35 +459,8 @@ const TaskItem = ({
   } = theme.useToken();
 
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        cursor: "pointer",
-      }}
-      onClick={(e) => {
-        e.stopPropagation();
-        setShowCheckBoxMenu(false);
-        if (e.nativeEvent.shiftKey) {
-          setSelectedTaskDetails((prevState) => {
-            if (!prevState.find((each) => each.id === taskDetails.id)) {
-              return [...prevState, taskDetails];
-            } else {
-              if (selectedTaskDetails.length !== 1) {
-                return prevState.filter((each) => each.id !== taskDetails.id);
-              } else {
-                return [...prevState];
-              }
-            }
-          });
-        } else {
-          setSelectedTaskDetails([taskDetails]);
-        }
-      }}
-      onKeyDown={keyPress}
-    >
-      <Space size="middle">
+    <div style={{ width: "100%", alignItems: "center" }}>
+      <div style={{ float: "left", marginRight: "1rem" }}>
         <Dropdown
           menu={{ items: checkBoxMenuItems, onClick: handleMenuClick }}
           placement="bottomLeft"
@@ -531,129 +504,163 @@ const TaskItem = ({
             colorBgContainer={colorBgContainer}
           />
         </Dropdown>
-        <Typography.Text
-          disabled={taskDetails.isCompleted || taskDetails.isWontDo}
-        >{`${taskDetails.name}`}</Typography.Text>
-      </Space>
+      </div>
       <div
         style={{
-          whiteSpace: "nowrap",
-          overflowX: "auto",
-          textOverflow: "ellipsis",
-          paddingLeft: "0.25rem",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          cursor: "pointer",
         }}
+        onClick={(e) => {
+          e.stopPropagation();
+          setShowCheckBoxMenu(false);
+          if (e.nativeEvent.shiftKey) {
+            setSelectedTaskDetails((prevState) => {
+              if (!prevState.find((each) => each.id === taskDetails.id)) {
+                return [...prevState, taskDetails];
+              } else {
+                if (selectedTaskDetails.length !== 1) {
+                  return prevState.filter((each) => each.id !== taskDetails.id);
+                } else {
+                  return [...prevState];
+                }
+              }
+            });
+          } else {
+            setSelectedTaskDetails([taskDetails]);
+          }
+        }}
+        onKeyDown={keyPress}
       >
-        <Space size="small" style={{ paddingRight: "0.25rem" }}>
-          {renderList({
-            item: taskDetails,
-            lists: lists,
-            colorBorder: colorBorder,
-          })}
-          {renderTags({
-            item: taskDetails,
-            tags: tags,
-            colorBorder: colorBorder,
-            colorInfo: colorInfo,
-          })}
-          {renderChildNodeIcon({
-            item: taskDetails,
-            colorTextLabel,
-            colorBorder,
-          })}
-          {renderRepeatIcon({
-            item: taskDetails,
-            colorTextLabel,
-            colorBorder,
-          })}
-          {renderTaskDate({ item: taskDetails })}
-        </Space>
-        {taskDetails.isDeleted ? (
-          <Button
-            type="text"
-            icon={
-              <UndoOutlined
-                style={{
-                  color:
-                    taskDetails.isCompleted || taskDetails.isWontDo
-                      ? colorBorder
-                      : colorTextLabel,
-                  opacity: selectedTaskDetails.length > 1 ? 0.3 : 1,
-                  transition: "0.3s all ease",
-                }}
-              />
-            }
-            size="small"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleTaskRestore({
-                currentItem: taskDetails,
-                restoreTaskAction: restoreTaskAction,
-                successMessage: "Task restored",
-                failureMessage: "Failed to restore task",
-              });
-            }}
-            disabled={selectedTaskDetails.length > 1}
-          />
-        ) : (
-          <Button
-            type="text"
-            icon={
-              <DeleteOutlined
-                style={{
-                  color:
-                    taskDetails.isCompleted || taskDetails.isWontDo
-                      ? colorBorder
-                      : colorTextLabel,
-                  opacity: selectedTaskDetails.length > 1 ? 0.3 : 1,
-                  transition: "0.3s all ease",
-                }}
-              />
-            }
-            size="small"
-            onClick={(e) => {
-              e.stopPropagation();
-              showSoftDeleteConfirm({
-                content: "Delete this task?",
-                handleSoftDelete: handleSoftDelete,
-                currentItem: taskDetails,
-                softDeleteAction: softDeleteTaskAction,
-                successMessage: "Task deleted",
-                failureMessage: "Failed to delete task",
-              });
-            }}
-            disabled={selectedTaskDetails.length > 1}
-          />
-        )}
-        {taskDetails.isDeleted ? (
-          <Button
-            type="text"
-            icon={
-              <DeleteFilled
-                style={{
-                  color:
-                    taskDetails.isCompleted || taskDetails.isWontDo
-                      ? colorBorder
-                      : colorError,
-                  opacity: selectedTaskDetails.length > 1 ? 0.3 : 1,
-                  transition: "0.3s all ease",
-                }}
-              />
-            }
-            size="small"
-            onClick={(e) => {
-              e.stopPropagation();
-              showHardDeleteConfirm({
-                content: "Delete this task permanently?",
-                handleHardDelete: handleHardDelete,
-                currentItem: taskDetails,
-                hardDeleteAction: hardDeleteSingleTaskAction,
-                successMessage: "Task deleted",
-                failureMessage: "Failed to delete task",
-              });
-            }}
-            disabled={selectedTaskDetails.length > 1}
-          />
-        ) : null}
+        <Typography.Text
+          style={{
+            whiteSpace: "nowrap",
+            overflowX: "auto",
+            textOverflow: "ellipsis",
+          }}
+          disabled={taskDetails.isCompleted || taskDetails.isWontDo}
+        >{`${taskDetails.name}`}</Typography.Text>
+        <div
+          style={{
+            whiteSpace: "nowrap",
+            overflowX: "auto",
+            textOverflow: "ellipsis",
+            paddingLeft: "0.25rem",
+          }}
+        >
+          <Space size="small" style={{ paddingRight: "0.25rem" }}>
+            {renderList({
+              item: taskDetails,
+              lists: lists,
+              colorBorder: colorBorder,
+            })}
+            {renderTags({
+              item: taskDetails,
+              tags: tags,
+              colorBorder: colorBorder,
+              colorInfo: colorInfo,
+            })}
+            {renderChildNodeIcon({
+              item: taskDetails,
+              colorTextLabel,
+              colorBorder,
+            })}
+            {renderRepeatIcon({
+              item: taskDetails,
+              colorTextLabel,
+              colorBorder,
+            })}
+            {renderTaskDate({ item: taskDetails })}
+          </Space>
+          {taskDetails.isDeleted ? (
+            <Button
+              type="text"
+              icon={
+                <UndoOutlined
+                  style={{
+                    color:
+                      taskDetails.isCompleted || taskDetails.isWontDo
+                        ? colorBorder
+                        : colorTextLabel,
+                    opacity: selectedTaskDetails.length > 1 ? 0.3 : 1,
+                    transition: "0.3s all ease",
+                  }}
+                />
+              }
+              size="small"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleTaskRestore({
+                  currentItem: taskDetails,
+                  restoreTaskAction: restoreTaskAction,
+                  successMessage: "Task restored",
+                  failureMessage: "Failed to restore task",
+                });
+              }}
+              disabled={selectedTaskDetails.length > 1}
+            />
+          ) : (
+            <Button
+              type="text"
+              icon={
+                <DeleteOutlined
+                  style={{
+                    color:
+                      taskDetails.isCompleted || taskDetails.isWontDo
+                        ? colorBorder
+                        : colorTextLabel,
+                    opacity: selectedTaskDetails.length > 1 ? 0.3 : 1,
+                    transition: "0.3s all ease",
+                  }}
+                />
+              }
+              size="small"
+              onClick={(e) => {
+                e.stopPropagation();
+                showSoftDeleteConfirm({
+                  content: "Delete this task?",
+                  handleSoftDelete: handleSoftDelete,
+                  currentItem: taskDetails,
+                  softDeleteAction: softDeleteTaskAction,
+                  successMessage: "Task deleted",
+                  failureMessage: "Failed to delete task",
+                });
+              }}
+              disabled={selectedTaskDetails.length > 1}
+            />
+          )}
+          {taskDetails.isDeleted ? (
+            <Button
+              type="text"
+              icon={
+                <DeleteFilled
+                  style={{
+                    color:
+                      taskDetails.isCompleted || taskDetails.isWontDo
+                        ? colorBorder
+                        : colorError,
+                    opacity: selectedTaskDetails.length > 1 ? 0.3 : 1,
+                    transition: "0.3s all ease",
+                  }}
+                />
+              }
+              size="small"
+              onClick={(e) => {
+                e.stopPropagation();
+                showHardDeleteConfirm({
+                  content: "Delete this task permanently?",
+                  handleHardDelete: handleHardDelete,
+                  currentItem: taskDetails,
+                  hardDeleteAction: hardDeleteSingleTaskAction,
+                  successMessage: "Task deleted",
+                  failureMessage: "Failed to delete task",
+                });
+              }}
+              disabled={selectedTaskDetails.length > 1}
+            />
+          ) : null}
+        </div>
       </div>
     </div>
   );

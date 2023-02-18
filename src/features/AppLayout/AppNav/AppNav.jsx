@@ -100,7 +100,7 @@ const AppNav = ({ setCurrentTitle }) => {
         top: 0,
         left: 0,
       }}
-      collapsedWidth={70}
+      collapsedWidth={65}
       collapsed
     >
       <Dropdown menu={menuProps} placement="bottomLeft" trigger={["click"]}>

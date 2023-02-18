@@ -68,6 +68,7 @@ import { PRIORITY, TIME, TITLE } from "../../../constants/sort.constants";
 import { useParams } from "react-router-dom";
 import { NONE } from "../../../constants/priority.constants";
 import { ENDLESS } from "../../../constants/repeating.constants";
+import { isOnSmallScreen } from "../../../utils/app.utils";
 
 const computeSectionData = ({ tasks, currentSection }) => {
   if (currentSection.id === ALL) {
@@ -139,6 +140,9 @@ const TaskListContainer = ({
   setIsMenuCollapsed,
   selectedTaskDetails,
   setSelectedTaskDetails,
+  isNavDrawerCollapsed,
+  setIsNavDrawerCollapsed,
+  setIsTaskDetailsDrawerCollapsed
 }) => {
   const {
     token: { colorBgContainer, colorTextBase },
@@ -334,6 +338,47 @@ const TaskListContainer = ({
     taskDate: TASK_DATE,
   };
 
+  const renderTaskMenuIcon = () => {
+    return (
+      <Button
+        type="text"
+        icon={
+          isOnSmallScreen() ? (
+            isNavDrawerCollapsed ? (
+              <MenuUnfoldOutlined
+                style={{
+                  fontSize: "20px",
+                }}
+              />
+            ) : (
+              <MenuFoldOutlined
+                style={{
+                  fontSize: "20px",
+                }}
+              />
+            )
+          ) : isMenuCollapsed ? (
+            <MenuUnfoldOutlined
+              style={{
+                fontSize: "20px",
+              }}
+            />
+          ) : (
+            <MenuFoldOutlined
+              style={{
+                fontSize: "20px",
+              }}
+            />
+          )
+        }
+        onClick={() => {
+          setIsMenuCollapsed((prevState) => !prevState);
+          setIsNavDrawerCollapsed((prevState) => !prevState);
+        }}
+        size="medium"
+      />
+    );
+  };
   return (
     <Layout.Content
       style={{
@@ -356,28 +401,7 @@ const TaskListContainer = ({
           }}
         >
           <Space size="small">
-            <Button
-              type="text"
-              icon={
-                isMenuCollapsed ? (
-                  <MenuUnfoldOutlined
-                    style={{
-                      fontSize: "20px",
-                    }}
-                  />
-                ) : (
-                  <MenuFoldOutlined
-                    style={{
-                      fontSize: "20px",
-                    }}
-                  />
-                )
-              }
-              onClick={() => {
-                setIsMenuCollapsed((prevState) => !prevState);
-              }}
-              size="medium"
-            />
+            {renderTaskMenuIcon()}
             <Typography.Text
               style={{
                 fontWeight: "bold",

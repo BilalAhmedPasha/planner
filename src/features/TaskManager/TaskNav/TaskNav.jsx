@@ -1,4 +1,13 @@
-import { Badge, Button, Dropdown, Layout, Menu, Modal, Space } from "antd";
+import {
+  Badge,
+  Button,
+  Drawer,
+  Dropdown,
+  Layout,
+  Menu,
+  Modal,
+  Space,
+} from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SideMenu from "../../../components/SideMenu";
@@ -24,11 +33,16 @@ import {
   PlusOutlined,
   MoreOutlined,
   ExclamationCircleOutlined,
+  CloseOutlined,
 } from "@ant-design/icons";
 import Loading from "../../../components/Loading";
 import Spinner from "../../../components/Spinner";
 import { TASK_NAV_BADGE_COLOR } from "../../../constants/color.constants";
-import { hardDeleteListTaskAction, deleteTaskTagAction } from "../state/userTasks/userTasks.actions";
+import {
+  hardDeleteListTaskAction,
+  deleteTaskTagAction,
+} from "../state/userTasks/userTasks.actions";
+import { isOnSmallScreen } from "../../../utils/app.utils";
 
 const renderColorDot = (color) => {
   return (
@@ -116,12 +130,20 @@ const renderSubMenuItems = ({
                 <Dropdown
                   menu={{
                     items: moreMenuItemList,
-                    onClick: (e) => onMoreClick({ e, currentItem: each }),
+                    onClick: (e) => {
+                      e.domEvent.stopPropagation();
+                      onMoreClick({ e, currentItem: each });
+                    },
                   }}
                   trigger={["click"]}
                   placement="bottomLeft"
                 >
-                  <Button icon={<MoreOutlined />} type="text" size="small" />
+                  <Button
+                    icon={<MoreOutlined />}
+                    type="text"
+                    size="small"
+                    onClick={(e) => e.stopPropagation()}
+                  />
                 </Dropdown>
               </Space>
             </div>
@@ -137,8 +159,10 @@ const TaskNav = ({
   messageApi,
   currentSelectedTaskSection,
   setCurrentSelectedTaskSection,
-  collapsed,
+  isMenuCollapsed,
   setSelectedTaskDetails,
+  isNavDrawerCollapsed,
+  setIsNavDrawerCollapsed,
 }) => {
   const dispatch = useDispatch();
   const { lists, isLoadingLists, totalLists } = useSelector(listsSelector);
@@ -210,8 +234,7 @@ const TaskNav = ({
           modifyTaskAction: deleteTaskTagAction,
           successMessage: "Tag deleted",
           failureMessage: "Failed to delete tag",
-          content:
-            "This tag will be removed in all tasks. Delete the tag?",
+          content: "This tag will be removed in all tasks. Delete the tag?",
           handleDelete: handleDelete,
         });
       } else if (e.keyPath.includes(LISTS)) {
@@ -245,6 +268,7 @@ const TaskNav = ({
     ) {
       setCurrentSelectedTaskSection(e.domEvent.currentTarget.textContent);
       setSelectedTaskDetails([]);
+      setIsNavDrawerCollapsed(true);
     }
   };
 
@@ -316,18 +340,8 @@ const TaskNav = ({
     selectedAppMenuKey = pathParameters[3];
   }
 
-  return (
-    <Layout.Sider
-      theme="light"
-      style={{
-        overflow: "auto",
-        position: "sticky",
-        top: 0,
-        left: 0,
-      }}
-      width="18vw"
-      collapsed={collapsed}
-    >
+  const taskNavContent = () => {
+    return (
       <Spinner
         spinning={isLoadingLists || isLoadingTags}
         indicator={Loading(LOADER_SIZE)}
@@ -391,6 +405,41 @@ const TaskNav = ({
           />
         )}
       </Spinner>
+    );
+  };
+  return isOnSmallScreen() ? (
+    <Drawer
+      title="Task Menu"
+      placement={"left"}
+      closable={false}
+      open={!isNavDrawerCollapsed}
+      bodyStyle={{ padding: "0px", overflow: "auto" }}
+      destroyOnClose={true}
+      extra={
+        <Button
+          size="small"
+          type="text"
+          icon={<CloseOutlined />}
+          onClick={() => setIsNavDrawerCollapsed(true)}
+        />
+      }
+      headerStyle={{ height: "2.5rem", padding: "1rem" }}
+    >
+      {taskNavContent()}
+    </Drawer>
+  ) : (
+    <Layout.Sider
+      theme="light"
+      style={{
+        overflow: "auto",
+        position: "sticky",
+        top: 0,
+        left: 0,
+      }}
+      width={isOnSmallScreen() ? window.innerWidth - 65 : 300}
+      collapsed={isMenuCollapsed}
+    >
+      {taskNavContent()}
     </Layout.Sider>
   );
 };

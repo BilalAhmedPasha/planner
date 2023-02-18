@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { Form, Layout, message, theme } from "antd";
+import { Button, Drawer, Form, Layout, message, theme } from "antd";
 import { VIEW } from "../../../constants/formType.constants";
 import NotTaskSelected from "./NotTaskSelected";
 import TaskDetails from "./TaskDetails";
@@ -12,8 +12,15 @@ import {
   getFormValueFromTaskDetail,
   handleEditTask,
 } from "../TaskList/TaskList.utils";
+import { isOnSmallScreen } from "../../../utils/app.utils";
+import { CloseOutlined } from "@ant-design/icons";
 
-const TaskDetailsContainer = ({ user, selectedTaskDetails }) => {
+const TaskDetailsContainer = ({
+  user,
+  selectedTaskDetails,
+  isTaskDetailsDrawerCollapsed,
+  setIsTaskDetailsDrawerCollapsed,
+}) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -67,15 +74,8 @@ const TaskDetailsContainer = ({ user, selectedTaskDetails }) => {
 
   const { isLoadingTasks } = useSelector(tasksSelector);
 
-  return (
-    <Layout.Content
-      style={{
-        marginLeft: "0.1rem",
-        padding: "0.5rem 1rem",
-        overflow: "auto",
-        background: colorBgContainer,
-      }}
-    >
+  const renderTaskDetailsContent = () => {
+    return (
       <Spinner spinning={isLoadingTasks} indicator={Loading(LOADER_SIZE)}>
         {selectedTaskDetails.length === 1 ? (
           <Form
@@ -108,6 +108,38 @@ const TaskDetailsContainer = ({ user, selectedTaskDetails }) => {
           <NotTaskSelected selectedTaskDetails={selectedTaskDetails} />
         )}
       </Spinner>
+    );
+  };
+  return isOnSmallScreen() ? (
+    <Drawer
+      title="Task Details"
+      placement={"right"}
+      closable={false}
+      open={!isTaskDetailsDrawerCollapsed}
+      bodyStyle={{ padding: "0.5rem 1rem", overflow: "auto" }}
+      destroyOnClose={true}
+      extra={
+        <Button
+          size="small"
+          type="text"
+          icon={<CloseOutlined />}
+          onClick={() => setIsTaskDetailsDrawerCollapsed(true)}
+        />
+      }
+      headerStyle={{ height: "2.5rem", padding: "0.5rem 1rem" }}
+    >
+      {renderTaskDetailsContent()}
+    </Drawer>
+  ) : (
+    <Layout.Content
+      style={{
+        marginLeft: "0.1rem",
+        padding: "0.5rem 1rem",
+        overflow: "auto",
+        background: colorBgContainer,
+      }}
+    >
+      {renderTaskDetailsContent()}
     </Layout.Content>
   );
 };
