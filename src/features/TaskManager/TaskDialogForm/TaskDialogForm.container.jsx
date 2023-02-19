@@ -6,7 +6,7 @@ import { Form } from "antd";
 import { tasksSelector } from "../state/userTasks/userTasks.reducer";
 import { CREATE, EDIT } from "../../../constants/formType.constants";
 import { handleAddTask, handleEditTask } from "../TaskList/TaskList.utils";
-import { taskNavToDrawer } from "../../../utils/app.utils";
+import { taskNavToDrawer } from "../../../utils/screen.utils";
 import useWindowSize from "../../../hooks/useWindowSize";
 
 const TaskDialog = ({

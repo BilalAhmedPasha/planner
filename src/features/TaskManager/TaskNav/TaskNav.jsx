@@ -42,7 +42,7 @@ import {
   hardDeleteListTaskAction,
   deleteTaskTagAction,
 } from "../state/userTasks/userTasks.actions";
-import { taskNavToDrawer } from "../../../utils/app.utils";
+import { taskNavToDrawer } from "../../../utils/screen.utils";
 import useWindowSize from "../../../hooks/useWindowSize";
 
 const renderColorDot = (color) => {

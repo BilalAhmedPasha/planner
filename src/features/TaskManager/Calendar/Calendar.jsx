@@ -45,7 +45,7 @@ import {
   END_BY_REPEAT_COUNT,
 } from "../../../constants/repeating.constants";
 import "./Calendar.css";
-import { disableWeekView } from "../../../utils/app.utils";
+import { disableWeekView } from "../../../utils/screen.utils";
 import useWindowSize from "../../../hooks/useWindowSize";
 
 dayjs.extend(timezone);

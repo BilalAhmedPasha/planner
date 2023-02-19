@@ -4,7 +4,7 @@ import { Button, Segmented, Typography } from "antd";
 import { DAY, WEEK } from "../../../../constants/calendar.constants";
 import { CaretLeftOutlined, CaretRightOutlined } from "@ant-design/icons";
 import { useCallback, useEffect, useMemo } from "react";
-import { disableWeekView } from "../../../../utils/app.utils";
+import { disableWeekView } from "../../../../utils/screen.utils";
 import useWindowSize from "../../../../hooks/useWindowSize";
 
 const CustomToolbar = (props) => {

@@ -12,7 +12,10 @@ import {
   getFormValueFromTaskDetail,
   handleEditTask,
 } from "../TaskList/TaskList.utils";
-import { taskNavToDrawer, taskDetailsToDrawer } from "../../../utils/app.utils";
+import {
+  taskNavToDrawer,
+  taskDetailsToDrawer,
+} from "../../../utils/screen.utils";
 import { CloseOutlined } from "@ant-design/icons";
 import useWindowSize from "../../../hooks/useWindowSize";
 

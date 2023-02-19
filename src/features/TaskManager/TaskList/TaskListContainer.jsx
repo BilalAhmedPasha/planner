@@ -68,7 +68,7 @@ import { PRIORITY, TIME, TITLE } from "../../../constants/sort.constants";
 import { useParams } from "react-router-dom";
 import { NONE } from "../../../constants/priority.constants";
 import { ENDLESS } from "../../../constants/repeating.constants";
-import { taskNavToDrawer } from "../../../utils/app.utils";
+import { taskNavToDrawer } from "../../../utils/screen.utils";
 import useWindowSize from "../../../hooks/useWindowSize";
 
 const computeSectionData = ({ tasks, currentSection }) => {
