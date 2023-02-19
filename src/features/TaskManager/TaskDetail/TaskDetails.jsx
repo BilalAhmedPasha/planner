@@ -57,6 +57,15 @@ import {
   END_BY_REPEAT_COUNT,
 } from "../../../constants/repeating.constants";
 import SubTaskInDetails from "./SubTaskInDetails";
+import styled from "styled-components";
+
+const MultiSelect = styled(Select)`
+  .ant-select-selection-overflow {
+    display: flex;
+    max-width: 95%;
+    overflow: auto;
+  }
+`;
 
 const getPriorityColor = (event) => {
   if (event === HIGH) {
@@ -240,7 +249,7 @@ const TaskDetails = ({
               message: "Task name is required",
             },
           ]}
-          style={{ height: "1rem", width:"35rem", marginRight:"1rem" }}
+          style={{ height: "1rem", width: "35rem", marginRight: "1rem" }}
         >
           <Input
             autoComplete="off"
@@ -305,11 +314,17 @@ const TaskDetails = ({
           overflowX: "auto",
           justifyContent: "space-between",
           marginBottom: "1rem",
+          width: "100%",
         }}
       >
         <Form.Item
           name="priority"
-          style={{ marginRight: "1rem", marginBottom: "0.5rem" }}
+          style={{
+            marginRight: "1rem",
+            marginBottom: "0.5rem",
+            width: "20%",
+            minWidth: "6rem",
+          }}
         >
           <Select
             suffixIcon={
@@ -323,7 +338,6 @@ const TaskDetails = ({
             initialvalues={form.getFieldValue("priority")}
             onSelect={(event) => handlePriorityColor(event)}
             options={priorityOptions}
-            style={{ width: "7rem" }}
             // disabled={formType === VIEW}
             readOnly={true}
             open={formType === VIEW ? false : undefined}
@@ -331,7 +345,12 @@ const TaskDetails = ({
         </Form.Item>
         <Form.Item
           name="listId"
-          style={{ marginRight: "1rem", marginBottom: "0.5rem" }}
+          style={{
+            marginRight: "1rem",
+            marginBottom: "0.5rem",
+            width: "35%",
+            minWidth: "10rem",
+          }}
         >
           <Select
             suffixIcon={
@@ -358,13 +377,15 @@ const TaskDetails = ({
               },
               ...listOptions,
             ]}
-            style={{ width: "10rem" }}
             // disabled={formType === VIEW}
             open={formType === VIEW ? false : undefined}
           />
         </Form.Item>
-        <Form.Item name="tagIds" style={{ marginBottom: "0.5rem" }}>
-          <Select
+        <Form.Item
+          name="tagIds"
+          style={{ marginBottom: "0.5rem", width: "45%", minWidth: "10rem" }}
+        >
+          <MultiSelect
             suffixIcon={
               formType === VIEW ? (
                 <TagOutlined
@@ -382,13 +403,11 @@ const TaskDetails = ({
             }
             mode="multiple"
             options={tagOptions}
-            maxTagCount={3}
-            maxTagTextLength={6}
             tagRender={(props) => tagRender(formType !== VIEW, props)}
             showArrow={true}
             initialvalues={form.getFieldValue("tagIds")}
-            style={{ width: "22rem" }}
             placeholder="Tags"
+            showSearch={false}
             // disabled={formType === VIEW}
             open={formType === VIEW ? false : undefined}
           />
@@ -400,11 +419,17 @@ const TaskDetails = ({
           justifyContent: "space-between",
           overflowX: "auto",
           marginBottom: "1rem",
+          width: "100%",
         }}
       >
         <Form.Item
           name="taskDate"
-          style={{ marginRight: "1rem", marginBottom: "0.5rem" }}
+          style={{
+            marginRight: "1rem",
+            marginBottom: "0.5rem",
+            width: "33%",
+            minWidth: "8rem",
+          }}
         >
           <DatePicker
             suffixIcon={
@@ -423,21 +448,22 @@ const TaskDetails = ({
               )
             }
             format={DATE_FORMAT}
-            style={{
-              cursor: "pointer",
-              width: "13rem",
-            }}
             onChange={handleStartDateChange}
-            // disabled={formType === VIEW}
             open={formType === VIEW ? false : openTaskDatePicker}
             onOpenChange={(e) => setOpenTaskDatePicker(!openTaskDatePicker)}
             allowClear={formType !== VIEW}
+            style={{ width: "100%", cursor: "pointer" }}
             inputReadOnly={true}
           />
         </Form.Item>
         <Form.Item
           name="duration"
-          style={{ marginRight: "1rem", marginBottom: "0.5rem" }}
+          style={{
+            marginRight: "1rem",
+            marginBottom: "0.5rem",
+            width: "33%",
+            minWidth: "12rem",
+          }}
         >
           <TimePicker.RangePicker
             suffixIcon={
@@ -458,17 +484,17 @@ const TaskDetails = ({
             }
             format={TIME_FORMAT}
             minuteStep={5}
-            style={{
-              cursor: "pointer",
-              width: "13rem",
-            }}
             disabled={formType !== VIEW && !isScheduled}
             open={formType === VIEW ? false : undefined}
             allowClear={formType !== VIEW}
             inputReadOnly={true}
+            style={{ width: "100%", cursor: "pointer" }}
           />
         </Form.Item>
-        <Form.Item name="repeatFrequency" style={{ marginBottom: "0.5rem" }}>
+        <Form.Item
+          name="repeatFrequency"
+          style={{ marginBottom: "0.5rem", width: "33%", minWidth: "7rem" }}
+        >
           <Select
             suffixIcon={
               formType === VIEW || !isScheduled ? (
@@ -501,7 +527,6 @@ const TaskDetails = ({
               },
             ]}
             onChange={handleRepeatDropDownChange}
-            style={{ width: "13rem" }}
             placeholder="Repeat frequency"
             disabled={formType !== VIEW && !isScheduled}
             open={formType === VIEW ? false : undefined}
@@ -515,11 +540,17 @@ const TaskDetails = ({
           justifyContent: "space-between",
           overflowX: "auto",
           marginBottom: "1rem",
+          width: "100%",
         }}
       >
         <Form.Item
           name="endBy"
-          style={{ marginRight: "1rem", marginBottom: "0.5rem" }}
+          style={{
+            marginRight: "1rem",
+            marginBottom: "0.5rem",
+            width: "33%",
+            minWidth: "11rem",
+          }}
           rules={[
             {
               message: "End condition is required",
@@ -570,7 +601,6 @@ const TaskDetails = ({
             onChange={handleEndByDropDownChange}
             open={formType === VIEW ? false : undefined}
             disabled={formType !== VIEW && (!isScheduled || !isRepeating)}
-            style={{ width: "13rem" }}
             placeholder="End condition"
           />
         </Form.Item>
@@ -591,7 +621,12 @@ const TaskDetails = ({
               },
             },
           ]}
-          style={{ marginRight: "1rem", marginBottom: "0.5rem" }}
+          style={{
+            marginRight: "1rem",
+            marginBottom: "0.5rem",
+            width: "33%",
+            minWidth: "8rem",
+          }}
         >
           <DatePicker
             suffixIcon={
@@ -614,7 +649,7 @@ const TaskDetails = ({
             format={DATE_FORMAT}
             style={{
               cursor: "pointer",
-              width: "13rem",
+              width: "100%",
             }}
             placeholder="End date"
             disabledDate={disabledEndDate}
@@ -647,7 +682,7 @@ const TaskDetails = ({
               },
             },
           ]}
-          style={{ marginBottom: "0.5rem" }}
+          style={{ marginBottom: "0.5rem", width: "33%", minWidth: "5rem" }}
         >
           <NumericInput
             suffix={
@@ -671,7 +706,6 @@ const TaskDetails = ({
             min={1}
             style={{
               cursor: "pointer",
-              width: "13rem",
             }}
             placeholder="Repeat count"
             disabled={

@@ -40,6 +40,15 @@ import {
   END_BY_DATE,
   END_BY_REPEAT_COUNT,
 } from "../../../constants/repeating.constants";
+import styled from "styled-components";
+
+const MultiSelect = styled(Select)`
+  .ant-select-selection-overflow {
+    display: flex;
+    max-width: 100%;
+    overflow: auto;
+  }
+`;
 
 const TaskDialogSecondaryPanel = ({ form, height, smallScreen, ...props }) => {
   const { lists } = useSelector(listsSelector);
@@ -212,14 +221,13 @@ const TaskDialogSecondaryPanel = ({ form, height, smallScreen, ...props }) => {
       </Form.Item>
 
       <Form.Item name="tagIds" label="Tags">
-        <Select
+        <MultiSelect
           mode="multiple"
-          allowClear
           options={tagOptions}
-          maxTagCount={2}
-          maxTagTextLength={5}
           tagRender={tagRender}
           placeholder="Select tags"
+          showSearch={false}
+          showArrow={true}
         />
       </Form.Item>
       {MULTI_DATE_AVAILABLE && (
