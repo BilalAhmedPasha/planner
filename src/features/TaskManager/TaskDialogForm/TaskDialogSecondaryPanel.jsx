@@ -45,6 +45,7 @@ import styled from "styled-components";
 const MultiSelect = styled(Select)`
   .ant-select-selection-overflow {
     display: flex;
+    flex-wrap: nowrap;
     max-width: 100%;
     overflow: auto;
   }
