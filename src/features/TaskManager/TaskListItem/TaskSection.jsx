@@ -125,6 +125,11 @@ const TaskListSection = ({
                   header={
                     <Space size="small">
                       <Typography.Text
+                        style={{
+                          whiteSpace: "nowrap",
+                          overflowX: "auto",
+                          textOverflow: "ellipsis",
+                        }}
                         strong
                       >{`${sectionalTasks[each].sectionTitle}`}</Typography.Text>
                       <Typography.Text type="secondary">{`${sectionalTasks[each].tasks.length}`}</Typography.Text>

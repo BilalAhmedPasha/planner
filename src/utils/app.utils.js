@@ -1,11 +1,11 @@
-export const taskNavToDrawer = () => {
-  return window.innerWidth < 800 ? true : false;
+export const taskNavToDrawer = ({ currentWidth }) => {
+  return currentWidth < 800 ? true : false;
 };
 
-export const taskDetailsToDrawer = () => {
-  return window.innerWidth < 1200 ? true : false;
+export const taskDetailsToDrawer = ({ currentWidth }) => {
+  return currentWidth < 1200 ? true : false;
 };
 
-export const disableWeekView = () => {
-  return window.innerWidth < 700 ? true : false;
+export const disableWeekView = ({ currentWidth }) => {
+  return currentWidth < 700 ? true : false;
 };

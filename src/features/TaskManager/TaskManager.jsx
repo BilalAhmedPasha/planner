@@ -36,7 +36,7 @@ const TaskManager = ({ user }) => {
       ? setIsTaskDetailsDrawerCollapsed(false)
       : setIsTaskDetailsDrawerCollapsed(true);
   }, [selectedTaskDetails]);
-  
+
   return (
     <>
       <TaskNav

@@ -43,6 +43,7 @@ import {
   deleteTaskTagAction,
 } from "../state/userTasks/userTasks.actions";
 import { taskNavToDrawer } from "../../../utils/app.utils";
+import useWindowSize from "../../../hooks/useWindowSize";
 
 const renderColorDot = (color) => {
   return (
@@ -407,7 +408,9 @@ const TaskNav = ({
       </Spinner>
     );
   };
-  return taskNavToDrawer() ? (
+
+  const screenSize = useWindowSize();
+  return taskNavToDrawer({ currentWidth: screenSize.width }) ? (
     <Drawer
       title="Task Menu"
       placement={"left"}

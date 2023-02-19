@@ -1,4 +1,5 @@
 import { Form, Layout, theme } from "antd";
+import useWindowSize from "../../../hooks/useWindowSize";
 import { taskDetailsToDrawer } from "../../../utils/app.utils";
 import TaskDialogPrimaryPanel from "./TaskDialogPrimaryPanel";
 import TaskDialogSecondaryPanel from "./TaskDialogSecondaryPanel";
@@ -14,7 +15,10 @@ const TaskDialogForm = ({
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const verticallyAlignForm = taskDetailsToDrawer();
+  const screenSize = useWindowSize();
+  const verticallyAlignForm = taskDetailsToDrawer({
+    currentWidth: screenSize.width,
+  });
 
   return (
     <Form

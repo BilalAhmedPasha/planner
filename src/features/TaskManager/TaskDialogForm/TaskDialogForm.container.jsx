@@ -7,6 +7,7 @@ import { tasksSelector } from "../state/userTasks/userTasks.reducer";
 import { CREATE, EDIT } from "../../../constants/formType.constants";
 import { handleAddTask, handleEditTask } from "../TaskList/TaskList.utils";
 import { taskNavToDrawer } from "../../../utils/app.utils";
+import useWindowSize from "../../../hooks/useWindowSize";
 
 const TaskDialog = ({
   user,
@@ -88,7 +89,7 @@ const TaskDialog = ({
   };
 
   const { isLoadingTasks } = useSelector(tasksSelector);
-  const smallScreen = taskNavToDrawer();
+  const screenSize = useWindowSize();
 
   return (
     openDialog && (
@@ -102,7 +103,9 @@ const TaskDialog = ({
         okText={formType === CREATE ? "Add" : "Save"}
         form={form}
         centered={true}
-        width={smallScreen ? "90vw" : "50vw"}
+        width={
+          taskNavToDrawer({ currentWidth: screenSize.width }) ? "90vw" : "50vw"
+        }
         destroyOnClose={true}
         loading={isLoadingTasks}
         disableOk={disableAddButton}

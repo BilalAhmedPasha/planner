@@ -69,6 +69,7 @@ import { useParams } from "react-router-dom";
 import { NONE } from "../../../constants/priority.constants";
 import { ENDLESS } from "../../../constants/repeating.constants";
 import { taskNavToDrawer } from "../../../utils/app.utils";
+import useWindowSize from "../../../hooks/useWindowSize";
 
 const computeSectionData = ({ tasks, currentSection }) => {
   if (currentSection.id === ALL) {
@@ -302,6 +303,7 @@ const TaskListContainer = ({
   };
 
   const [hideAddIcon, setHideAddIcon] = useState(false);
+
   useEffect(() => {
     setHideAddIcon(
       hideAddForSections.includes(currentSection?.id) ||
@@ -338,12 +340,13 @@ const TaskListContainer = ({
     taskDate: TASK_DATE,
   };
 
+  const screenSize = useWindowSize();
   const renderTaskMenuIcon = () => {
     return (
       <Button
         type="text"
         icon={
-          taskNavToDrawer() ? (
+          taskNavToDrawer({ currentWidth: screenSize.width }) ? (
             isNavDrawerCollapsed ? (
               <MenuUnfoldOutlined
                 style={{
@@ -400,16 +403,22 @@ const TaskListContainer = ({
             position: "sticky",
           }}
         >
-          <Space size="small">
+          <Space size="small" style={{ alignItems: "center" }}>
             {renderTaskMenuIcon()}
             <Typography.Text
               style={{
                 fontWeight: "bold",
                 fontSize: "24px",
+                whiteSpace: "nowrap",
+                overflowX: "auto",
+                textOverflow: "ellipsis",
               }}
             >
               {currentSection?.label}
             </Typography.Text>
+            {sortedSectionTasks?.length > 0 && (
+              <Typography.Text type="secondary">{`${sortedSectionTasks?.length}`}</Typography.Text>
+            )}
           </Space>
 
           {!hideAddIcon && (

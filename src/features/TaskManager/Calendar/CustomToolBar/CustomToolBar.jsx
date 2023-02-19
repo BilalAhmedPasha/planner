@@ -3,40 +3,52 @@ import { Navigate } from "react-big-calendar";
 import { Button, Segmented, Typography } from "antd";
 import { DAY, WEEK } from "../../../../constants/calendar.constants";
 import { CaretLeftOutlined, CaretRightOutlined } from "@ant-design/icons";
-import { useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { disableWeekView } from "../../../../utils/app.utils";
+import useWindowSize from "../../../../hooks/useWindowSize";
 
 const CustomToolbar = (props) => {
-  const goToDayView = () => {
+  const goToDayView = useCallback(() => {
     props.onView("day");
-  };
-  const goToWeekView = () => {
+  }, [props]);
+
+  const goToWeekView = useCallback(() => {
     props.onView("week");
-  };
+  }, [props]);
 
-  const goToBack = () => {
+  const goToBack = useCallback(() => {
     props.onNavigate(Navigate.PREVIOUS);
-  };
+  }, [props]);
 
-  const goToNext = () => {
+  const goToNext = useCallback(() => {
     props.onNavigate(Navigate.NEXT);
-  };
+  }, [props]);
 
-  const goToToday = () => {
+  const goToToday = useCallback(() => {
     props.onNavigate(Navigate.TODAY);
-  };
+  }, [props]);
 
   const handleViewChange = (e) => {
     if (e === WEEK) goToWeekView();
     else goToDayView();
   };
 
+  const screenSize = useWindowSize();
+
+  useEffect(() => {
+    if (disableWeekView({ currentWidth: screenSize.width })) {
+      goToDayView();
+    }
+  }, [screenSize, goToDayView]);
+
   const buttonOptions = useMemo(() => {
     return [
       {
         label: WEEK,
         value: WEEK,
-        disabled: disableWeekView() ? true : false,
+        disabled: disableWeekView({ currentWidth: screenSize.width })
+          ? true
+          : false,
       },
       {
         label: DAY,
@@ -44,7 +56,7 @@ const CustomToolbar = (props) => {
         disabled: false,
       },
     ];
-  }, []);
+  }, [screenSize]);
 
   return (
     <div
@@ -75,7 +87,9 @@ const CustomToolbar = (props) => {
           icon={<CaretRightOutlined />}
         />
         <Segmented
-          defaultValue={disableWeekView() ? DAY : WEEK}
+          defaultValue={
+            disableWeekView({ currentWidth: screenSize.width }) ? DAY : WEEK
+          }
           options={buttonOptions}
           onChange={handleViewChange}
         />

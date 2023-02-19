@@ -46,6 +46,7 @@ import {
 } from "../../../constants/repeating.constants";
 import "./Calendar.css";
 import { disableWeekView } from "../../../utils/app.utils";
+import useWindowSize from "../../../hooks/useWindowSize";
 
 dayjs.extend(timezone);
 
@@ -256,6 +257,7 @@ const CalendarView = ({ user }) => {
 
   const [messageApi] = message.useMessage();
   const [openAddTaskDialog, setOpenAddTaskDialog] = useState(false);
+  const screenSize = useWindowSize();
 
   return (
     <Layout.Content
@@ -307,7 +309,11 @@ const CalendarView = ({ user }) => {
           <Calendar
             events={taskEvents}
             localizer={localizer}
-            defaultView={disableWeekView() ? Views.DAY : Views.WEEK}
+            defaultView={
+              disableWeekView({ currentWidth: screenSize.width })
+                ? Views.DAY
+                : Views.WEEK
+            }
             views={views}
             components={{
               toolbar: CustomToolbar,
