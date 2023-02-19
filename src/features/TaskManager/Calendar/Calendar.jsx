@@ -59,12 +59,12 @@ const CalendarView = ({ user }) => {
   const userSetting = useSelector(userSelector);
 
   useEffect(() => {
-    if (user.uid !== userSetting.id) {
+    if (user && user.uid !== userSetting.id) {
       dispatch(fetchListsAction(user.uid));
       dispatch(fetchTagsAction(user.uid));
       dispatch(fetchTasksAction(user.uid));
     }
-  }, [userSetting, dispatch, user.uid]);
+  }, [userSetting, dispatch, user]);
 
   const { lists } = useSelector(listsSelector);
   const { tasks, isLoadingTasks } = useSelector(tasksSelector);

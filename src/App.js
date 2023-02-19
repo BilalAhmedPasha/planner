@@ -9,6 +9,7 @@ import LoginPage from "./features/LoginPage";
 
 function App() {
   const [currentTitle, setCurrentTitle] = useState("Inbox");
+  
   return (
     <Switch>
       <Route path="/" exact>
@@ -36,6 +37,9 @@ function App() {
         <AppLayout setCurrentTitle={setCurrentTitle}>
           <TaskManager title={currentTitle} />
         </AppLayout>
+      </Route>
+      <Route path="*">
+        <Redirect to="/tasks/all" />
       </Route>
     </Switch>
   );

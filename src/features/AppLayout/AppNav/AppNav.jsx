@@ -107,7 +107,7 @@ const AppNav = ({ setCurrentTitle }) => {
         <Avatar
           size={50}
           shape="square"
-          src={user.photoURL}
+          src={user?.photoURL}
           style={{ margin: "0.5rem", cursor: "pointer" }}
         />
       </Dropdown>

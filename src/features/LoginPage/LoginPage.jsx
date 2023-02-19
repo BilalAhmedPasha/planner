@@ -31,10 +31,11 @@ const LoginPage = () => {
   const { user, loading, error } = UserAuth();
 
   useEffect(() => {
-    if (user !== null) {
+    if (user !== null && JSON.stringify(user) !== "{}") {
       history.push("/tasks/all");
     }
   }, [history, user]);
+  
 
   const [showSignIn, setShowSignIn] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");

@@ -7,10 +7,11 @@ import { useDispatch } from "react-redux";
 import { addUserSettingAction } from "./state/userSettings/userSettings.actions";
 import db from "../../firebase";
 import { doc, setDoc, getDoc } from "@firebase/firestore";
+import FullPageSpinner from "../../components/FullPageSpinner";
+import Loading from "../../components/Loading";
 
 const AppLayout = ({ setCurrentTitle, children }) => {
   const { user } = UserAuth();
-  const history = useHistory();
 
   const getInitialUserData = useCallback(async () => {
     if (user && user.uid) {
@@ -45,9 +46,12 @@ const AppLayout = ({ setCurrentTitle, children }) => {
     }
   }, [getInitialUserData, dispatch, user]);
 
-  if (user === null) {
-    return history.push("/login");
-  }
+  const history = useHistory();
+  useEffect(() => {
+    if (user === null) {
+      return history.push("/login");
+    }
+  }, [user, history]);
 
   const childrenWithProps = React.Children.map(children, (child) => {
     if (React.isValidElement(child)) {
@@ -64,10 +68,14 @@ const AppLayout = ({ setCurrentTitle, children }) => {
         algorithm: false ? darkAlgorithm : defaultAlgorithm,
       }}
     >
-      <Layout style={{ height: "100vh" }}>
-        <AppNav setCurrentTitle={setCurrentTitle} />
-        {childrenWithProps}
-      </Layout>
+      {user === null || JSON.stringify(user) === "{}" ? (
+        <FullPageSpinner indicator={Loading(50)} />
+      ) : (
+        <Layout style={{ height: "100vh" }}>
+          <AppNav setCurrentTitle={setCurrentTitle} />
+          {childrenWithProps}
+        </Layout>
+      )}
     </ConfigProvider>
   );
 };
