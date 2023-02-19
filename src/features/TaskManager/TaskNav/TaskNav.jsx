@@ -42,7 +42,7 @@ import {
   hardDeleteListTaskAction,
   deleteTaskTagAction,
 } from "../state/userTasks/userTasks.actions";
-import { isOnSmallScreen } from "../../../utils/app.utils";
+import { taskNavToDrawer } from "../../../utils/app.utils";
 
 const renderColorDot = (color) => {
   return (
@@ -407,7 +407,7 @@ const TaskNav = ({
       </Spinner>
     );
   };
-  return isOnSmallScreen() ? (
+  return taskNavToDrawer() ? (
     <Drawer
       title="Task Menu"
       placement={"left"}
@@ -436,7 +436,7 @@ const TaskNav = ({
         top: 0,
         left: 0,
       }}
-      width={isOnSmallScreen() ? window.innerWidth - 65 : 300}
+      width={300}
       collapsed={isMenuCollapsed}
     >
       {taskNavContent()}

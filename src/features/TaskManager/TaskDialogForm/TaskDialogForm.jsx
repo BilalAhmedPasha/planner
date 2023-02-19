@@ -1,5 +1,5 @@
 import { Form, Layout, theme } from "antd";
-import { isOnSmallScreen } from "../../../utils/app.utils";
+import { taskDetailsToDrawer } from "../../../utils/app.utils";
 import TaskDialogPrimaryPanel from "./TaskDialogPrimaryPanel";
 import TaskDialogSecondaryPanel from "./TaskDialogSecondaryPanel";
 
@@ -14,7 +14,7 @@ const TaskDialogForm = ({
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const smallScreen = isOnSmallScreen();
+  const verticallyAlignForm = taskDetailsToDrawer();
 
   return (
     <Form
@@ -27,7 +27,7 @@ const TaskDialogForm = ({
         <Layout.Sider collapsed collapsedWidth={0} />
         <Layout.Content
           style={{
-            marginRight: smallScreen ? "0rem" : "0.1rem",
+            marginRight: verticallyAlignForm ? "0rem" : "0.1rem",
             background: colorBgContainer,
             width: "12vw",
           }}
@@ -35,19 +35,19 @@ const TaskDialogForm = ({
           <TaskDialogPrimaryPanel
             form={form}
             height={72}
-            smallScreen={smallScreen}
+            smallScreen={verticallyAlignForm}
             setDisableAddButton={setDisableAddButton}
           />
-          {smallScreen && (
+          {verticallyAlignForm && (
             <TaskDialogSecondaryPanel
               form={form}
               height={72}
-              smallScreen={smallScreen}
+              smallScreen={verticallyAlignForm}
               {...props}
             />
           )}
         </Layout.Content>
-        {!smallScreen && (
+        {!verticallyAlignForm && (
           <Layout.Content
             style={{
               marginLeft: "0.1rem",

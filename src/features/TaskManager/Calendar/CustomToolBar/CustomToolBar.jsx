@@ -4,7 +4,7 @@ import { Button, Segmented, Typography } from "antd";
 import { DAY, WEEK } from "../../../../constants/calendar.constants";
 import { CaretLeftOutlined, CaretRightOutlined } from "@ant-design/icons";
 import { useMemo } from "react";
-import { isOnSmallScreen } from "../../../../utils/app.utils";
+import { disableWeekView } from "../../../../utils/app.utils";
 
 const CustomToolbar = (props) => {
   const goToDayView = () => {
@@ -36,7 +36,7 @@ const CustomToolbar = (props) => {
       {
         label: WEEK,
         value: WEEK,
-        disabled: isOnSmallScreen() ? true : false,
+        disabled: disableWeekView() ? true : false,
       },
       {
         label: DAY,
@@ -75,7 +75,7 @@ const CustomToolbar = (props) => {
           icon={<CaretRightOutlined />}
         />
         <Segmented
-          defaultValue={isOnSmallScreen() ? DAY : WEEK}
+          defaultValue={disableWeekView() ? DAY : WEEK}
           options={buttonOptions}
           onChange={handleViewChange}
         />

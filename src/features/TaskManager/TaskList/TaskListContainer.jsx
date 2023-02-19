@@ -68,7 +68,7 @@ import { PRIORITY, TIME, TITLE } from "../../../constants/sort.constants";
 import { useParams } from "react-router-dom";
 import { NONE } from "../../../constants/priority.constants";
 import { ENDLESS } from "../../../constants/repeating.constants";
-import { isOnSmallScreen } from "../../../utils/app.utils";
+import { taskNavToDrawer } from "../../../utils/app.utils";
 
 const computeSectionData = ({ tasks, currentSection }) => {
   if (currentSection.id === ALL) {
@@ -142,7 +142,7 @@ const TaskListContainer = ({
   setSelectedTaskDetails,
   isNavDrawerCollapsed,
   setIsNavDrawerCollapsed,
-  setIsTaskDetailsDrawerCollapsed
+  setIsTaskDetailsDrawerCollapsed,
 }) => {
   const {
     token: { colorBgContainer, colorTextBase },
@@ -343,7 +343,7 @@ const TaskListContainer = ({
       <Button
         type="text"
         icon={
-          isOnSmallScreen() ? (
+          taskNavToDrawer() ? (
             isNavDrawerCollapsed ? (
               <MenuUnfoldOutlined
                 style={{

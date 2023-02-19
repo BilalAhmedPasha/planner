@@ -12,7 +12,7 @@ import {
   getFormValueFromTaskDetail,
   handleEditTask,
 } from "../TaskList/TaskList.utils";
-import { isOnSmallScreen } from "../../../utils/app.utils";
+import { taskNavToDrawer, taskDetailsToDrawer } from "../../../utils/app.utils";
 import { CloseOutlined } from "@ant-design/icons";
 
 const TaskDetailsContainer = ({
@@ -110,12 +110,13 @@ const TaskDetailsContainer = ({
       </Spinner>
     );
   };
-  return isOnSmallScreen() ? (
+  return taskDetailsToDrawer() ? (
     <Drawer
       title="Task Details"
       placement={"right"}
       closable={false}
       open={!isTaskDetailsDrawerCollapsed}
+      width={taskNavToDrawer() ? "80vw" : "60vw"}
       bodyStyle={{ padding: "0.5rem 1rem", overflow: "auto" }}
       destroyOnClose={true}
       extra={

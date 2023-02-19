@@ -6,7 +6,7 @@ import { Form } from "antd";
 import { tasksSelector } from "../state/userTasks/userTasks.reducer";
 import { CREATE, EDIT } from "../../../constants/formType.constants";
 import { handleAddTask, handleEditTask } from "../TaskList/TaskList.utils";
-import { isOnSmallScreen } from "../../../utils/app.utils";
+import { taskNavToDrawer } from "../../../utils/app.utils";
 
 const TaskDialog = ({
   user,
@@ -88,7 +88,7 @@ const TaskDialog = ({
   };
 
   const { isLoadingTasks } = useSelector(tasksSelector);
-  const smallScreen = isOnSmallScreen();
+  const smallScreen = taskNavToDrawer();
 
   return (
     openDialog && (
@@ -102,7 +102,7 @@ const TaskDialog = ({
         okText={formType === CREATE ? "Add" : "Save"}
         form={form}
         centered={true}
-        width={smallScreen ? "100vw" : "50vw"}
+        width={smallScreen ? "90vw" : "50vw"}
         destroyOnClose={true}
         loading={isLoadingTasks}
         disableOk={disableAddButton}
