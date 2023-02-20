@@ -42,7 +42,10 @@ import {
   hardDeleteListTaskAction,
   deleteTaskTagAction,
 } from "../state/userTasks/userTasks.actions";
-import { taskNavToDrawer } from "../../../utils/screen.utils";
+import {
+  isOnVerySmallScreen,
+  taskNavToDrawer,
+} from "../../../utils/screen.utils";
 import useWindowSize from "../../../hooks/useWindowSize";
 
 const renderColorDot = (color) => {
@@ -417,6 +420,11 @@ const TaskNav = ({
       open={!isNavDrawerCollapsed}
       bodyStyle={{ padding: "0px", overflow: "auto" }}
       destroyOnClose={true}
+      width={
+        isOnVerySmallScreen({ currentWidth: screenSize.width })
+          ? "80vw"
+          : 300
+      }
       extra={
         <Button
           type="text"

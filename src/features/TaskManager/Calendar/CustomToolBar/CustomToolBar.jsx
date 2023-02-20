@@ -3,7 +3,7 @@ import { Navigate } from "react-big-calendar";
 import { Button, Segmented, Typography } from "antd";
 import { DAY, WEEK } from "../../../../constants/calendar.constants";
 import { CaretLeftOutlined, CaretRightOutlined } from "@ant-design/icons";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect } from "react";
 import { disableWeekView } from "../../../../utils/screen.utils";
 import useWindowSize from "../../../../hooks/useWindowSize";
 
@@ -41,52 +41,58 @@ const CustomToolbar = (props) => {
     }
   }, [screenSize, goToDayView]);
 
-  const buttonOptions = useMemo(() => {
-    return [
-      {
-        label: WEEK,
-        value: WEEK,
-        disabled: disableWeekView({ currentWidth: screenSize.width })
-          ? true
-          : false,
-      },
-      {
-        label: DAY,
-        value: DAY,
-        disabled: false,
-      },
-    ];
-  }, [screenSize]);
-
   return (
     <div
       style={{
         display: "flex",
         justifyContent: "space-between",
-        marginBottom: "1rem",
+        marginBottom: "0.5vh",
         alignItems: "center",
+        overflow: "auto",
+        whiteSpace: "nowrap",
       }}
     >
-      <Typography.Text strong style={{ fontSize: "1.25rem" }}>
+      <Typography.Text
+        strong
+        style={{
+          fontSize: "1.25rem",
+        }}
+      >
         {props.label}
       </Typography.Text>
       <div>
-        <Button
-          type="text"
-          onClick={goToBack}
-          icon={<CaretLeftOutlined />}
-        />
-        <Button type="text" onClick={goToToday}>
+        <Button type="text" onClick={goToBack} icon={<CaretLeftOutlined />} />
+        <Button type="text" onClick={goToToday} size="small">
           {"Today"}
         </Button>
         <Button type="text" onClick={goToNext} icon={<CaretRightOutlined />} />
-        <Segmented
-          defaultValue={
-            disableWeekView({ currentWidth: screenSize.width }) ? DAY : WEEK
-          }
-          options={buttonOptions}
-          onChange={handleViewChange}
-        />
+        {disableWeekView({ currentWidth: screenSize.width }) ? (
+          <Segmented
+            defaultValue={DAY}
+            options={[
+              {
+                label: DAY,
+                value: DAY,
+              },
+            ]}
+            onChange={handleViewChange}
+          />
+        ) : (
+          <Segmented
+            defaultValue={WEEK}
+            options={[
+              {
+                label: WEEK,
+                value: WEEK,
+              },
+              {
+                label: DAY,
+                value: DAY,
+              },
+            ]}
+            onChange={handleViewChange}
+          />
+        )}
       </div>
     </div>
   );

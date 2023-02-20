@@ -100,15 +100,15 @@ const AppNav = ({ setCurrentTitle }) => {
         top: 0,
         left: 0,
       }}
-      collapsedWidth={65}
+      collapsedWidth={50}
       collapsed
     >
       <Dropdown menu={menuProps} placement="bottomLeft" trigger={["click"]}>
         <Avatar
-          size={50}
+          size={45}
           shape="square"
           src={user?.photoURL}
-          style={{ margin: "0.5rem", cursor: "pointer" }}
+          style={{ margin: "0.15rem", cursor: "pointer" }}
         />
       </Dropdown>
       <SideMenu

@@ -537,7 +537,6 @@ const TaskItem = ({
           style={{
             whiteSpace: "nowrap",
             overflowX: "auto",
-            textOverflow: "ellipsis",
           }}
           disabled={taskDetails.isCompleted || taskDetails.isWontDo}
         >{`${taskDetails.name}`}</Typography.Text>
@@ -545,7 +544,6 @@ const TaskItem = ({
           style={{
             whiteSpace: "nowrap",
             overflowX: "auto",
-            textOverflow: "ellipsis",
             paddingLeft: "0.25rem",
           }}
         >

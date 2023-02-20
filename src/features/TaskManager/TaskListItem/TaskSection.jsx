@@ -128,11 +128,16 @@ const TaskListSection = ({
                         style={{
                           whiteSpace: "nowrap",
                           overflowX: "auto",
-                          textOverflow: "ellipsis",
                         }}
                         strong
                       >{`${sectionalTasks[each].sectionTitle}`}</Typography.Text>
-                      <Typography.Text type="secondary">{`${sectionalTasks[each].tasks.length}`}</Typography.Text>
+                      <Typography.Text
+                        type="secondary"
+                        style={{
+                          whiteSpace: "nowrap",
+                          overflowX: "auto",
+                        }}
+                      >{`${sectionalTasks[each].tasks.length}`}</Typography.Text>
                     </Space>
                   }
                   key={sectionalTasks[each].sectionKey}

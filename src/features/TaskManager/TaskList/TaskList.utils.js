@@ -37,24 +37,28 @@ export const handleAddTask = ({
   createTaskFailed,
 }) => {
   const createdTime = dayjs.utc().format();
+  const thisTaskDate = formValues.taskDate
+    ? formValues.taskDate.startOf(DAY).format()
+    : null;
+  const thisTaskStartTime =
+    formValues.taskDate && formValues.duration && formValues.duration[0]
+      ? formValues.duration[0].format(TIME_FORMAT_IN_DB)
+      : null;
+  const thisTaskEndTime =
+    formValues.taskDate && formValues.duration && formValues.duration[1]
+      ? formValues.duration[1].format(TIME_FORMAT_IN_DB)
+      : null;
   const newTask = {
     name: formValues.name,
     description: formValues.description || null,
     listId: formValues.listId,
     priority: formValues.priority,
     tagIds: formValues.tagIds || [],
-    taskDate:
-      (formValues.taskDate && formValues.taskDate.startOf(DAY).format()) ||
-      null,
-    isAllDay: formValues.duration?.length > 0 ? false : true,
-    startTime:
-      formValues.taskDate && formValues.duration
-        ? formValues.duration[0].format(TIME_FORMAT_IN_DB)
-        : null,
-    endTime:
-      formValues.taskDate && formValues.duration
-        ? formValues.duration[1].format(TIME_FORMAT_IN_DB)
-        : null,
+    taskDate: thisTaskDate,
+    isAllDay:
+      thisTaskDate && !thisTaskStartTime && !thisTaskEndTime ? true : false,
+    startTime: thisTaskStartTime,
+    endTime: thisTaskEndTime,
     isRepeating:
       formValues.taskDate && formValues.repeatFrequency ? true : false,
     repeatFrequency:
@@ -136,6 +140,17 @@ export const handleEditTask = ({
   setOpenDialog,
 }) => {
   const modifiedTime = dayjs.utc().format();
+  const newTaskDate = formValues.taskDate
+    ? formValues.taskDate.startOf(DAY).format()
+    : null;
+  const newTaskStartTime =
+    formValues.taskDate && formValues.duration && formValues.duration[0]
+      ? formValues.duration[0].format(TIME_FORMAT_IN_DB)
+      : null;
+  const newTaskEndTime =
+    formValues.taskDate && formValues.duration && formValues.duration[1]
+      ? formValues.duration[1].format(TIME_FORMAT_IN_DB)
+      : null;
   const modifiedTask = {
     ...taskDetails,
     name: formValues.name,
@@ -143,18 +158,11 @@ export const handleEditTask = ({
     listId: formValues.listId,
     priority: formValues.priority,
     tagIds: formValues.tagIds || [],
-    taskDate:
-      (formValues.taskDate && formValues.taskDate.startOf(DAY).format()) ||
-      null,
-    isAllDay: formValues.duration?.length > 0 ? false : true,
-    startTime:
-      formValues.taskDate && formValues.duration
-        ? formValues.duration[0].format(TIME_FORMAT_IN_DB)
-        : null,
-    endTime:
-      formValues.taskDate && formValues.duration
-        ? formValues.duration[1].format(TIME_FORMAT_IN_DB)
-        : null,
+    taskDate: newTaskDate,
+    isAllDay:
+      newTaskDate && !newTaskStartTime && !newTaskEndTime ? true : false,
+    startTime: newTaskStartTime,
+    endTime: newTaskEndTime,
     isRepeating:
       formValues.taskDate && formValues.repeatFrequency ? true : false,
     repeatFrequency:

@@ -411,13 +411,12 @@ const TaskListContainer = ({
                 fontSize: "24px",
                 whiteSpace: "nowrap",
                 overflowX: "auto",
-                textOverflow: "ellipsis",
               }}
             >
               {currentSection?.label}
             </Typography.Text>
             {sortedSectionTasks?.length > 0 && (
-              <Typography.Text type="secondary">{`${sortedSectionTasks?.length}`}</Typography.Text>
+              <Typography.Text type="secondary" style={{whiteSpace: "nowrap", overflowX: "auto" }}>{`${sortedSectionTasks?.length}`}</Typography.Text>
             )}
           </Space>
 

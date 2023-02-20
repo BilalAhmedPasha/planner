@@ -219,10 +219,13 @@ const CalendarView = ({ user }) => {
             priority: event.priority,
             tags: event.tagIds,
             taskDate: dayjs(event.taskDate),
-            duration: [
-              dayjs(event.startTime, TIME_FORMAT_IN_DB),
-              dayjs(event.endTime, TIME_FORMAT_IN_DB),
-            ],
+            duration:
+              event.startTime && event.endTime
+                ? [
+                    dayjs(event.startTime, TIME_FORMAT_IN_DB),
+                    dayjs(event.endTime, TIME_FORMAT_IN_DB),
+                  ]
+                : [undefined, undefined],
             repeatFrequency: event.repeatFrequency,
             endBy: event.endBy,
             [END_BY_DATE]: event.endByDate ? dayjs(event.endByDate) : undefined,
@@ -262,7 +265,7 @@ const CalendarView = ({ user }) => {
   return (
     <Layout.Content
       style={{
-        padding: "1rem 3rem",
+        padding: "1vh 0.75rem",
         background: colorBgContainer,
       }}
     >
@@ -276,12 +279,16 @@ const CalendarView = ({ user }) => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            height: "5vh",
+            marginBottom: "0.5vh",
           }}
         >
           <Typography.Text
             style={{
               fontWeight: "bold",
               fontSize: "24px",
+              whiteSpace: "nowrap",
+              overflowX: "auto",
             }}
           >
             {"Calendar"}
@@ -305,7 +312,7 @@ const CalendarView = ({ user }) => {
             </Dropdown>
           </Space>
         </div>
-        <div style={{ height: "85vh", margin: "1rem 0rem" }}>
+        <div style={{ height: "93vh" }}>
           <Calendar
             events={taskEvents}
             localizer={localizer}

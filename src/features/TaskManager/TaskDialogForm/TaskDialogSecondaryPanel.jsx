@@ -210,7 +210,11 @@ const TaskDialogSecondaryPanel = ({ form, height, smallScreen, ...props }) => {
         name="priority"
         label={
           <Space>
-            <Typography.Text>{"Priority"}</Typography.Text>
+            <Typography.Text
+              style={{ whiteSpace: "nowrap", overflowX: "auto" }}
+            >
+              {"Priority"}
+            </Typography.Text>
             <FlagFilled style={{ color: priorityColor }} />
           </Space>
         }
@@ -244,6 +248,8 @@ const TaskDialogSecondaryPanel = ({ form, height, smallScreen, ...props }) => {
             <Typography.Text
               style={{
                 fontSize: "0.9rem",
+                whiteSpace: "nowrap",
+                overflowX: "auto",
               }}
             >
               {"Multi day task"}
