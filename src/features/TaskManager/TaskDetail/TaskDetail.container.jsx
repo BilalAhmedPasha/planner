@@ -123,7 +123,7 @@ const TaskDetailsContainer = ({
       closable={false}
       open={!isTaskDetailsDrawerCollapsed}
       width={
-        taskNavToDrawer({ currentWidth: screenSize.width }) ? "80vw" : "60vw"
+        taskNavToDrawer({ currentWidth: screenSize.width }) ? "90vw" : "60vw"
       }
       bodyStyle={{ padding: "0.5rem 1rem", overflow: "auto" }}
       destroyOnClose={true}
