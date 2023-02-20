@@ -142,7 +142,6 @@ const renderSubMenuItems = ({
                   <Button
                     icon={<MoreOutlined />}
                     type="text"
-                    size="small"
                     onClick={(e) => e.stopPropagation()}
                   />
                 </Dropdown>
@@ -420,7 +419,6 @@ const TaskNav = ({
       destroyOnClose={true}
       extra={
         <Button
-          size="small"
           type="text"
           icon={<CloseOutlined />}
           onClick={() => setIsNavDrawerCollapsed(true)}

@@ -73,19 +73,13 @@ const CustomToolbar = (props) => {
       <div>
         <Button
           type="text"
-          size="small"
           onClick={goToBack}
           icon={<CaretLeftOutlined />}
         />
-        <Button type="text" size="small" onClick={goToToday}>
+        <Button type="text" onClick={goToToday}>
           {"Today"}
         </Button>
-        <Button
-          type="text"
-          size="small"
-          onClick={goToNext}
-          icon={<CaretRightOutlined />}
-        />
+        <Button type="text" onClick={goToNext} icon={<CaretRightOutlined />} />
         <Segmented
           defaultValue={
             disableWeekView({ currentWidth: screenSize.width }) ? DAY : WEEK

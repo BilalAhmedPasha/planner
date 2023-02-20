@@ -441,9 +441,11 @@ const TaskListContainer = ({
                       okType: "danger",
                     });
                   }}
+                  disabled={selectedTaskDetails.length > 1 ? false : true}
                   style={{
                     opacity: selectedTaskDetails.length > 1 ? 1 : 0,
                     transition: "0.3s all ease",
+                    cursor: selectedTaskDetails.length > 1 ? "pointer" : "auto",
                   }}
                 />
               )}
@@ -461,6 +463,7 @@ const TaskListContainer = ({
                       style={{
                         fontSize: "1rem",
                         color: colorTextBase,
+                        cursor: "pointer",
                       }}
                     />
                   ) : sortBy === PRIORITY ? (
@@ -468,6 +471,7 @@ const TaskListContainer = ({
                       style={{
                         fontSize: "1rem",
                         color: colorTextBase,
+                        cursor: "pointer",
                       }}
                     />
                   ) : (
@@ -481,13 +485,13 @@ const TaskListContainer = ({
                       fontSize: "1rem",
                       color: colorTextBase,
                       marginLeft: "0.2rem",
+                      cursor: "pointer",
                     }}
                   />
                 </div>
               </Dropdown>
               <Button
-                size="small"
-                type="primary"
+                type="dashed"
                 icon={<PlusOutlined />}
                 onClick={handleAddTask}
               />
@@ -511,9 +515,11 @@ const TaskListContainer = ({
                     okType: "primary",
                   });
                 }}
+                disabled={selectedTaskDetails.length > 1 ? false : true}
                 style={{
                   opacity: selectedTaskDetails.length > 1 ? 1 : 0,
                   transition: "0.3s all ease",
+                  cursor: selectedTaskDetails.length > 1 ? "pointer" : "auto",
                 }}
               />
 
@@ -534,9 +540,11 @@ const TaskListContainer = ({
                     okType: "danger",
                   });
                 }}
+                disabled={selectedTaskDetails.length > 1 ? false : true}
                 style={{
                   opacity: selectedTaskDetails.length > 1 ? 1 : 0,
                   transition: "0.3s all ease",
+                  cursor: selectedTaskDetails.length > 1 ? "pointer" : "auto",
                 }}
               />
 

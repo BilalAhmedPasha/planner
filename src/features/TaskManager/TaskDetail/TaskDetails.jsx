@@ -271,12 +271,18 @@ const TaskDetails = ({
               type="text"
               icon={<EditFilled />}
               onClick={() => setFormType(EDIT)}
+              style={{ marginRight: "0.2rem" }}
             />
           </Space>
         ) : (
           <Space>
             <Button type="text" icon={<CloseOutlined />} onClick={onReset} />
-            <Button type="text" icon={<SaveOutlined />} htmlType="submit" />
+            <Button
+              type="text"
+              icon={<SaveOutlined />}
+              htmlType="submit"
+              style={{ marginRight: "0.2rem" }}
+            />
           </Space>
         )}
       </div>

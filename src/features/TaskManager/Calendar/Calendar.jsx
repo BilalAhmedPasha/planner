@@ -298,7 +298,7 @@ const CalendarView = ({ user }) => {
               placement="bottomLeft"
             >
               <Space style={{ cursor: "pointer" }}>
-                <Button type="text" size="small" icon={<BgColorsOutlined />}>
+                <Button type="text" icon={<BgColorsOutlined />}>
                   {"Color by"}
                 </Button>
               </Space>

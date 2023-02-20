@@ -129,7 +129,6 @@ const TaskDetailsContainer = ({
       destroyOnClose={true}
       extra={
         <Button
-          size="small"
           type="text"
           icon={<CloseOutlined />}
           onClick={() => setIsTaskDetailsDrawerCollapsed(true)}
