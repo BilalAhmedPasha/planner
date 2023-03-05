@@ -1,12 +1,4 @@
-import {
-  Layout,
-  Typography,
-  theme,
-  Space,
-  Dropdown,
-  message,
-  Button,
-} from "antd";
+import { Typography, Space, Dropdown, Button } from "antd";
 import { Calendar, dayjsLocalizer, Views } from "react-big-calendar";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
@@ -19,56 +11,36 @@ import React, {
 } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import CustomToolbar from "./CustomToolBar/CustomToolBar";
-import { fetchListsAction } from "../state/userLists/userLists.actions";
-import { fetchTagsAction } from "../state/userTags/userTags.actions";
-import { fetchTasksAction } from "../state/userTasks/userTasks.actions";
-import { useDispatch, useSelector } from "react-redux";
-import { userSelector } from "../../AppLayout/state/userSettings/userSettings.reducer";
+import { useSelector } from "react-redux";
 import { listsSelector } from "../state/userLists/userLists.reducer";
 import { tasksSelector } from "../state/userTasks/userTasks.reducer";
 import { INBOX_LIST_COLOR } from "../../../constants/color.constants";
 import { BgColorsOutlined } from "@ant-design/icons";
 import { PRIORITY } from "../../../constants/sort.constants";
-import { INBOX, LISTS, LOADER_SIZE } from "../../../constants/app.constants";
+import { LISTS, LOADER_SIZE } from "../../../constants/app.constants";
 import { TIME_FORMAT_IN_DB } from "../../../constants/dateTime.constants";
-import {
-  NONE,
-  priorityColorMappings,
-} from "../../../constants/priority.constants";
-import TaskDialogForm from "../TaskDialogForm";
+import { priorityColorMappings } from "../../../constants/priority.constants";
 import { CREATE, EDIT } from "../../../constants/formType.constants";
-import Spinner from "../../../components/Spinner";
-import Loading from "../../../components/Loading";
 import {
-  ENDLESS,
   END_BY_DATE,
   END_BY_REPEAT_COUNT,
 } from "../../../constants/repeating.constants";
 import "./Calendar.css";
 import { disableWeekView } from "../../../utils/screen.utils";
 import useWindowSize from "../../../hooks/useWindowSize";
+import Spinner from "../../../components/Spinner";
+import Loading from "../../../components/Loading";
 
 dayjs.extend(timezone);
 
-const CalendarView = ({ user }) => {
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
-
-  const dispatch = useDispatch();
-  const userSetting = useSelector(userSelector);
-
-  useEffect(() => {
-    if (user && user.uid !== userSetting.id) {
-      dispatch(fetchListsAction(user.uid));
-      dispatch(fetchTagsAction(user.uid));
-      dispatch(fetchTasksAction(user.uid));
-    }
-  }, [userSetting, dispatch, user]);
-
+const CalendarComponent = ({
+  setFormType,
+  setTaskDetails,
+  setFormValues,
+  initalFormValues,
+}) => {
   const { lists } = useSelector(listsSelector);
   const { tasks, isLoadingTasks } = useSelector(tasksSelector);
-
   const localizer = useMemo(() => dayjsLocalizer(dayjs), []);
 
   const taskEvents = useMemo(() => {
@@ -129,6 +101,7 @@ const CalendarView = ({ user }) => {
   };
 
   const [colorBy, setColorBy] = useState(LISTS);
+
   const colorByMenuItemList = [
     {
       label: "List",
@@ -173,36 +146,15 @@ const CalendarView = ({ user }) => {
   );
 
   const clickRef = useRef(null);
+
   useEffect(() => {
     return () => {
       window.clearTimeout(clickRef?.current);
     };
   }, []);
 
-  const initalFormValues = useMemo(() => {
-    return {
-      name: "",
-      listId: INBOX,
-      priority: NONE,
-      endBy: ENDLESS,
-      tagIds: [],
-      taskDate: undefined,
-      duration: [undefined, undefined],
-    };
-  }, []);
-
-  const [formValues, setFormValues] = useState(initalFormValues);
-
-  useEffect(() => {
-    if (formValues.taskDate !== undefined) {
-      setOpenAddTaskDialog(true);
-    }
-  }, [formValues]);
-
   const [spinner, setSpinner] = useState(false);
 
-  const [formType, setFormType] = useState(CREATE);
-  const [taskDetails, setTaskDetails] = useState();
   const onSelectEvent = useCallback(
     (event) => {
       setSpinner(true);
@@ -232,10 +184,10 @@ const CalendarView = ({ user }) => {
             [END_BY_REPEAT_COUNT]: event.endByRepeatCount,
           };
         });
-        setSpinner(false);
-      }, 10);
+      }, 0);
+      setSpinner(false);
     },
-    [initalFormValues]
+    [initalFormValues, setFormType, setTaskDetails, setFormValues]
   );
 
   const onSelecting = useCallback(
@@ -253,65 +205,57 @@ const CalendarView = ({ user }) => {
             duration: [startTime, endTime],
           };
         });
-      }, 250);
+      }, 60);
     },
-    [initalFormValues]
+    [initalFormValues, setFormType, setFormValues]
   );
 
-  const [messageApi] = message.useMessage();
-  const [openAddTaskDialog, setOpenAddTaskDialog] = useState(false);
   const screenSize = useWindowSize();
-
   return (
-    <Layout.Content
-      style={{
-        padding: "1vh 0.75rem",
-        background: colorBgContainer,
-      }}
-    >
+    <>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          height: "5vh",
+          marginBottom: "0.5vh",
+        }}
+      >
+        <Typography.Text
+          style={{
+            fontWeight: "bold",
+            fontSize: "24px",
+            whiteSpace: "nowrap",
+            overflowX: "auto",
+          }}
+        >
+          {"Calendar"}
+        </Typography.Text>
+        <Space>
+          <Dropdown
+            menu={{
+              items: colorByMenuItemList,
+              selectable: true,
+              defaultSelectedKeys: [LISTS],
+              onClick: handleColorByMenuClick,
+            }}
+            trigger={["click"]}
+            placement="bottomLeft"
+          >
+            <Space style={{ cursor: "pointer" }}>
+              <Button type="text" icon={<BgColorsOutlined />}>
+                {"Color by"}
+              </Button>
+            </Space>
+          </Dropdown>
+        </Space>
+      </div>
       <Spinner
         spinning={isLoadingTasks || spinner}
         indicator={Loading(LOADER_SIZE)}
         delay={0}
       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            height: "5vh",
-            marginBottom: "0.5vh",
-          }}
-        >
-          <Typography.Text
-            style={{
-              fontWeight: "bold",
-              fontSize: "24px",
-              whiteSpace: "nowrap",
-              overflowX: "auto",
-            }}
-          >
-            {"Calendar"}
-          </Typography.Text>
-          <Space>
-            <Dropdown
-              menu={{
-                items: colorByMenuItemList,
-                selectable: true,
-                defaultSelectedKeys: [LISTS],
-                onClick: handleColorByMenuClick,
-              }}
-              trigger={["click"]}
-              placement="bottomLeft"
-            >
-              <Space style={{ cursor: "pointer" }}>
-                <Button type="text" icon={<BgColorsOutlined />}>
-                  {"Color by"}
-                </Button>
-              </Space>
-            </Dropdown>
-          </Space>
-        </div>
         <div style={{ height: "93vh" }}>
           <Calendar
             events={taskEvents}
@@ -339,24 +283,10 @@ const CalendarView = ({ user }) => {
             longPressThreshold={250}
             onSelectEvent={onSelectEvent}
           />
-          {openAddTaskDialog && (
-            <TaskDialogForm
-              user={user}
-              messageApi={messageApi}
-              openDialog={openAddTaskDialog}
-              setOpenDialog={setOpenAddTaskDialog}
-              formType={formType}
-              formValues={formValues}
-              taskDetails={taskDetails}
-              isFromCalendar={true}
-              disableDateSelection={formType === CREATE}
-              disableTimeSelection={formType === CREATE}
-            />
-          )}
         </div>
       </Spinner>
-    </Layout.Content>
+    </>
   );
 };
 
-export default React.memo(CalendarView);
+export default React.memo(CalendarComponent);

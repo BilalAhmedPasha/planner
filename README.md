@@ -68,3 +68,11 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `yarn build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+## Planner
+- Planner is a todo app which allows users to create and maintain tasks.
+
+#### Features
+- Users can create custom lists, tags and associate tasks to them.
+- The application includes functionalities like task priority, scheduling and creating repeating tasks.
+- Calendar time blocking is also supported with a dedicated calendar view.
