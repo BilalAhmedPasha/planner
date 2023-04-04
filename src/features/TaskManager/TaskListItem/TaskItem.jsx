@@ -1,13 +1,4 @@
-import {
-  Badge,
-  Button,
-  Dropdown,
-  Modal,
-  Space,
-  Tag,
-  theme,
-  Typography,
-} from "antd";
+import { Button, Dropdown, Modal, Space, Tag, theme, Typography } from "antd";
 import {
   SyncOutlined,
   NodeExpandOutlined,
@@ -25,6 +16,7 @@ import {
   MEDIUM_COLOR,
   NONE_BG_COLOR,
   NONE_COLOR,
+  DEFAULT_BADGE_COLOR,
 } from "../../../constants/color.constants";
 import {
   COMPLETED,
@@ -102,34 +94,36 @@ const renderList = ({ item, lists, colorBorder }) => {
   );
 };
 
-const renderTags = ({ item, tags, colorBorder, colorInfo }) => {
+const renderTags = ({ item, tags, colorBorder }) => {
   if (item?.tagIds?.length > 0) {
-    const tagId = item.tagIds[0];
-    const tagDetails = tags.find((each) => each.id === tagId);
-    return (
-      <Badge
-        size="small"
-        count={item.tagIds.length - 1}
-        overflowCount={3}
-        color={item.isCompleted || item.isWontDo ? colorBorder : colorInfo}
-        showZero={false}
-        offset={[0, 8]}
-        style={{ marginRight: "0.5rem" }}
-      >
-        <Tag
-          color={
-            item.isCompleted || item.isWontDo
-              ? colorBorder
-              : tagDetails?.color || colorBorder
-          }
-          closable={false}
-        >
-          {tagDetails?.label.length > 8
-            ? `${tagDetails.label?.slice(0, 5)}...`
-            : tagDetails?.label}
+    const tagsArray = [];
+    for (let index = 0; index < 3; index++) {
+      const tagDetails = tags.find((each) => each.id === item.tagIds[index]);
+      tagDetails &&
+        tagsArray.push(
+          <Tag
+            key={item.tagIds[index]}
+            color={
+              item.isCompleted || item.isWontDo
+                ? colorBorder
+                : tagDetails?.color || colorBorder
+            }
+            closable={false}
+          >
+            {tagDetails?.label.length > 12
+              ? `${tagDetails.label?.slice(0, 10)}...`
+              : tagDetails?.label}
+          </Tag>
+        );
+    }
+    if (item?.tagIds?.length > 3) {
+      tagsArray.push(
+        <Tag key={"overflow"} color={DEFAULT_BADGE_COLOR} closable={false}>
+          {`+${item.tagIds.length - 3}`}
         </Tag>
-      </Badge>
-    );
+      );
+    }
+    return tagsArray;
   }
 };
 
@@ -197,7 +191,8 @@ const TaskItem = ({
   lists,
   tags,
   selectedTaskDetails,
-  setSelectedTaskDetails,
+  setShowCheckBoxMenu,
+  showCheckBoxMenu,
 }) => {
   const { confirm } = Modal;
 
@@ -322,7 +317,6 @@ const TaskItem = ({
     });
   };
 
-  const [showCheckBoxMenu, setShowCheckBoxMenu] = useState(false);
   const [checkBoxContent, setCheckBoxContent] = useState(
     taskDetails.isCompleted ? tick : cross
   );
@@ -409,14 +403,8 @@ const TaskItem = ({
   const handleRightClick = ({ e, taskDetails }) => {
     e.preventDefault();
     if (taskDetails.isDeleted) return false;
-    setShowCheckBoxMenu((prevState) => !prevState);
+    setShowCheckBoxMenu(true);
   };
-
-  function keyPress(e) {
-    if (e.key === "Escape") {
-      setShowCheckBoxMenu(false);
-    }
-  }
 
   const handleMenuClick = (e) => {
     if (e.key === COMPLETED) {
@@ -454,13 +442,12 @@ const TaskItem = ({
       colorBorderSecondary,
       colorTextLabel,
       colorError,
-      colorInfo,
     },
   } = theme.useToken();
 
   return (
-    <div style={{ width: "100%", alignItems: "center" }}>
-      <div style={{ float: "left", marginRight: "1rem" }}>
+    <div style={{ width: "100%" }}>
+      <div style={{ float: "left", marginTop: "0.15rem" }}>
         <Dropdown
           menu={{ items: checkBoxMenuItems, onClick: handleMenuClick }}
           placement="bottomLeft"
@@ -499,165 +486,164 @@ const TaskItem = ({
             }
             onChange={handleClick}
             onContextMenu={(e) => handleRightClick({ e, taskDetails })}
+            onBlur={() => setShowCheckBoxMenu(false)}
             checked={taskDetails.isCompleted || taskDetails.isWontDo}
             disabled={taskDetails.isDeleted}
             colorBgContainer={colorBgContainer}
           />
         </Dropdown>
       </div>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          cursor: "pointer",
-        }}
-        onClick={(e) => {
-          e.stopPropagation();
-          setShowCheckBoxMenu(false);
-          if (e.nativeEvent.shiftKey) {
-            setSelectedTaskDetails((prevState) => {
-              if (!prevState.find((each) => each.id === taskDetails.id)) {
-                return [...prevState, taskDetails];
-              } else {
-                if (selectedTaskDetails.length !== 1) {
-                  return prevState.filter((each) => each.id !== taskDetails.id);
-                } else {
-                  return [...prevState];
-                }
-              }
-            });
-          } else {
-            setSelectedTaskDetails([taskDetails]);
-          }
-        }}
-        onKeyDown={keyPress}
-      >
-        <Typography.Text
-          style={{
-            whiteSpace: "nowrap",
-            overflowX: "auto",
-          }}
-          disabled={taskDetails.isCompleted || taskDetails.isWontDo}
-        >{`${taskDetails.name}`}</Typography.Text>
+      <div style={{ marginLeft: "1.75rem" }}>
         <div
           style={{
-            whiteSpace: "nowrap",
-            overflowX: "auto",
-            paddingLeft: "0.25rem",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}
         >
-          <Space size="small" style={{ paddingRight: "0.25rem" }}>
-            {renderList({
-              item: taskDetails,
-              lists: lists,
-              colorBorder: colorBorder,
-            })}
-            {renderTags({
-              item: taskDetails,
-              tags: tags,
-              colorBorder: colorBorder,
-              colorInfo: colorInfo,
-            })}
-            {renderChildNodeIcon({
-              item: taskDetails,
-              colorTextLabel,
-              colorBorder,
-            })}
-            {renderRepeatIcon({
-              item: taskDetails,
-              colorTextLabel,
-              colorBorder,
-            })}
-            {renderTaskDate({ item: taskDetails })}
-          </Space>
-          {taskDetails.isDeleted ? (
-            <Button
-              type="text"
-              icon={
-                <UndoOutlined
-                  style={{
-                    color:
-                      taskDetails.isCompleted || taskDetails.isWontDo
-                        ? colorBorder
-                        : colorTextLabel,
-                    opacity: selectedTaskDetails.length > 1 ? 0.3 : 1,
-                    transition: "0.3s all ease",
-                  }}
-                />
-              }
-              size="small"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleTaskRestore({
-                  currentItem: taskDetails,
-                  restoreTaskAction: restoreTaskAction,
-                  successMessage: "Task restored",
-                  failureMessage: "Failed to restore task",
-                });
+          <Typography.Text
+            style={{
+              whiteSpace: "nowrap",
+              overflowX: "auto",
+            }}
+            disabled={taskDetails.isCompleted || taskDetails.isWontDo}
+          >{`${taskDetails.name}`}</Typography.Text>
+          <div
+            style={{
+              whiteSpace: "nowrap",
+              overflowX: "auto",
+              paddingLeft: "0.25rem",
+            }}
+          >
+            <Space size="small" style={{ paddingRight: "0.25rem" }}>
+              {renderList({
+                item: taskDetails,
+                lists: lists,
+                colorBorder: colorBorder,
+              })}
+              {renderChildNodeIcon({
+                item: taskDetails,
+                colorTextLabel,
+                colorBorder,
+              })}
+              {renderRepeatIcon({
+                item: taskDetails,
+                colorTextLabel,
+                colorBorder,
+              })}
+              {renderTaskDate({ item: taskDetails })}
+            </Space>
+            {taskDetails.isDeleted ? (
+              <Button
+                type="text"
+                icon={
+                  <UndoOutlined
+                    style={{
+                      color:
+                        taskDetails.isCompleted || taskDetails.isWontDo
+                          ? colorBorder
+                          : colorTextLabel,
+                      opacity: selectedTaskDetails.length > 1 ? 0.3 : 1,
+                      transition: "0.3s all ease",
+                    }}
+                  />
+                }
+                size="small"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleTaskRestore({
+                    currentItem: taskDetails,
+                    restoreTaskAction: restoreTaskAction,
+                    successMessage: "Task restored",
+                    failureMessage: "Failed to restore task",
+                  });
+                }}
+                disabled={selectedTaskDetails.length > 1}
+              />
+            ) : (
+              <Button
+                type="text"
+                icon={
+                  <DeleteOutlined
+                    style={{
+                      color:
+                        taskDetails.isCompleted || taskDetails.isWontDo
+                          ? colorBorder
+                          : colorTextLabel,
+                      opacity: selectedTaskDetails.length > 1 ? 0.3 : 1,
+                      transition: "0.3s all ease",
+                    }}
+                  />
+                }
+                size="small"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  showSoftDeleteConfirm({
+                    content: "Delete this task?",
+                    handleSoftDelete: handleSoftDelete,
+                    currentItem: taskDetails,
+                    softDeleteAction: softDeleteTaskAction,
+                    successMessage: "Task deleted",
+                    failureMessage: "Failed to delete task",
+                  });
+                }}
+                disabled={selectedTaskDetails.length > 1}
+              />
+            )}
+            {taskDetails.isDeleted ? (
+              <Button
+                type="text"
+                icon={
+                  <DeleteFilled
+                    style={{
+                      color:
+                        taskDetails.isCompleted || taskDetails.isWontDo
+                          ? colorBorder
+                          : colorError,
+                      opacity: selectedTaskDetails.length > 1 ? 0.3 : 1,
+                      transition: "0.3s all ease",
+                    }}
+                  />
+                }
+                size="small"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  showHardDeleteConfirm({
+                    content: "Delete this task permanently?",
+                    handleHardDelete: handleHardDelete,
+                    currentItem: taskDetails,
+                    hardDeleteAction: hardDeleteSingleTaskAction,
+                    successMessage: "Task deleted",
+                    failureMessage: "Failed to delete task",
+                  });
+                }}
+                disabled={selectedTaskDetails.length > 1}
+              />
+            ) : null}
+          </div>
+        </div>
+        {taskDetails.description && (
+          <div>
+            <Typography.Text
+              style={{
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                width: "100%",
               }}
-              disabled={selectedTaskDetails.length > 1}
-            />
-          ) : (
-            <Button
-              type="text"
-              icon={
-                <DeleteOutlined
-                  style={{
-                    color:
-                      taskDetails.isCompleted || taskDetails.isWontDo
-                        ? colorBorder
-                        : colorTextLabel,
-                    opacity: selectedTaskDetails.length > 1 ? 0.3 : 1,
-                    transition: "0.3s all ease",
-                  }}
-                />
-              }
-              size="small"
-              onClick={(e) => {
-                e.stopPropagation();
-                showSoftDeleteConfirm({
-                  content: "Delete this task?",
-                  handleSoftDelete: handleSoftDelete,
-                  currentItem: taskDetails,
-                  softDeleteAction: softDeleteTaskAction,
-                  successMessage: "Task deleted",
-                  failureMessage: "Failed to delete task",
-                });
-              }}
-              disabled={selectedTaskDetails.length > 1}
-            />
-          )}
-          {taskDetails.isDeleted ? (
-            <Button
-              type="text"
-              icon={
-                <DeleteFilled
-                  style={{
-                    color:
-                      taskDetails.isCompleted || taskDetails.isWontDo
-                        ? colorBorder
-                        : colorError,
-                    opacity: selectedTaskDetails.length > 1 ? 0.3 : 1,
-                    transition: "0.3s all ease",
-                  }}
-                />
-              }
-              size="small"
-              onClick={(e) => {
-                e.stopPropagation();
-                showHardDeleteConfirm({
-                  content: "Delete this task permanently?",
-                  handleHardDelete: handleHardDelete,
-                  currentItem: taskDetails,
-                  hardDeleteAction: hardDeleteSingleTaskAction,
-                  successMessage: "Task deleted",
-                  failureMessage: "Failed to delete task",
-                });
-              }}
-              disabled={selectedTaskDetails.length > 1}
-            />
-          ) : null}
+              ellipsis={true}
+              type="secondary"
+              disabled={taskDetails.isCompleted || taskDetails.isWontDo}
+            >
+              {taskDetails.description}
+            </Typography.Text>
+          </div>
+        )}
+        <div>
+          {renderTags({
+            item: taskDetails,
+            tags: tags,
+            colorBorder: colorBorder,
+          })}
         </div>
       </div>
     </div>

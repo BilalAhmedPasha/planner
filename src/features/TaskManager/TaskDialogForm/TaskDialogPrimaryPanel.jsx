@@ -49,7 +49,7 @@ const TaskDialogPrimaryPanel = ({
       <StyledFormItem name="name" lable="Task name">
         <Input
           autoComplete="off"
-          maxLength={50}
+          maxLength={25}
           placeholder={"Task name"}
           onInput={handleTaskNameChange}
           showCount

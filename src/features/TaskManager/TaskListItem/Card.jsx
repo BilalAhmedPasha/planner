@@ -1,5 +1,5 @@
 import { theme } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -11,9 +11,8 @@ import TaskItem from "./TaskItem";
 
 const StyledDiv = styled.div`
   padding: 0.75rem 1rem;
-  margin: 0rem ${(props) => (props.isInCollapse ? "0rem" : "1rem")};
+  margin: 0.5rem ${(props) => (props.isInCollapse ? "0rem" : "1rem")};
   opacity: ${(props) => props.opacity};
-  border-bottom: 0.5px solid ${(props) => props.colorBorder};
   opacity: ${(props) => props.opacity};
   :hover {
     background-color: ${(props) =>
@@ -21,7 +20,9 @@ const StyledDiv = styled.div`
   }
   background-color: ${(props) =>
     props.isSelected ? props.colorPrimaryBg : props.colorBgContainer};
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   user-select: none;
+  cursor: pointer;
 `;
 
 const ItemTypes = {
@@ -95,6 +96,12 @@ const Card = ({
     return selectedTaskDetails?.find((each) => each.id === id);
   };
 
+  const [showCheckBoxMenu, setShowCheckBoxMenu] = useState(false);
+  function keyPress(e) {
+    if (e.key === "Escape") {
+      setShowCheckBoxMenu(false);
+    }
+  }
   return (
     <StyledDiv
       ref={
@@ -110,6 +117,26 @@ const Card = ({
       controlItemBgHover={controlItemBgHover}
       colorBgTextHover={colorBgTextHover}
       colorBorder={colorBorder}
+      onClick={(e) => {
+        e.stopPropagation();
+        setShowCheckBoxMenu(false);
+        if (e.nativeEvent.shiftKey) {
+          setSelectedTaskDetails((prevState) => {
+            if (!prevState.find((each) => each.id === cardDetails.id)) {
+              return [...prevState, cardDetails];
+            } else {
+              if (selectedTaskDetails.length !== 1) {
+                return prevState.filter((each) => each.id !== cardDetails.id);
+              } else {
+                return [...prevState];
+              }
+            }
+          });
+        } else {
+          setSelectedTaskDetails([cardDetails]);
+        }
+      }}
+      onKeyDown={keyPress}
     >
       <TaskItem
         user={user}
@@ -118,7 +145,8 @@ const Card = ({
         lists={lists}
         tags={tags}
         selectedTaskDetails={selectedTaskDetails}
-        setSelectedTaskDetails={setSelectedTaskDetails}
+        setShowCheckBoxMenu={setShowCheckBoxMenu}
+        showCheckBoxMenu={showCheckBoxMenu}
       />
     </StyledDiv>
   );

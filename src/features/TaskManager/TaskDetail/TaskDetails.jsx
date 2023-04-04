@@ -254,7 +254,7 @@ const TaskDetails = ({
         >
           <Input
             autoComplete="off"
-            maxLength={50}
+            maxLength={25}
             style={{
               fontWeight: "bold",
               fontSize: "24px",

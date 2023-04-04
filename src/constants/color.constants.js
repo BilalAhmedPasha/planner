@@ -32,3 +32,5 @@ export const TASK_CARD_BG_SELECTED_COLOR = "#e6f4ff";
 export const TASK_CARD_BOX_BOTTOM_BORDER_COLOR = "#f0f0f0";
 
 export const INBOX_LIST_COLOR = "#006d75";
+
+export const DEFAULT_BADGE_COLOR = "#108ee9";
