@@ -118,7 +118,15 @@ const renderTags = ({ item, tags, colorBorder }) => {
     }
     if (item?.tagIds?.length > 3) {
       tagsArray.push(
-        <Tag key={"overflow"} color={DEFAULT_BADGE_COLOR} closable={false}>
+        <Tag
+          key={"overflow"}
+          color={
+            item.isCompleted || item.isWontDo
+              ? colorBorder
+              : DEFAULT_BADGE_COLOR || colorBorder
+          }
+          closable={false}
+        >
           {`+${item.tagIds.length - 3}`}
         </Tag>
       );
@@ -486,7 +494,6 @@ const TaskItem = ({
             }
             onChange={handleClick}
             onContextMenu={(e) => handleRightClick({ e, taskDetails })}
-            onBlur={() => setShowCheckBoxMenu(false)}
             checked={taskDetails.isCompleted || taskDetails.isWontDo}
             disabled={taskDetails.isDeleted}
             colorBgContainer={colorBgContainer}
