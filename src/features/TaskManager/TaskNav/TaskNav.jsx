@@ -316,7 +316,7 @@ const TaskNav = ({
 
   useEffect(() => {
     let currentSideMenuItem = [...defaultTaskNav1, ...defaultTaskNav2].filter(
-      (each) => each.redirectUrl === selectedAppMenuKey
+      (each) => url.pathname.includes(each.redirectUrl)
     );
     if (currentSideMenuItem.length === 0) {
       if (pathParameters[2] === LISTS) {
@@ -330,13 +330,7 @@ const TaskNav = ({
       }
     }
     setCurrentSelectedTaskSection(currentSideMenuItem[0]);
-  }, [
-    lists,
-    tags,
-    pathParameters,
-    selectedAppMenuKey,
-    setCurrentSelectedTaskSection,
-  ]);
+  }, [lists, tags, pathParameters, setCurrentSelectedTaskSection, url]);
 
   if (pathParameters.length > 3) {
     openSubMenuKeys = pathParameters[2];
@@ -421,9 +415,7 @@ const TaskNav = ({
       bodyStyle={{ padding: "0px", overflow: "auto" }}
       destroyOnClose={true}
       width={
-        isOnVerySmallScreen({ currentWidth: screenSize.width })
-          ? "80vw"
-          : 300
+        isOnVerySmallScreen({ currentWidth: screenSize.width }) ? "80vw" : 300
       }
       extra={
         <Button

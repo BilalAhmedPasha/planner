@@ -2,9 +2,9 @@ import { theme } from "antd";
 import React, { useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { DELETED } from "../../../constants/app.constants";
+import { DELETED, LISTS, TAGS } from "../../../constants/app.constants";
 import { listsSelector } from "../state/userLists/userLists.reducer";
 import { tagsSelector } from "../state/userTags/userTags.reducer";
 import TaskItem from "./TaskItem";
@@ -102,6 +102,8 @@ const Card = ({
       setShowCheckBoxMenu(false);
     }
   }
+  const currentURL = useLocation();
+  const history = useHistory();
   return (
     <StyledDiv
       ref={
@@ -133,6 +135,17 @@ const Card = ({
             }
           });
         } else {
+          const urlPath = currentURL.pathname.split("/");
+          if (
+            urlPath.length >= 4 &&
+            (urlPath[2] === LISTS || urlPath[2] === TAGS)
+          ) {
+            history.push(
+              `/${urlPath[1]}/${urlPath[2]}/${urlPath[3]}/${cardDetails.id}`
+            );
+          } else {
+            history.push(`/${urlPath[1]}/${urlPath[2]}/${cardDetails.id}`);
+          }
           setSelectedTaskDetails([cardDetails]);
         }
       }}

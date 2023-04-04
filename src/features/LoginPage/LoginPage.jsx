@@ -35,7 +35,6 @@ const LoginPage = () => {
       history.push("/tasks/all");
     }
   }, [history, user]);
-  
 
   const [showSignIn, setShowSignIn] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
