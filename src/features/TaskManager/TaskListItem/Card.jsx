@@ -11,7 +11,7 @@ import TaskItem from "./TaskItem";
 
 const StyledDiv = styled.div`
   padding: 0.75rem 1rem;
-  margin: 0.5rem ${(props) => (props.isInCollapse ? "0rem" : "1rem")};
+  margin: 0.25rem ${(props) => (props.isInCollapse ? "0rem" : "1rem")};
   opacity: ${(props) => props.opacity};
   opacity: ${(props) => props.opacity};
   :hover {

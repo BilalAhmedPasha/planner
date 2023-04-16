@@ -46,7 +46,7 @@ const CalendarComponent = ({
   const taskEvents = useMemo(() => {
     const taskEventList = [];
     for (let i = 0; i < tasks.length; i++) {
-      if (!tasks[i].isDeleted) {
+      if (!tasks[i].isDeleted && tasks[i].taskDate !== null) {
         if (tasks[i].isAllDay) {
           taskEventList.push({
             ...tasks[i],
