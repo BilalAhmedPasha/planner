@@ -1,78 +1,27 @@
-# Getting Started with Create React App
+# Planner
+[**Planner**](https://planner-1da50.web.app/login) is a responsive web application for task management built using React. It allows users to create and maintain tasks and is hosted on firebase.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Key functionalities:
+1. User authentication with email-password. Google and Github authentications are also supported.
+2. Unlimited custom Lists and Tags and associating tasks to them.
+3. Task priorities, scheduling and recurring tasks.
+4. Calendar time blocking with a dedicated calendar view.
+5. Multi select to delete or restore tasks.
+6. Sort by priority or date (in list view) and Color by priority or list (in calendar view).
 
-## Available Scripts
+## Here are some screenshots to guide you through the app.
+### Web view    
+|   |   |
+| ----  | ----  |
+|   ![Login screen](src/assets/screenshots/web/login.png)                             | ![Home screen](src/assets/screenshots/web/home.png)                       |
+|   ![Create list](src/assets/screenshots/web/createList.png)                         |   ![Add task](src/assets/screenshots/web/addTask.png)                       |
+|   ![List view](src/assets/screenshots/web/listView.png)                             | ![Edit task](src/assets/screenshots/web/editTask.png)                     |
+|   ![Multiselect](src/assets/screenshots/web/multiSelect.png)                        | ![Sort by priority](src/assets/screenshots/web/sortByPriority.png)        |
+|   ![Week view](src/assets/screenshots/web/weekView.png)                             | ![Day view](src/assets/screenshots/web/dayView.png)                       |
+|   ![Create/Edit calendar view](src/assets/screenshots/web/createEditCalView.png)    |     ![Calendar color by priority](src/assets/screenshots/web/calColorBy.png)  |
 
-In the project directory, you can run:
-
-### `yarn start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
-## Planner
-- Planner is a todo app which allows users to create and maintain tasks.
-
-#### Features
-- Users can create custom lists, tags and associate tasks to them.
-- The application includes functionalities like task priority, scheduling and creating repeating tasks.
-- Calendar time blocking is also supported with a dedicated calendar view.
+### Mobile view
+|   |   |   |
+|   ----  | ----  | ----    |
+| ![Side navigation](src/assets/screenshots/mobile/sideNav.jpg)    |    ![Create list](src/assets/screenshots/mobile/createList.jpg)  | ![Add task](src/assets/screenshots/mobile/addTask.jpg)  |
+|   ![All tasks](src/assets/screenshots/mobile/taskList.jpg)    |   ![Task details](src/assets/screenshots/mobile/taskDetail.jpg)  |    ![Calendar view](src/assets/screenshots/mobile/calendarView.jpg)  |
