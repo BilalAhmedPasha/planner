@@ -1,6 +1,14 @@
 @import url("https://fonts.googleapis.com/css?family=Noto+Sans");
 @import url("https://fonts.googleapis.com/css?family=fantasy");
 
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
 .App {
   font-family: "Open Sans", Arial, Verdana, Helvetica, sans-serif;
 }

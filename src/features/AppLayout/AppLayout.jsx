@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Layout, ConfigProvider, theme } from "antd";
 import AppNav from "./AppNav";
 import { useHistory } from "react-router-dom";
@@ -9,6 +9,7 @@ import db from "../../firebase";
 import { doc, setDoc, getDoc } from "@firebase/firestore";
 import FullPageSpinner from "../../components/FullPageSpinner";
 import Loading from "../../components/Loading";
+import { oneDarkTheme } from "../../constants/onedarkTheme.constants";
 
 const AppLayout = ({ setCurrentTitle, children }) => {
   const { user } = UserAuth();
@@ -60,13 +61,20 @@ const AppLayout = ({ setCurrentTitle, children }) => {
     return child;
   });
 
-  const { defaultAlgorithm, darkAlgorithm } = theme;
+  const { defaultAlgorithm } = theme;
 
+  const [isDarkTheme, setIsDarkTheme] = useState(true);
   return (
     <ConfigProvider
-      theme={{
-        algorithm: false ? darkAlgorithm : defaultAlgorithm,
-      }}
+      theme={
+        isDarkTheme
+          ? {
+              token: oneDarkTheme,
+            }
+          : {
+              algorithm: defaultAlgorithm,
+            }
+      }
     >
       {user === null || JSON.stringify(user) === "{}" ? (
         <FullPageSpinner indicator={Loading(50)} />
