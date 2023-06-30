@@ -194,7 +194,7 @@ const TaskListContainer = ({
     setSortedSectionTasks(currentSectionTasksTemp);
   }, [sortBy, currentSectionTasks]);
 
-  const { confirm } = Modal;
+  const [modal, contextHolder] = Modal.useModal();
   const deleteSuccess = ({ messageText }) => {
     messageApi.open({
       type: "success",
@@ -227,7 +227,7 @@ const TaskListContainer = ({
     successMessage,
     failureMessage,
   }) => {
-    confirm({
+    modal.confirm({
       icon: <ExclamationCircleOutlined />,
       title: "Delete",
       content: content,
@@ -281,7 +281,7 @@ const TaskListContainer = ({
     okText,
     okType,
   }) => {
-    confirm({
+    modal.confirm({
       icon: <ExclamationCircleOutlined />,
       title: title,
       content: content,
@@ -416,7 +416,10 @@ const TaskListContainer = ({
               {currentSection?.label}
             </Typography.Text>
             {sortedSectionTasks?.length > 0 && (
-              <Typography.Text type="secondary" style={{whiteSpace: "nowrap", overflowX: "auto" }}>{`${sortedSectionTasks?.length}`}</Typography.Text>
+              <Typography.Text
+                type="secondary"
+                style={{ whiteSpace: "nowrap", overflowX: "auto" }}
+              >{`${sortedSectionTasks?.length}`}</Typography.Text>
             )}
           </Space>
 
@@ -576,6 +579,7 @@ const TaskListContainer = ({
           selectedTaskDetails={selectedTaskDetails}
           setSelectedTaskDetails={setSelectedTaskDetails}
         />
+        {contextHolder}
       </Spinner>
     </Layout.Content>
   );

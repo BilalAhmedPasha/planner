@@ -119,7 +119,7 @@ const renderSubMenuItems = ({
     >
       {items.map((each) => {
         return (
-          <Menu.Item key={each.id}>
+          <Menu.Item key={`/tasks/${key}/${each.id}`}>
             <div
               style={{
                 display: "flex",
@@ -275,7 +275,7 @@ const TaskNav = ({
     }
   };
 
-  const { confirm } = Modal;
+  const [modal, contextHolder] = Modal.useModal();
 
   const showDeleteConfirm = ({
     content,
@@ -286,7 +286,7 @@ const TaskNav = ({
     successMessage,
     failureMessage,
   }) => {
-    confirm({
+    modal.confirm({
       icon: <ExclamationCircleOutlined />,
       title: "Delete",
       content: content,
@@ -310,8 +310,8 @@ const TaskNav = ({
   };
 
   const url = useLocation();
-  let selectedAppMenuKey = url.pathname;
-  let openSubMenuKeys;
+  const [selectedAppMenuKey, setSelectedAppMenuKey] = useState(url.pathname);
+  const [openSubMenuKeys, setOpenSubMenuKeys] = useState(null);
   const pathParameters = url?.pathname.split("/");
 
   useEffect(() => {
@@ -332,10 +332,17 @@ const TaskNav = ({
     setCurrentSelectedTaskSection(currentSideMenuItem[0]);
   }, [lists, tags, pathParameters, setCurrentSelectedTaskSection, url]);
 
-  if (pathParameters.length > 3) {
-    openSubMenuKeys = pathParameters[2];
-    selectedAppMenuKey = pathParameters[3];
-  }
+  useEffect(() => {
+    if (pathParameters.length > 3) {
+      setSelectedAppMenuKey(
+        `/${pathParameters[1]}/${pathParameters[2]}/${pathParameters[3]}`
+      );
+      setOpenSubMenuKeys(pathParameters[3]);
+    } else {
+      setSelectedAppMenuKey(`/${pathParameters[1]}/${pathParameters[2]}`);
+      setOpenSubMenuKeys(undefined);
+    }
+  }, [pathParameters]);
 
   const taskNavContent = () => {
     return (
@@ -401,6 +408,7 @@ const TaskNav = ({
             formValues={tagData}
           />
         )}
+        {contextHolder}
       </Spinner>
     );
   };

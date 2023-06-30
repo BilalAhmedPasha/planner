@@ -51,10 +51,10 @@ const AppNav = ({ setCurrentTitle }) => {
     },
   ];
 
-  const { confirm } = Modal;
+  const [modal, contextHolder] = Modal.useModal();
 
   const showConfirm = () => {
-    confirm({
+    modal.confirm({
       icon: <ExclamationCircleOutlined />,
       title: "Are you sure you want to logout?",
       centered: true,
@@ -117,6 +117,7 @@ const AppNav = ({ setCurrentTitle }) => {
       >
         {renderMenuItems(defaultAppNav)}
       </SideMenu>
+      {contextHolder}
     </Layout.Sider>
   );
 };

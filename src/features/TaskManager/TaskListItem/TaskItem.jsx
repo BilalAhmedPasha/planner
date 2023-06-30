@@ -220,7 +220,7 @@ const TaskItem = ({
   setShowCheckBoxMenu,
   showCheckBoxMenu,
 }) => {
-  const { confirm } = Modal;
+  const [modal, contextHolder] = Modal.useModal();
 
   const showSoftDeleteConfirm = ({
     content,
@@ -230,7 +230,7 @@ const TaskItem = ({
     successMessage,
     failureMessage,
   }) => {
-    confirm({
+    modal.confirm({
       icon: <ExclamationCircleOutlined />,
       title: "Delete",
       content: content,
@@ -260,7 +260,7 @@ const TaskItem = ({
     successMessage,
     failureMessage,
   }) => {
-    confirm({
+    modal.confirm({
       icon: <ExclamationCircleOutlined />,
       title: "Delete Forever",
       content: content,
@@ -673,6 +673,7 @@ const TaskItem = ({
           })}
         </div>
       </div>
+      {contextHolder}
     </div>
   );
 };

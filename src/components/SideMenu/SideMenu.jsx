@@ -13,6 +13,7 @@ const SideMenu = ({
       mode="inline"
       onClick={onClick}
       defaultSelectedKeys={[selectedAppMenuKey]}
+      selectedKeys={[selectedAppMenuKey]}
       defaultOpenKeys={[openSubMenuKeys]}
     >
       {children}
