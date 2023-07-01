@@ -33,6 +33,8 @@ import {
   repeatMapping,
 } from "../../../../constants/repeating.constants";
 import PrimaryTaskListItemDetail from "./PrimaryTaskListItemDetail";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 
 const getPriorityColor = ({ item, completedColor, completedBGColor }) => {
   if (item.isCompleted || item.isWontDo) {
@@ -47,6 +49,13 @@ const getPriorityColor = ({ item, completedColor, completedBGColor }) => {
   }
   return { color: NONE_COLOR, bgColor: NONE_BG_COLOR };
 };
+
+const StyledLink = styled(Link)`
+  align-items: center;
+  :hover {
+    text-decoration: underline;
+  }
+`;
 
 const renderTags = ({ item, tags, colorBorder }) => {
   if (item?.tagIds?.length > 0) {
@@ -64,9 +73,14 @@ const renderTags = ({ item, tags, colorBorder }) => {
             }
             closable={false}
           >
-            {tagDetails?.label.length > 12
-              ? `${tagDetails.label?.slice(0, 10)}...`
-              : tagDetails?.label}
+            <StyledLink
+              to={`/tasks/tags/${item.tagIds[index]}`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {tagDetails?.label.length > 12
+                ? `${tagDetails.label?.slice(0, 10)}...`
+                : tagDetails?.label}
+            </StyledLink>
           </Tag>
         );
     }
@@ -341,11 +355,7 @@ const TaskItem = ({
   ];
 
   const {
-    token: {
-      colorBgContainer,
-      colorBorder,
-      colorBorderSecondary,
-    },
+    token: { colorBgContainer, colorBorder, colorBorderSecondary },
   } = theme.useToken();
 
   return (
