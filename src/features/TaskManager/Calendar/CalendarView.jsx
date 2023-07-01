@@ -9,7 +9,6 @@ import { NONE } from "../../../constants/priority.constants";
 import TaskDialogForm from "../TaskListView/TaskDialogForm";
 import { CREATE } from "../../../constants/formType.constants";
 import { ENDLESS } from "../../../constants/repeating.constants";
-import "./Calendar.css";
 import { userSelector } from "../../AppLayout/state/userSettings/userSettings.reducer";
 import { fetchListsAction } from "../state/userLists/userLists.actions";
 import { fetchTagsAction } from "../state/userTags/userTags.actions";
@@ -18,7 +17,7 @@ import CalendarComponent from "./CalendarComponent";
 
 dayjs.extend(timezone);
 
-const CalendarView = ({ user }) => {
+const CalendarView = ({ user, userTheme }) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -73,6 +72,7 @@ const CalendarView = ({ user }) => {
       }}
     >
       <CalendarComponent
+        userTheme={userTheme}
         user={user}
         setFormType={setFormType}
         setTaskDetails={setTaskDetails}

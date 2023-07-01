@@ -21,7 +21,7 @@ const renderMenuItems = (itemsArray) => {
   });
 };
 
-const AppNav = ({ setCurrentTitle, isDarkTheme, setIsDarkTheme }) => {
+const AppNav = ({ setCurrentTitle, userTheme, setUserTheme }) => {
   const { logOut, user } = UserAuth();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -124,11 +124,11 @@ const AppNav = ({ setCurrentTitle, isDarkTheme, setIsDarkTheme }) => {
           size="large"
           type="text"
           icon={
-            isDarkTheme ? <DarkModeOutlinedIcon /> : <LightModeOutlinedIcon />
+            userTheme ? <DarkModeOutlinedIcon /> : <LightModeOutlinedIcon />
           }
           style={{ cursor: "pointer" }}
           onClick={() => {
-            setIsDarkTheme((prevState) => !prevState);
+            setUserTheme((prevState) => !prevState);
           }}
         />
       </div>

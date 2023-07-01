@@ -1,8 +1,6 @@
-import { Form, Input, Select, Slider, theme } from "antd";
+import { Form, Input, Select, Slider, Typography, theme } from "antd";
 import { VIEW } from "../../../constants/formType.constants";
-import {
-  priorityOptions,
-} from "../../../constants/priority.constants";
+import { priorityOptions } from "../../../constants/priority.constants";
 import { INBOX } from "../../../constants/app.constants";
 import {
   UnorderedListOutlined,
@@ -10,8 +8,9 @@ import {
   TagTwoTone,
   TagOutlined,
 } from "@ant-design/icons";
-
 import styled from "styled-components";
+import { useState } from "react";
+
 const MultiSelect = styled(Select)`
   .ant-select-selection-overflow {
     display: flex;
@@ -35,14 +34,24 @@ const PrimaryTaskDetails = ({
 
   return (
     <>
-      <Form.Item name="progress" style={{ marginBottom: "0.25rem" }}>
+      <Form.Item
+        name="progress"
+        style={{
+          width: "100%",
+          margin: 0,
+          padding: 0,
+        }}
+      >
         <Slider
           initialvalues={form.getFieldValue("progress")}
-          step={10}
           trackStyle={{ height: "3px" }}
           disabled={formType === VIEW}
+          tooltip={{
+            open: false,
+          }}
         />
       </Form.Item>
+
       <Form.Item
         name="description"
         style={{

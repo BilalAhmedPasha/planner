@@ -13,6 +13,7 @@ import { oneDarkTheme } from "../../constants/onedarkTheme.constants";
 
 const AppLayout = ({ setCurrentTitle, children }) => {
   const { user } = UserAuth();
+  const [userTheme, setUserTheme] = useState(0);
 
   const getInitialUserData = useCallback(async () => {
     if (user && user.uid) {
@@ -54,20 +55,18 @@ const AppLayout = ({ setCurrentTitle, children }) => {
     }
   }, [user, history]);
 
+  const { defaultAlgorithm } = theme;
   const childrenWithProps = React.Children.map(children, (child) => {
     if (React.isValidElement(child)) {
-      return React.cloneElement(child, { setCurrentTitle, user });
+      return React.cloneElement(child, { setCurrentTitle, user, userTheme });
     }
     return child;
   });
 
-  const { defaultAlgorithm } = theme;
-
-  const [isDarkTheme, setIsDarkTheme] = useState(true);
   return (
     <ConfigProvider
       theme={
-        isDarkTheme
+        userTheme
           ? {
               token: oneDarkTheme,
             }
@@ -82,8 +81,8 @@ const AppLayout = ({ setCurrentTitle, children }) => {
         <Layout style={{ height: "100vh" }}>
           <AppNav
             setCurrentTitle={setCurrentTitle}
-            isDarkTheme={isDarkTheme}
-            setIsDarkTheme={setIsDarkTheme}
+            userTheme={userTheme}
+            setUserTheme={setUserTheme}
           />
           {childrenWithProps}
         </Layout>

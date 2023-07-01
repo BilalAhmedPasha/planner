@@ -19,7 +19,11 @@ import {
   TAGS,
 } from "../../../constants/app.constants";
 import { CREATE, EDIT } from "../../../constants/formType.constants";
-import { defaultTaskNav1, defaultTaskNav2, moreMenuItemList } from "./defaultTaskNav.config";
+import {
+  defaultTaskNav1,
+  defaultTaskNav2,
+  moreMenuItemList,
+} from "./defaultTaskNav.config";
 import ListDialogForm from "./ListDialogForm";
 import TagDialogForm from "./TagDialogForm";
 import { deleteListAction } from "../state/userLists/userLists.actions";
@@ -62,16 +66,21 @@ const renderColorDot = (color) => {
   );
 };
 
+
+
 const renderMenuItems = (itemsArray) => {
   return itemsArray.map((each) => {
     return (
-      <Menu.Item key={each.redirectUrl} icon={<each.icon style={{ fontSize:"1.10rem"}}/>}>
-        <Link to={each.redirectUrl}>{each.label}</Link>
-      </Menu.Item>
+        <Menu.Item
+          key={each.redirectUrl}
+          icon={<each.icon style={{ fontSize: "1.10rem" }} />}
+          title=""
+        >
+          <Link to={each.redirectUrl}>{each.label}</Link>
+        </Menu.Item>
     );
   });
 };
-
 
 const renderSubMenuItems = ({
   items,
@@ -323,7 +332,10 @@ const TaskNav = ({
   }, [lists, tags, pathParameters, setCurrentSelectedTaskSection, url]);
 
   useEffect(() => {
-    if (pathParameters.length > 3) {
+    if (
+      pathParameters.length > 3 &&
+      (pathParameters[2] === LISTS || pathParameters[2] === TAGS)
+    ) {
       setSelectedAppMenuKey(
         `/${pathParameters[1]}/${pathParameters[2]}/${pathParameters[3]}`
       );
