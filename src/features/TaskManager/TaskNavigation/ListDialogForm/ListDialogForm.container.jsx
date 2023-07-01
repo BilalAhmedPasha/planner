@@ -1,17 +1,17 @@
 import React, { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Modal from "../../../components/Modal";
+import Modal from "../../../../components/Modal";
 import ListDialogForm from "./ListDialogForm";
-import { LISTS, SUCCESS } from "../../../constants/app.constants";
-import { CREATE, EDIT } from "../../../constants/formType.constants";
-import { DEFAULT_LIST_COLOR } from "../../../constants/color.constants";
+import { LISTS, SUCCESS } from "../../../../constants/app.constants";
+import { CREATE, EDIT } from "../../../../constants/formType.constants";
+import { DEFAULT_LIST_COLOR } from "../../../../constants/color.constants";
 import {
   addListAction,
   editListAction,
-} from "../state/userLists/userLists.actions";
+} from "../../state/userLists/userLists.actions";
 import { Form } from "antd";
-import dayjs from "../../../utils/dateTime.utils";
-import { listsSelector } from "../state/userLists/userLists.reducer";
+import dayjs from "../../../../utils/dateTime.utils";
+import { listsSelector } from "../../state/userLists/userLists.reducer";
 
 const ListDialog = ({
   user,

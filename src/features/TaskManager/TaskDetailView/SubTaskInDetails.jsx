@@ -1,4 +1,4 @@
-import Card from "../TaskListItem/Card";
+import Card from "../TaskListView/TaskListItem/Card";
 
 const SubTaskInDetails = ({ taskDetails }) => {
   

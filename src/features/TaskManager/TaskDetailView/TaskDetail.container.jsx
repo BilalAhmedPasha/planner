@@ -11,7 +11,7 @@ import Spinner from "../../../components/Spinner";
 import {
   getFormValueFromTaskDetail,
   handleEditTask,
-} from "../TaskList/TaskList.utils";
+} from "../TaskListView/TaskList.utils";
 import {
   taskNavToDrawer,
   taskDetailsToDrawer,

@@ -1,6 +1,6 @@
-import { SUCCESS } from "../../../constants/app.constants";
+import { ALL, COMPLETED, DELETED, INBOX, LISTS, NEXT_7_DAYS, NO_DATE, SUCCESS, TAGS, TODAY, TOMORROW, WONT_DO } from "../../../constants/app.constants";
 import { DAY } from "../../../constants/calendar.constants";
-import { TIME_FORMAT_IN_DB } from "../../../constants/dateTime.constants";
+import { TIME_FORMAT_IN_DB, TIME_ZONE } from "../../../constants/dateTime.constants";
 import { VIEW } from "../../../constants/formType.constants";
 import {
   END_BY_DATE,
@@ -8,6 +8,7 @@ import {
   repeatMapping,
 } from "../../../constants/repeating.constants";
 import dayjs from "../../../utils/dateTime.utils";
+import { getAllTasks, getByListId, getByTagId, getCompletedTasks, getDeletedTasks, getInboxTasks, getNoDateTasks, getTasksByDate, getTasksByNextXDays, getWontDoTasks } from "../TaskListView/TaskListItem/TaskUtils";
 import {
   addTaskAction,
   editTaskAction,
@@ -225,4 +226,34 @@ export const handleEditTask = ({
       }
     }
   );
+};
+
+export const computeSectionData = ({ tasks, currentSection }) => {
+  if (currentSection.id === ALL) {
+    return getAllTasks({ tasks });
+  } else if (currentSection.id === INBOX) {
+    return getInboxTasks({ tasks });
+  } else if (currentSection.id === TODAY) {
+    const today = dayjs.utc().tz(TIME_ZONE);
+    return getTasksByDate({ tasks, date: today, includeOverDue: true });
+  } else if (currentSection.id === TOMORROW) {
+    const tomorrow = dayjs.utc().tz(TIME_ZONE).add(1, DAY);
+    return getTasksByDate({ tasks, date: tomorrow, includeOverDue: false });
+  } else if (currentSection.id === NEXT_7_DAYS) {
+    const tomorrow = dayjs.utc().tz(TIME_ZONE).add(1, DAY);
+    return getTasksByNextXDays({ tasks, fromDate: tomorrow, count: 6 });
+  } else if (currentSection.id === NO_DATE) {
+    return getNoDateTasks({ tasks });
+  } else if (currentSection.id === COMPLETED) {
+    return getCompletedTasks({ tasks });
+  } else if (currentSection.id === WONT_DO) {
+    return getWontDoTasks({ tasks });
+  } else if (currentSection.id === DELETED) {
+    return getDeletedTasks({ tasks });
+  } else if (currentSection.type === LISTS) {
+    return getByListId({ tasks, listId: currentSection.id });
+  } else if (currentSection.type === TAGS) {
+    return getByTagId({ tasks, tagId: currentSection.id });
+  }
+  return [];
 };

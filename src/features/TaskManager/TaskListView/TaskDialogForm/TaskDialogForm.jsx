@@ -1,6 +1,6 @@
 import { Form, Layout, theme } from "antd";
-import useWindowSize from "../../../hooks/useWindowSize";
-import { taskDetailsToDrawer } from "../../../utils/screen.utils";
+import useWindowSize from "../../../../hooks/useWindowSize";
+import { taskDetailsToDrawer } from "../../../../utils/screen.utils";
 import TaskDialogPrimaryPanel from "./TaskDialogPrimaryPanel";
 import TaskDialogSecondaryPanel from "./TaskDialogSecondaryPanel";
 

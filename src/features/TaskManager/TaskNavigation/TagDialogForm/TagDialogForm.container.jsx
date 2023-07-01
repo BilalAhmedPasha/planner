@@ -1,17 +1,17 @@
 import React, { useMemo, useState } from "react";
-import Modal from "../../../components/Modal";
+import Modal from "../../../../components/Modal";
 import TagDialogForm from "./TagDialogForm";
-import { SUCCESS, TAGS } from "../../../constants/app.constants";
+import { SUCCESS, TAGS } from "../../../../constants/app.constants";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addTagAction,
   editTagAction,
-} from "../state/userTags/userTags.actions";
-import { DEFAULT_TAG_COLOR } from "../../../constants/color.constants";
-import { CREATE, EDIT } from "../../../constants/formType.constants";
+} from "../../state/userTags/userTags.actions";
+import { DEFAULT_TAG_COLOR } from "../../../../constants/color.constants";
+import { CREATE, EDIT } from "../../../../constants/formType.constants";
 import { Form } from "antd";
-import dayjs from "../../../utils/dateTime.utils";
-import { tagsSelector } from "../state/userTags/userTags.reducer";
+import dayjs from "../../../../utils/dateTime.utils";
+import { tagsSelector } from "../../state/userTags/userTags.reducer";
 
 const TagDialog = ({
   user,

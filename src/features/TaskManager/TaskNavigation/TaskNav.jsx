@@ -19,9 +19,9 @@ import {
   TAGS,
 } from "../../../constants/app.constants";
 import { CREATE, EDIT } from "../../../constants/formType.constants";
-import { defaultTaskNav1, defaultTaskNav2 } from "./defaultTaskNav.config";
-import ListDialogForm from "../ListDialogForm";
-import TagDialogForm from "../TagDialogForm";
+import { defaultTaskNav1, defaultTaskNav2, moreMenuItemList } from "./defaultTaskNav.config";
+import ListDialogForm from "./ListDialogForm";
+import TagDialogForm from "./TagDialogForm";
 import { deleteListAction } from "../state/userLists/userLists.actions";
 import { listsSelector } from "../state/userLists/userLists.reducer";
 import { deleteTagAction } from "../state/userTags/userTags.actions";
@@ -72,16 +72,6 @@ const renderMenuItems = (itemsArray) => {
   });
 };
 
-const moreMenuItemList = [
-  {
-    label: "Edit",
-    key: EDIT,
-  },
-  {
-    label: "Delete",
-    key: DELETE,
-  },
-];
 
 const renderSubMenuItems = ({
   items,

@@ -3,7 +3,7 @@ import { NodeExpandOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import SubTaskPanel from "./SubTaskPanel";
 import styled from "styled-components";
-import { showSubTasks } from "../../../constants/app.constants";
+import { showSubTasks } from "../../../../constants/app.constants";
 
 const StyledFormItem = styled(Form.Item)`
   // TODO

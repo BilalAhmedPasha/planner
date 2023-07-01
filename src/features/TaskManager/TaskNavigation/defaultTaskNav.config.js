@@ -19,7 +19,9 @@ import {
   TOMORROW,
   NO_DATE,
   WONT_DO,
+  DELETE,
 } from "../../../constants/app.constants";
+import { EDIT } from "../../../constants/formType.constants";
 
 export const defaultTaskNav1 = [
   {
@@ -78,5 +80,16 @@ export const defaultTaskNav2 = [
     icon: DeleteFilled,
     redirectUrl: `/tasks/${DELETED}`,
     id: "deleted",
+  },
+];
+
+export const moreMenuItemList = [
+  {
+    label: "Edit",
+    key: EDIT,
+  },
+  {
+    label: "Delete",
+    key: DELETE,
   },
 ];

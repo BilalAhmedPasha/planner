@@ -2,12 +2,12 @@ import { Collapse, Typography, theme, Space } from "antd";
 import update from "immutability-helper";
 import Card from "./Card";
 import { useParams } from "react-router-dom";
-import { COMPLETED, DELETED, WONT_DO } from "../../../constants/app.constants";
+import { COMPLETED, DELETED, WONT_DO } from "../../../../constants/app.constants";
 import {
   activePanel,
   MARKED,
   OVERDUE,
-} from "../../../constants/section.constants";
+} from "../../../../constants/section.constants";
 
 const renderCardOutsideCollapse = ({
   tasks,

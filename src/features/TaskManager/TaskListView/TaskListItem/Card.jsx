@@ -4,9 +4,9 @@ import { useDrag, useDrop } from "react-dnd";
 import { useSelector } from "react-redux";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { DELETED, LISTS, TAGS } from "../../../constants/app.constants";
-import { listsSelector } from "../state/userLists/userLists.reducer";
-import { tagsSelector } from "../state/userTags/userTags.reducer";
+import { DELETED, LISTS, TAGS } from "../../../../constants/app.constants";
+import { listsSelector } from "../../state/userLists/userLists.reducer";
+import { tagsSelector } from "../../state/userTags/userTags.reducer";
 import TaskItem from "./TaskItem";
 
 const StyledDiv = styled.div`

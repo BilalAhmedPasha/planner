@@ -1,13 +1,13 @@
 import { message } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import TaskNav from "./TaskNav";
+import TaskNav from "./TaskNavigation";
 import { fetchListsAction } from "./state/userLists/userLists.actions";
 import { fetchTagsAction } from "./state/userTags/userTags.actions";
-import TaskListContainer from "./TaskList";
+import TaskListContainer from "./TaskListView/TaskList";
 import { userSelector } from "../AppLayout/state/userSettings/userSettings.reducer";
 import { fetchTasksAction } from "./state/userTasks/userTasks.actions";
-import TaskDetailsContainer from "./TaskDetail";
+import TaskDetailsContainer from "./TaskDetailView";
 
 const TaskManager = ({ user }) => {
   const dispatch = useDispatch();

@@ -11,8 +11,8 @@ import {
 } from "antd";
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { listsSelector } from "../state/userLists/userLists.reducer";
-import { tagsSelector } from "../state/userTags/userTags.reducer";
+import { listsSelector } from "../../state/userLists/userLists.reducer";
+import { tagsSelector } from "../../state/userTags/userTags.reducer";
 import { FlagFilled } from "@ant-design/icons";
 import {
   HIGH,
@@ -20,26 +20,26 @@ import {
   MEDIUM,
   priorityOptions,
   priorityColorMappings,
-} from "../../../constants/priority.constants";
+} from "../../../../constants/priority.constants";
 import {
   HIGH_COLOR,
   LOW_COLOR,
   MEDIUM_COLOR,
   NONE_COLOR,
-} from "../../../constants/color.constants";
-import { INBOX, MULTI_DATE_AVAILABLE } from "../../../constants/app.constants";
+} from "../../../../constants/color.constants";
+import { INBOX, MULTI_DATE_AVAILABLE } from "../../../../constants/app.constants";
 import {
   DATE_FORMAT,
   DAY,
   TIME_FORMAT,
   TIME_ZONE,
-} from "../../../constants/dateTime.constants";
-import dayjs from "../../../utils/dateTime.utils";
+} from "../../../../constants/dateTime.constants";
+import dayjs from "../../../../utils/dateTime.utils";
 import {
   ENDLESS,
   END_BY_DATE,
   END_BY_REPEAT_COUNT,
-} from "../../../constants/repeating.constants";
+} from "../../../../constants/repeating.constants";
 import styled from "styled-components";
 
 const MultiSelect = styled(Select)`
