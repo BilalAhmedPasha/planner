@@ -21,7 +21,7 @@ const renderMenuItems = (itemsArray) => {
   });
 };
 
-const AppNav = ({ setCurrentTitle, userTheme, setUserTheme }) => {
+const AppNav = ({ setCurrentTitle, userTheme, updateTheme }) => {
   const { logOut, user } = UserAuth();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -127,9 +127,7 @@ const AppNav = ({ setCurrentTitle, userTheme, setUserTheme }) => {
             userTheme ? <DarkModeOutlinedIcon /> : <LightModeOutlinedIcon />
           }
           style={{ cursor: "pointer" }}
-          onClick={() => {
-            setUserTheme((prevState) => !prevState);
-          }}
+          onClick={updateTheme}
         />
       </div>
       {contextHolder}
