@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Avatar, Dropdown, Layout, Menu, Modal } from "antd";
+import { Avatar, Button, Dropdown, Layout, Menu, Modal } from "antd";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import SideMenu from "../../../components/SideMenu";
 import { UserAuth } from "../../../context/AuthContext";
@@ -8,6 +8,8 @@ import { LogoutOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { LOGOUT } from "../../../constants/app.constants";
 import { useDispatch } from "react-redux";
 import { removeUserSettingAction } from "../state/userSettings/userSettings.actions";
+import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 
 const renderMenuItems = (itemsArray) => {
   return itemsArray.map((each) => {
@@ -19,7 +21,7 @@ const renderMenuItems = (itemsArray) => {
   });
 };
 
-const AppNav = ({ setCurrentTitle }) => {
+const AppNav = ({ setCurrentTitle, isDarkTheme, setIsDarkTheme }) => {
   const { logOut, user } = UserAuth();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -117,6 +119,19 @@ const AppNav = ({ setCurrentTitle }) => {
       >
         {renderMenuItems(defaultAppNav)}
       </SideMenu>
+      <div style={{ position: "absolute", bottom: 0, margin: "0.3rem" }}>
+        <Button
+          size="large"
+          type="text"
+          icon={
+            isDarkTheme ? <DarkModeOutlinedIcon /> : <LightModeOutlinedIcon />
+          }
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            setIsDarkTheme((prevState) => !prevState);
+          }}
+        />
+      </div>
       {contextHolder}
     </Layout.Sider>
   );

@@ -80,7 +80,11 @@ const AppLayout = ({ setCurrentTitle, children }) => {
         <FullPageSpinner indicator={Loading(50)} />
       ) : (
         <Layout style={{ height: "100vh" }}>
-          <AppNav setCurrentTitle={setCurrentTitle} />
+          <AppNav
+            setCurrentTitle={setCurrentTitle}
+            isDarkTheme={isDarkTheme}
+            setIsDarkTheme={setIsDarkTheme}
+          />
           {childrenWithProps}
         </Layout>
       )}

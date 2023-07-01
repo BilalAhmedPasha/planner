@@ -65,7 +65,7 @@ const renderColorDot = (color) => {
 const renderMenuItems = (itemsArray) => {
   return itemsArray.map((each) => {
     return (
-      <Menu.Item key={each.redirectUrl} icon={<each.icon />}>
+      <Menu.Item key={each.redirectUrl} icon={<each.icon style={{ fontSize:"1.10rem"}}/>}>
         <Link to={each.redirectUrl}>{each.label}</Link>
       </Menu.Item>
     );
