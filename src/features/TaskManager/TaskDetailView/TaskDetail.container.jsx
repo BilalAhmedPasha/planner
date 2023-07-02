@@ -1,10 +1,9 @@
 import { useState, useEffect, useMemo } from "react";
-import { Button, Drawer, Form, Layout, message, theme } from "antd";
+import { Button, Drawer, Form, Layout, Skeleton, message, theme } from "antd";
 import { VIEW } from "../../../constants/formType.constants";
 import NotTaskSelected from "./NotTaskSelected";
 import TaskDetails from "./TaskDetails";
 import { useDispatch, useSelector } from "react-redux";
-import { LOADER_SIZE } from "../../../constants/app.constants";
 import Loading from "../../../components/Loading";
 import { tasksSelector } from "../state/userTasks/userTasks.reducer";
 import Spinner from "../../../components/Spinner";
@@ -80,40 +79,65 @@ const TaskDetailsContainer = ({
 
   const { isLoadingTasks } = useSelector(tasksSelector);
 
+  const [numRows, setNumRows] = useState(10);
+  useEffect(() => {
+    const handleResize = () => {
+      const windowHeight = window.innerHeight;
+      const rowHeight = 32;
+      const availableRows = Math.floor(windowHeight / rowHeight) - 1;
+      setNumRows(availableRows);
+    };
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const renderTaskDetailsContent = () => {
     return (
-      <Spinner spinning={isLoadingTasks} indicator={Loading(LOADER_SIZE)}>
-        {selectedTaskDetails.length === 1 ? (
-          <Form
-            form={form}
-            name="detail_form"
-            onFinish={(formValues) =>
-              handleEditTask({
-                taskDetails: selectedTaskDetails[0],
-                formValues,
-                dispatch,
-                user,
-                editTaskSuccess,
-                setFormType,
-                form,
-                setLastSavedFormValues,
-                editTaskFailed,
-              })
-            }
-            initialValues={formValues}
-          >
-            <TaskDetails
-              taskDetails={selectedTaskDetails[0]}
+      <Skeleton
+        active
+        loading={isLoadingTasks && selectedTaskDetails?.length === 0}
+        paragraph={{ rows: numRows }}
+        style={{ padding: "1rem" }}
+      >
+        <Spinner
+          spinning={isLoadingTasks && selectedTaskDetails?.length > 0}
+          indicator={Loading(0)}
+        >
+          {selectedTaskDetails.length === 1 ? (
+            <Form
               form={form}
-              formType={formType}
-              setFormType={setFormType}
-              lastSavedFormValues={lastSavedFormValues}
-            />
-          </Form>
-        ) : (
-          <NotTaskSelected selectedTaskDetails={selectedTaskDetails} />
-        )}
-      </Spinner>
+              name="detail_form"
+              onFinish={(formValues) =>
+                handleEditTask({
+                  taskDetails: selectedTaskDetails[0],
+                  formValues,
+                  dispatch,
+                  user,
+                  editTaskSuccess,
+                  setFormType,
+                  form,
+                  setLastSavedFormValues,
+                  editTaskFailed,
+                })
+              }
+              initialValues={formValues}
+            >
+              <TaskDetails
+                taskDetails={selectedTaskDetails[0]}
+                form={form}
+                formType={formType}
+                setFormType={setFormType}
+                lastSavedFormValues={lastSavedFormValues}
+              />
+            </Form>
+          ) : (
+            <NotTaskSelected selectedTaskDetails={selectedTaskDetails} />
+          )}
+        </Spinner>
+      </Skeleton>
     );
   };
 

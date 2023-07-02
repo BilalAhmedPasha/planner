@@ -14,7 +14,6 @@ import SideMenu from "../../../components/SideMenu";
 import {
   DELETE,
   LISTS,
-  LOADER_SIZE,
   SUCCESS,
   TAGS,
 } from "../../../constants/app.constants";
@@ -361,7 +360,7 @@ const TaskNav = ({
     return (
       <Spinner
         spinning={isLoadingLists || isLoadingTags}
-        indicator={Loading(LOADER_SIZE)}
+        indicator={Loading(0)}
       >
         <SideMenu
           selectedAppMenuKey={selectedAppMenuKey}

@@ -1,4 +1,4 @@
-import { Layout, message, Modal, theme } from "antd";
+import { Layout, message, Modal, Skeleton, theme } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../../components/Loading";
@@ -7,7 +7,6 @@ import {
   DELETED,
   INBOX,
   LISTS,
-  LOADER_SIZE,
   SUCCESS,
   TAGS,
   WONT_DO,
@@ -22,12 +21,11 @@ import { DAY, TIME_ZONE } from "../../../constants/dateTime.constants";
 import { hardDeleteTaskAction } from "../state/userTasks/userTasks.actions";
 import Spinner from "../../../components/Spinner";
 import { PRIORITY, TIME, TITLE } from "../../../constants/sort.constants";
-import { useParams } from "react-router-dom";
+import { useParams,useLocation } from "react-router-dom";
 import { NONE } from "../../../constants/priority.constants";
 import { ENDLESS } from "../../../constants/repeating.constants";
 import { computeSectionData } from "./TaskList.utils";
 import TaskListHeader from "./TaskListHeader";
-import { useLocation } from "react-router-dom";
 
 const hideAddForSections = [COMPLETED, WONT_DO, DELETED];
 
@@ -259,6 +257,21 @@ const TaskListContainer = ({
     taskDate: TASK_DATE,
   };
 
+  const [numRows, setNumRows] = useState(10);
+  useEffect(() => {
+    const handleResize = () => {
+      const windowHeight = window.innerHeight;
+      const rowHeight = 32;
+      const availableRows = Math.floor(windowHeight / rowHeight) - 1;
+      setNumRows(availableRows);
+    };
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <Layout.Content
       style={{
@@ -267,44 +280,54 @@ const TaskListContainer = ({
         position: "relative",
       }}
     >
-      <Spinner spinning={isLoadingTasks} indicator={Loading(LOADER_SIZE)}>
-        <TaskListHeader
-          currentSection={currentSection}
-          sortedSectionTasks={sortedSectionTasks}
-          showMultiSelectConfirm={showMultiSelectConfirm}
-          selectedTaskDetails={selectedTaskDetails}
-          handleSortMenuClick={handleSortMenuClick}
-          handleMultipleSelection={handleMultipleSelection}
-          hideAddIcon={hideAddIcon}
-          handleAddTask={handleAddTask}
-          handlePermanentDelete={handlePermanentDelete}
-          sortBy={sortBy}
-          isMenuCollapsed={isMenuCollapsed}
-          setIsMenuCollapsed={setIsMenuCollapsed}
-          isNavDrawerCollapsed={isNavDrawerCollapsed}
-          setIsNavDrawerCollapsed={setIsNavDrawerCollapsed}
-        />
-        {openAddTaskDialog && (
-          <TaskDialogForm
-            user={user}
-            messageApi={messageApi}
-            openDialog={openAddTaskDialog}
-            setOpenDialog={setOpenAddTaskDialog}
-            formType={CREATE}
-            formValues={FORM_VALUES}
-            disableDateSelection={false}
-            disableTimeSelection={false}
+      <Skeleton
+        active
+        loading={isLoadingTasks && tasks?.length === 0}
+        paragraph={{ rows: numRows }}
+        style={{ padding: "1rem" }}
+      >
+        <Spinner
+          spinning={isLoadingTasks && tasks?.length > 0}
+          indicator={Loading(0)}
+        >
+          <TaskListHeader
+            currentSection={currentSection}
+            sortedSectionTasks={sortedSectionTasks}
+            showMultiSelectConfirm={showMultiSelectConfirm}
+            selectedTaskDetails={selectedTaskDetails}
+            handleSortMenuClick={handleSortMenuClick}
+            handleMultipleSelection={handleMultipleSelection}
+            hideAddIcon={hideAddIcon}
+            handleAddTask={handleAddTask}
+            handlePermanentDelete={handlePermanentDelete}
+            sortBy={sortBy}
+            isMenuCollapsed={isMenuCollapsed}
+            setIsMenuCollapsed={setIsMenuCollapsed}
+            isNavDrawerCollapsed={isNavDrawerCollapsed}
+            setIsNavDrawerCollapsed={setIsNavDrawerCollapsed}
           />
-        )}
-        <Container
-          user={user}
-          tasks={sortedSectionTasks}
-          sortBy={sortBy}
-          selectedTaskDetails={selectedTaskDetails}
-          setSelectedTaskDetails={setSelectedTaskDetails}
-        />
-        {contextHolder}
-      </Spinner>
+          {openAddTaskDialog && (
+            <TaskDialogForm
+              user={user}
+              messageApi={messageApi}
+              openDialog={openAddTaskDialog}
+              setOpenDialog={setOpenAddTaskDialog}
+              formType={CREATE}
+              formValues={FORM_VALUES}
+              disableDateSelection={false}
+              disableTimeSelection={false}
+            />
+          )}
+          <Container
+            user={user}
+            tasks={sortedSectionTasks}
+            sortBy={sortBy}
+            selectedTaskDetails={selectedTaskDetails}
+            setSelectedTaskDetails={setSelectedTaskDetails}
+          />
+          {contextHolder}
+        </Spinner>
+      </Skeleton>
     </Layout.Content>
   );
 };
