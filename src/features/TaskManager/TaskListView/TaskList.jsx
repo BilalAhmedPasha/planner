@@ -27,6 +27,7 @@ import { NONE } from "../../../constants/priority.constants";
 import { ENDLESS } from "../../../constants/repeating.constants";
 import { computeSectionData } from "./TaskList.utils";
 import TaskListHeader from "./TaskListHeader";
+import { useLocation } from "react-router-dom";
 
 const hideAddForSections = [COMPLETED, WONT_DO, DELETED];
 
@@ -59,6 +60,29 @@ const TaskListContainer = ({
   const { tasks, isLoadingTasks } = useSelector(tasksSelector);
   const [currentSectionTasks, setCurrentSectionTasks] = useState([]);
   const [sortedSectionTasks, setSortedSectionTasks] = useState([]);
+
+  const url = useLocation();
+  const pathParameters = useMemo(() => {
+    return url?.pathname.split("/");
+  }, [url]);
+
+  useEffect(() => {
+    if (
+      pathParameters.length > 4 &&
+      tasks.length > 0 &&
+      (pathParameters[2] === LISTS || pathParameters[2] === TAGS)
+    ) {
+      const selectedItemViaURL = tasks.find(
+        (each) => each.id === pathParameters[4]
+      );
+      selectedItemViaURL && setSelectedTaskDetails([selectedItemViaURL]);
+    } else if (pathParameters.length > 3 && tasks.length > 0) {
+      const selectedItemViaURL = tasks.find(
+        (each) => each.id === pathParameters[3]
+      );
+      selectedItemViaURL && setSelectedTaskDetails([selectedItemViaURL]);
+    }
+  }, [pathParameters, tasks, setSelectedTaskDetails]);
 
   useEffect(() => {
     if (currentSection?.label) {

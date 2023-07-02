@@ -25,9 +25,10 @@ const TaskManager = ({ user }) => {
   const [currentSelectedTaskSection, setCurrentSelectedTaskSection] =
     useState();
 
+  const [selectedTaskDetails, setSelectedTaskDetails] = useState([]);
+
   const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
   const [isNavDrawerCollapsed, setIsNavDrawerCollapsed] = useState(true);
-  const [selectedTaskDetails, setSelectedTaskDetails] = useState([]);
   const [isTaskDetailsDrawerCollapsed, setIsTaskDetailsDrawerCollapsed] =
     useState(true);
 
@@ -63,6 +64,7 @@ const TaskManager = ({ user }) => {
       <TaskDetailsContainer
         user={user}
         selectedTaskDetails={selectedTaskDetails}
+        setSelectedTaskDetails={setSelectedTaskDetails}
         isTaskDetailsDrawerCollapsed={isTaskDetailsDrawerCollapsed}
         setIsTaskDetailsDrawerCollapsed={setIsTaskDetailsDrawerCollapsed}
       />

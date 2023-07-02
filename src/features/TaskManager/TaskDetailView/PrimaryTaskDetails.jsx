@@ -1,4 +1,4 @@
-import { Form, Input, Select, Slider, Typography, theme } from "antd";
+import { Form, Input, Select, Slider, theme } from "antd";
 import { VIEW } from "../../../constants/formType.constants";
 import { priorityOptions } from "../../../constants/priority.constants";
 import { INBOX } from "../../../constants/app.constants";
@@ -9,7 +9,6 @@ import {
   TagOutlined,
 } from "@ant-design/icons";
 import styled from "styled-components";
-import { useState } from "react";
 
 const MultiSelect = styled(Select)`
   .ant-select-selection-overflow {

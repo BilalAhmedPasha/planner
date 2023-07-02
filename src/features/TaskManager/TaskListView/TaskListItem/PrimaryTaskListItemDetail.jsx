@@ -10,8 +10,16 @@ import {
   DeleteFilled,
   UndoOutlined,
 } from "@ant-design/icons";
-import { DATE_FORMAT_IN_TASK_ITEM, DAY, TIME_ZONE } from "../../../../constants/dateTime.constants";
-import { hardDeleteSingleTaskAction, restoreTaskAction, softDeleteTaskAction } from "../../state/userTasks/userTasks.actions";
+import {
+  DATE_FORMAT_IN_TASK_ITEM,
+  DAY,
+  TIME_ZONE,
+} from "../../../../constants/dateTime.constants";
+import {
+  hardDeleteSingleTaskAction,
+  restoreTaskAction,
+  softDeleteTaskAction,
+} from "../../state/userTasks/userTasks.actions";
 
 const StyledLink = styled(Link)`
   align-items: center;
@@ -78,6 +86,7 @@ const renderList = ({ item, lists, colorBorder, colorTextLabel }) => {
         style={{
           textTransform: "capitalize",
           paddingLeft: "0.3rem",
+          cursor: "pointer",
         }}
         disabled={item.isCompleted || item.isWontDo}
       >

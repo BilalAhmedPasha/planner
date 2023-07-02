@@ -18,10 +18,12 @@ import {
 } from "../../../utils/screen.utils";
 import { CloseOutlined } from "@ant-design/icons";
 import useWindowSize from "../../../hooks/useWindowSize";
+import { useHistory } from "react-router-dom";
 
 const TaskDetailsContainer = ({
   user,
   selectedTaskDetails,
+  setSelectedTaskDetails,
   isTaskDetailsDrawerCollapsed,
   setIsTaskDetailsDrawerCollapsed,
 }) => {
@@ -115,6 +117,8 @@ const TaskDetailsContainer = ({
     );
   };
 
+  const history = useHistory();
+
   const screenSize = useWindowSize();
   return taskDetailsToDrawer({ currentWidth: screenSize.width }) ? (
     <Drawer
@@ -131,7 +135,12 @@ const TaskDetailsContainer = ({
         <Button
           type="text"
           icon={<CloseOutlined />}
-          onClick={() => setIsTaskDetailsDrawerCollapsed(true)}
+          onClick={() => {
+            setIsTaskDetailsDrawerCollapsed(true);
+            setSelectedTaskDetails([]);
+            // Unstack URL
+            history.push("./");
+          }}
         />
       }
       headerStyle={{ height: "2.5rem", padding: "0.5rem 1rem" }}

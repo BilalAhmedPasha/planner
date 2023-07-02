@@ -8,7 +8,7 @@ import {
   Modal,
   Space,
 } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SideMenu from "../../../components/SideMenu";
 import {
@@ -66,18 +66,16 @@ const renderColorDot = (color) => {
   );
 };
 
-
-
 const renderMenuItems = (itemsArray) => {
   return itemsArray.map((each) => {
     return (
-        <Menu.Item
-          key={each.redirectUrl}
-          icon={<each.icon style={{ fontSize: "1.10rem" }} />}
-          title=""
-        >
-          <Link to={each.redirectUrl}>{each.label}</Link>
-        </Menu.Item>
+      <Menu.Item
+        key={each.redirectUrl}
+        icon={<each.icon style={{ fontSize: "1.10rem" }} />}
+        title=""
+      >
+        <Link to={each.redirectUrl}>{each.label}</Link>
+      </Menu.Item>
     );
   });
 };
@@ -90,6 +88,7 @@ const renderSubMenuItems = ({
   onAddClick,
   icon,
   onMoreClick,
+  setOpenSubMenuKeys,
 }) => {
   return (
     <Menu.SubMenu
@@ -115,6 +114,16 @@ const renderSubMenuItems = ({
         </div>
       }
       icon={icon}
+      onTitleClick={(e) => {
+        setOpenSubMenuKeys((prevState) => {
+          const isOpenAlready = prevState.find((each) => each === e.key);
+          if (isOpenAlready) {
+            return prevState.filter((each) => each !== e.key);
+          } else {
+            return [...prevState, e.key];
+          }
+        });
+      }}
     >
       {items.map((each) => {
         return (
@@ -311,7 +320,9 @@ const TaskNav = ({
   const url = useLocation();
   const [selectedAppMenuKey, setSelectedAppMenuKey] = useState(url.pathname);
   const [openSubMenuKeys, setOpenSubMenuKeys] = useState(null);
-  const pathParameters = url?.pathname.split("/");
+  const pathParameters = useMemo(() => {
+    return url?.pathname.split("/");
+  }, [url]);
 
   useEffect(() => {
     let currentSideMenuItem = [...defaultTaskNav1, ...defaultTaskNav2].filter(
@@ -339,10 +350,10 @@ const TaskNav = ({
       setSelectedAppMenuKey(
         `/${pathParameters[1]}/${pathParameters[2]}/${pathParameters[3]}`
       );
-      setOpenSubMenuKeys(pathParameters[3]);
+      setOpenSubMenuKeys([pathParameters[2]]);
     } else {
       setSelectedAppMenuKey(`/${pathParameters[1]}/${pathParameters[2]}`);
-      setOpenSubMenuKeys(undefined);
+      setOpenSubMenuKeys([]);
     }
   }, [pathParameters]);
 
@@ -372,6 +383,7 @@ const TaskNav = ({
             icon: <UnorderedListOutlined />,
             onMoreClick: handleMoreMenu,
             isLoading: isLoadingLists,
+            setOpenSubMenuKeys: setOpenSubMenuKeys,
           })}
           {renderSubMenuItems({
             items: tags,
@@ -386,6 +398,7 @@ const TaskNav = ({
             icon: <TagOutlined />,
             onMoreClick: handleMoreMenu,
             isLoading: isLoadingTags,
+            setOpenSubMenuKeys: setOpenSubMenuKeys,
           })}
           <Menu.Divider />
           {renderMenuItems(defaultTaskNav2)}

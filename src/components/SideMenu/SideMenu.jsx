@@ -14,7 +14,7 @@ const SideMenu = ({
       onClick={onClick}
       defaultSelectedKeys={[selectedAppMenuKey]}
       selectedKeys={[selectedAppMenuKey]}
-      defaultOpenKeys={[openSubMenuKeys]}
+      openKeys={openSubMenuKeys}
     >
       {children}
     </Menu>
