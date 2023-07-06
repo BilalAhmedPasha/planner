@@ -1,3 +1,8 @@
 {
-    "explorer.compactFolders": false
+  "explorer.compactFolders": false,
+  "editor.fontSize": 13,
+  "debug.console.fontSize": 13,
+  "markdown.preview.fontSize": 13,
+  "terminal.integrated.fontSize": 13,
+  "interactiveSession.editor.fontSize": 13
 }

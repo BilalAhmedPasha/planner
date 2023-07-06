@@ -1,6 +1,22 @@
-import { ALL, COMPLETED, DELETED, INBOX, LISTS, NEXT_7_DAYS, NO_DATE, SUCCESS, TAGS, TODAY, TOMORROW, WONT_DO } from "../../../constants/app.constants";
+import {
+  ALL,
+  COMPLETED,
+  DELETED,
+  INBOX,
+  LISTS,
+  NEXT_7_DAYS,
+  NO_DATE,
+  SUCCESS,
+  TAGS,
+  TODAY,
+  TOMORROW,
+  WONT_DO,
+} from "../../../constants/app.constants";
 import { DAY } from "../../../constants/calendar.constants";
-import { TIME_FORMAT_IN_DB, TIME_ZONE } from "../../../constants/dateTime.constants";
+import {
+  TIME_FORMAT_IN_DB,
+  TIME_ZONE,
+} from "../../../constants/dateTime.constants";
 import { VIEW } from "../../../constants/formType.constants";
 import {
   END_BY_DATE,
@@ -8,7 +24,18 @@ import {
   repeatMapping,
 } from "../../../constants/repeating.constants";
 import dayjs from "../../../utils/dateTime.utils";
-import { getAllTasks, getByListId, getByTagId, getCompletedTasks, getDeletedTasks, getInboxTasks, getNoDateTasks, getTasksByDate, getTasksByNextXDays, getWontDoTasks } from "../TaskListView/TaskListItem/TaskUtils";
+import {
+  getAllTasks,
+  getByListId,
+  getByTagId,
+  getCompletedTasks,
+  getDeletedTasks,
+  getInboxTasks,
+  getNoDateTasks,
+  getTasksByDate,
+  getTasksByNextXDays,
+  getWontDoTasks,
+} from "../TaskListView/TaskListItem/TaskUtils";
 import {
   addTaskAction,
   editTaskAction,
@@ -101,12 +128,8 @@ export const handleAddTask = ({
             .format()
         : null,
     isMultiDay: formValues.dateRange ? true : false,
-    startMultiDate:
-      (formValues.dateRange && formValues.dateRange[0].startOf(DAY).format()) ||
-      null,
-    endMultiDate:
-      (formValues.dateRange && formValues.dateRange[1].endOf(DAY).format()) ||
-      null,
+    startMultiDate: formValues?.dateRange[0].startOf(DAY).format() || null,
+    endMultiDate: formValues?.dateRange[1].endOf(DAY).format() || null,
     isCompleted: false,
     isWontDo: false,
     isDeleted: 0,
