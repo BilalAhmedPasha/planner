@@ -1,9 +1,9 @@
 import dayjs from "dayjs";
-const utc = require("dayjs/plugin/utc");
-const timezone = require("dayjs/plugin/timezone");
-const isSameOrBefore = require("dayjs/plugin/isSameOrBefore");
-const isSameOrAfter = require("dayjs/plugin/isSameOrAfter");
-const isBetween = require("dayjs/plugin/isBetween");
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import isBetween from 'dayjs/plugin/isBetween';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);

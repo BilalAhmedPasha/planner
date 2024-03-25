@@ -16,7 +16,7 @@ import Icon, {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
 } from "@ant-design/icons";
-import { ReactComponent as SortTextSvg } from "../../../svg/sort-text.svg";
+import SortTextSvg from "../../../svg/sort-text.svg?react";
 import { taskNavToDrawer } from "../../../utils/screen.utils";
 import useWindowSize from "../../../hooks/useWindowSize";
 import { DELETED } from "../../../constants/app.constants";

@@ -28,7 +28,6 @@ export const AuthContextProvider = ({ children }) => {
     });
     signInWithPopup(auth, provider)
       .then((res) => {
-        console.log(res);
       })
       .catch((error) => {
         setError(error);

@@ -1,4 +1,4 @@
-const { useState, useEffect } = require("react");
+import { useState, useEffect } from "react";
 
 const useWindowSize = () => {
   const [screenSize, setScreenSize] = useState({
