@@ -1,5 +1,4 @@
 import {
-  Badge,
   Button,
   Drawer,
   Dropdown,
@@ -101,15 +100,7 @@ const renderSubMenuItems = ({
           }}
         >
           {title}
-          <Space>
-            <Badge
-              count={itemCount}
-              showZero
-              color={TASK_NAV_BADGE_COLOR}
-              overflowCount={10}
-            />
-            <Button icon={<PlusOutlined />} type="text" onClick={onAddClick} />
-          </Space>
+          <Button icon={<PlusOutlined />} type="text" onClick={onAddClick} />
         </div>
       }
       icon={icon}

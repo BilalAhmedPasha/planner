@@ -57,12 +57,12 @@ const TagDialog = ({
 
   const handleAddTag = (e) => {
     const newTag = {
-      name: e.name.replace(/\s/g, "").toLowerCase(),
-      label: e.name,
-      color: e.color?.hex,
-      createdTime: dayjs.utc().format(),
-      modifiedTime: dayjs.utc().format(),
-      type: TAGS,
+        name: e.name.replace(/\s/g, "").toLowerCase(),
+        label: e.name,
+        color: e.color?.toHexString(),
+        createdTime: dayjs.utc().format(),
+        modifiedTime: dayjs.utc().format(),
+        type: TAGS,
     };
     dispatch(addTagAction(user.uid, newTag)).then((response) => {
       if (response.success === SUCCESS) {
@@ -76,12 +76,12 @@ const TagDialog = ({
 
   const handleEditTag = (e) => {
     const modifiedTag = {
-      name: e.name.replace(/\s/g, "").toLowerCase(),
-      label: e.name,
-      color: e.color?.hex,
-      createdTime: formValues.createdTime,
-      modifiedTime: dayjs.utc().format(),
-      type: TAGS,
+        name: e.name.replace(/\s/g, "").toLowerCase(),
+        label: e.name,
+        color: e.color?.toHexString(),
+        createdTime: formValues.createdTime,
+        modifiedTime: dayjs.utc().format(),
+        type: TAGS,
     };
     dispatch(editTagAction(user.uid, modifiedTag, formValues.id)).then(
       (response) => {
@@ -96,21 +96,21 @@ const TagDialog = ({
   };
 
   const [color, setColor] = useState(
-    formType === CREATE ? { hex: DEFAULT_TAG_COLOR } : { hex: formValues.color }
+      formType === CREATE ? DEFAULT_TAG_COLOR : formValues.color
   );
 
   const DEFAULT_VALUES = useMemo(() => {
-    if (formType === CREATE) {
-      return {
-        name: "",
-        color: { hex: DEFAULT_TAG_COLOR },
-      };
-    } else if (formType === EDIT) {
-      return {
-        name: formValues.label,
-        color: { hex: formValues.color },
-      };
-    }
+      if (formType === CREATE) {
+          return {
+              name: "",
+              color: DEFAULT_TAG_COLOR,
+          };
+      } else if (formType === EDIT) {
+          return {
+              name: formValues.label,
+              color: formValues.color,
+          };
+      }
   }, [formType, formValues]);
 
   const formTitle = useMemo(() => {

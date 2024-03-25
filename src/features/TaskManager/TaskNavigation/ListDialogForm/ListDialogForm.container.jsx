@@ -59,7 +59,7 @@ const ListDialog = ({
     const newList = {
       name: e.name.replace(/\s/g, "").toLowerCase(),
       label: e.name,
-      color: e.color?.hex,
+      color: e.color?.toHexString(),
       createdTime: dayjs.utc().format(),
       modifiedTime: dayjs.utc().format(),
       type: LISTS,
@@ -78,7 +78,7 @@ const ListDialog = ({
     const modifiedList = {
       name: e.name.replace(/\s/g, "").toLowerCase(),
       label: e.name,
-      color: e.color?.hex,
+      color: e.color?.toHexString(),
       createdTime: formValues.createdTime,
       modifiedTime: dayjs.utc().format(),
       type: LISTS,
@@ -97,20 +97,20 @@ const ListDialog = ({
 
   const [color, setColor] = useState(
     formType === CREATE
-      ? { hex: DEFAULT_LIST_COLOR }
-      : { hex: formValues.color }
+      ?  DEFAULT_LIST_COLOR
+      :  formValues.color
   );
 
   const DEFAULT_VALUES = useMemo(() => {
     if (formType === CREATE) {
       return {
         name: "",
-        color: { hex: DEFAULT_LIST_COLOR },
+        color: DEFAULT_LIST_COLOR ,
       };
     } else if (formType === EDIT) {
       return {
         name: formValues.label,
-        color: { hex: formValues.color },
+        color: formValues.color,
       };
     }
   }, [formType, formValues]);
