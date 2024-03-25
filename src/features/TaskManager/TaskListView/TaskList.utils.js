@@ -16,16 +16,16 @@ import {
 
 export const getFormValueFromTaskDetail = ({ taskDetails }) => {
   return {
-    ...taskDetails,
-    taskDate: taskDetails?.taskDate ? dayjs(taskDetails?.taskDate) : null,
-    duration:
-      taskDetails?.startTime && taskDetails?.endTime
-        ? [
-            dayjs(taskDetails.startTime, TIME_FORMAT_IN_DB),
-            dayjs(taskDetails.endTime, TIME_FORMAT_IN_DB),
-          ]
-        : null,
-    endByDate: taskDetails?.endByDate ? dayjs(taskDetails?.endByDate) : null,
+      ...taskDetails,
+      taskDate: taskDetails?.taskDate ? dayjs(taskDetails?.taskDate) : null,
+      duration:
+          taskDetails?.startTime && taskDetails?.endTime
+              ? [
+                    dayjs(taskDetails.startTime, TIME_FORMAT_IN_DB),
+                    dayjs(taskDetails.endTime, TIME_FORMAT_IN_DB),
+                ]
+              : null,
+      endByDate: taskDetails?.endByDate ? dayjs(taskDetails?.endByDate) : null,
   };
 };
 

@@ -26,6 +26,7 @@ export default defineConfig(() => {
             svgr(),
         ],
         optimizeDeps: {
+            include: ['dayjs'],
             force: true,
             esbuildOptions: {
                 loader: {

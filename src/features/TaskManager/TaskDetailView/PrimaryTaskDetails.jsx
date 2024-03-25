@@ -67,6 +67,7 @@ const PrimaryTaskDetails = ({
           placeholder="Task description"
           readOnly={formType === VIEW}
           style={{ padding: "0rem" }}
+          variant="borderless"
         />
       </Form.Item>
       <div
