@@ -67,7 +67,6 @@ const PrimaryTaskDetails = ({
           placeholder="Task description"
           readOnly={formType === VIEW}
           style={{ padding: "0rem" }}
-          bordered={false}
         />
       </Form.Item>
       <div
@@ -166,7 +165,6 @@ const PrimaryTaskDetails = ({
             mode="multiple"
             options={tagOptions}
             tagRender={(props) => tagRender(formType !== VIEW, props)}
-            showArrow={true}
             initialvalues={form.getFieldValue("tagIds")}
             placeholder="Tags"
             showSearch={false}

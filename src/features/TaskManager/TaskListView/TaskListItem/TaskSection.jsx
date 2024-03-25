@@ -109,7 +109,7 @@ const TaskListSection = ({
       sectionId !== WONT_DO ? (
         <Collapse
           ghost={true}
-          bordered={false}
+          variant="borderless"
           style={{
             background: token.colorBgContainer,
           }}

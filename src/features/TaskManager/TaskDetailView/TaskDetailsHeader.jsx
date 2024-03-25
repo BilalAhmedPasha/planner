@@ -38,7 +38,7 @@ const TaskDetailHeader = ({ formType, setFormType, onReset }) => {
             margin: "0rem",
           }}
           readOnly={formType === VIEW}
-          bordered={false}
+          variant="borderless"
         />
       </Form.Item>
       {formType === VIEW ? (
