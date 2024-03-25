@@ -39,7 +39,6 @@ import {
 } from "@ant-design/icons";
 import Loading from "../../../components/Loading";
 import Spinner from "../../../components/Spinner";
-import { TASK_NAV_BADGE_COLOR } from "../../../constants/color.constants";
 import {
   hardDeleteListTaskAction,
   deleteTaskTagAction,
@@ -49,6 +48,7 @@ import {
   taskNavToDrawer,
 } from "../../../utils/screen.utils";
 import useWindowSize from "../../../hooks/useWindowSize";
+import './TaskNav.css';
 
 const renderColorDot = (color) => {
   return (
@@ -80,7 +80,6 @@ const renderMenuItems = (itemsArray) => {
 
 const renderSubMenuItems = ({
   items,
-  itemCount,
   key,
   title,
   onAddClick,
@@ -100,7 +99,7 @@ const renderSubMenuItems = ({
           }}
         >
           {title}
-          <Button icon={<PlusOutlined />} type="text" onClick={onAddClick} />
+          <Button icon={<PlusOutlined />} type="text" onClick={onAddClick} className="hidden-add-button"/>
         </div>
       }
       icon={icon}
@@ -114,6 +113,7 @@ const renderSubMenuItems = ({
           }
         });
       }}
+      className="sub-menu"
     >
       {items.map((each) => {
         return (

@@ -232,7 +232,7 @@ const TaskDialogSecondaryPanel = ({ form, height, smallScreen, ...props }) => {
           tagRender={tagRender}
           placeholder="Select tags"
           showSearch={false}
-          showArrow={true}
+          suffixIcon={null}
         />
       </Form.Item>
       {MULTI_DATE_AVAILABLE && (

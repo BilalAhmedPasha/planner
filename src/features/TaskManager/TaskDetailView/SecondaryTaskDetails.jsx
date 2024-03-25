@@ -95,11 +95,11 @@ const SecondaryTaskDetails = ({
           }
           format={TIME_FORMAT}
           minuteStep={5}
-          disabled={formType !== VIEW && !isScheduled}
+          style={{ width: "100%", cursor: "pointer" }}
           open={formType === VIEW ? false : undefined}
           allowClear={formType !== VIEW}
           inputReadOnly={true}
-          style={{ width: "100%", cursor: "pointer" }}
+          disabled={formType !== VIEW && !isScheduled}
         />
       </Form.Item>
       <Form.Item
