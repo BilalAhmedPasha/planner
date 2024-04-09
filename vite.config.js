@@ -30,7 +30,7 @@ export default defineConfig(() => {
             force: true,
             esbuildOptions: {
                 loader: {
-                    ".js": "jsx",
+                    ".js": "jsx"
                 },
             },
         },
