@@ -1,0 +1,33 @@
+.slider__form__item {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.description__form__item {
+    margin: 0rem 0rem 1.5rem 0rem;
+}
+
+.input__text__area {
+    padding: 0rem;
+}
+
+.priority__form__item {
+    margin-right: 1rem;
+    margin-bottom: 0.5rem;
+    width: 20%;
+    min-width: 6rem;
+}
+
+.list__id__form__item {
+    margin-right: 1rem;
+    margin-bottom: 0.5rem;
+    width: 35%;
+    min-width: 10rem;
+}
+
+.tag__id__form__item {
+    margin-bottom: 0.5rem;
+    width: 45%;
+    min-width: 10rem;
+}

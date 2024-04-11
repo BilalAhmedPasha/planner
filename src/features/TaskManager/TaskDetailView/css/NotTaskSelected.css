@@ -1,0 +1,12 @@
+.typography__text {
+ font-size: 1rem;
+}
+
+.image__detail {
+  width: 5rem;
+}
+
+.wrapper__div {
+  text-align: center;
+  padding-top: 40%;
+}

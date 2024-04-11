@@ -1,0 +1,11 @@
+.space {
+  cursor: pointer;
+}
+
+.typography__text {
+  font-weight: bold;
+  font-size: 24px;
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
