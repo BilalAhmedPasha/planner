@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Avatar, Button, Dropdown, Layout, Menu, Modal } from "antd";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import SideMenu from "../../../components/SideMenu";
 import { UserAuth } from "../../../context/AuthContext";
 import { defaultAppNav } from "./defaultAppNav.config";
@@ -30,14 +30,15 @@ const renderMenuItems = (itemsArray) => {
 
 const AppNav = ({ setCurrentTitle, userTheme, updateTheme }) => {
     const { logOut, user } = UserAuth();
-    const history = useHistory();
+    const navigateTo = useNavigate();
+
     const dispatch = useDispatch();
 
     useEffect(() => {
         if (user === null) {
-            history.push("/login");
+            navigateTo("/login");
         }
-    }, [history, user]);
+    }, [navigateTo, user]);
 
     const handleSignOut = async () => {
         try {

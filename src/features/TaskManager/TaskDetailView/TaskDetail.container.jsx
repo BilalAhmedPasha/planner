@@ -17,7 +17,7 @@ import {
 } from "../../../utils/screen.utils";
 import { CloseOutlined } from "@ant-design/icons";
 import useWindowSize from "../../../hooks/useWindowSize";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const TaskDetailsContainer = ({
   user,
@@ -141,7 +141,7 @@ const TaskDetailsContainer = ({
     );
   };
 
-  const history = useHistory();
+  const navigateTo = useNavigate();
 
   const screenSize = useWindowSize();
   return taskDetailsToDrawer({ currentWidth: screenSize.width }) ? (
@@ -163,7 +163,7 @@ const TaskDetailsContainer = ({
             setIsTaskDetailsDrawerCollapsed(true);
             setSelectedTaskDetails([]);
             // Unstack URL
-            history.push("./");
+            navigateTo("./");
           }}
         />
       }

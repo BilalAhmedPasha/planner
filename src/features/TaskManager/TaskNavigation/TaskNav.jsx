@@ -28,7 +28,7 @@ import { deleteListAction } from "../state/userLists/userLists.actions";
 import { listsSelector } from "../state/userLists/userLists.reducer";
 import { deleteTagAction } from "../state/userTags/userTags.actions";
 import { tagsSelector } from "../state/userTags/userTags.reducer";
-import { Link, useHistory, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
 import {
   UnorderedListOutlined,
   TagOutlined,
@@ -192,7 +192,7 @@ const TaskNav = ({
     });
   };
 
-  const history = useHistory();
+  const navigateTo = useNavigate();
   const { documentId } = useParams();
 
   const handleDelete = ({
@@ -214,7 +214,7 @@ const TaskNav = ({
         if (response.success === SUCCESS) {
           deleteSuccess({ messageText: successMessage });
           if (documentId === currentItem.id) {
-            history.push("/tasks/all");
+            navigateTo("/tasks/all");
           }
         } else {
           deleteFailed({ messageText: failureMessage });

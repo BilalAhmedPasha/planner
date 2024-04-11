@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Layout, ConfigProvider, theme } from "antd";
 import AppNav from "./AppNav";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
 import { useDispatch } from "react-redux";
 import {
@@ -92,12 +92,12 @@ const AppLayout = ({ setCurrentTitle, children }) => {
     });
   };
 
-  const history = useHistory();
+  const navigateTo = useNavigate();
   useEffect(() => {
-    if (user === null) {
-      return history.push("/login");
-    }
-  }, [user, history]);
+      if (user === null) {
+          return navigateTo("/login");
+      }
+  }, [user, navigateTo]);
 
   const { defaultAlgorithm } = theme;
   const childrenWithProps = React.Children.map(children, (child) => {

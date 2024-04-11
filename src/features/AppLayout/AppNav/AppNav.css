@@ -1,0 +1,22 @@
+.layout-sider {
+  overflow: auto;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  left: 0;
+}
+
+.avatar{
+  margin: 0.15rem;
+  cursor: pointer;
+}
+
+div {
+  position: absolute;
+  bottom: 0;
+  margin: 0.3rem;
+}
+
+.button {
+  cursor: pointer;
+}

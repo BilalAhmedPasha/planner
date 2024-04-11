@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { UserAuth } from "../../context/AuthContext";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import appLogo from "../../assets/appLogo.png";
 import SignUpForm from "./SignUpForm";
@@ -27,14 +27,14 @@ const LoginCard = styled.div`
 `;
 
 const LoginPage = () => {
-  const history = useHistory();
+  const navigateTo = useNavigate();
   const { user, loading, error } = UserAuth();
 
   useEffect(() => {
     if (user !== null && JSON.stringify(user) !== "{}") {
-      history.push("/tasks/all");
+      navigateTo("/tasks/all");
     }
-  }, [history, user]);
+  }, [navigateTo, user]);
 
   const [showSignIn, setShowSignIn] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");

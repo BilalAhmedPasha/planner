@@ -1,7 +1,7 @@
 import { theme } from "antd";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { LISTS, TAGS } from "../../../../constants/app.constants";
 import { listsSelector } from "../../state/userLists/userLists.reducer";
@@ -58,7 +58,7 @@ const Card = ({
     }
   }
   const currentURL = useLocation();
-  const history = useHistory();
+  const navigateTo = useNavigate();
   return (
     <StyledDiv
       opacity={1}
@@ -90,11 +90,12 @@ const Card = ({
             urlPath.length >= 4 &&
             (urlPath[2] === LISTS || urlPath[2] === TAGS)
           ) {
-            history.push(
-              `/${urlPath[1]}/${urlPath[2]}/${urlPath[3]}/${cardDetails.id}`
+            navigateTo(
+                `/${urlPath[1]}/${urlPath[2]}/${urlPath[3]}/${cardDetails.id}`
             );
+            
           } else {
-            history.push(`/${urlPath[1]}/${urlPath[2]}/${cardDetails.id}`);
+            navigateTo(`/${urlPath[1]}/${urlPath[2]}/${cardDetails.id}`);
           }
           setSelectedTaskDetails([cardDetails]);
         }
