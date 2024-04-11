@@ -23,6 +23,11 @@ import TaskDetailHeader from "./TaskDetailsHeader";
 import PrimaryTaskDetails from "./PrimaryTaskDetails";
 import SecondaryTaskDetails from "./SecondaryTaskDetails";
 import RecurringTaskDetails from "./RecurringTaskDetails";
+import styled from "styled-components";
+
+const StyledDiv = styled.div`
+    overflow: "auto";
+`;
 
 const getPriorityColor = (event) => {
   if (event === HIGH) {
@@ -184,58 +189,57 @@ const TaskDetails = ({
   }, [taskDetails]);
 
   return (
-    <>
-      <TaskDetailHeader
-        formType={formType}
-        setFormType={setFormType}
-        onReset={onReset}
-      />
-      <PrimaryTaskDetails
-        form={form}
-        formType={formType}
-        handlePriorityColor={handlePriorityColor}
-        priorityColor={priorityColor}
-        listOptions={listOptions}
-        tagOptions={tagOptions}
-        tagRender={tagRender}
-      />
-      <SecondaryTaskDetails
-        formType={formType}
-        handleStartDateChange={handleStartDateChange}
-        openTaskDatePicker={openTaskDatePicker}
-        setOpenTaskDatePicker={setOpenTaskDatePicker}
-        isScheduled={isScheduled}
-        handleRepeatDropDownChange={handleRepeatDropDownChange}
-      />
-      <RecurringTaskDetails
-        form={form}
-        formType={formType}
-        isScheduled={isScheduled}
-        isRepeating={isRepeating}
-        handleEndByDropDownChange={handleEndByDropDownChange}
-        showEndByDate={showEndByDate}
-        showEndByRepeatCount={showEndByRepeatCount}
-        disabledEndDate={disabledEndDate}
-        openTaskEndDatePicker={openTaskEndDatePicker}
-        setOpenTaskEndDatePicker={setOpenTaskEndDatePicker}
-      />
-      <Divider />
-      {/* <div style={{ overflow: "auto" }}> */}
-      {showSubTasks && (
-        <Button
-          type="text"
-          icon={<NodeExpandOutlined />}
-          onClick={onAddSubTask}
-        >
-          {"Add Subtask"}
-        </Button>
-      )}
-      <div style={{ overflow: "auto" }}>
-        {subTasks.map((each, index) => (
-          <SubTaskInDetails key={index} taskDetails={taskDetails} />
-        ))}
-      </div>
-    </>
+      <>
+          <TaskDetailHeader
+              formType={formType}
+              setFormType={setFormType}
+              onReset={onReset}
+          />
+          <PrimaryTaskDetails
+              form={form}
+              formType={formType}
+              handlePriorityColor={handlePriorityColor}
+              priorityColor={priorityColor}
+              listOptions={listOptions}
+              tagOptions={tagOptions}
+              tagRender={tagRender}
+          />
+          <SecondaryTaskDetails
+              formType={formType}
+              handleStartDateChange={handleStartDateChange}
+              openTaskDatePicker={openTaskDatePicker}
+              setOpenTaskDatePicker={setOpenTaskDatePicker}
+              isScheduled={isScheduled}
+              handleRepeatDropDownChange={handleRepeatDropDownChange}
+          />
+          <RecurringTaskDetails
+              form={form}
+              formType={formType}
+              isScheduled={isScheduled}
+              isRepeating={isRepeating}
+              handleEndByDropDownChange={handleEndByDropDownChange}
+              showEndByDate={showEndByDate}
+              showEndByRepeatCount={showEndByRepeatCount}
+              disabledEndDate={disabledEndDate}
+              openTaskEndDatePicker={openTaskEndDatePicker}
+              setOpenTaskEndDatePicker={setOpenTaskEndDatePicker}
+          />
+          <Divider />
+          {showSubTasks && (
+              <Button
+                  type="text"
+                  icon={<NodeExpandOutlined />}
+                  onClick={onAddSubTask}
+              >
+                  {"Add Subtask"}
+              </Button>
+          )}
+          <StyledDiv>
+              {subTasks.map((each, index) => (
+                  <SubTaskInDetails key={index} taskDetails={taskDetails} />
+              ))}
+          </StyledDiv>
+      </>
   );
 };
 

@@ -1,0 +1,25 @@
+.font__size__20 {
+  font-size: 20px;
+}
+
+.styled__space {
+  align-items: center;
+}
+
+.typography__text {
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
+.typography__text__font {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.font__size__1 {
+  font-size: 1rem;
+}
+
+.font__size__1_25 {
+  font-size: 1.25rem;
+}

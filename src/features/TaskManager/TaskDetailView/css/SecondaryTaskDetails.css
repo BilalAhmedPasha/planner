@@ -1,0 +1,28 @@
+.taskdate__form__item {
+  margin-right: 1rem;
+  margin-bottom: 0.5rem;
+  width: 33%;
+}
+
+.min__width__8rem {
+  min-width: 8rem;
+}
+
+.min__width__12rem {
+  min-width: 12rem;
+}
+
+.font__size__1 {
+  font-size: 1rem;
+}
+
+.cursor__pointer {
+  width: 100%;
+  cursor: pointer;
+}
+
+.repeat_frequency {
+  margin-bottom: 0.5rem;
+  width: 33%;
+  min-width: 7rem;
+}

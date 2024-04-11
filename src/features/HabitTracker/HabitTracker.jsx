@@ -4,7 +4,6 @@ import styled from "styled-components";
 const StyledLayoutContent = styled(Layout.Content)`
   margin-right: 0.1rem;
   padding: 1rem 3rem;
-  background: 
   background: ${({ bgColor }) => bgColor};
 `;
 
