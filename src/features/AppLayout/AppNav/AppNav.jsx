@@ -9,17 +9,28 @@ import { LOGOUT } from "../../../constants/app.constants";
 import { useDispatch } from "react-redux";
 import { removeUserSettingAction } from "../state/userSettings/userSettings.actions";
 import { MdOutlineLightMode, MdOutlineDarkMode } from "react-icons/md";
+import styled from "styled-components";
+
+const StyledDiv = styled.div`
+    position: absolute;
+    bottom: 0;
+    margin: 0.3rem;
+`;
+
+const StyledMdOutlineDarkMode = styled(MdOutlineDarkMode)`
+    font-size: 1.25rem;
+`;
+
+const StyledMdOutlineLightMode = styled(MdOutlineLightMode)`
+    font-size: 1.25rem;
+`;
 
 const renderMenuItems = (itemsArray) => {
     return itemsArray.map((each) => {
         return (
             <Menu.Item
                 key={each.redirectUrl}
-                icon={
-                    <each.icon
-                        style={{ fontSize: "1.5rem", margin: "-0.25rem" }}
-                    />
-                }
+                icon={<each.icon id="menu__icon" />}
                 title=""
             >
                 <Link to={each.redirectUrl}>{each.label}</Link>
@@ -102,14 +113,8 @@ const AppNav = ({ setCurrentTitle, userTheme, updateTheme }) => {
 
     return (
         <Layout.Sider
+            id="layout__sider"
             theme="light"
-            style={{
-                overflow: "auto",
-                height: "100vh",
-                position: "sticky",
-                top: 0,
-                left: 0,
-            }}
             collapsedWidth={50}
             collapsed
         >
@@ -122,7 +127,7 @@ const AppNav = ({ setCurrentTitle, userTheme, updateTheme }) => {
                     size={45}
                     shape="square"
                     src={user?.photoURL}
-                    style={{ margin: "0.15rem", cursor: "pointer" }}
+                    id="avatar"
                 />
             </Dropdown>
             <SideMenu
@@ -131,25 +136,21 @@ const AppNav = ({ setCurrentTitle, userTheme, updateTheme }) => {
             >
                 {renderMenuItems(defaultAppNav)}
             </SideMenu>
-            <div style={{ position: "absolute", bottom: 0, margin: "0.3rem" }}>
+            <StyledDiv>
                 <Button
                     size="large"
                     type="text"
                     icon={
                         userTheme ? (
-                            <MdOutlineDarkMode
-                                style={{ fontSize: "1.25rem" }}
-                            />
+                            <StyledMdOutlineDarkMode />
                         ) : (
-                            <MdOutlineLightMode
-                                style={{ fontSize: "1.25rem" }}
-                            />
+                            <StyledMdOutlineLightMode />
                         )
                     }
-                    style={{ cursor: "pointer" }}
+                    id="theme__button"
                     onClick={updateTheme}
                 />
-            </div>
+            </StyledDiv>
             {contextHolder}
         </Layout.Sider>
     );

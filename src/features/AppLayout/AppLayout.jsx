@@ -13,6 +13,7 @@ import { doc, setDoc, getDoc } from "@firebase/firestore";
 import FullPageSpinner from "../../components/FullPageSpinner";
 import Loading from "../../components/Loading";
 import { oneDarkTheme } from "../../constants/onedarkTheme.constants";
+import "./AppLayout.css";
 
 const AppLayout = ({ setCurrentTitle, children }) => {
   const { user } = UserAuth();
@@ -122,7 +123,7 @@ const AppLayout = ({ setCurrentTitle, children }) => {
       {user === null || JSON.stringify(user) === "{}" ? (
         <FullPageSpinner indicator={Loading(50)} />
       ) : (
-        <Layout style={{ height: "100vh" }}>
+        <Layout className="layout">
           <AppNav
             setCurrentTitle={setCurrentTitle}
             userTheme={userTheme}
