@@ -38,6 +38,14 @@ function App() {
                 }
             />
             <Route
+                path="/tasks/:sectionId/:documentId/:taskId"
+                element={
+                    <AppLayout setCurrentTitle={setCurrentTitle}>
+                        <TaskManager title={currentTitle} />
+                    </AppLayout>
+                }
+            />
+            <Route
                 path="/tasks/:sectionId/:documentId"
                 element={
                     <AppLayout setCurrentTitle={setCurrentTitle}>
@@ -45,7 +53,6 @@ function App() {
                     </AppLayout>
                 }
             />
-
             <Route
                 path="/tasks/:sectionId"
                 element={
@@ -54,7 +61,7 @@ function App() {
                     </AppLayout>
                 }
             />
-            <Route path="*" element={<Navigate to="/tasks/all" />} />
+            {/* <Route path="*" element={<Navigate to="/tasks/all" />} /> */}
         </Routes>
     );
 }

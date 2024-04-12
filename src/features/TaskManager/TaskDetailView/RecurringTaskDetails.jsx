@@ -51,7 +51,7 @@ const RecurringTaskDetails = ({
     setOpenTaskEndDatePicker,
 }) => {
     const {
-        token: { colorInfoText, colorBorder },
+        token: { colorInfoText, color_border },
     } = theme.useToken();
 
     return (
@@ -182,7 +182,7 @@ const RecurringTaskDetails = ({
                             isRepeating &&
                             showEndByRepeatCount
                         ) ? (
-                            <StyledFieldNumberOutlined color={colorBorder} />
+                            <StyledFieldNumberOutlined color={color_border} />
                         ) : (
                             <StyledFieldNumberOutlined color={colorInfoText} />
                         )

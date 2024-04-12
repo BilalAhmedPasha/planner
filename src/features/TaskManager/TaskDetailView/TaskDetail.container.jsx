@@ -178,7 +178,6 @@ const TaskDetailsContainer = ({
                     onClick={() => {
                         setIsTaskDetailsDrawerCollapsed(true);
                         setSelectedTaskDetails([]);
-                        // Unstack URL
                         navigateTo("./");
                     }}
                 />

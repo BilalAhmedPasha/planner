@@ -25,6 +25,11 @@ const StyledMdOutlineLightMode = styled(MdOutlineLightMode)`
     font-size: 1.25rem;
 `;
 
+const StyledAvatar = styled(Avatar) `
+    margin: 0.15rem;
+    cursor: pointer;
+`;
+
 const renderMenuItems = (itemsArray) => {
     return itemsArray.map((each) => {
         return (
@@ -123,11 +128,10 @@ const AppNav = ({ setCurrentTitle, userTheme, updateTheme }) => {
                 placement="bottomLeft"
                 trigger={["click"]}
             >
-                <Avatar
+                <StyledAvatar
                     size={45}
                     shape="square"
                     src={user?.photoURL}
-                    id="avatar"
                 />
             </Dropdown>
             <SideMenu

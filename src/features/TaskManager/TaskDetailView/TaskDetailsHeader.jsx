@@ -13,7 +13,7 @@ const StyledDiv = styled.div`
     align-content: center;
     justify-content: space-between;
     overflow-x: auto;
-    align-items:center;
+    align-items: center;
 `;
 
 const TaskDetailHeader = ({ formType, setFormType, onReset }) => {

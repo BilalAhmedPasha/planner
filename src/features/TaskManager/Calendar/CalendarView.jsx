@@ -21,7 +21,7 @@ dayjs.extend(timezone);
 const StyledLayoutContent = styled(Layout.Content)`
     padding: 1vh 0.75rem;
     height: 100vh;
-    background: ${({ bgColor }) => bgColor};
+    background: ${({ bg_color }) => bg_color};
 `;
 
 const CalendarView = ({ user, userTheme }) => {
@@ -71,7 +71,7 @@ const CalendarView = ({ user, userTheme }) => {
     }, [formValues, setOpenAddTaskDialog]);
 
     return (
-        <StyledLayoutContent bgColor={colorBgContainer}>
+        <StyledLayoutContent bg_color={colorBgContainer}>
             <CalendarComponent
                 userTheme={userTheme}
                 user={user}

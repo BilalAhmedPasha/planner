@@ -87,7 +87,6 @@ const SignInForm = ({ setShowSignIn, errorMessage, setErrorMessage }) => {
                     size="large"
                     placeholder="Email"
                     prefix={<MailOutlined className="prefix__icon" />}
-                    className="input__field"
                     autoComplete="off"
                 />
             </StyledFormItem>

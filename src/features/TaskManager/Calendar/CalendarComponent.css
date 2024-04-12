@@ -4,7 +4,7 @@
 
 .typography__text {
   font-weight: bold;
-  font-size: 24px;
+  font-size: 24px !important;
   white-space: nowrap;
   overflow-x: auto;
 }

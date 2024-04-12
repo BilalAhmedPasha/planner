@@ -37,27 +37,27 @@ const StyledDiv = styled.div`
 
 const StyledButton = styled(Button)`
     transition: 0.3s all ease;
-    opacity: ${opacity}
-    cursor: ${cursor}
+    opacity: ${({ opacity }) => opacity};
+    cursor: ${({ cursor }) => cursor};
 `;
 
 const StyledClockCircleOutlined = styled(ClockCircleOutlined)`
     font-size: 1rem;
     cursor: pointer;
-    color: ${color};
+    color: ${({ color }) => color};
 `;
 
 const StyledFlagOutlined = styled(FlagOutlined)`
     font-size: 1rem;
     cursor: pointer;
-    color: ${color};
+    color: ${({ color }) => color};
 `;
 
 const StyledArrowDownOutlined = styled(ArrowDownOutlined)`
     font-size: 1rem;
     cursor: pointer;
     margin-left: 0.2rem;
-    color: ${color};
+    color: ${({ color }) => color};
 `;
 
 const renderTaskMenuIcon = ({

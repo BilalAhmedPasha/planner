@@ -1,0 +1,24 @@
+.tag__margin {
+  margin-right: 3;
+}
+
+.typography__text {
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
+.input__field {
+  cursor: pointer;
+  width: 100%;
+}
+
+.font__size__0_9 {
+  font-size: 0.9rem;
+}
+
+.nested__div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}

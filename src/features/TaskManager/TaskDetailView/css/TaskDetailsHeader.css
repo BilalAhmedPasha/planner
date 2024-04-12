@@ -1,14 +1,14 @@
 .form__item__name {
   height: 1rem;
-  width: 35rem;
+  width: 35rem ;
   margin-right: 1rem;
 }
 
 .input__field {
   font-weight: bold;
-  font-size: 24px;
+  font-size: 1.5rem;
   padding: 0rem;
-  margin: 0rem;
+  margin: 0rem !important;
 }
 
 .margin__right {

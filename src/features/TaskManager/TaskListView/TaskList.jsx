@@ -31,7 +31,7 @@ import styled from "styled-components";
 const StyledLayoutContent = styled(Layout.Content)`
     overflow: auto;
     position: relative;
-    background: ${({ bgColor }) => bgColor};
+    background: ${({ bgcolor }) => bgcolor};
 `;
 
 const StyledSkeleton = styled(Skeleton)`
@@ -287,7 +287,7 @@ const TaskListContainer = ({
     }, []);
 
     return (
-        <StyledLayoutContent bgColor={colorBgContainer}>
+        <StyledLayoutContent bgcolor={colorBgContainer}>
             <StyledSkeleton
                 active
                 loading={isLoadingTasks && tasks?.length === 0}

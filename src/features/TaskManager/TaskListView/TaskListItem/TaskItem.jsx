@@ -38,16 +38,16 @@ import styled from "styled-components";
 
 const getPriorityColor = ({ item, completedColor, completedBGColor }) => {
   if (item.isCompleted || item.isWontDo) {
-    return { color: completedColor, bgColor: completedBGColor };
+    return { color: completedColor, bgcolor: completedBGColor };
   }
   if (item.priority === HIGH) {
-    return { color: HIGH_COLOR, bgColor: HIGH_BG_COLOR };
+    return { color: HIGH_COLOR, bgcolor: HIGH_BG_COLOR };
   } else if (item.priority === MEDIUM) {
-    return { color: MEDIUM_COLOR, bgColor: MEDIUM_BG_COLOR };
+    return { color: MEDIUM_COLOR, bgcolor: MEDIUM_BG_COLOR };
   } else if (item.priority === LOW) {
-    return { color: LOW_COLOR, bgColor: LOW_BG_COLOR };
+    return { color: LOW_COLOR, bgcolor: LOW_BG_COLOR };
   }
-  return { color: NONE_COLOR, bgColor: NONE_BG_COLOR };
+  return { color: NONE_COLOR, bgcolor: NONE_BG_COLOR };
 };
 
 const StyledLink = styled(Link)`
@@ -57,7 +57,7 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const renderTags = ({ item, tags, colorBorder }) => {
+const renderTags = ({ item, tags, color_border }) => {
   if (item?.tagIds?.length > 0) {
     const tagsArray = [];
     for (let index = 0; index < 3; index++) {
@@ -68,8 +68,8 @@ const renderTags = ({ item, tags, colorBorder }) => {
             key={item.tagIds[index]}
             color={
               item.isCompleted || item.isWontDo
-                ? colorBorder
-                : tagDetails?.color || colorBorder
+                ? color_border
+                : tagDetails?.color || color_border
             }
             closable={false}
           >
@@ -90,8 +90,8 @@ const renderTags = ({ item, tags, colorBorder }) => {
           key={"overflow"}
           color={
             item.isCompleted || item.isWontDo
-              ? colorBorder
-              : DEFAULT_BADGE_COLOR || colorBorder
+              ? color_border
+              : DEFAULT_BADGE_COLOR || color_border
           }
           closable={false}
         >
@@ -355,7 +355,7 @@ const TaskItem = ({
   ];
 
   const {
-    token: { colorBgContainer, colorBorder, colorBorderSecondary },
+    token: { colorBgContainer, color_border, color_borderSecondary },
   } = theme.useToken();
 
   return (
@@ -368,34 +368,34 @@ const TaskItem = ({
           disabled={taskDetails.isDeleted}
         >
           <CheckBoxInput
-            uniCode={checkBoxContent}
-            backgroundColor={
+            unicode={checkBoxContent}
+            backgroundcolor={
               getPriorityColor({
                 item: taskDetails,
-                completedColor: colorBorder,
-                completedBGColor: colorBorderSecondary,
+                completedColor: color_border,
+                completedBGColor: color_borderSecondary,
               }).color
             }
-            borderColor={
+            bordercolor={
               getPriorityColor({
                 item: taskDetails,
-                completedColor: colorBorder,
-                completedBGColor: colorBorderSecondary,
+                completedColor: color_border,
+                completedBGColor: color_borderSecondary,
               }).color
             }
-            checkBoxColor={
+            checkboxcolor={
               getPriorityColor({
                 item: taskDetails,
-                completedColor: colorBorder,
-                completedBGColor: colorBorderSecondary,
+                completedColor: color_border,
+                completedBGColor: color_borderSecondary,
               }).color
             }
-            hoverBGColor={
+            hover_bg_color={
               getPriorityColor({
                 item: taskDetails,
-                completedColor: colorBorder,
-                completedBGColor: colorBorderSecondary,
-              }).bgColor
+                completedColor: color_border,
+                completedBGColor: color_borderSecondary,
+              }).bgcolor
             }
             onChange={handleClick}
             onContextMenu={(e) => handleRightClick({ e, taskDetails })}
@@ -436,7 +436,7 @@ const TaskItem = ({
           {renderTags({
             item: taskDetails,
             tags: tags,
-            colorBorder: colorBorder,
+            color_border: color_border,
           })}
         </div>
       </div>

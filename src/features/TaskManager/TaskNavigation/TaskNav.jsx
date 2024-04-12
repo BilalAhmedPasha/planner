@@ -57,7 +57,7 @@ const renderColorDot = (color) => {
         height: "0.5rem",
         width: "0.5rem",
         borderRadius: "50%",
-        backgroundColor: `${color}`,
+        backgroundcolor: `${color}`,
         display: "inline-block",
       }}
     />

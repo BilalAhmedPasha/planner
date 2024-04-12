@@ -56,7 +56,6 @@ const SignUpForm = ({ setShowSignIn, errorMessage, setErrorMessage }) => {
                         size="large"
                         placeholder="User name"
                         prefix={<UserOutlined className="prefix__icon" />}
-                        className="input__field"
                         autoComplete="off"
                     />
                 </StyledFormItem>

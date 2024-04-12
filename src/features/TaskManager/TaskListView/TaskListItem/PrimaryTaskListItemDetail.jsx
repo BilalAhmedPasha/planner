@@ -37,43 +37,43 @@ const renderColorDot = (color) => {
         height: "0.55rem",
         width: "0.55rem",
         borderRadius: "50%",
-        backgroundColor: `${color}`,
+        backgroundcolor: `${color}`,
         display: "inline-block",
       }}
     />
   );
 };
 
-const renderChildNodeIcon = ({ item, colorBorder, colorTextLabel }) => {
+const renderChildNodeIcon = ({ item, color_border, colorTextLabel }) => {
   if (item.childTaskIds.length > 0) {
     return (
       <NodeExpandOutlined
         style={{
           color:
-            item.isCompleted || item.isWontDo ? colorBorder : colorTextLabel,
+            item.isCompleted || item.isWontDo ? color_border : colorTextLabel,
         }}
       />
     );
   }
 };
 
-const renderRepeatIcon = ({ item, colorBorder, colorTextLabel }) => {
+const renderRepeatIcon = ({ item, color_border, colorTextLabel }) => {
   if (item.isRepeating) {
     return (
       <SyncOutlined
         style={{
           color:
-            item.isCompleted || item.isWontDo ? colorBorder : colorTextLabel,
+            item.isCompleted || item.isWontDo ? color_border : colorTextLabel,
         }}
       />
     );
   }
 };
 
-const renderList = ({ item, lists, colorBorder, colorTextLabel }) => {
+const renderList = ({ item, lists, color_border, colorTextLabel }) => {
   const itemInList = lists?.find((each) => each.id === item?.listId);
   const listColor =
-    item.isCompleted || item.isWontDo ? colorBorder : itemInList?.color;
+    item.isCompleted || item.isWontDo ? color_border : itemInList?.color;
   return (
     <StyledLink
       to={itemInList ? `/tasks/lists/${itemInList?.id}` : `/tasks/inbox`}
@@ -139,7 +139,7 @@ const PrimaryTaskListItemDetail = ({
   handleHardDelete,
 }) => {
   const {
-    token: { colorBorder, colorTextLabel, colorError },
+    token: { color_border, colorTextLabel, colorError },
   } = theme.useToken();
 
   return (
@@ -168,18 +168,18 @@ const PrimaryTaskListItemDetail = ({
           {renderList({
             item: taskDetails,
             lists: lists,
-            colorBorder: colorBorder,
+            color_border: color_border,
             colorTextLabel: colorTextLabel,
           })}
           {renderChildNodeIcon({
             item: taskDetails,
             colorTextLabel,
-            colorBorder,
+            color_border,
           })}
           {renderRepeatIcon({
             item: taskDetails,
             colorTextLabel,
-            colorBorder,
+            color_border,
           })}
           {renderTaskDate({ item: taskDetails })}
         </Space>
@@ -191,7 +191,7 @@ const PrimaryTaskListItemDetail = ({
                 style={{
                   color:
                     taskDetails.isCompleted || taskDetails.isWontDo
-                      ? colorBorder
+                      ? color_border
                       : colorTextLabel,
                   opacity: selectedTaskDetails?.length > 1 ? 0.3 : 1,
                   transition: "0.3s all ease",
@@ -218,7 +218,7 @@ const PrimaryTaskListItemDetail = ({
                 style={{
                   color:
                     taskDetails.isCompleted || taskDetails.isWontDo
-                      ? colorBorder
+                      ? color_border
                       : colorTextLabel,
                   opacity: selectedTaskDetails?.length > 1 ? 0.3 : 1,
                   transition: "0.3s all ease",
@@ -248,7 +248,7 @@ const PrimaryTaskListItemDetail = ({
                 style={{
                   color:
                     taskDetails.isCompleted || taskDetails.isWontDo
-                      ? colorBorder
+                      ? color_border
                       : colorError,
                   opacity: selectedTaskDetails?.length > 1 ? 0.3 : 1,
                   transition: "0.3s all ease",

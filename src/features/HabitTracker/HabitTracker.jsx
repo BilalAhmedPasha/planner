@@ -4,7 +4,7 @@ import styled from "styled-components";
 const StyledLayoutContent = styled(Layout.Content)`
   margin-right: 0.1rem;
   padding: 1rem 3rem;
-  background: ${({ bgColor }) => bgColor};
+  background: ${({ bgcolor }) => bgcolor};
 `;
 
 const StyledText = styled(Typography.Text)`
@@ -19,10 +19,10 @@ const HabitTracker = () => {
 
     return (
         <>
-            <StyledLayoutContent bgColor={colorBgContainer}>
+            <StyledLayoutContent bgcolor={colorBgContainer}>
                 <StyledText>{"Habits"}</StyledText>
             </StyledLayoutContent>
-            <StyledLayoutContent bgColor={colorBgContainer}>
+            <StyledLayoutContent bgcolor={colorBgContainer}>
                 <StyledText>{"Habit details"}</StyledText>
             </StyledLayoutContent>
         </>

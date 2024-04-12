@@ -40,9 +40,31 @@ const CalendarWrapper = styled.div`
         color: ${(props) => (props.userTheme ? "#fff" : "#000")};
     }
 
+
     .rbc-current-time-indicator {
+        --left: 0%;
+        --width: 100%;
+        position: absolute;
         background-color: rgba(255, 87, 87, 1);
-        height: 0.2rem;
+
+        left: var(--left);
+        width: var(--width);
+        z-index: 5;
+        height: 0.1rem;
+        border: 1px dashed $current-time-color;
+        pointer-events: none;
+
+        &::before {
+            display: inline-block;
+            content: "";
+            background-color: $current-time-color;
+            width: 12px;
+            height: 0.2rem;
+            border-radius: 50%;
+            margin-left: -12px;
+            margin-bottom: 12px;
+            margin-top: -6px;
+        }
     }
 
     .rbc-today {
@@ -134,6 +156,26 @@ const StyledDiv = styled.div`
     margin-bottom: 0.5vh;
 `;
 
+export const updateTimeIndicator = (view) => {
+    const timeIndicator = document.querySelector(".rbc-current-time-indicator");
+    if (timeIndicator) {
+        const nDayOfWeek = dayjs().day();
+        let left;
+        let width;
+
+        if (view === VIEWS.DAY) {
+            left = 0;
+            width = 100;
+        } else {
+            left = (nDayOfWeek - 1) * -100;
+            width = 700;
+        }
+
+        timeIndicator.style.setProperty("--width", `${width}%`);
+        timeIndicator.style.setProperty("--left", `${left}%`);
+    }
+};
+
 const CalendarComponent = ({
     userTheme,
     setFormType,
@@ -185,7 +227,7 @@ const CalendarComponent = ({
             views: [Views.WEEK, Views.DAY],
         }),
         []
-    );
+    );  
 
     const slotGroupPropGetter = useCallback(
         () => ({
