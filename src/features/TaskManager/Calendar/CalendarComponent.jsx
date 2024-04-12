@@ -30,7 +30,7 @@ import useWindowSize from "../../../hooks/useWindowSize";
 import Spinner from "../../../components/Spinner";
 import Loading from "../../../components/Loading";
 import styled from "styled-components";
-import "./css/CalendarComponent.css";
+
 dayjs.extend(timezone);
 
 const CalendarWrapper = styled.div`
@@ -40,31 +40,9 @@ const CalendarWrapper = styled.div`
         color: ${(props) => (props.userTheme ? "#fff" : "#000")};
     }
 
-
     .rbc-current-time-indicator {
-        --left: 0%;
-        --width: 100%;
-        position: absolute;
         background-color: rgba(255, 87, 87, 1);
-
-        left: var(--left);
-        width: var(--width);
-        z-index: 5;
-        height: 0.1rem;
-        border: 1px dashed $current-time-color;
-        pointer-events: none;
-
-        &::before {
-            display: inline-block;
-            content: "";
-            background-color: $current-time-color;
-            width: 12px;
-            height: 0.2rem;
-            border-radius: 50%;
-            margin-left: -12px;
-            margin-bottom: 12px;
-            margin-top: -6px;
-        }
+        height: 0.2rem;
     }
 
     .rbc-today {
@@ -147,34 +125,6 @@ const CalendarWrapper = styled.div`
                     : "rgba(66, 66, 66, 0.5)"};
     }
 `;
-
-const StyledDiv = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 5vh;
-    margin-bottom: 0.5vh;
-`;
-
-export const updateTimeIndicator = (view) => {
-    const timeIndicator = document.querySelector(".rbc-current-time-indicator");
-    if (timeIndicator) {
-        const nDayOfWeek = dayjs().day();
-        let left;
-        let width;
-
-        if (view === VIEWS.DAY) {
-            left = 0;
-            width = 100;
-        } else {
-            left = (nDayOfWeek - 1) * -100;
-            width = 700;
-        }
-
-        timeIndicator.style.setProperty("--width", `${width}%`);
-        timeIndicator.style.setProperty("--left", `${left}%`);
-    }
-};
 
 const CalendarComponent = ({
     userTheme,
@@ -361,8 +311,23 @@ const CalendarComponent = ({
     const screenSize = useWindowSize();
     return (
         <>
-            <StyledDiv>
-                <Typography.Text className="typography__text">
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    height: "5vh",
+                    marginBottom: "0.5vh",
+                }}
+            >
+                <Typography.Text
+                    style={{
+                        fontWeight: "bold",
+                        fontSize: "24px",
+                        whiteSpace: "nowrap",
+                        overflowX: "auto",
+                    }}
+                >
                     {"Calendar"}
                 </Typography.Text>
                 <Space>
@@ -376,14 +341,14 @@ const CalendarComponent = ({
                         trigger={["click"]}
                         placement="bottomLeft"
                     >
-                        <Space className="space">
+                        <Space style={{ cursor: "pointer" }}>
                             <Button type="text" icon={<BgColorsOutlined />}>
                                 {"Color by"}
                             </Button>
                         </Space>
                     </Dropdown>
                 </Space>
-            </StyledDiv>
+            </div>
             <Spinner
                 spinning={isLoadingTasks || spinner}
                 indicator={Loading(LOADER_SIZE)}
@@ -413,7 +378,7 @@ const CalendarComponent = ({
                         formats={formats}
                         selectable={true}
                         onSelecting={onSelecting}
-                        longPressThreshold={500}
+                        longPressThreshold={250}
                         onSelectEvent={onSelectEvent}
                     />
                 </CalendarWrapper>

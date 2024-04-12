@@ -13,7 +13,7 @@ const StyledDiv = styled.div`
     margin: 0.25rem ${(props) => (props.isInCollapse ? "0rem" : "1rem")};
     opacity: ${(props) => props.opacity};
     opacity: ${(props) => props.opacity};
-    &:hover {
+    :hover {
         background-color: ${(props) =>
             props.isSelected ? props.colorPrimaryBg : props.colorBgTextHover};
     }

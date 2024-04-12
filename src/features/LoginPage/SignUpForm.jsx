@@ -8,12 +8,6 @@ import {
     GithubOutlined,
 } from "@ant-design/icons";
 import { UserAuth } from "../../context/AuthContext";
-import "./SignUpForm.css";
-
-const StyledDiv = styled.div`
-    text-align: center;
-    align-items: center;
-`;
 
 const StyledFormItem = styled(Form.Item)`
     margin: 1.5rem 2rem;
@@ -55,7 +49,10 @@ const SignUpForm = ({ setShowSignIn, errorMessage, setErrorMessage }) => {
                     <Input
                         size="large"
                         placeholder="User name"
-                        prefix={<UserOutlined className="prefix__icon" />}
+                        prefix={
+                            <UserOutlined style={{ marginRight: "0.5rem" }} />
+                        }
+                        style={{ marginTop: "2rem" }}
                         autoComplete="off"
                     />
                 </StyledFormItem>
@@ -71,7 +68,9 @@ const SignUpForm = ({ setShowSignIn, errorMessage, setErrorMessage }) => {
                     <Input
                         size="large"
                         placeholder="Email"
-                        prefix={<MailOutlined className="prefix__icon" />}
+                        prefix={
+                            <MailOutlined style={{ marginRight: "0.5rem" }} />
+                        }
                         autoComplete="off"
                     />
                 </StyledFormItem>
@@ -87,7 +86,9 @@ const SignUpForm = ({ setShowSignIn, errorMessage, setErrorMessage }) => {
                     <Input.Password
                         size="large"
                         placeholder="Password"
-                        prefix={<LockOutlined className="prefix__icon" />}
+                        prefix={
+                            <LockOutlined style={{ marginRight: "0.5rem" }} />
+                        }
                         autoComplete="off"
                     />
                 </StyledFormItem>
@@ -96,7 +97,7 @@ const SignUpForm = ({ setShowSignIn, errorMessage, setErrorMessage }) => {
                         message={errorMessage}
                         type="error"
                         showIcon
-                        className="alert__message"
+                        style={{ margin: "1.5rem 2rem" }}
                         closable
                         afterClose={onErrorMessageClose}
                     />
@@ -106,7 +107,7 @@ const SignUpForm = ({ setShowSignIn, errorMessage, setErrorMessage }) => {
                         {"Sign Up"}
                     </Button>
                 </StyledFormItem>
-                <Divider plain className="divider">
+                <Divider plain style={{ padding: "0rem 2rem" }}>
                     <Typography.Text type="secondary">
                         {"Sign up with"}
                     </Typography.Text>
@@ -133,18 +134,18 @@ const SignUpForm = ({ setShowSignIn, errorMessage, setErrorMessage }) => {
                 </StyledFormItem>
             </Form>
             <div>
-                <StyledDiv>
+                <div style={{ textAlign: "center", alignItems: "center" }}>
                     <Typography.Text>
                         {"Have an account already?"}
                     </Typography.Text>
                     <Button
                         type="link"
                         onClick={onSignInClick}
-                        className="sign__in__button"
+                        style={{ paddingLeft: "0.5rem" }}
                     >
                         {"Sign In"}
                     </Button>
-                </StyledDiv>
+                </div>
             </div>
         </>
     );

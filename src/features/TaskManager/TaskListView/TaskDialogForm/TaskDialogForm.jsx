@@ -3,18 +3,6 @@ import useWindowSize from "../../../../hooks/useWindowSize";
 import { taskDetailsToDrawer } from "../../../../utils/screen.utils";
 import TaskDialogPrimaryPanel from "./TaskDialogPrimaryPanel";
 import TaskDialogSecondaryPanel from "./TaskDialogSecondaryPanel";
-import styled from "styled-components";
-
-const StyledLayoutContent = styled(Layout.Content)`
-    margin-right: ${({ marginRight }) => marginRight};
-    width: 12vw !important;
-    background: ${({ bgcolor }) => bgcolor};
-`;
-
-const StyledLayoutContentNested = styled(Layout.Content)`
-    margin-leftt: ${({ marginLeft }) => marginLeft};
-    background: ${({ bgcolor }) => bgcolor};
-`;
 
 const TaskDialogForm = ({
     form,
@@ -41,9 +29,12 @@ const TaskDialogForm = ({
         >
             <Layout>
                 <Layout.Sider collapsed collapsedWidth={0} />
-                <StyledLayoutContent
-                    marginRight={verticallyAlignForm ? "0rem" : "0.1rem"}
-                    bgcolor={colorBgContainer}
+                <Layout.Content
+                    style={{
+                        marginRight: verticallyAlignForm ? "0rem" : "0.1rem",
+                        background: colorBgContainer,
+                        width: "12vw",
+                    }}
                 >
                     <TaskDialogPrimaryPanel
                         form={form}
@@ -59,18 +50,20 @@ const TaskDialogForm = ({
                             {...props}
                         />
                     )}
-                </StyledLayoutContent>
+                </Layout.Content>
                 {!verticallyAlignForm && (
-                    <StyledLayoutContentNested
-                        marginLeft={"0.1rem"}
-                        bgcolor={colorBgContainer}
+                    <Layout.Content
+                        style={{
+                            marginLeft: "0.1rem",
+                            background: colorBgContainer,
+                        }}
                     >
                         <TaskDialogSecondaryPanel
                             form={form}
                             height={72}
                             {...props}
                         />
-                    </StyledLayoutContentNested>
+                    </Layout.Content>
                 )}
             </Layout>
         </Form>

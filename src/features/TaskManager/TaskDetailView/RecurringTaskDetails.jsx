@@ -12,31 +12,6 @@ import {
 } from "@ant-design/icons";
 import { DATE_FORMAT } from "../../../constants/dateTime.constants";
 import NumericInput from "../../../components/NumericInput/NumericInput";
-import styled from "styled-components";
-import "./css/RecurringTaskDetails.css";
-
-const StyledDiv = styled.div`
-    display: flex;
-    justify-content: space-between;
-    overflow-x: auto;
-    margin-bottom: 1rem;
-    width: 100%;
-`;
-
-const StyledFieldNumberOutlined = styled(FieldNumberOutlined)`
-    font-size: 1rem;
-    color: ${({ color }) => color};
-`;
-
-const StyledStopOutlined = styled(StopOutlined)`
-    font-size: 1rem;
-    color: ${({ color }) => color};
-`;
-
-const StyledCalendarOutlined = styled(CalendarOutlined)`
-    font-size: 1rem;
-    color: ${({ color }) => color};
-`;
 
 const RecurringTaskDetails = ({
     form,
@@ -51,14 +26,27 @@ const RecurringTaskDetails = ({
     setOpenTaskEndDatePicker,
 }) => {
     const {
-        token: { colorInfoText, color_border },
+        token: { colorInfoText, colorBorder },
     } = theme.useToken();
 
     return (
-        <StyledDiv>
+        <div
+            style={{
+                display: "flex",
+                justifyContent: "space-between",
+                overflowX: "auto",
+                marginBottom: "1rem",
+                width: "100%",
+            }}
+        >
             <Form.Item
                 name="endBy"
-                className="endby__form__item min_width_11"
+                style={{
+                    marginRight: "1rem",
+                    marginBottom: "0.5rem",
+                    width: "33%",
+                    minWidth: "11rem",
+                }}
                 rules={[
                     {
                         message: "End condition is required",
@@ -81,9 +69,18 @@ const RecurringTaskDetails = ({
                 <Select
                     suffixIcon={
                         formType === VIEW || !isScheduled || !isRepeating ? (
-                            <StopOutlined className="icon__font__size" />
+                            <StopOutlined
+                                style={{
+                                    fontSize: "1rem",
+                                }}
+                            />
                         ) : (
-                            <StyledStopOutlined color={colorInfoText} />
+                            <StopOutlined
+                                style={{
+                                    fontSize: "1rem",
+                                    color: colorInfoText,
+                                }}
+                            />
                         )
                     }
                     options={[
@@ -125,19 +122,36 @@ const RecurringTaskDetails = ({
                         },
                     },
                 ]}
-                className="endby__form__item min_width_8"
+                style={{
+                    marginRight: "1rem",
+                    marginBottom: "0.5rem",
+                    width: "33%",
+                    minWidth: "8rem",
+                }}
             >
                 <DatePicker
                     suffixIcon={
                         formType === VIEW ||
                         !(isScheduled && isRepeating && showEndByDate) ? (
-                            <CalendarOutlined className="icon__font__size" />
+                            <CalendarOutlined
+                                style={{
+                                    fontSize: "1rem",
+                                }}
+                            />
                         ) : (
-                            <StyledCalendarOutlined color={colorInfoText} />
+                            <CalendarOutlined
+                                style={{
+                                    fontSize: "1rem",
+                                    color: colorInfoText,
+                                }}
+                            />
                         )
                     }
-                    className="date__picker"
                     format={DATE_FORMAT}
+                    style={{
+                        cursor: "pointer",
+                        width: "100%",
+                    }}
                     placeholder="End date"
                     disabledDate={disabledEndDate}
                     disabled={
@@ -172,7 +186,11 @@ const RecurringTaskDetails = ({
                         },
                     },
                 ]}
-                className="endby__repeat__count"
+                style={{
+                    marginBottom: "0.5rem",
+                    width: "33%",
+                    minWidth: "5rem",
+                }}
             >
                 <NumericInput
                     suffix={
@@ -182,13 +200,25 @@ const RecurringTaskDetails = ({
                             isRepeating &&
                             showEndByRepeatCount
                         ) ? (
-                            <StyledFieldNumberOutlined color={color_border} />
+                            <FieldNumberOutlined
+                                style={{
+                                    fontSize: "1rem",
+                                    color: colorBorder,
+                                }}
+                            />
                         ) : (
-                            <StyledFieldNumberOutlined color={colorInfoText} />
+                            <FieldNumberOutlined
+                                style={{
+                                    fontSize: "1rem",
+                                    color: colorInfoText,
+                                }}
+                            />
                         )
                     }
                     min={1}
-                    className="cursor__pointer"
+                    style={{
+                        cursor: "pointer",
+                    }}
                     placeholder="Repeat count"
                     disabled={
                         formType !== VIEW &&
@@ -199,7 +229,7 @@ const RecurringTaskDetails = ({
                     autoComplete="off"
                 />
             </Form.Item>
-        </StyledDiv>
+        </div>
     );
 };
 

@@ -8,36 +8,13 @@ import { LogoutOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { LOGOUT } from "../../../constants/app.constants";
 import { useDispatch } from "react-redux";
 import { removeUserSettingAction } from "../state/userSettings/userSettings.actions";
-import { MdOutlineLightMode, MdOutlineDarkMode } from "react-icons/md";
-import styled from "styled-components";
-
-const StyledDiv = styled.div`
-    position: absolute;
-    bottom: 0;
-    margin: 0.3rem;
-`;
-
-const StyledMdOutlineDarkMode = styled(MdOutlineDarkMode)`
-    font-size: 1.25rem;
-`;
-
-const StyledMdOutlineLightMode = styled(MdOutlineLightMode)`
-    font-size: 1.25rem;
-`;
-
-const StyledAvatar = styled(Avatar) `
-    margin: 0.15rem;
-    cursor: pointer;
-`;
+import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 
 const renderMenuItems = (itemsArray) => {
     return itemsArray.map((each) => {
         return (
-            <Menu.Item
-                key={each.redirectUrl}
-                icon={<each.icon id="menu__icon" />}
-                title=""
-            >
+            <Menu.Item key={each.redirectUrl} icon={<each.icon />} title="">
                 <Link to={each.redirectUrl}>{each.label}</Link>
             </Menu.Item>
         );
@@ -118,7 +95,13 @@ const AppNav = ({ setCurrentTitle, userTheme, updateTheme }) => {
 
     return (
         <Layout.Sider
-            id="layout__sider"
+            style={{
+                overflow: "auto",
+                height: "100vh",
+                position: "sticky",
+                top: 0,
+                left: 0,
+            }}
             theme="light"
             collapsedWidth={50}
             collapsed
@@ -128,10 +111,11 @@ const AppNav = ({ setCurrentTitle, userTheme, updateTheme }) => {
                 placement="bottomLeft"
                 trigger={["click"]}
             >
-                <StyledAvatar
+                <Avatar
                     size={45}
                     shape="square"
                     src={user?.photoURL}
+                    style={{ margin: "0.15rem", cursor: "pointer" }}
                 />
             </Dropdown>
             <SideMenu
@@ -140,7 +124,7 @@ const AppNav = ({ setCurrentTitle, userTheme, updateTheme }) => {
             >
                 {renderMenuItems(defaultAppNav)}
             </SideMenu>
-            <StyledDiv>
+            <div style={{ position: "absolute", bottom: 0, margin: "0.3rem" }}>
                 <Button
                     size="large"
                     type="text"
@@ -151,10 +135,10 @@ const AppNav = ({ setCurrentTitle, userTheme, updateTheme }) => {
                             <StyledMdOutlineLightMode />
                         )
                     }
-                    id="theme__button"
+                    style={{ cursor: "pointer" }}
                     onClick={updateTheme}
                 />
-            </StyledDiv>
+            </div>
             {contextHolder}
         </Layout.Sider>
     );

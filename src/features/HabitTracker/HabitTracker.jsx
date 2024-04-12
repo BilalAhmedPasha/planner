@@ -1,16 +1,4 @@
 import { Layout, Typography, theme } from "antd";
-import styled from "styled-components";
-
-const StyledLayoutContent = styled(Layout.Content)`
-  margin-right: 0.1rem;
-  padding: 1rem 3rem;
-  background: ${({ bgcolor }) => bgcolor};
-`;
-
-const StyledText = styled(Typography.Text)`
-    font-weight: bold;
-    font-size: 24px;
-`;
 
 const HabitTracker = () => {
     const {
@@ -19,12 +7,38 @@ const HabitTracker = () => {
 
     return (
         <>
-            <StyledLayoutContent bgcolor={colorBgContainer}>
-                <StyledText>{"Habits"}</StyledText>
-            </StyledLayoutContent>
-            <StyledLayoutContent bgcolor={colorBgContainer}>
-                <StyledText>{"Habit details"}</StyledText>
-            </StyledLayoutContent>
+            <Layout.Content
+                style={{
+                    marginRight: "0.1rem",
+                    padding: "1rem 3rem",
+                    background: colorBgContainer,
+                }}
+            >
+                <Typography.Text
+                    style={{
+                        fontWeight: "bold",
+                        fontSize: "24px",
+                    }}
+                >
+                    {"Habits"}
+                </Typography.Text>
+            </Layout.Content>
+            <Layout.Content
+                style={{
+                    marginLeft: "0.1rem",
+                    padding: "1rem 3rem",
+                    background: colorBgContainer,
+                }}
+            >
+                <Typography.Text
+                    style={{
+                        fontWeight: "bold",
+                        fontSize: "24px",
+                    }}
+                >
+                    {"Habit details"}
+                </Typography.Text>
+            </Layout.Content>
         </>
     );
 };

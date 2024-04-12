@@ -35,19 +35,19 @@ import {
     taskNavToDrawer,
 } from "../../../utils/screen.utils";
 import useWindowSize from "../../../hooks/useWindowSize";
-import styled from "styled-components";
-import "./css/TaskNav.css";
-
-const StyledColorDot = styled.span`
-    height: 0.5rem;
-    width: 0.5rem;
-    border-radius: 50%;
-    display: inline-block;
-    background-color: ${({ color }) => color};
-`;
 
 const renderColorDot = (color) => {
-    return <StyledColorDot color={color} />;
+    return (
+        <span
+            style={{
+                height: "0.5rem",
+                width: "0.5rem",
+                borderRadius: "50%",
+                backgroundColor: `${color}`,
+                display: "inline-block",
+            }}
+        />
+    );
 };
 
 const renderMenuItems = (itemsArray) => {
@@ -55,7 +55,7 @@ const renderMenuItems = (itemsArray) => {
         return (
             <Menu.Item
                 key={each.redirectUrl}
-                icon={<each.icon className="menu__item__icon" />}
+                icon={<each.icon style={{ fontSize: "1.10rem" }} />}
                 title=""
             >
                 <Link to={each.redirectUrl}>{each.label}</Link>
@@ -77,14 +77,27 @@ const renderSubMenuItems = ({
         <Menu.SubMenu
             key={key}
             title={
-                <div className="sub__menu">
+                <div
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                    }}
+                >
                     {title}
-                    <Button
-                        icon={<PlusOutlined />}
-                        type="text"
-                        onClick={onAddClick}
-                        className="hidden-add-button"
-                    />
+                    <Space>
+                        <Badge
+                            count={itemCount}
+                            showZero
+                            color={TASK_NAV_BADGE_COLOR}
+                            overflowCount={10}
+                        />
+                        <Button
+                            icon={<PlusOutlined />}
+                            type="text"
+                            onClick={onAddClick}
+                        />
+                    </Space>
                 </div>
             }
             icon={icon}
@@ -100,12 +113,18 @@ const renderSubMenuItems = ({
                     }
                 });
             }}
-            className="sub-menu"
         >
             {items.map((each) => {
                 return (
                     <Menu.Item key={`/tasks/${key}/${each.id}`}>
-                        <div className="menu__item">
+                        <div
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                                overflow: "auto",
+                            }}
+                        >
                             <Link to={`/tasks/${key}/${each.id}`}>
                                 {each.label}
                             </Link>
@@ -436,7 +455,12 @@ const TaskNav = ({
     ) : (
         <Layout.Sider
             theme="light"
-            className="layout__sider"
+            style={{
+                overflow: "auto",
+                position: "sticky",
+                top: 0,
+                left: 0,
+            }}
             width={300}
             collapsed={isMenuCollapsed}
         >

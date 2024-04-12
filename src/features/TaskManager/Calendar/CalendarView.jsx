@@ -14,15 +14,8 @@ import { fetchListsAction } from "../state/userLists/userLists.actions";
 import { fetchTagsAction } from "../state/userTags/userTags.actions";
 import { fetchTasksAction } from "../state/userTasks/userTasks.actions";
 import CalendarComponent from "./CalendarComponent";
-import styled from "styled-components";
 
 dayjs.extend(timezone);
-
-const StyledLayoutContent = styled(Layout.Content)`
-    padding: 1vh 0.75rem;
-    height: 100vh;
-    background: ${({ bg_color }) => bg_color};
-`;
 
 const CalendarView = ({ user, userTheme }) => {
     const {
@@ -71,7 +64,13 @@ const CalendarView = ({ user, userTheme }) => {
     }, [formValues, setOpenAddTaskDialog]);
 
     return (
-        <StyledLayoutContent bg_color={colorBgContainer}>
+        <Layout.Content
+            style={{
+                padding: "1vh 0.75rem",
+                background: colorBgContainer,
+                height: "100vh",
+            }}
+        >
             <CalendarComponent
                 userTheme={userTheme}
                 user={user}
@@ -96,7 +95,7 @@ const CalendarView = ({ user, userTheme }) => {
                     disableTimeSelection={formType === CREATE}
                 />
             )}
-        </StyledLayoutContent>
+        </Layout.Content>
     );
 };
 

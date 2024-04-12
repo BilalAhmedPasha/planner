@@ -21,44 +21,6 @@ import { taskNavToDrawer } from "../../../utils/screen.utils";
 import useWindowSize from "../../../hooks/useWindowSize";
 import { DELETED } from "../../../constants/app.constants";
 import { PRIORITY, TIME } from "../../../constants/sort.constants";
-import styled from "styled-components";
-import "./css/TaskListHeader.css";
-
-const StyledDiv = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.5rem;
-    top: 0;
-    z-index: 1;
-    background: ${({ color }) => color};
-    position: sticky;
-`;
-
-const StyledButton = styled(Button)`
-    transition: 0.3s all ease;
-    opacity: ${({ opacity }) => opacity};
-    cursor: ${({ cursor }) => cursor};
-`;
-
-const StyledClockCircleOutlined = styled(ClockCircleOutlined)`
-    font-size: 1rem;
-    cursor: pointer;
-    color: ${({ color }) => color};
-`;
-
-const StyledFlagOutlined = styled(FlagOutlined)`
-    font-size: 1rem;
-    cursor: pointer;
-    color: ${({ color }) => color};
-`;
-
-const StyledArrowDownOutlined = styled(ArrowDownOutlined)`
-    font-size: 1rem;
-    cursor: pointer;
-    margin-left: 0.2rem;
-    color: ${({ color }) => color};
-`;
 
 const renderTaskMenuIcon = ({
     screenSize,
@@ -73,14 +35,30 @@ const renderTaskMenuIcon = ({
             icon={
                 taskNavToDrawer({ currentWidth: screenSize.width }) ? (
                     isNavDrawerCollapsed ? (
-                        <MenuUnfoldOutlined className="font__size__20" />
+                        <MenuUnfoldOutlined
+                            style={{
+                                fontSize: "20px",
+                            }}
+                        />
                     ) : (
-                        <MenuFoldOutlined className="font__size__20" />
+                        <MenuFoldOutlined
+                            style={{
+                                fontSize: "20px",
+                            }}
+                        />
                     )
                 ) : isMenuCollapsed ? (
-                    <MenuUnfoldOutlined className="font__size__20" />
+                    <MenuUnfoldOutlined
+                        style={{
+                            fontSize: "20px",
+                        }}
+                    />
                 ) : (
-                    <MenuFoldOutlined className="font__size__20" />
+                    <MenuFoldOutlined
+                        style={{
+                            fontSize: "20px",
+                        }}
+                    />
                 )
             }
             onClick={() => {
@@ -114,8 +92,20 @@ const TaskListHeader = ({
     const screenSize = useWindowSize();
 
     return (
-        <StyledDiv color={colorBgContainer}>
-            <Space size="small" className="styled__space">
+        <div
+            style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "0.5rem",
+                top: 0,
+                zIndex: 1,
+                background: colorBgContainer,
+                position: "sticky",
+            }}
+        >
+            {" "}
+            <Space size="small" style={{ alignItems: "center" }}>
                 {renderTaskMenuIcon({
                     screenSize,
                     isMenuCollapsed,
@@ -123,13 +113,20 @@ const TaskListHeader = ({
                     isNavDrawerCollapsed,
                     setIsNavDrawerCollapsed,
                 })}
-                <Typography.Text className="typography__text typography__text__font font__size__1_25">
+                <Typography.Text
+                    style={{
+                        fontWeight: "bold",
+                        fontSize: "24px",
+                        whiteSpace: "nowrap",
+                        overflowX: "auto",
+                    }}
+                >
                     {currentSection?.label}
                 </Typography.Text>
                 {sortedSectionTasks?.length > 0 && (
                     <Typography.Text
                         type="secondary"
-                        className="typography__text font__size__1"
+                        style={{ whiteSpace: "nowrap", overflowX: "auto" }}
                     >{`${sortedSectionTasks?.length}`}</Typography.Text>
                 )}
             </Space>
@@ -138,7 +135,7 @@ const TaskListHeader = ({
                     {currentSection?.id !== DELETED && (
                         <StyledButton
                             type="text"
-                            icon={<DeleteFilled className="font__size__1" />}
+                            icon={<DeleteFilled style={{ fontSize: "1rem" }} />}
                             danger
                             onClick={(e) => {
                                 e.stopPropagation();
@@ -157,12 +154,14 @@ const TaskListHeader = ({
                             disabled={
                                 selectedTaskDetails.length > 1 ? false : true
                             }
-                            opacity={selectedTaskDetails.length > 1 ? 1 : 0}
-                            cursor={
-                                selectedTaskDetails.length > 1
-                                    ? "pointer"
-                                    : "auto"
-                            }
+                            style={{
+                                opacity: selectedTaskDetails.length > 1 ? 1 : 0,
+                                transition: "0.3s all ease",
+                                cursor:
+                                    selectedTaskDetails.length > 1
+                                        ? "pointer"
+                                        : "auto",
+                            }}
                         />
                     )}
                     <Dropdown
@@ -175,18 +174,35 @@ const TaskListHeader = ({
                     >
                         <div>
                             {sortBy === TIME ? (
-                                <StyledClockCircleOutlined
-                                    color={colorTextBase}
+                                <ClockCircleOutlined
+                                    style={{
+                                        fontSize: "1rem",
+                                        color: colorTextBase,
+                                        cursor: "pointer",
+                                    }}
                                 />
                             ) : sortBy === PRIORITY ? (
-                                <StyledFlagOutlined color={colorTextBase} />
+                                <FlagOutlined
+                                    style={{
+                                        fontSize: "1rem",
+                                        color: colorTextBase,
+                                        cursor: "pointer",
+                                    }}
+                                />
                             ) : (
                                 <Icon
                                     component={SortTextSvg}
-                                    className="font__size__1_25"
+                                    style={{ fontSize: "1.25rem" }}
                                 />
                             )}
-                            <StyledArrowDownOutlined color={colorTextBase} />
+                            <ArrowDownOutlined
+                                style={{
+                                    fontSize: "1rem",
+                                    color: colorTextBase,
+                                    marginLeft: "0.2rem",
+                                    cursor: "pointer",
+                                }}
+                            />{" "}
                         </div>
                     </Dropdown>
                     <Button
@@ -198,9 +214,9 @@ const TaskListHeader = ({
             )}
             {currentSection?.id === DELETED && (
                 <Space size="small">
-                    <StyledButton
+                    <Button
                         type="text"
-                        icon={<UndoOutlined className="font__size__1" />}
+                        icon={<UndoOutlined style={{ fontSize: "1rem" }} />}
                         onClick={(e) => {
                             e.stopPropagation();
                             showMultiSelectConfirm({
@@ -221,9 +237,9 @@ const TaskListHeader = ({
                         }
                     />
 
-                    <StyledButton
+                    <Button
                         type="text"
-                        icon={<DeleteFilled className="font__size__1" />}
+                        icon={<DeleteFilled style={{ fontSize: "1rem" }} />}
                         danger
                         onClick={(e) => {
                             e.stopPropagation();
@@ -253,7 +269,7 @@ const TaskListHeader = ({
                     />
                 </Space>
             )}
-        </StyledDiv>
+        </div>
     );
 };
 

@@ -18,18 +18,6 @@ import {
 import { CloseOutlined } from "@ant-design/icons";
 import useWindowSize from "../../../hooks/useWindowSize";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-
-const StyledLayoutContent = styled(Layout.Content)`
-    margin-left: 0.1rem;
-    padding: 0.5rem 1rem;
-    overflow: auto;
-    background: ${({ color }) => color};
-`;
-
-const StyledSkeleton = styled(Skeleton)`
-    padding: 1rem;
-`;
 
 const TaskDetailsContainer = ({
     user,
@@ -110,10 +98,11 @@ const TaskDetailsContainer = ({
 
     const renderTaskDetailsContent = () => {
         return (
-            <StyledSkeleton
+            <Skeleton
                 active
                 loading={isLoadingTasks && selectedTaskDetails?.length === 0}
                 paragraph={{ rows: numRows }}
+                style={{ padding: "1rem" }}
             >
                 <Spinner
                     spinning={isLoadingTasks && selectedTaskDetails?.length > 0}
@@ -152,7 +141,7 @@ const TaskDetailsContainer = ({
                         />
                     )}
                 </Spinner>
-            </StyledSkeleton>
+            </Skeleton>
         );
     };
 
@@ -190,9 +179,16 @@ const TaskDetailsContainer = ({
             {renderTaskDetailsContent()}
         </Drawer>
     ) : (
-        <StyledLayoutContent color={colorBgContainer}>
+        <Layout.Content
+            style={{
+                marginLeft: "0.1rem",
+                padding: "0.5rem 1rem",
+                overflow: "auto",
+                background: colorBgContainer,
+            }}
+        >
             {renderTaskDetailsContent()}
-        </StyledLayoutContent>
+        </Layout.Content>
     );
 };
 

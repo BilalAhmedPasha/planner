@@ -33,23 +33,18 @@ import {
     END_BY_REPEAT_COUNT,
 } from "../../../../constants/repeating.constants";
 import dayjs from "../../../../utils/dateTime.utils";
-import "./css/SubTaskPanel.css";
 
 const StyledDiv = styled.div`
     border: 0.1px solid #bfbfbf;
     margin-top: 0.5rem;
     border-radius: 5px;
-    max-height: ${(maxHeight) => maxHeight};
+    max-height: ${(props) => props.maxHeight};
     overflow: auto;
     transition: max-height 0.8s ease-out;
 `;
 
 const StyledFormItem = styled(Form.Item)`
-    margin: ${(marginVertical) => marginVertical} 0rem;
-`;
-
-const StyledFlagFilled = styled(FlagFilled)`
-    color: ${({ color }) => color};
+    margin: ${(props) => props.marginVertical} 0rem;
 `;
 
 const SubTaskPanel = ({ form, subTaskPanelHeight, closeSubTaskPanel }) => {
@@ -100,7 +95,9 @@ const SubTaskPanel = ({ form, subTaskPanelHeight, closeSubTaskPanel }) => {
                 onMouseDown={onPreventMouseDown}
                 closable={closable}
                 onClose={onClose}
-                className="tag__margin"
+                style={{
+                    marginRight: 3,
+                }}
             >
                 {label}
             </Tag>
@@ -156,11 +153,14 @@ const SubTaskPanel = ({ form, subTaskPanelHeight, closeSubTaskPanel }) => {
 
     const scheduleContent = () => {
         return (
-            <div className="schedule__content">
+            <div style={{ width: "15rem" }}>
                 <StyledFormItem name="subTaskDate" marginVertical="0.5rem">
                     <DatePicker
                         format={DATE_FORMAT}
-                        className="form__field"
+                        style={{
+                            cursor: "pointer",
+                            width: "100%",
+                        }}
                         onChange={handleStartDateChange}
                     />
                 </StyledFormItem>
@@ -169,7 +169,10 @@ const SubTaskPanel = ({ form, subTaskPanelHeight, closeSubTaskPanel }) => {
                         <TimePicker.RangePicker
                             format={TIME_FORMAT}
                             minuteStep={5}
-                            className="form__field"
+                            style={{
+                                cursor: "pointer",
+                                width: "100%",
+                            }}
                         />
                     </StyledFormItem>
                 )}
@@ -234,7 +237,10 @@ const SubTaskPanel = ({ form, subTaskPanelHeight, closeSubTaskPanel }) => {
                     >
                         <DatePicker
                             format={DATE_FORMAT}
-                            className="form__field"
+                            style={{
+                                cursor: "pointer",
+                                width: "100%",
+                            }}
                             disabledDate={disabledEndDate}
                             placeholder="Select end date"
                             allowClear={false}
@@ -253,7 +259,10 @@ const SubTaskPanel = ({ form, subTaskPanelHeight, closeSubTaskPanel }) => {
                     >
                         <InputNumber
                             min={1}
-                            className="form__field"
+                            style={{
+                                cursor: "pointer",
+                                width: "100%",
+                            }}
                             maxLength={3}
                             autoComplete="off"
                             placeholder="Repeat count"
@@ -267,14 +276,14 @@ const SubTaskPanel = ({ form, subTaskPanelHeight, closeSubTaskPanel }) => {
 
     return (
         <StyledDiv maxHeight={subTaskPanelHeight}>
-            <div className="wrapper__div">
+            <div style={{ padding: "0rem 1rem" }}>
                 <StyledFormItem name="subTaskName" marginVertical="0rem">
                     <Input
                         autoComplete="off"
                         maxLength={25}
                         variant="borderless"
                         placeholder={"Task name"}
-                        className="input__field"
+                        style={{ padding: "0.5rem 0rem 0rem 0rem" }}
                         onInput={handleSubTaskNameChange}
                     />
                 </StyledFormItem>
@@ -288,10 +297,16 @@ const SubTaskPanel = ({ form, subTaskPanelHeight, closeSubTaskPanel }) => {
                         maxLength={200}
                         variant="borderless"
                         placeholder={"Description"}
-                        className="input__field"
+                        style={{ padding: "0.5rem 0rem 0rem 0rem" }}
                     />
                 </StyledFormItem>
-                <div className="nested__div">
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        paddingBottom: "0.5rem",
+                    }}
+                >
                     <Space>
                         <Dropdown
                             menu={{
@@ -310,8 +325,8 @@ const SubTaskPanel = ({ form, subTaskPanelHeight, closeSubTaskPanel }) => {
                                 <Button
                                     type="default"
                                     icon={
-                                        <StyledFlagFilled
-                                            color={priority.color}
+                                        <FlagFilled
+                                            style={{ color: priority.color }}
                                         />
                                     }
                                 >
@@ -330,7 +345,7 @@ const SubTaskPanel = ({ form, subTaskPanelHeight, closeSubTaskPanel }) => {
                                 maxTagCount={1}
                                 maxTagTextLength={3}
                                 tagRender={(props) => tagRender(true, props)}
-                                className="select__field"
+                                style={{ minWidth: "10rem", maxWidth: "10rem" }}
                                 placeholder="Select tags"
                                 allowClear={true}
                             />
@@ -353,7 +368,7 @@ const SubTaskPanel = ({ form, subTaskPanelHeight, closeSubTaskPanel }) => {
                         </Popover>
                     </Space>
                 </div>
-                <Space className="styled__space">
+                <Space style={{ float: "right", paddingBottom: "0.5rem" }}>
                     <Button type="text" onClick={closeSubTaskPanel}>
                         {"Cancel"}
                     </Button>

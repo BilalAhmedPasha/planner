@@ -5,20 +5,18 @@ import {
   SaveOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
-import styled from "styled-components";
-import "./css/TaskDetailsHeader.css"
-
-const StyledDiv = styled.div`
-    display: flex;
-    align-content: center;
-    justify-content: space-between;
-    overflow-x: auto;
-    align-items: center;
-`;
 
 const TaskDetailHeader = ({ formType, setFormType, onReset }) => {
   return (
-      <StyledDiv>
+      <div
+          style={{
+              display: "flex",
+              alignContent: "center",
+              justifyContent: "space-between",
+              overflowX: "auto",
+              alignItems: "center",
+          }}
+      >
           <Form.Item
               name="name"
               rules={[
@@ -27,12 +25,17 @@ const TaskDetailHeader = ({ formType, setFormType, onReset }) => {
                       message: "Task name is required",
                   },
               ]}
-              className="form__item__name"
+              style={{ height: "1rem", width: "35rem", marginRight: "1rem" }}
           >
               <Input
                   autoComplete="off"
                   maxLength={25}
-                  className="input__field"
+                  style={{
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      padding: "0rem",
+                      margin: "0rem",
+                  }}
                   readOnly={formType === VIEW}
                   variant="borderless"
               />
@@ -43,7 +46,7 @@ const TaskDetailHeader = ({ formType, setFormType, onReset }) => {
                       type="text"
                       icon={<EditFilled />}
                       onClick={() => setFormType(EDIT)}
-                      className="margin__right"
+                      style={{ marginRight: "0.2rem" }}
                   />
               </Space>
           ) : (
@@ -57,11 +60,11 @@ const TaskDetailHeader = ({ formType, setFormType, onReset }) => {
                       type="text"
                       icon={<SaveOutlined />}
                       htmlType="submit"
-                      className="margin__right"
+                      style={{ marginRight: "0.2rem" }}
                   />
               </Space>
           )}
-      </StyledDiv>
+      </div>
   );
 };
 

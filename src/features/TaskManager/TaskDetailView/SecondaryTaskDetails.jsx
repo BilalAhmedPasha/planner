@@ -10,25 +10,6 @@ import {
     ClockCircleOutlined,
     SyncOutlined,
 } from "@ant-design/icons";
-import styled from "styled-components";
-import "./css/SecondaryTaskDetails.css";
-
-const StyledDiv = styled.div`
-    display: flex;
-    justify-content: space-between;
-    overflow-x: auto;
-    width: 100%;
-`;
-
-const StyledClockCircleOutlined = styled(ClockCircleOutlined)`
-    font-size: 1rem;
-    color: ${({ color }) => color};
-`;
-
-const StyledSyncOutlined = styled(SyncOutlined)`
-    font-size: 1rem;
-    color: ${({ color }) => color};
-`;
 
 const SecondaryTaskDetails = ({
     formType,
@@ -43,14 +24,38 @@ const SecondaryTaskDetails = ({
     } = theme.useToken();
 
     return (
-        <StyledDiv>
-            <Form.Item name="taskDate" className="form__item min__width__8rem">
+        <div
+            style={{
+                display: "flex",
+                justifyContent: "space-between",
+                overflowX: "auto",
+                marginBottom: "1rem",
+                width: "100%",
+            }}
+        >
+            <Form.Item
+                name="taskDate"
+                style={{
+                    marginRight: "1rem",
+                    marginBottom: "0.5rem",
+                    width: "33%",
+                    minWidth: "8rem",
+                }}
+            >
                 <DatePicker
                     suffixIcon={
                         formType === VIEW ? (
-                            <CalendarOutlined className="font__size__1" />
+                            <CalendarOutlined
+                                style={{
+                                    fontSize: "1rem",
+                                }}
+                            />
                         ) : (
-                            <CalendarTwoTone className="font__size__1" />
+                            <CalendarTwoTone
+                                style={{
+                                    fontSize: "1rem",
+                                }}
+                            />
                         )
                     }
                     format={DATE_FORMAT}
@@ -60,35 +65,68 @@ const SecondaryTaskDetails = ({
                         setOpenTaskDatePicker(!openTaskDatePicker)
                     }
                     allowClear={formType !== VIEW}
-                    className="cursor__pointer"
+                    style={{ width: "100%", cursor: "pointer" }}
                     inputReadOnly={true}
                 />
             </Form.Item>
-            <Form.Item name="duration" className="form__item min__width__12rem">
+            <Form.Item
+                name="duration"
+                style={{
+                    marginRight: "1rem",
+                    marginBottom: "0.5rem",
+                    width: "33%",
+                    minWidth: "12rem",
+                }}
+            >
                 <TimePicker.RangePicker
                     suffixIcon={
                         formType === VIEW || !isScheduled ? (
-                            <ClockCircleOutlined className="font__size__1" />
+                            <ClockCircleOutlined
+                                style={{
+                                    fontSize: "1rem",
+                                }}
+                            />
                         ) : (
-                            <StyledClockCircleOutlined color={colorInfoText} />
+                            <ClockCircleOutlined
+                                style={{
+                                    fontSize: "1rem",
+                                    color: colorInfoText,
+                                }}
+                            />
                         )
                     }
                     format={TIME_FORMAT}
                     minuteStep={5}
-                    className="cursor__pointer"
+                    style={{ width: "100%", cursor: "pointer" }}
                     open={formType === VIEW ? false : undefined}
                     allowClear={formType !== VIEW}
                     inputReadOnly={true}
                     disabled={formType !== VIEW && !isScheduled}
                 />
             </Form.Item>
-            <Form.Item name="repeatFrequency" className="repeat_frequency">
+            <Form.Item
+                name="repeatFrequency"
+                style={{
+                    marginBottom: "0.5rem",
+                    width: "33%",
+                    minWidth: "7rem",
+                }}
+            >
                 <Select
                     suffixIcon={
                         formType === VIEW || !isScheduled ? (
-                            <SyncOutlined className="font__size__1" />
+                            <SyncOutlined
+                                style={{
+                                    fontSize: "1rem",
+                                }}
+                            />
                         ) : (
-                            <StyledSyncOutlined color={colorInfoText} />
+                            <SyncOutlined
+                                style={{
+                                    fontSize: "1rem",
+                                    color: colorInfoText,
+                                }}
+                            />
                         )
                     }
                     options={[
@@ -112,7 +150,7 @@ const SecondaryTaskDetails = ({
                     allowClear={formType !== VIEW}
                 />
             </Form.Item>
-        </StyledDiv>
+        </div>
     );
 };
 

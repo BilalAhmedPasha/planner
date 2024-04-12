@@ -1,5 +1,5 @@
-export const DEFAULT_TAG_COLOR = "#6083E7";
-export const DEFAULT_LIST_COLOR = "#FF9A79";
+export const DEFAULT_TAG_COLOR = "#082C92";
+export const DEFAULT_LIST_COLOR = "#13F7CA";
 export const WHITE = "#ffffff";
 
 export const HIGH_COLOR = "#ff7875";

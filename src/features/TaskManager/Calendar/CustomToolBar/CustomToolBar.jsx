@@ -6,20 +6,6 @@ import { CaretLeftOutlined, CaretRightOutlined } from "@ant-design/icons";
 import { useCallback, useEffect } from "react";
 import { disableWeekView } from "../../../../utils/screen.utils";
 import useWindowSize from "../../../../hooks/useWindowSize";
-import styled from "styled-components";
-
-const StyledText = styled(Typography.Text)`
-    font-size: 1.25rem;
-`;
-
-const StyledDiv = styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 0.5vh;
-    align-items: center;
-    overflow: auto;
-    whitespace: nowrap;
-`;
 
 const CustomToolbar = (props) => {
     const goToDayView = useCallback(() => {
@@ -56,8 +42,24 @@ const CustomToolbar = (props) => {
     }, [screenSize, goToDayView]);
 
     return (
-        <StyledDiv>
-            <StyledText strong>{props.label}</StyledText>
+        <div
+            style={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginBottom: "0.5vh",
+                alignItems: "center",
+                overflow: "auto",
+                whiteSpace: "nowrap",
+            }}
+        >
+            <Typography.Text
+                strong
+                style={{
+                    fontSize: "1.25rem",
+                }}
+            >
+                {props.label}
+            </Typography.Text>
             <div>
                 <Button
                     type="text"
@@ -100,7 +102,7 @@ const CustomToolbar = (props) => {
                     />
                 )}
             </div>
-        </StyledDiv>
+        </div>
     );
 };
 

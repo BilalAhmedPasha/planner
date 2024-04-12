@@ -26,17 +26,6 @@ import { NONE } from "../../../constants/priority.constants";
 import { ENDLESS } from "../../../constants/repeating.constants";
 import { computeSectionData } from "./TaskList.utils";
 import TaskListHeader from "./TaskListHeader";
-import styled from "styled-components";
-
-const StyledLayoutContent = styled(Layout.Content)`
-    overflow: auto;
-    position: relative;
-    background: ${({ bgcolor }) => bgcolor};
-`;
-
-const StyledSkeleton = styled(Skeleton)`
-    padding: 1rem;
-`;
 
 const hideAddForSections = [COMPLETED, WONT_DO, DELETED];
 
@@ -287,11 +276,18 @@ const TaskListContainer = ({
     }, []);
 
     return (
-        <StyledLayoutContent bgcolor={colorBgContainer}>
-            <StyledSkeleton
+        <Layout.Content
+            style={{
+                overflow: "auto",
+                background: colorBgContainer,
+                position: "relative",
+            }}
+        >
+            <Skeleton
                 active
                 loading={isLoadingTasks && tasks?.length === 0}
                 paragraph={{ rows: numRows }}
+                style={{ padding: "1rem" }}
             >
                 <Spinner
                     spinning={isLoadingTasks && tasks?.length > 0}
@@ -334,8 +330,8 @@ const TaskListContainer = ({
                     />
                     {contextHolder}
                 </Spinner>
-            </StyledSkeleton>
-        </StyledLayoutContent>
+            </Skeleton>
+        </Layout.Content>
     );
 };
 

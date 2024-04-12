@@ -9,7 +9,6 @@ import {
 import { UserAuth } from "../../context/AuthContext";
 import { useState } from "react";
 import { errorMessagesMap } from "../../constants/error.constants";
-import "./SignInForm.css";
 
 const StyledFormItem = styled(Form.Item)`
     margin: 1.5rem 2rem;
@@ -86,7 +85,8 @@ const SignInForm = ({ setShowSignIn, errorMessage, setErrorMessage }) => {
                 <Input
                     size="large"
                     placeholder="Email"
-                    prefix={<MailOutlined className="prefix__icon" />}
+                    prefix={<MailOutlined style={{ marginRight: "0.5rem" }} />}
+                    style={{ marginTop: "2rem" }}
                     autoComplete="off"
                 />
             </StyledFormItem>
@@ -102,7 +102,7 @@ const SignInForm = ({ setShowSignIn, errorMessage, setErrorMessage }) => {
                 <Input.Password
                     size="large"
                     placeholder="Password"
-                    prefix={<LockOutlined className="prefix__icon" />}
+                    prefix={<LockOutlined style={{ marginRight: "0.5rem" }} />}
                     autoComplete="off"
                 />
             </StyledFormItem>
@@ -111,7 +111,7 @@ const SignInForm = ({ setShowSignIn, errorMessage, setErrorMessage }) => {
                     message={passwordResetSuccessMessage}
                     type="success"
                     showIcon
-                    className="alert__message"
+                    style={{ margin: "1.5rem 2rem" }}
                     closable
                     afterClose={onPasswordResetMessageClose}
                 />
@@ -121,7 +121,7 @@ const SignInForm = ({ setShowSignIn, errorMessage, setErrorMessage }) => {
                     message={errorMessage}
                     type="error"
                     showIcon
-                    className="alert__message"
+                    style={{ margin: "1.5rem 2rem" }}
                     closable
                     afterClose={onErrorMessageClose}
                 />
@@ -133,13 +133,13 @@ const SignInForm = ({ setShowSignIn, errorMessage, setErrorMessage }) => {
                 <Button
                     type="link"
                     onClick={onForgotPassword}
-                    className="forgot__button"
+                    style={{ padding: "0rem" }}
                 >
                     {"Forgot Password"}
                 </Button>
             </StyledFormItem>
 
-            <Divider plain className="divider">
+            <Divider plain style={{ padding: "0rem 2rem" }}>
                 <Typography.Text type="secondary">
                     {"Sign in with"}
                 </Typography.Text>

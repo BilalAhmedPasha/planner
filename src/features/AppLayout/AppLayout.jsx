@@ -13,7 +13,6 @@ import { doc, setDoc, getDoc } from "@firebase/firestore";
 import FullPageSpinner from "../../components/FullPageSpinner";
 import Loading from "../../components/Loading";
 import { oneDarkTheme } from "../../constants/onedarkTheme.constants";
-import "./AppLayout.css";
 
 const AppLayout = ({ setCurrentTitle, children }) => {
   const { user } = UserAuth();
@@ -109,31 +108,31 @@ const AppLayout = ({ setCurrentTitle, children }) => {
   });
 
   return (
-    <ConfigProvider
-      theme={
-        userTheme
-          ? {
-              token: oneDarkTheme,
-            }
-          : {
-              algorithm: defaultAlgorithm,
-            }
-      }
-    >
-      {user === null || JSON.stringify(user) === "{}" ? (
-        <FullPageSpinner indicator={Loading(50)} />
-      ) : (
-        <Layout className="layout">
-          <AppNav
-            setCurrentTitle={setCurrentTitle}
-            userTheme={userTheme}
-            setUserTheme={setUserTheme}
-            updateTheme={updateTheme}
-          />
-          {childrenWithProps}
-        </Layout>
-      )}
-    </ConfigProvider>
+      <ConfigProvider
+          theme={
+              userTheme
+                  ? {
+                        token: oneDarkTheme,
+                    }
+                  : {
+                        algorithm: defaultAlgorithm,
+                    }
+          }
+      >
+          {user === null || JSON.stringify(user) === "{}" ? (
+              <FullPageSpinner indicator={Loading(50)} />
+          ) : (
+              <Layout style={{ height: "100vh" }}>
+                  <AppNav
+                      setCurrentTitle={setCurrentTitle}
+                      userTheme={userTheme}
+                      setUserTheme={setUserTheme}
+                      updateTheme={updateTheme}
+                  />
+                  {childrenWithProps}
+              </Layout>
+          )}
+      </ConfigProvider>
   );
 };
 export default AppLayout;

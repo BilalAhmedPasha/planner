@@ -8,16 +8,6 @@ import { showSubTasks } from "../../../../constants/app.constants";
 const StyledFormItem = styled(Form.Item)`
 `;
 
-const StyledDivider = styled(Divider)`
-    margin: 1rem 0rem;
-`;
-
-const StyledDiv = styled.div`
-    overflow-y: auto;
-    height: ${({ height }) => height};
-    padding: ${({ padding }) => padding};
-`;
-
 const TaskDialogPrimaryPanel = ({
     form,
     height,
@@ -47,9 +37,12 @@ const TaskDialogPrimaryPanel = ({
     };
 
     return (
-        <StyledDiv
-            height={smallScreen ? "auto" : `${height}vh`}
-            padding={smallScreen ? "0rem" : "1rem 1.5rem 1rem 0.5rem"}
+        <div
+            style={{
+                height: smallScreen ? "auto" : `${height}vh`,
+                overflowY: "auto",
+                padding: smallScreen ? "0rem" : "1rem 1.5rem",
+            }}
         >
             <StyledFormItem name="name" lable="Task name">
                 <Input
@@ -72,7 +65,7 @@ const TaskDialogPrimaryPanel = ({
                     }}
                 />
             </StyledFormItem>
-            <StyledDivider />
+            <Divider style={{ margin: "1rem 0rem" }} />
             {showSubTasks && (
                 <>
                     <Button
@@ -90,7 +83,7 @@ const TaskDialogPrimaryPanel = ({
                     />
                 </>
             )}
-        </StyledDiv>
+        </div>
     );
 };
 

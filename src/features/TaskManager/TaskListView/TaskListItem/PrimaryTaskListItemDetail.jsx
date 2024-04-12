@@ -20,7 +20,6 @@ import {
     restoreTaskAction,
     softDeleteTaskAction,
 } from "../../state/userTasks/userTasks.actions";
-import "./css/PrimaryTaskListItemDetail.css";
 
 const StyledLink = styled(Link)`
     align-items: center;
@@ -31,59 +30,30 @@ const StyledLink = styled(Link)`
     }
 `;
 
-const StyledColorDot = styled.span`
-    height: 0.5rem;
-    width: 0.5rem;
-    border-radius: 50%;
-    display: inline-block;
-    background-color: ${({ color }) => color};
-`;
-
-const StyledDiv = styled.div`
-    whitespace: nowrap;
-    overflow-x: auto;
-    padding-left: 0.25rem;
-`;
-
-const StyledUndoOutlined = styled(UndoOutlined)`
-    opacity: ${({ opacity }) => opacity};
-    color: ${({ color }) => color};
-    transition: 0.3s all ease;
-`;
-
-const StyledDeleteOutlined = styled(DeleteOutlined)`
-    opacity: ${({ opacity }) => opacity};
-    color: ${({ color }) => color};
-    transition: 0.3s all ease;
-`;
-
-const StyledDeleteFilled = styled(DeleteFilled)`
-    opacity: ${({ opacity }) => opacity};
-    color: ${({ color }) => color};
-    transition: 0.3s all ease;
-`;
-
 const renderColorDot = (color) => {
-    return <StyledColorDot color={color} />;
+    return (
+        <span
+            style={{
+                height: "0.55rem",
+                width: "0.55rem",
+                borderRadius: "50%",
+                backgroundColor: `${color}`,
+                display: "inline-block",
+            }}
+        />
+    );
 };
-
-const StyledNodeExpandOutlined = styled(NodeExpandOutlined)`
-    color: ${(color) => color};
-`;
-
-const StyledSyncOutlined = styled(SyncOutlined)`
-    color: ${(color) => color};
-`;
 
 const renderChildNodeIcon = ({ item, colorBorder, colorTextLabel }) => {
     if (item.childTaskIds.length > 0) {
         return (
-            <StyledNodeExpandOutlined
-                color={
-                    item.isCompleted || item.isWontDo
-                        ? colorBorder
-                        : colorTextLabel
-                }
+            <NodeExpandOutlined
+                style={{
+                    color:
+                        item.isCompleted || item.isWontDo
+                            ? colorBorder
+                            : colorTextLabel,
+                }}
             />
         );
     }
@@ -92,12 +62,13 @@ const renderChildNodeIcon = ({ item, colorBorder, colorTextLabel }) => {
 const renderRepeatIcon = ({ item, colorBorder, colorTextLabel }) => {
     if (item.isRepeating) {
         return (
-            <StyledSyncOutlined
-                color={
-                    item.isCompleted || item.isWontDo
-                        ? colorBorder
-                        : colorTextLabel
-                }
+            <SyncOutlined
+                style={{
+                    color:
+                        item.isCompleted || item.isWontDo
+                            ? colorBorder
+                            : colorTextLabel,
+                }}
             />
         );
     }
@@ -116,7 +87,11 @@ const renderList = ({ item, lists, colorBorder, colorTextLabel }) => {
             {itemInList?.color ? renderColorDot(listColor) : null}
             <Typography.Text
                 type="secondary"
-                className="link__text"
+                style={{
+                    textTransform: "capitalize",
+                    paddingLeft: "0.3rem",
+                    cursor: "pointer",
+                }}
                 disabled={item.isCompleted || item.isWontDo}
             >
                 {itemInList?.label || INBOX}
@@ -161,12 +136,6 @@ const renderTaskDate = ({ item }) => {
     }
 };
 
-const WrapperDiv = styled.div`
-    display: flex;
-    align-item: center;
-    justify-content: space-between;
-`;
-
 const PrimaryTaskListItemDetail = ({
     taskDetails,
     selectedTaskDetails,
@@ -182,13 +151,28 @@ const PrimaryTaskListItemDetail = ({
     } = theme.useToken();
 
     return (
-        <WrapperDiv>
+        <div
+            style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+            }}
+        >
             <Typography.Text
-                className="name__text"
+                style={{
+                    whiteSpace: "nowrap",
+                    overflowX: "auto",
+                }}
                 disabled={taskDetails.isCompleted || taskDetails.isWontDo}
             >{`${taskDetails.name}`}</Typography.Text>
-            <StyledDiv>
-                <Space size="small" className="padding__right">
+            <div
+                style={{
+                    whiteSpace: "nowrap",
+                    overflowX: "auto",
+                    paddingLeft: "0.25rem",
+                }}
+            >
+                <Space size="small" style={{ paddingRight: "0.25rem" }}>
                     {renderList({
                         item: taskDetails,
                         lists: lists,
@@ -211,16 +195,19 @@ const PrimaryTaskListItemDetail = ({
                     <Button
                         type="text"
                         icon={
-                            <StyledUndoOutlined
-                                opacity={
-                                    selectedTaskDetails?.length > 1 ? 0.3 : 1
-                                }
-                                color={
-                                    taskDetails.isCompleted ||
-                                    taskDetails.isWontDo
-                                        ? colorBorder
-                                        : colorTextLabel
-                                }
+                            <UndoOutlined
+                                style={{
+                                    color:
+                                        taskDetails.isCompleted ||
+                                        taskDetails.isWontDo
+                                            ? colorBorder
+                                            : colorTextLabel,
+                                    opacity:
+                                        selectedTaskDetails?.length > 1
+                                            ? 0.3
+                                            : 1,
+                                    transition: "0.3s all ease",
+                                }}
                             />
                         }
                         size="small"
@@ -239,16 +226,19 @@ const PrimaryTaskListItemDetail = ({
                     <Button
                         type="text"
                         icon={
-                            <StyledDeleteOutlined
-                                opacity={
-                                    selectedTaskDetails?.length > 1 ? 0.3 : 1
-                                }
-                                color={
-                                    taskDetails.isCompleted ||
-                                    taskDetails.isWontDo
-                                        ? colorBorder
-                                        : colorTextLabel
-                                }
+                            <DeleteOutlined
+                                style={{
+                                    color:
+                                        taskDetails.isCompleted ||
+                                        taskDetails.isWontDo
+                                            ? colorBorder
+                                            : colorTextLabel,
+                                    opacity:
+                                        selectedTaskDetails?.length > 1
+                                            ? 0.3
+                                            : 1,
+                                    transition: "0.3s all ease",
+                                }}
                             />
                         }
                         size="small"
@@ -270,16 +260,19 @@ const PrimaryTaskListItemDetail = ({
                     <Button
                         type="text"
                         icon={
-                            <StyledDeleteFilled
-                                opacity={
-                                    selectedTaskDetails?.length > 1 ? 0.3 : 1
-                                }
-                                color={
-                                    taskDetails.isCompleted ||
-                                    taskDetails.isWontDo
-                                        ? colorBorder
-                                        : colorError
-                                }
+                            <DeleteFilled
+                                style={{
+                                    color:
+                                        taskDetails.isCompleted ||
+                                        taskDetails.isWontDo
+                                            ? colorBorder
+                                            : colorError,
+                                    opacity:
+                                        selectedTaskDetails?.length > 1
+                                            ? 0.3
+                                            : 1,
+                                    transition: "0.3s all ease",
+                                }}
                             />
                         }
                         size="small"
@@ -297,8 +290,8 @@ const PrimaryTaskListItemDetail = ({
                         disabled={selectedTaskDetails?.length > 1}
                     />
                 ) : null}
-            </StyledDiv>
-        </WrapperDiv>
+            </div>
+        </div>
     );
 };
 

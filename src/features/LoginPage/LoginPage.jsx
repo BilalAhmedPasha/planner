@@ -26,11 +26,6 @@ const LoginCard = styled.div`
     }
 `;
 
-const Image = styled.img`
-    width: 90%;
-    margin: 0.5rem 1rem;
-`;
-
 const LoginPage = () => {
     const navigateTo = useNavigate();
     const { user, loading, error } = UserAuth();
@@ -41,12 +36,12 @@ const LoginPage = () => {
         }
     }, [navigateTo, user]);
 
-    const [showsignin, setShowsignin] = useState("true");
+    const [showSignIn, setShowSignIn] = useState(true);
     const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
         setErrorMessage("");
-    }, [showsignin]);
+    }, [showSignIn]);
 
     useEffect(() => {
         if (error) {
@@ -56,24 +51,31 @@ const LoginPage = () => {
 
     return (
         <StyledDiv>
-            <Image src={appLogo} alt="appLogo" />
-            <LoginCard $showsignin={showsignin}>
+            <img
+                src={appLogo}
+                alt="appLogo"
+                style={{
+                    width: "90%",
+                    margin: "0.5rem 1rem",
+                }}
+            />
+            <LoginCard $showsignin={showSignIn}>
                 <Spinner
                     spinning={loading}
                     indicator={Loading(LOADER_SIZE)}
                     delay={0}
                 >
-                    {showsignin ? (
+                    {showSignIn ? (
                         <SignInForm
-                            setShowSignIn={setShowsignin}
-                            showsignin={showsignin}
+                            setShowSignIn={setShowSignIn}
+                            showsignin={showSignIn}
                             errorMessage={errorMessage}
                             setErrorMessage={setErrorMessage}
                         />
                     ) : (
                         <SignUpForm
-                            setShowSignIn={setShowsignin}
-                            showsignin={showsignin}
+                            setShowSignIn={setShowSignIn}
+                            showsignin={showSignIn}
                             errorMessage={errorMessage}
                             setErrorMessage={setErrorMessage}
                         />
