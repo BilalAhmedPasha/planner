@@ -57,7 +57,7 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const renderTags = ({ item, tags, color_border }) => {
+const renderTags = ({ item, tags, colorBorder }) => {
   if (item?.tagIds?.length > 0) {
     const tagsArray = [];
     for (let index = 0; index < 3; index++) {
@@ -68,8 +68,8 @@ const renderTags = ({ item, tags, color_border }) => {
             key={item.tagIds[index]}
             color={
               item.isCompleted || item.isWontDo
-                ? color_border
-                : tagDetails?.color || color_border
+                ? colorBorder
+                : tagDetails?.color || colorBorder
             }
             closable={false}
           >
@@ -90,8 +90,8 @@ const renderTags = ({ item, tags, color_border }) => {
           key={"overflow"}
           color={
             item.isCompleted || item.isWontDo
-              ? color_border
-              : DEFAULT_BADGE_COLOR || color_border
+              ? colorBorder
+              : DEFAULT_BADGE_COLOR || colorBorder
           }
           closable={false}
         >
@@ -355,93 +355,97 @@ const TaskItem = ({
   ];
 
   const {
-    token: { colorBgContainer, color_border, color_borderSecondary },
+    token: { colorBgContainer, colorBorder, colorBorderSecondary },
   } = theme.useToken();
 
   return (
-    <div style={{ width: "100%" }}>
-      <div style={{ float: "left", marginTop: "0.15rem" }}>
-        <Dropdown
-          menu={{ items: checkBoxMenuItems, onClick: handleMenuClick }}
-          placement="bottomLeft"
-          open={showCheckBoxMenu}
-          disabled={taskDetails.isDeleted}
-        >
-          <CheckBoxInput
-            unicode={checkBoxContent}
-            backgroundcolor={
-              getPriorityColor({
-                item: taskDetails,
-                completedColor: color_border,
-                completedBGColor: color_borderSecondary,
-              }).color
-            }
-            bordercolor={
-              getPriorityColor({
-                item: taskDetails,
-                completedColor: color_border,
-                completedBGColor: color_borderSecondary,
-              }).color
-            }
-            checkboxcolor={
-              getPriorityColor({
-                item: taskDetails,
-                completedColor: color_border,
-                completedBGColor: color_borderSecondary,
-              }).color
-            }
-            hover_bg_color={
-              getPriorityColor({
-                item: taskDetails,
-                completedColor: color_border,
-                completedBGColor: color_borderSecondary,
-              }).bgcolor
-            }
-            onChange={handleClick}
-            onContextMenu={(e) => handleRightClick({ e, taskDetails })}
-            checked={taskDetails.isCompleted || taskDetails.isWontDo}
-            disabled={taskDetails.isDeleted}
-            colorBgContainer={colorBgContainer}
-          />
-        </Dropdown>
-      </div>
-      <div style={{ marginLeft: "1.75rem" }}>
-        <PrimaryTaskListItemDetail
-          taskDetails={taskDetails}
-          selectedTaskDetail={selectedTaskDetails}
-          lists={lists}
-          handleTaskRestore={handleTaskRestore}
-          showSoftDeleteConfirm={showSoftDeleteConfirm}
-          handleSoftDelete={handleSoftDelete}
-          showHardDeleteConfirm={showHardDeleteConfirm}
-          handleHardDelete={handleHardDelete}
-        />
-        {taskDetails.description && (
-          <div>
-            <Typography.Text
-              style={{
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                width: "100%",
-              }}
-              ellipsis={true}
-              type="secondary"
-              disabled={taskDetails.isCompleted || taskDetails.isWontDo}
-            >
-              {taskDetails.description}
-            </Typography.Text>
+      <div style={{ width: "100%" }}>
+          <div style={{ float: "left", marginTop: "0.15rem" }}>
+              <Dropdown
+                  menu={{ items: checkBoxMenuItems, onClick: handleMenuClick }}
+                  placement="bottomLeft"
+                  open={showCheckBoxMenu}
+                  disabled={taskDetails.isDeleted}
+              >
+                  <CheckBoxInput
+                      unicode={checkBoxContent}
+                      backgroundcolor={
+                          getPriorityColor({
+                              item: taskDetails,
+                              completedColor: colorBorder,
+                              completedBGColor: colorBorderSecondary,
+                          }).color
+                      }
+                      bordercolor={
+                          getPriorityColor({
+                              item: taskDetails,
+                              completedColor: colorBorder,
+                              completedBGColor: colorBorderSecondary,
+                          }).color
+                      }
+                      checkboxcolor={
+                          getPriorityColor({
+                              item: taskDetails,
+                              completedColor: colorBorder,
+                              completedBGColor: colorBorderSecondary,
+                          }).color
+                      }
+                      hoverBgColor={
+                          getPriorityColor({
+                              item: taskDetails,
+                              completedColor: colorBorder,
+                              completedBGColor: colorBorderSecondary,
+                          }).bgcolor
+                      }
+                      onChange={handleClick}
+                      onContextMenu={(e) =>
+                          handleRightClick({ e, taskDetails })
+                      }
+                      checked={taskDetails.isCompleted || taskDetails.isWontDo}
+                      disabled={taskDetails.isDeleted}
+                      colorBgContainer={colorBgContainer}
+                  />
+              </Dropdown>
           </div>
-        )}
-        <div>
-          {renderTags({
-            item: taskDetails,
-            tags: tags,
-            color_border: color_border,
-          })}
-        </div>
+          <div style={{ marginLeft: "1.75rem" }}>
+              <PrimaryTaskListItemDetail
+                  taskDetails={taskDetails}
+                  selectedTaskDetail={selectedTaskDetails}
+                  lists={lists}
+                  handleTaskRestore={handleTaskRestore}
+                  showSoftDeleteConfirm={showSoftDeleteConfirm}
+                  handleSoftDelete={handleSoftDelete}
+                  showHardDeleteConfirm={showHardDeleteConfirm}
+                  handleHardDelete={handleHardDelete}
+              />
+              {taskDetails.description && (
+                  <div>
+                      <Typography.Text
+                          style={{
+                              whiteSpace: "nowrap",
+                              overflow: "hidden",
+                              width: "100%",
+                          }}
+                          ellipsis={true}
+                          type="secondary"
+                          disabled={
+                              taskDetails.isCompleted || taskDetails.isWontDo
+                          }
+                      >
+                          {taskDetails.description}
+                      </Typography.Text>
+                  </div>
+              )}
+              <div>
+                  {renderTags({
+                      item: taskDetails,
+                      tags: tags,
+                      colorBorder: colorBorder,
+                  })}
+              </div>
+          </div>
+          {contextHolder}
       </div>
-      {contextHolder}
-    </div>
   );
 };
 export default TaskItem;

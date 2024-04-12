@@ -4,7 +4,7 @@ const CheckBoxInput = styled.input.attrs({ type: "checkbox" })`
   position: relative;
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   &:hover::before {
-    background-color: ${(props) => props.$hover_bg_color};
+    background-color: ${(props) => props.hoverBgColor};
   }
 
   &:before {
@@ -13,7 +13,7 @@ const CheckBoxInput = styled.input.attrs({ type: "checkbox" })`
     height: 1rem;
     width: 1rem;
     background-color: ${(props) => props.colorBgContainer};
-    border: 1.5px solid ${(props) => props.$checkboxcolor};
+    border: 1.5px solid ${(props) => props.checkboxcolor};
     border-radius: 20%;
     top: 50%;
     left: 50%;
