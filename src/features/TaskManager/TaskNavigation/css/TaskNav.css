@@ -1,9 +1,9 @@
 .hidden-add-button {
-  display: none;
+  display: none !important;
 }
 
-.sub-menu:hover .hidden-add-button {
-  display: block;
+.sub-menu > :hover .hidden-add-button {
+  display: block !important;
 }
 
 .menu__item__icon {

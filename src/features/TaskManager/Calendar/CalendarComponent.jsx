@@ -30,7 +30,7 @@ import useWindowSize from "../../../hooks/useWindowSize";
 import Spinner from "../../../components/Spinner";
 import Loading from "../../../components/Loading";
 import styled from "styled-components";
-import "./CalendarComponent.css";
+import "./css/CalendarComponent.css";
 dayjs.extend(timezone);
 
 const CalendarWrapper = styled.div`

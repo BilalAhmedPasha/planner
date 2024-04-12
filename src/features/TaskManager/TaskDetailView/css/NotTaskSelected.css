@@ -3,7 +3,7 @@
 }
 
 .image__detail {
-  width: 5rem;
+  width: 4rem !important;
 }
 
 .wrapper__div {
