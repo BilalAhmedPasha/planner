@@ -13,11 +13,7 @@ import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { listsSelector } from "../../state/userLists/userLists.reducer";
 import { tagsSelector } from "../../state/userTags/userTags.reducer";
-import {
-  FlagFilled,
-  CalendarOutlined,
-  ClockCircleOutlined,
-} from "@ant-design/icons";
+import { FlagFilled } from "@ant-design/icons";
 import {
   HIGH,
   LOW,
@@ -48,7 +44,6 @@ import {
   END_BY_REPEAT_COUNT,
 } from "../../../../constants/repeating.constants";
 import styled from "styled-components";
-import "./css/TaskDialogSecondaryPanel.css";
 
 const MultiSelect = styled(Select)`
   .ant-select-selection-overflow {

@@ -8,8 +8,7 @@ import { LogoutOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { LOGOUT } from "../../../constants/app.constants";
 import { useDispatch } from "react-redux";
 import { removeUserSettingAction } from "../state/userSettings/userSettings.actions";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
+import { MdOutlineLightMode, MdOutlineDarkMode } from "react-icons/md";
 
 const renderMenuItems = (itemsArray) => {
   return itemsArray.map((each) => {
@@ -124,9 +123,7 @@ const AppNav = ({ setCurrentTitle, userTheme, updateTheme }) => {
         <Button
           size="large"
           type="text"
-          icon={
-            userTheme ? <DarkModeOutlinedIcon /> : <LightModeOutlinedIcon />
-          }
+          icon={userTheme ? <MdOutlineDarkMode /> : <MdOutlineLightMode />}
           style={{ cursor: "pointer" }}
           onClick={updateTheme}
         />

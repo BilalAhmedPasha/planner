@@ -114,7 +114,6 @@ const TaskListSection = ({
         <Collapse
           ghost={true}
           variant="borderless"
-          color={token.colorBgContainer}
           defaultActiveKey={activePanel}
           style={{
             background: token.colorBgContainer,
@@ -142,7 +141,7 @@ const TaskListSection = ({
                           whiteSpace: "nowrap",
                           overflowX: "auto",
                         }}
-                      >{`${sectionalTasks[each].tasks.length}`}</Typography.Text>{" "}
+                      >{`${sectionalTasks[each].tasks.length}`}</Typography.Text>
                     </Space>
                   }
                   key={sectionalTasks[each].sectionKey}

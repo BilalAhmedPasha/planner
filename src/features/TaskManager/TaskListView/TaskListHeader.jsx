@@ -104,7 +104,6 @@ const TaskListHeader = ({
         position: "sticky",
       }}
     >
-      {" "}
       <Space size="small" style={{ alignItems: "center" }}>
         {renderTaskMenuIcon({
           screenSize,
@@ -116,7 +115,7 @@ const TaskListHeader = ({
         <Typography.Text
           style={{
             fontWeight: "bold",
-            fontSize: "24px",
+            fontSize: "20px",
             whiteSpace: "nowrap",
             overflowX: "auto",
           }}
@@ -133,7 +132,7 @@ const TaskListHeader = ({
       {!hideAddIcon && (
         <Space size="small" direction="horizontal">
           {currentSection?.id !== DELETED && (
-            <StyledButton
+            <Button
               type="text"
               icon={<DeleteFilled style={{ fontSize: "1rem" }} />}
               danger
@@ -193,7 +192,7 @@ const TaskListHeader = ({
                   marginLeft: "0.2rem",
                   cursor: "pointer",
                 }}
-              />{" "}
+              />
             </div>
           </Dropdown>
           <Button
@@ -222,8 +221,11 @@ const TaskListHeader = ({
               });
             }}
             disabled={selectedTaskDetails.length > 1 ? false : true}
-            opacity={selectedTaskDetails.length > 1 ? 1 : 0}
-            cursor={selectedTaskDetails.length > 1 ? "pointer" : "auto"}
+            style={{
+              opacity: selectedTaskDetails.length > 1 ? 1 : 0,
+              transition: "0.3s all ease",
+              cursor: selectedTaskDetails.length > 1 ? "pointer" : "auto",
+            }}
           />
 
           <Button
@@ -244,12 +246,15 @@ const TaskListHeader = ({
               });
             }}
             disabled={selectedTaskDetails.length > 1 ? false : true}
-            opacity={selectedTaskDetails.length > 1 ? 1 : 0}
-            cursor={selectedTaskDetails.length > 1 ? "pointer" : "auto"}
+            style={{
+              opacity: selectedTaskDetails.length > 1 ? 1 : 0,
+              transition: "0.3s all ease",
+              cursor: selectedTaskDetails.length > 1 ? "pointer" : "auto",
+            }}
           />
 
           <Button
-            size="large"
+            size="middle"
             type="text"
             icon={<ClearOutlined />}
             onClick={handlePermanentDelete}

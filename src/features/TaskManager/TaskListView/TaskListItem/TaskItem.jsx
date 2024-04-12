@@ -33,6 +33,8 @@ import {
   repeatMapping,
 } from "../../../../constants/repeating.constants";
 import PrimaryTaskListItemDetail from "./PrimaryTaskListItemDetail";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const getPriorityColor = ({ item, completedColor, completedBGColor }) => {
   if (item.isCompleted || item.isWontDo) {
@@ -93,7 +95,12 @@ const renderTags = ({ item, tags, colorBorder }) => {
     return tagsArray;
   }
 };
-
+const StyledLink = styled(Link)`
+  align-items: center;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 const TaskItem = ({
   user,
   messageApi,
@@ -362,22 +369,22 @@ const TaskItem = ({
           disabled={taskDetails.isDeleted}
         >
           <CheckBoxInput
-            unicode={checkBoxContent}
-            backgroundcolor={
+            uniCode={checkBoxContent}
+            backgroundColor={
               getPriorityColor({
                 item: taskDetails,
                 completedColor: colorBorder,
                 completedBGColor: colorBorderSecondary,
               }).color
             }
-            bordercolor={
+            borderColor={
               getPriorityColor({
                 item: taskDetails,
                 completedColor: colorBorder,
                 completedBGColor: colorBorderSecondary,
               }).color
             }
-            checkboxcolor={
+            checkBoxColor={
               getPriorityColor({
                 item: taskDetails,
                 completedColor: colorBorder,

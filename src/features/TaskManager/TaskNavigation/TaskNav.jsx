@@ -1,4 +1,4 @@
-import { Button, Drawer, Dropdown, Layout, Menu, Modal, Space } from "antd";
+import { Badge, Button, Drawer, Dropdown, Layout, Menu, Modal, Space } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SideMenu from "../../../components/SideMenu";
@@ -35,6 +35,7 @@ import {
   taskNavToDrawer,
 } from "../../../utils/screen.utils";
 import useWindowSize from "../../../hooks/useWindowSize";
+import { TASK_NAV_BADGE_COLOR } from "../../../constants/color.constants";
 
 const renderColorDot = (color) => {
   return (
@@ -86,12 +87,6 @@ const renderSubMenuItems = ({
         >
           {title}
           <Space>
-            <Badge
-              count={itemCount}
-              showZero
-              color={TASK_NAV_BADGE_COLOR}
-              overflowCount={10}
-            />
             <Button icon={<PlusOutlined />} type="text" onClick={onAddClick} />
           </Space>
         </div>
