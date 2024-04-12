@@ -413,7 +413,7 @@ const CalendarComponent = ({
                         formats={formats}
                         selectable={true}
                         onSelecting={onSelecting}
-                        longPressThreshold={250}
+                        longPressThreshold={500}
                         onSelectEvent={onSelectEvent}
                     />
                 </CalendarWrapper>

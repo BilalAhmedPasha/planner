@@ -123,13 +123,13 @@ const TaskListHeader = ({
                     isNavDrawerCollapsed,
                     setIsNavDrawerCollapsed,
                 })}
-                <Typography.Text className="typography__text typography__text__font">
+                <Typography.Text className="typography__text typography__text__font font__size__1_25">
                     {currentSection?.label}
                 </Typography.Text>
                 {sortedSectionTasks?.length > 0 && (
                     <Typography.Text
                         type="secondary"
-                        className="typography__text"
+                        className="typography__text font__size__1"
                     >{`${sortedSectionTasks?.length}`}</Typography.Text>
                 )}
             </Space>

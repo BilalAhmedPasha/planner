@@ -6,8 +6,6 @@ import styled from "styled-components";
 import { showSubTasks } from "../../../../constants/app.constants";
 
 const StyledFormItem = styled(Form.Item)`
-    // TODO
-    // margin: 0.5rem 0rem;
 `;
 
 const StyledDivider = styled(Divider)`
@@ -49,7 +47,10 @@ const TaskDialogPrimaryPanel = ({
     };
 
     return (
-        <StyledDiv>
+        <StyledDiv
+            height={smallScreen ? "auto" : `${height}vh`}
+            padding={smallScreen ? "0rem" : "1rem 1.5rem 1rem 0.5rem"}
+        >
             <StyledFormItem name="name" lable="Task name">
                 <Input
                     autoComplete="off"

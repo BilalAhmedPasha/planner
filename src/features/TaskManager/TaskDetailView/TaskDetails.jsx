@@ -29,6 +29,10 @@ const StyledDiv = styled.div`
     overflow: "auto";
 `;
 
+const StyledTag = styled(Tag)`
+  margin-right: 3;
+`;
+
 const getPriorityColor = (event) => {
   if (event === HIGH) {
     return HIGH_COLOR;
@@ -129,17 +133,14 @@ const TaskDetails = ({
       event.stopPropagation();
     };
     return (
-      <Tag
-        color={color}
-        onMouseDown={onPreventMouseDown}
-        closable={closable}
-        onClose={onClose}
-        style={{
-          marginRight: 3,
-        }}
-      >
-        {label}
-      </Tag>
+        <StyledTag
+            color={color}
+            onMouseDown={onPreventMouseDown}
+            closable={closable}
+            onClose={onClose}
+        >
+            {label}
+        </StyledTag>
     );
   };
 

@@ -17,7 +17,6 @@ const StyledDiv = styled.div`
     display: flex;
     justify-content: space-between;
     overflow-x: auto;
-    margin-bottom: 1rem;
     width: 100%;
 `;
 

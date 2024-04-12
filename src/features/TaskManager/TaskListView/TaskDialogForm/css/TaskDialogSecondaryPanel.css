@@ -5,12 +5,22 @@
 .typography__text {
   white-space: nowrap;
   overflow-x: auto;
+  font-weight: normal !important;
 }
 
 .input__field {
   cursor: pointer;
   width: 100%;
 }
+
+.padding__around {
+  padding: 0.25rem 0.5rem !important;
+}
+
+.input__number {
+  width: 100%;
+}
+
 
 .font__size__0_9 {
   font-size: 0.9rem;

@@ -36,6 +36,32 @@ import PrimaryTaskListItemDetail from "./PrimaryTaskListItemDetail";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
+const StyledLink = styled(Link)`
+  align-items: center;
+  :hover {
+    text-decoration: underline;
+  }
+`;
+
+const WrapperDiv = styled.div`
+  width: 100%
+`;
+
+const CheckBoxDiv = styled.div`
+  float: left;
+  margin-top: 0.15rem;
+`;
+
+const TaskItemDiv = styled.div`
+  margin-left: 1.75rem;
+`;
+
+const StyledText = styled(Typography.Text)`
+  whitespace: nowrap;
+  overflow: hidden;
+  width: 100%;
+`;
+
 const getPriorityColor = ({ item, completedColor, completedBGColor }) => {
   if (item.isCompleted || item.isWontDo) {
     return { color: completedColor, bgcolor: completedBGColor };
@@ -49,13 +75,6 @@ const getPriorityColor = ({ item, completedColor, completedBGColor }) => {
   }
   return { color: NONE_COLOR, bgcolor: NONE_BG_COLOR };
 };
-
-const StyledLink = styled(Link)`
-  align-items: center;
-  :hover {
-    text-decoration: underline;
-  }
-`;
 
 const renderTags = ({ item, tags, colorBorder }) => {
   if (item?.tagIds?.length > 0) {
@@ -359,8 +378,8 @@ const TaskItem = ({
   } = theme.useToken();
 
   return (
-      <div style={{ width: "100%" }}>
-          <div style={{ float: "left", marginTop: "0.15rem" }}>
+      <WrapperDiv>
+          <CheckBoxDiv>
               <Dropdown
                   menu={{ items: checkBoxMenuItems, onClick: handleMenuClick }}
                   placement="bottomLeft"
@@ -406,8 +425,8 @@ const TaskItem = ({
                       colorBgContainer={colorBgContainer}
                   />
               </Dropdown>
-          </div>
-          <div style={{ marginLeft: "1.75rem" }}>
+          </CheckBoxDiv>
+          <TaskItemDiv>
               <PrimaryTaskListItemDetail
                   taskDetails={taskDetails}
                   selectedTaskDetail={selectedTaskDetails}
@@ -420,12 +439,7 @@ const TaskItem = ({
               />
               {taskDetails.description && (
                   <div>
-                      <Typography.Text
-                          style={{
-                              whiteSpace: "nowrap",
-                              overflow: "hidden",
-                              width: "100%",
-                          }}
+                      <StyledText
                           ellipsis={true}
                           type="secondary"
                           disabled={
@@ -433,7 +447,7 @@ const TaskItem = ({
                           }
                       >
                           {taskDetails.description}
-                      </Typography.Text>
+                      </StyledText>
                   </div>
               )}
               <div>
@@ -443,9 +457,9 @@ const TaskItem = ({
                       colorBorder: colorBorder,
                   })}
               </div>
-          </div>
+          </TaskItemDiv>
           {contextHolder}
-      </div>
+      </WrapperDiv>
   );
 };
 export default TaskItem;

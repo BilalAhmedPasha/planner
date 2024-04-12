@@ -7,7 +7,7 @@ import styled from "styled-components";
 
 const StyledLayoutContent = styled(Layout.Content)`
     margin-right: ${({ marginRight }) => marginRight};
-    width: 12vw;
+    width: 12vw !important;
     background: ${({ bgcolor }) => bgcolor};
 `;
 
@@ -42,7 +42,6 @@ const TaskDialogForm = ({
             <Layout>
                 <Layout.Sider collapsed collapsedWidth={0} />
                 <StyledLayoutContent
-                    StyledLayoutContent
                     marginRight={verticallyAlignForm ? "0rem" : "0.1rem"}
                     bgcolor={colorBgContainer}
                 >

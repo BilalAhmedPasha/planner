@@ -12,14 +12,13 @@
 }
 
 .typography__text__font {
-  font-weight: bold;
-  font-size: 25px;
+  font-weight: bold !important;
 }
 
 .font__size__1 {
-  font-size: 1rem;
+  font-size: 1rem !important;
 }
 
 .font__size__1_25 {
-  font-size: 1.25rem;
+  font-size: 1.25rem !important;
 }

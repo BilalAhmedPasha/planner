@@ -1,7 +1,0 @@
-.hidden-add-button {
-  display: none;
-}
-
-.sub-menu:hover .hidden-add-button {
-  display: block;
-}

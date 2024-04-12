@@ -39,13 +39,13 @@ const StyledDiv = styled.div`
     border: 0.1px solid #bfbfbf;
     margin-top: 0.5rem;
     border-radius: 5px;
-    max-height: ${(props) => props.maxHeight};
+    max-height: ${(maxHeight) => maxHeight};
     overflow: auto;
     transition: max-height 0.8s ease-out;
 `;
 
 const StyledFormItem = styled(Form.Item)`
-    margin: ${(props) => props.marginVertical} 0rem;
+    margin: ${(marginVertical) => marginVertical} 0rem;
 `;
 
 const StyledFlagFilled = styled(FlagFilled)`

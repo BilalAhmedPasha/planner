@@ -1,0 +1,14 @@
+.link__text {
+  text-transform: capitalize;
+  padding: 0.3rem;
+  cursor: pointer;
+}
+
+.name__text {
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
+.padding__right {
+  padding-right: 0.25rem;
+}

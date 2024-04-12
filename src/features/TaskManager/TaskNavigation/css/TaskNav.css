@@ -1,0 +1,31 @@
+.hidden-add-button {
+  display: none;
+}
+
+.sub-menu:hover .hidden-add-button {
+  display: block;
+}
+
+.menu__item__icon {
+  font-size: 1.10rem;
+}
+
+.layout__sider {
+  overflow: auto;
+  position: sticky;
+  top:0;
+  left:0;
+}
+
+.sub__menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.menu__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: auto;
+}

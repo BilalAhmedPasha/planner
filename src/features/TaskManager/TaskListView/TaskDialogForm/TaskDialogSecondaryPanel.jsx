@@ -13,7 +13,11 @@ import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { listsSelector } from "../../state/userLists/userLists.reducer";
 import { tagsSelector } from "../../state/userTags/userTags.reducer";
-import { FlagFilled } from "@ant-design/icons";
+import {
+    FlagFilled,
+    CalendarOutlined,
+    ClockCircleOutlined,
+} from "@ant-design/icons";
 import {
     HIGH,
     LOW,
@@ -205,7 +209,14 @@ const TaskDialogSecondaryPanel = ({ form, height, smallScreen, ...props }) => {
             height={smallScreen ? "auto" : `${height}vh`}
             padding={smallScreen ? "0rem" : "1rem 1.5rem"}
         >
-            <Form.Item name="listId" label="List">
+            <Form.Item
+                name="listId"
+                label={
+                    <Typography.Text className="typography__text font__size__0_9">
+                        {"Lists"}
+                    </Typography.Text>
+                }
+            >
                 <Select
                     options={[
                         {
@@ -221,7 +232,7 @@ const TaskDialogSecondaryPanel = ({ form, height, smallScreen, ...props }) => {
                 name="priority"
                 label={
                     <Space>
-                        <Typography.Text className="typography__text">
+                        <Typography.Text className="typography__text font__size__0_9">
                             {"Priority"}
                         </Typography.Text>
                         <StyledFlagFilled color={priorityColor} />
@@ -234,7 +245,14 @@ const TaskDialogSecondaryPanel = ({ form, height, smallScreen, ...props }) => {
                 />
             </Form.Item>
 
-            <Form.Item name="tagIds" label="Tags">
+            <Form.Item
+                name="tagIds"
+                label={
+                    <Typography.Text className="typography__text font__size__0_9">
+                        {"Tags"}
+                    </Typography.Text>
+                }
+            >
                 <MultiSelect
                     mode="multiple"
                     options={tagOptions}
@@ -255,10 +273,20 @@ const TaskDialogSecondaryPanel = ({ form, height, smallScreen, ...props }) => {
                 </Form.Item>
             )}
             {!isMultiDay && (
-                <Form.Item name="taskDate" label="Schedule">
+                <Form.Item
+                    name="taskDate"
+                    label={
+                        <Typography.Text className="typography__text font__size__0_9">
+                            {"Schedule"}
+                        </Typography.Text>
+                    }
+                >
                     <DatePicker
                         format={DATE_FORMAT}
-                        className="input__field"
+                        suffixIcon={
+                            <CalendarOutlined className="font__size__0_9" />
+                        }
+                        className="input__field padding__around"
                         onChange={handleStartDateChange}
                         open={props.disableDateSelection ? false : undefined}
                         allowClear={!props.disableDateSelection}
@@ -269,7 +297,11 @@ const TaskDialogSecondaryPanel = ({ form, height, smallScreen, ...props }) => {
             {isMultiDay && (
                 <Form.Item
                     name="dateRange"
-                    label="Schedule"
+                    label={
+                        <Typography.Text className="typography__text font__size__0_9">
+                            {"Schedule"}
+                        </Typography.Text>
+                    }
                     rules={[
                         {
                             required: true,
@@ -290,15 +322,25 @@ const TaskDialogSecondaryPanel = ({ form, height, smallScreen, ...props }) => {
                     <TimePicker.RangePicker
                         format={TIME_FORMAT}
                         minuteStep={5}
-                        className="input__field"
+                        className="input__field padding__around"
                         open={props.disableTimeSelection ? false : undefined}
                         allowClear={!props.disableTimeSelection}
                         inputReadOnly={true}
+                        suffixIcon={
+                            <ClockCircleOutlined className="font__size__0_9" />
+                        }
                     />
                 </Form.Item>
             )}
             {!isMultiDay && isScheduled && (
-                <Form.Item name="repeatFrequency" label="Repeat">
+                <Form.Item
+                    name="repeatFrequency"
+                    label={
+                        <Typography.Text className="typography__text font__size__0_9">
+                            {"Repeat"}
+                        </Typography.Text>
+                    }
+                >
                     <Select
                         allowClear
                         options={[
@@ -321,7 +363,14 @@ const TaskDialogSecondaryPanel = ({ form, height, smallScreen, ...props }) => {
                 </Form.Item>
             )}
             {isScheduled && isRepeating && (
-                <Form.Item name="endBy" label="End by">
+                <Form.Item
+                    name="endBy"
+                    label={
+                        <Typography.Text className="typography__text font__size__0_9">
+                            {"End by"}
+                        </Typography.Text>
+                    }
+                >
                     <Select
                         options={[
                             {
@@ -341,11 +390,14 @@ const TaskDialogSecondaryPanel = ({ form, height, smallScreen, ...props }) => {
                     />
                 </Form.Item>
             )}
-
             {isScheduled && isRepeating && showEndByDate && (
                 <Form.Item
                     name={END_BY_DATE}
-                    label="End Date"
+                    label={
+                        <Typography.Text className="typography__text font__size__0_9">
+                            {"End Date"}
+                        </Typography.Text>
+                    }
                     rules={[
                         {
                             required: true,
@@ -355,7 +407,10 @@ const TaskDialogSecondaryPanel = ({ form, height, smallScreen, ...props }) => {
                 >
                     <DatePicker
                         format={DATE_FORMAT}
-                        className="input__field"
+                        suffixIcon={
+                            <CalendarOutlined className="font__size__0_9" />
+                        }
+                        className="input__field padding__around"
                         disabledDate={disabledEndDate}
                         placeholder="Select end date"
                     />
@@ -364,7 +419,11 @@ const TaskDialogSecondaryPanel = ({ form, height, smallScreen, ...props }) => {
             {isScheduled && isRepeating && showEndByRepeatCount && (
                 <Form.Item
                     name={END_BY_REPEAT_COUNT}
-                    label="Repeat Count"
+                    label={
+                        <Typography.Text className="typography__text font__size__0_9">
+                            {"Repeat Count"}
+                        </Typography.Text>
+                    }
                     rules={[
                         {
                             required: true,
@@ -374,7 +433,7 @@ const TaskDialogSecondaryPanel = ({ form, height, smallScreen, ...props }) => {
                 >
                     <InputNumber
                         min={1}
-                        className="input__field"
+                        className="input__number"
                         placeholder="Enter repeat count"
                     />
                 </Form.Item>
