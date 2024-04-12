@@ -4,31 +4,27 @@ import multiSelection from "../../../assets/multiSelection.png";
 
 const NotTaskSelected = ({ selectedTaskDetails }) => {
   return (
-      <div
+    <div
+      style={{
+        textAlign: "center",
+        paddingTop: "40%",
+      }}
+    >
+      <div>
+        <img
+          src={selectedTaskDetails.length > 1 ? multiSelection : noSelection}
+          alt="DetailsNotFound"
           style={{
-              textAlign: "center",
-              paddingTop: "40%",
+            width: "5rem",
           }}
-      >
-          <div>
-              <img
-                  src={
-                      selectedTaskDetails.length > 1
-                          ? multiSelection
-                          : noSelection
-                  }
-                  alt="DetailsNotFound"
-                  style={{
-                      width: "5rem",
-                  }}
-              />
-          </div>
-          <Typography.Text style={{ fontSize: "1rem" }} type="secondary">
-              {selectedTaskDetails.length > 1
-                  ? "Select only a single task to view details"
-                  : "Click on a task to view details. To multi select tasks hold shift key."}
-          </Typography.Text>
+        />
       </div>
+      <Typography.Text style={{ fontSize: "1rem" }} type="secondary">
+        {selectedTaskDetails.length > 1
+          ? "Select only a single task to view details"
+          : "Click on a task to view details. To multi select tasks hold shift key."}
+      </Typography.Text>
+    </div>
   );
 };
 

@@ -12,15 +12,17 @@ import {
 } from "../../../constants/app.constants";
 
 import { EDIT } from "../../../constants/formType.constants";
-import { MdOutlineListAlt } from "react-icons/md";
-import { MdOutlineInbox } from "react-icons/md";
-import { MdOutlineToday } from "react-icons/md";
-import { MdOutlineUpcoming } from "react-icons/md";
-import { MdOutlineDateRange } from "react-icons/md";
-import { MdOutlineEventBusy } from "react-icons/md";
-import { MdOutlineDone } from "react-icons/md";
-import { MdOutlineClose } from "react-icons/md";
-import { MdDeleteOutline } from "react-icons/md";
+import {
+  MdOutlineListAlt,
+  MdOutlineInbox,
+  MdOutlineToday,
+  MdOutlineUpcoming,
+  MdOutlineDateRange,
+  MdOutlineEventBusy,
+  MdOutlineDone,
+  MdOutlineClose,
+  MdDeleteOutline,
+} from "react-icons/md";
 
 export const defaultTaskNav1 = [
   {

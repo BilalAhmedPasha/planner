@@ -9,19 +9,19 @@ import { tagsSelector } from "../../state/userTags/userTags.reducer";
 import TaskItem from "./TaskItem";
 
 const StyledDiv = styled.div`
-    padding: 0.75rem 1rem;
-    margin: 0.25rem ${(props) => (props.isInCollapse ? "0rem" : "1rem")};
-    opacity: ${(props) => props.opacity};
-    opacity: ${(props) => props.opacity};
-    :hover {
-        background-color: ${(props) =>
-            props.isSelected ? props.colorPrimaryBg : props.colorBgTextHover};
-    }
+  padding: 0.75rem 1rem;
+  margin: 0.25rem ${(props) => (props.isInCollapse ? "0rem" : "1rem")};
+  opacity: ${(props) => props.opacity};
+  opacity: ${(props) => props.opacity};
+  :hover {
     background-color: ${(props) =>
-        props.isSelected ? props.colorPrimaryBg : props.colorBgContainer};
-    box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
-    user-select: none;
-    cursor: pointer;
+      props.isSelected ? props.colorPrimaryBg : props.colorBgTextHover};
+  }
+  background-color: ${(props) =>
+    props.isSelected ? props.colorPrimaryBg : props.colorBgContainer};
+  box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
+  user-select: none;
+  cursor: pointer;
 `;
 
 const Card = ({
@@ -91,9 +91,8 @@ const Card = ({
             (urlPath[2] === LISTS || urlPath[2] === TAGS)
           ) {
             navigateTo(
-                `/${urlPath[1]}/${urlPath[2]}/${urlPath[3]}/${cardDetails.id}`
+              `/${urlPath[1]}/${urlPath[2]}/${urlPath[3]}/${cardDetails.id}`
             );
-            
           } else {
             navigateTo(`/${urlPath[1]}/${urlPath[2]}/${cardDetails.id}`);
           }

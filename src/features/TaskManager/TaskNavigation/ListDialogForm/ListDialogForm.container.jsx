@@ -96,16 +96,14 @@ const ListDialog = ({
   };
 
   const [color, setColor] = useState(
-    formType === CREATE
-      ?  DEFAULT_LIST_COLOR
-      :  formValues.color
+    formType === CREATE ? DEFAULT_LIST_COLOR : formValues.color
   );
 
   const DEFAULT_VALUES = useMemo(() => {
     if (formType === CREATE) {
       return {
         name: "",
-        color: DEFAULT_LIST_COLOR ,
+        color: DEFAULT_LIST_COLOR,
       };
     } else if (formType === EDIT) {
       return {

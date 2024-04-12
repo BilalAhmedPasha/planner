@@ -66,7 +66,7 @@ const AppLayout = ({ setCurrentTitle, children }) => {
             userTheme: parseInt(themeId),
           })
         );
-        
+
         // Update firestore document
         await setDoc(
           userDocRef,
@@ -94,9 +94,9 @@ const AppLayout = ({ setCurrentTitle, children }) => {
 
   const navigateTo = useNavigate();
   useEffect(() => {
-      if (user === null) {
-          return navigateTo("/login");
-      }
+    if (user === null) {
+      return navigateTo("/login");
+    }
   }, [user, navigateTo]);
 
   const { defaultAlgorithm } = theme;
@@ -108,31 +108,31 @@ const AppLayout = ({ setCurrentTitle, children }) => {
   });
 
   return (
-      <ConfigProvider
-          theme={
-              userTheme
-                  ? {
-                        token: oneDarkTheme,
-                    }
-                  : {
-                        algorithm: defaultAlgorithm,
-                    }
-          }
-      >
-          {user === null || JSON.stringify(user) === "{}" ? (
-              <FullPageSpinner indicator={Loading(50)} />
-          ) : (
-              <Layout style={{ height: "100vh" }}>
-                  <AppNav
-                      setCurrentTitle={setCurrentTitle}
-                      userTheme={userTheme}
-                      setUserTheme={setUserTheme}
-                      updateTheme={updateTheme}
-                  />
-                  {childrenWithProps}
-              </Layout>
-          )}
-      </ConfigProvider>
+    <ConfigProvider
+      theme={
+        userTheme
+          ? {
+              token: oneDarkTheme,
+            }
+          : {
+              algorithm: defaultAlgorithm,
+            }
+      }
+    >
+      {user === null || JSON.stringify(user) === "{}" ? (
+        <FullPageSpinner indicator={Loading(50)} />
+      ) : (
+        <Layout style={{ height: "100vh" }}>
+          <AppNav
+            setCurrentTitle={setCurrentTitle}
+            userTheme={userTheme}
+            setUserTheme={setUserTheme}
+            updateTheme={updateTheme}
+          />
+          {childrenWithProps}
+        </Layout>
+      )}
+    </ConfigProvider>
   );
 };
 export default AppLayout;
