@@ -14,10 +14,10 @@ import CustomToolbar from "./CustomToolBar/CustomToolBar";
 import { useSelector } from "react-redux";
 import { listsSelector } from "../state/userLists/userLists.reducer";
 import { tasksSelector } from "../state/userTasks/userTasks.reducer";
-import { INBOX_LIST_COLOR } from "../../../constants/color.constants";
+import { DEFAULT_TAG_COLOR, INBOX_LIST_COLOR } from "../../../constants/color.constants";
 import { BgColorsOutlined } from "@ant-design/icons";
 import { PRIORITY } from "../../../constants/sort.constants";
-import { LISTS, LOADER_SIZE } from "../../../constants/app.constants";
+import { LISTS, LOADER_SIZE, TAGS } from "../../../constants/app.constants";
 import { TIME_FORMAT_IN_DB } from "../../../constants/dateTime.constants";
 import { priorityColorMappings } from "../../../constants/priority.constants";
 import { CREATE, EDIT } from "../../../constants/formType.constants";
@@ -30,6 +30,8 @@ import useWindowSize from "../../../hooks/useWindowSize";
 import Spinner from "../../../components/Spinner";
 import Loading from "../../../components/Loading";
 import styled from "styled-components";
+import { tagsSelector } from "../state/userTags/userTags.reducer";
+import { averageColor } from "../../../utils/calendar.utils";
 
 dayjs.extend(timezone);
 
@@ -116,6 +118,7 @@ const CalendarComponent = ({
   initalFormValues,
 }) => {
   const { lists } = useSelector(listsSelector);
+  const { tags } = useSelector(tagsSelector);
   const { tasks, isLoadingTasks } = useSelector(tasksSelector);
   const localizer = useMemo(() => dayjsLocalizer(dayjs), []);
 
@@ -184,6 +187,10 @@ const CalendarComponent = ({
       key: LISTS,
     },
     {
+      label: "Tags",
+      key: TAGS,
+    },
+    {
       label: "Priority",
       key: PRIORITY,
     },
@@ -194,9 +201,8 @@ const CalendarComponent = ({
 
   const eventPropGetter = useCallback(
     (event) => {
-      let getListColor;
       if (colorBy === LISTS) {
-        getListColor =
+      const getListColor =
           lists.find((each) => each.id === event.listId)?.color ||
           INBOX_LIST_COLOR;
         return {
@@ -207,6 +213,31 @@ const CalendarComponent = ({
             padding: "3px",
           },
         };
+      } else if (colorBy === TAGS) {
+        if(event.tagIds.length === 0) {
+          return {
+            style: {
+              background: DEFAULT_TAG_COLOR,
+              border: `0.5px solid ${DEFAULT_TAG_COLOR}`,
+              opacity: event.isCompleted || event.isWontDo ? 0.5 : 1,
+              padding: "3px",
+            },
+          };
+        } else {
+          const colorMix = averageColor(
+            tags
+              .filter((tag) => event.tagIds.includes(tag.id))
+              .map((tag) => tag.color)
+          );
+          return {
+            style: {
+              background: colorMix,
+              border: `0.5px solid ${colorMix}`,
+              opacity: event.isCompleted || event.isWontDo ? 0.5 : 1,
+              padding: "3px",
+            },
+          };
+        }
       } else if (colorBy === PRIORITY) {
         return {
           style: {
@@ -218,7 +249,7 @@ const CalendarComponent = ({
         };
       }
     },
-    [lists, colorBy]
+    [lists, tags, colorBy]
   );
 
   const clickRef = useRef(null);
@@ -356,7 +387,7 @@ const CalendarComponent = ({
             formats={formats}
             selectable={true}
             onSelecting={onSelecting}
-            longPressThreshold={250}
+            longPressThreshold={400}
             onSelectEvent={onSelectEvent}
           />
         </CalendarWrapper>
