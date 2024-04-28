@@ -1,4 +1,4 @@
-import { Typography, Space, Dropdown, Button } from "antd";
+import { Typography, Space, Dropdown, Button, Switch } from "antd";
 import { Calendar, dayjsLocalizer, Views } from "react-big-calendar";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
@@ -10,11 +10,14 @@ import React, {
   useState,
 } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import CustomToolbar from "./CustomToolBar/CustomToolBar";
+import Toolbar from "./Custom/ToolBar";
 import { useSelector } from "react-redux";
 import { listsSelector } from "../state/userLists/userLists.reducer";
 import { tasksSelector } from "../state/userTasks/userTasks.reducer";
-import { DEFAULT_TAG_COLOR, INBOX_LIST_COLOR } from "../../../constants/color.constants";
+import {
+  DEFAULT_TAG_COLOR,
+  INBOX_LIST_COLOR,
+} from "../../../constants/color.constants";
 import { BgColorsOutlined } from "@ant-design/icons";
 import { PRIORITY } from "../../../constants/sort.constants";
 import { LISTS, LOADER_SIZE, TAGS } from "../../../constants/app.constants";
@@ -32,6 +35,7 @@ import Loading from "../../../components/Loading";
 import styled from "styled-components";
 import { tagsSelector } from "../state/userTags/userTags.reducer";
 import { averageColor } from "../../../utils/calendar.utils";
+import CalendarEvent from "./Custom/CalendarEvent";
 
 dayjs.extend(timezone);
 
@@ -111,6 +115,7 @@ const CalendarWrapper = styled.div`
 `;
 
 const CalendarComponent = ({
+  user,
   userTheme,
   setFormType,
   setTaskDetails,
@@ -202,7 +207,7 @@ const CalendarComponent = ({
   const eventPropGetter = useCallback(
     (event) => {
       if (colorBy === LISTS) {
-      const getListColor =
+        const getListColor =
           lists.find((each) => each.id === event.listId)?.color ||
           INBOX_LIST_COLOR;
         return {
@@ -214,7 +219,7 @@ const CalendarComponent = ({
           },
         };
       } else if (colorBy === TAGS) {
-        if(event.tagIds.length === 0) {
+        if (event.tagIds.length === 0) {
           return {
             style: {
               background: DEFAULT_TAG_COLOR,
@@ -374,7 +379,10 @@ const CalendarComponent = ({
             }
             views={views}
             components={{
-              toolbar: CustomToolbar,
+              toolbar: Toolbar,
+              event: ({ event }) => {
+                return <CalendarEvent event={event} user={user} />;
+              },
             }}
             timeslots={4}
             step={15}
