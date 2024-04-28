@@ -2503,10 +2503,10 @@ rc-virtual-list@^3.11.1, rc-virtual-list@^3.5.1, rc-virtual-list@^3.5.2:
     rc-resize-observer "^1.0.0"
     rc-util "^5.36.0"
 
-react-big-calendar@^1.6.4:
-  version "1.11.3"
-  resolved "https://registry.yarnpkg.com/react-big-calendar/-/react-big-calendar-1.11.3.tgz#78f19f3acd11c8f8a7738ac836e83dc852fefdb9"
-  integrity sha512-+vc1ev7VhvOtHY9sgLCgVLmEyQyiIiv3N0if45eqHZtX55wPPRo8WpONXMBvVz3LzfLjS0NwBtYRRcLlLqHoLQ==
+react-big-calendar@^1.12.0:
+  version "1.12.0"
+  resolved "https://registry.yarnpkg.com/react-big-calendar/-/react-big-calendar-1.12.0.tgz#390ea1c5ea9051b2c12019ff5d849d5dbe925a2c"
+  integrity sha512-QwF+ZVbjuDuVpaOBcqQmpYFZksZo6cxbfKSE+L45wCPPUpmV2uW5dU05tdlXavXfGs10M73kFlVXt3KmKT6YRw==
   dependencies:
     "@babel/runtime" "^7.20.7"
     clsx "^1.2.1"

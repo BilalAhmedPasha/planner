@@ -42,7 +42,7 @@ const CalendarWrapper = styled.div`
 
   .rbc-current-time-indicator {
     background-color: rgba(255, 87, 87, 1);
-    height: 0.2rem;
+    height: 0.1rem;
   }
 
   .rbc-today {
