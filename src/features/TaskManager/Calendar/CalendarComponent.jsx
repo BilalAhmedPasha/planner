@@ -25,6 +25,7 @@ import { TIME_FORMAT_IN_DB } from "../../../constants/dateTime.constants";
 import { priorityColorMappings } from "../../../constants/priority.constants";
 import { CREATE, EDIT } from "../../../constants/formType.constants";
 import {
+  ENDLESS,
   END_BY_DATE,
   END_BY_REPEAT_COUNT,
 } from "../../../constants/repeating.constants";
@@ -114,6 +115,11 @@ const CalendarWrapper = styled.div`
   }
 `;
 
+const setStartAndEndDate = ({ event, setViewStartDate, setViewEndDate }) => {
+  setViewStartDate(new Date(event[0]));
+  setViewEndDate(new Date(event[event.length - 1]));
+};
+
 const CalendarComponent = ({
   user,
   userTheme,
@@ -127,40 +133,104 @@ const CalendarComponent = ({
   const { tasks, isLoadingTasks } = useSelector(tasksSelector);
   const localizer = useMemo(() => dayjsLocalizer(dayjs), []);
 
+  const [viewStartDate, setViewStartDate] = useState(
+    new Date(dayjs(new Date()).startOf("week"))
+  );
+
+  const [viewEndDate, setViewEndDate] = useState(
+    new Date(dayjs(new Date()).endOf("week"))
+  );
+
   const taskEvents = useMemo(() => {
+    // Instead of calculating all taskEvents, only calculate currently visible
+    // All conversions happen in new Date() format of javascript
     const taskEventList = [];
     for (let i = 0; i < tasks.length; i++) {
       if (!tasks[i].isDeleted && tasks[i].taskDate !== null) {
-        if (tasks[i].isAllDay) {
-          taskEventList.push({
-            ...tasks[i],
-            title: tasks[i].name,
-            start: dayjs(tasks[i].taskDate).toDate(),
-            end: dayjs(tasks[i].taskDate).toDate(),
-            allDay: true,
-          });
-        } else {
-          const startTimeStamp = tasks[i].taskDate.replace(
-            "00:00:00",
-            tasks[i].startTime
-          );
-          const endTimeStamp = tasks[i].taskDate.replace(
-            "00:00:00",
-            tasks[i].endTime
-          );
+        // If repeating task
+        if (tasks[i].isRepeating) {
+          // For each date from startDate to endDate check if this task is valid, if yes push with that dates configuration
+          for (
+            let currentDate = new Date(viewStartDate.getTime());
+            currentDate <= viewEndDate;
+            currentDate.setDate(currentDate.getDate() + 1)
+          ) {
+            // Check if tasks[i] is valid on currentDate
+            // tasks[i].taskDate is equal to currentDate ? 
+            if(new Date(tasks[i].taskDate) <= currentDate) {
+              // Check if endless
+              if(tasks[i].endBy ===  ENDLESS) {
+                if (tasks[i].isAllDay) {
+                  taskEventList.push({
+                    ...tasks[i],
+                    title: tasks[i].name,
+                    isPlaceholderForRepeatingTask:
+                      new Date(tasks[i].taskDate) === currentDate
+                        ? undefined
+                        : true,
+                    taskDate: currentDate.toISOString(),
+                    start: dayjs(currentDate).toDate(),
+                    end: dayjs(currentDate).toDate(),
+                    allDay: true,
+                  });
+                } else {
+                  const startTimeStamp = new Date(
+                    currentDate
+                      .toString()
+                      .replace("00:00:00", tasks[i].startTime)
+                  );
+                  const endTimeStamp = new Date(currentDate
+                    .toString()
+                    .replace("00:00:00", tasks[i].endTime));
+                  taskEventList.push({
+                    ...tasks[i],
+                    title: tasks[i].name,
+                    isPlaceholderForRepeatingTask:
+                      new Date(tasks[i].taskDate) === currentDate
+                        ? undefined
+                        : true,
+                    start: dayjs(startTimeStamp).toDate(),
+                    end: dayjs(endTimeStamp).toDate(),
+                    allDay: false,
+                  });
+                }
+              }
+            }
+          }
+        }
+        // else
+        else {
+          if (tasks[i].isAllDay) {
+            taskEventList.push({
+              ...tasks[i],
+              title: tasks[i].name,
+              start: dayjs(tasks[i].taskDate).toDate(),
+              end: dayjs(tasks[i].taskDate).toDate(),
+              allDay: true,
+            });
+          } else {
+            const startTimeStamp = tasks[i].taskDate.replace(
+              "00:00:00",
+              tasks[i].startTime
+            );
+            const endTimeStamp = tasks[i].taskDate.replace(
+              "00:00:00",
+              tasks[i].endTime
+            );
 
-          taskEventList.push({
-            ...tasks[i],
-            title: tasks[i].name,
-            start: dayjs(startTimeStamp).toDate(),
-            end: dayjs(endTimeStamp).toDate(),
-            allDay: false,
-          });
+            taskEventList.push({
+              ...tasks[i],
+              title: tasks[i].name,
+              start: dayjs(startTimeStamp).toDate(),
+              end: dayjs(endTimeStamp).toDate(),
+              allDay: false,
+            });
+          }
         }
       }
     }
     return taskEventList;
-  }, [tasks]);
+  }, [tasks, viewStartDate, viewEndDate]);
 
   const { views } = useMemo(
     () => ({
@@ -281,7 +351,7 @@ const CalendarComponent = ({
             description: event.description,
             listId: event.listId,
             priority: event.priority,
-            tags: event.tagIds,
+            tagIds: event.tagIds,
             taskDate: dayjs(event.taskDate),
             duration:
               event.startTime && event.endTime
@@ -371,6 +441,13 @@ const CalendarComponent = ({
         <CalendarWrapper userTheme={userTheme}>
           <Calendar
             events={taskEvents}
+            onRangeChange={(event) =>
+              setStartAndEndDate({
+                event: event,
+                setViewStartDate,
+                setViewEndDate,
+              })
+            }
             localizer={localizer}
             defaultView={
               disableWeekView({ currentWidth: screenSize.width })
@@ -405,3 +482,7 @@ const CalendarComponent = ({
 };
 
 export default React.memo(CalendarComponent);
+
+// 2024-04-29T00:00:00+05:30
+
+// 2024-05-11T18:30:00.000Z

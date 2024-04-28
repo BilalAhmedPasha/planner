@@ -30,8 +30,8 @@ import {
 } from "../../state/userTasks/userTasks.actions";
 import { useDispatch } from "react-redux";
 
-const getPriorityColor = ({ item, completedColor, completedBGColor }) => {
-  if (item.isCompleted || item.isWontDo) {
+const getPriorityColor = ({ isInCalendar, item, completedColor, completedBGColor }) => {
+  if (!isInCalendar && (item.isCompleted || item.isWontDo)) {
     return { color: completedColor, bgColor: completedBGColor };
   }
   if (item.priority === HIGH) {
@@ -51,8 +51,7 @@ const CheckBoxDropdown = ({
   setShowCheckBoxMenu,
   checkBoxContent,
   setCheckBoxContent,
-  backgroundColor,
-  backgroundHoverColor,
+  isInCalendar = false,
 }) => {
   const dispatch = useDispatch();
 
@@ -91,6 +90,7 @@ const CheckBoxDropdown = ({
     const markedTime = dayjs.utc().endOf(DAY).format();
     let shouldCreateNewTask = true;
     let updatedTaskDate = null;
+
     if (taskDetails.isRepeating) {
       updatedTaskDate = dayjs(taskDetails.taskDate).add(
         1,
@@ -108,7 +108,10 @@ const CheckBoxDropdown = ({
         }
       }
     }
-
+    if(isInCalendar) {
+      delete taskDetails.start;
+      delete taskDetails.end;
+    }
     return dispatch(
       completeTaskAction(
         user.uid,
@@ -174,6 +177,7 @@ const CheckBoxDropdown = ({
   };
 
   const colorConfig = getPriorityColor({
+    isInCalendar: isInCalendar,
     item: taskDetails,
     completedColor: colorBorder,
     completedBGColor: colorBorderSecondary,
@@ -191,10 +195,10 @@ const CheckBoxDropdown = ({
     >
       <CheckBoxInput
         uniCode={checkBoxContent}
-        backgroundColor={backgroundColor || colorConfig.color}
-        borderColor={backgroundColor || colorConfig.color}
-        checkBoxColor={backgroundColor || colorConfig.color}
-        hoverBgColor={backgroundHoverColor || colorConfig.bgColor}
+        backgroundColor={colorConfig.color}
+        borderColor={colorConfig.color}
+        checkBoxColor={colorConfig.color}
+        hoverBgColor={colorConfig.bgColor}
         onChange={handleClick}
         onContextMenu={(e) => handleRightClick({ e, taskDetails })}
         checked={taskDetails.isCompleted || taskDetails.isWontDo}

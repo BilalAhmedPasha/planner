@@ -24,7 +24,11 @@ const CalendarEvent = ({ event, user }) => {
 
   return (
     <div
-      style={{ paddingLeft: "0.25rem", paddingTop: "0.25rem" }}
+      style={{
+        paddingLeft: "0.25rem",
+        paddingTop: "0.25rem",
+        overflow: "scroll",
+      }}
       onClick={(e) => {
         e.stopPropagation();
       }}
@@ -38,6 +42,7 @@ const CalendarEvent = ({ event, user }) => {
           setShowCheckBoxMenu={setShowCheckBoxMenu}
           checkBoxContent={checkBoxContent}
           setCheckBoxContent={setCheckBoxContent}
+          isInCalendar={true}
         />
         <Typography.Text strong={true} ellipsis={true} tooltip={false}>
           {event.name}
