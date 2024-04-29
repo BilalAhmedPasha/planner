@@ -25,32 +25,35 @@ const CalendarEvent = ({ event, user }) => {
   return (
     <div
       style={{
-        paddingLeft: "0.25rem",
-        paddingTop: "0.25rem",
+        paddingLeft: "0.15rem",
+        paddingTop: "0.15rem",
         overflow: "scroll",
-      }}
-      onClick={(e) => {
-        e.stopPropagation();
       }}
       onKeyDown={keyPress}
     >
       <Space>
-        <CheckBoxDropdown
-          user={user}
-          taskDetails={event}
-          showCheckBoxMenu={showCheckBoxMenu}
-          setShowCheckBoxMenu={setShowCheckBoxMenu}
-          checkBoxContent={checkBoxContent}
-          setCheckBoxContent={setCheckBoxContent}
-          isInCalendar={true}
-        />
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
+          <CheckBoxDropdown
+            user={user}
+            taskDetails={event}
+            showCheckBoxMenu={showCheckBoxMenu}
+            setShowCheckBoxMenu={setShowCheckBoxMenu}
+            checkBoxContent={checkBoxContent}
+            setCheckBoxContent={setCheckBoxContent}
+            isInCalendar={true}
+          />
+        </div>
         <Typography.Text strong={true} ellipsis={true} tooltip={false}>
-          {event.name}
+          {event.name} ({event.id})
         </Typography.Text>
       </Space>
       <br />
       <Space>
-        {event.isRepeating && (
+        {event.isRepeating && event.isPlaceHolderForRepeatingTask && (
           <SyncOutlined
             style={{
               color: colorTextBase,

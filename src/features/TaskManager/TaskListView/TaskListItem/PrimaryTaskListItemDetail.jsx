@@ -156,7 +156,7 @@ const PrimaryTaskListItemDetail = ({
           overflowX: "auto",
         }}
         disabled={taskDetails.isCompleted || taskDetails.isWontDo}
-      >{`${taskDetails.name}`}</Typography.Text>
+      >{`${taskDetails.name} (${taskDetails.id})`}</Typography.Text>
       <div
         style={{
           whiteSpace: "nowrap",

@@ -29,8 +29,17 @@ import {
   wontDoTaskAction,
 } from "../../state/userTasks/userTasks.actions";
 import { useDispatch } from "react-redux";
+import {
+  handleCompletePlaceholderRepeatingTask,
+  handleWontDoPlaceholderRepeatingTask,
+} from "../TaskList.utils";
 
-const getPriorityColor = ({ isInCalendar, item, completedColor, completedBGColor }) => {
+const getPriorityColor = ({
+  isInCalendar,
+  item,
+  completedColor,
+  completedBGColor,
+}) => {
   if (!isInCalendar && (item.isCompleted || item.isWontDo)) {
     return { color: completedColor, bgColor: completedBGColor };
   }
@@ -91,37 +100,60 @@ const CheckBoxDropdown = ({
     let shouldCreateNewTask = true;
     let updatedTaskDate = null;
 
-    if (taskDetails.isRepeating) {
-      updatedTaskDate = dayjs(taskDetails.taskDate).add(
-        1,
-        repeatMapping[taskDetails.repeatFrequency]
-      );
-      let endTaskDate = null;
-      if (taskDetails.endBy === END_BY_DATE) {
-        endTaskDate = dayjs(taskDetails.endByDate).endOf(DAY);
-      } else if (taskDetails.endBy === END_BY_REPEAT_COUNT) {
-        endTaskDate = dayjs(taskDetails.endByRepeatCountDate).endOf(DAY);
-      }
-      if (endTaskDate) {
-        if (updatedTaskDate.isAfter(endTaskDate)) {
-          shouldCreateNewTask = false;
+    // Not a placeholder task
+    if (!taskDetails.isPlaceHolderForRepeatingTask) {
+      if (taskDetails.isRepeating) {
+        updatedTaskDate = dayjs(taskDetails.taskDate).add(
+          1,
+          repeatMapping[taskDetails.repeatFrequency]
+        );
+
+        if (taskDetails.excludedDates && taskDetails.excludedDates.length > 0) {
+          while (
+            taskDetails.excludedDates.includes(
+              updatedTaskDate.toDate().toISOString()
+            )
+          ) {
+            updatedTaskDate = updatedTaskDate.add(
+              1,
+              repeatMapping[taskDetails.repeatFrequency]
+            );
+          }
+        }
+
+        let endTaskDate = null;
+        if (taskDetails.endBy === END_BY_DATE) {
+          endTaskDate = dayjs(taskDetails.endByDate).endOf(DAY);
+        } else if (taskDetails.endBy === END_BY_REPEAT_COUNT) {
+          endTaskDate = dayjs(taskDetails.endByRepeatCountDate).endOf(DAY);
+        }
+        if (endTaskDate) {
+          if (updatedTaskDate.isAfter(endTaskDate)) {
+            shouldCreateNewTask = false;
+          }
         }
       }
-    }
-    if(isInCalendar) {
-      delete taskDetails.start;
-      delete taskDetails.end;
-    }
-    return dispatch(
-      completeTaskAction(
-        user.uid,
+      if (isInCalendar) {
+        delete taskDetails.start;
+        delete taskDetails.end;
+      }
+      return dispatch(
+        completeTaskAction(
+          user.uid,
+          taskDetails,
+          isCompleted,
+          markedTime,
+          updatedTaskDate?.format(),
+          shouldCreateNewTask
+        )
+      );
+    } else {
+      return handleCompletePlaceholderRepeatingTask({
+        user,
         taskDetails,
-        isCompleted,
-        markedTime,
-        updatedTaskDate?.format(),
-        shouldCreateNewTask
-      )
-    );
+        dispatch,
+      });
+    }
   };
 
   const markTaskWontDo = (isWontDo) => {
@@ -129,33 +161,65 @@ const CheckBoxDropdown = ({
     let shouldCreateNewTask = true;
     let updatedTaskDate = null;
 
-    if (taskDetails.isRepeating) {
-      updatedTaskDate = dayjs(taskDetails.taskDate).add(
-        1,
-        repeatMapping[taskDetails.repeatFrequency]
-      );
-      let endTaskDate = null;
-      if (taskDetails.endBy === END_BY_DATE) {
-        endTaskDate = dayjs(taskDetails.endByDate).endOf(DAY);
-      } else if (taskDetails.endBy === END_BY_REPEAT_COUNT) {
-        endTaskDate = dayjs(taskDetails.endByRepeatCountDate).endOf(DAY);
-      }
-      if (endTaskDate) {
-        if (updatedTaskDate.isAfter(endTaskDate)) {
-          shouldCreateNewTask = false;
+    if (!taskDetails.isPlaceHolderForRepeatingTask) {
+      if (
+        taskDetails.isRepeating &&
+        !taskDetails.isPlaceHolderForRepeatingTask
+      ) {
+        updatedTaskDate = dayjs(taskDetails.taskDate).add(
+          1,
+          repeatMapping[taskDetails.repeatFrequency]
+        );
+
+        if (
+          taskDetails?.excludedDates &&
+          taskDetails.excludedDates.length > 0
+        ) {
+          while (
+            taskDetails.excludedDates.includes(
+              updatedTaskDate.toDate().toISOString()
+            )
+          ) {
+            updatedTaskDate = updatedTaskDate.add(
+              1,
+              repeatMapping[taskDetails.repeatFrequency]
+            );
+          }
+        }
+
+        let endTaskDate = null;
+        if (taskDetails.endBy === END_BY_DATE) {
+          endTaskDate = dayjs(taskDetails.endByDate).endOf(DAY);
+        } else if (taskDetails.endBy === END_BY_REPEAT_COUNT) {
+          endTaskDate = dayjs(taskDetails.endByRepeatCountDate).endOf(DAY);
+        }
+        if (endTaskDate) {
+          if (updatedTaskDate.isAfter(endTaskDate)) {
+            shouldCreateNewTask = false;
+          }
         }
       }
-    }
-    return dispatch(
-      wontDoTaskAction(
-        user.uid,
+      if (isInCalendar) {
+        delete taskDetails.start;
+        delete taskDetails.end;
+      }
+      return dispatch(
+        wontDoTaskAction(
+          user.uid,
+          taskDetails,
+          isWontDo,
+          markedTime,
+          updatedTaskDate?.format(),
+          shouldCreateNewTask
+        )
+      );
+    } else {
+      return handleWontDoPlaceholderRepeatingTask({
+        user,
         taskDetails,
-        isWontDo,
-        markedTime,
-        updatedTaskDate?.format(),
-        shouldCreateNewTask
-      )
-    );
+        dispatch,
+      });
+    }
   };
 
   const handleMenuClick = (e) => {

@@ -39,6 +39,7 @@ import {
 import {
   addTaskAction,
   editTaskAction,
+  updateRepeatingTaskAction,
 } from "../state/userTasks/userTasks.actions";
 
 export const getFormValueFromTaskDetail = ({ taskDetails }) => {
@@ -144,6 +145,8 @@ export const handleAddTask = ({
     createdTime: createdTime,
     modifiedTime: createdTime,
   };
+  delete newTask.start;
+  delete newTask.end;
   dispatch(addTaskAction(user.uid, newTask)).then((response) => {
     if (response.success === SUCCESS) {
       createTaskSuccess();
@@ -192,16 +195,26 @@ export const handleEditTask = ({
     startTime: newTaskStartTime,
     endTime: newTaskEndTime,
     isRepeating:
-      formValues.taskDate && formValues.repeatFrequency ? true : false,
+      !taskDetails.isPlaceHolderForRepeatingTask &&
+      formValues.taskDate &&
+      formValues.repeatFrequency
+        ? true
+        : false,
     repeatFrequency:
-      formValues.taskDate && formValues.repeatFrequency
+      !taskDetails.isPlaceHolderForRepeatingTask &&
+      formValues.taskDate &&
+      formValues.repeatFrequency
         ? formValues.repeatFrequency
         : null,
     endBy:
-      formValues.taskDate && formValues.repeatFrequency && formValues.endBy
+      !taskDetails.isPlaceHolderForRepeatingTask &&
+      formValues.taskDate &&
+      formValues.repeatFrequency &&
+      formValues.endBy
         ? formValues.endBy
         : null,
     endByDate:
+      !taskDetails.isPlaceHolderForRepeatingTask &&
       formValues.taskDate &&
       formValues.repeatFrequency &&
       formValues.endBy === END_BY_DATE &&
@@ -209,6 +222,7 @@ export const handleEditTask = ({
         ? formValues.endByDate.endOf(DAY).format()
         : null,
     endByRepeatCount:
+      !taskDetails.isPlaceHolderForRepeatingTask &&
       formValues.taskDate &&
       formValues.repeatFrequency &&
       formValues.endBy === END_BY_REPEAT_COUNT &&
@@ -217,6 +231,7 @@ export const handleEditTask = ({
         ? parseInt(formValues.endByRepeatCount)
         : null,
     endByRepeatCountDate:
+      !taskDetails.isPlaceHolderForRepeatingTask &&
       formValues.taskDate &&
       formValues.repeatFrequency &&
       formValues.endBy === END_BY_REPEAT_COUNT &&
@@ -234,25 +249,67 @@ export const handleEditTask = ({
     progress: parseInt(formValues.progress),
     modifiedTime: modifiedTime,
   };
-  dispatch(editTaskAction(user.uid, modifiedTask, modifiedTask.id)).then(
-    (response) => {
-      if (response.success === SUCCESS) {
-        const newFormValues = getFormValueFromTaskDetail({
-          taskDetails: modifiedTask,
-        });
-        editTaskSuccess();
-        if (isFromCalendar) {
-          setOpenDialog(false);
+  // Here if was a placeholder for a future repeating task and we are seperating it from the repeat cycle
+  // Add this task date to exclude from repeat cycle
+  delete modifiedTask.start;
+  delete modifiedTask.end;
+  if (!modifiedTask.isPlaceHolderForRepeatingTask) {
+    dispatch(editTaskAction(user.uid, modifiedTask, modifiedTask.id)).then(
+      (response) => {
+        if (response.success === SUCCESS) {
+          const newFormValues = getFormValueFromTaskDetail({
+            taskDetails: modifiedTask,
+          });
+          editTaskSuccess();
+          if (isFromCalendar) {
+            setOpenDialog(false);
+          } else {
+            setFormType(VIEW);
+            form.setFieldsValue(newFormValues);
+            setLastSavedFormValues(newFormValues);
+          }
         } else {
-          setFormType(VIEW);
-          form.setFieldsValue(newFormValues);
-          setLastSavedFormValues(newFormValues);
+          editTaskFailed();
         }
+      }
+    );
+  } else {
+    dispatch(
+      addTaskAction(user.uid, {
+        ...modifiedTask,
+        isPlaceHolderForRepeatingTask: false,
+      })
+    ).then((response) => {
+      if (response.success === SUCCESS) {
+        // Update the reference task edited exclusion date
+        dispatch(
+          updateRepeatingTaskAction(
+            user.uid,
+            modifiedTask.repeatingTaskReferenceId,
+            newTaskDate
+          )
+        ).then((response) => {
+          if (response.success === SUCCESS) {
+            const newFormValues = getFormValueFromTaskDetail({
+              taskDetails: modifiedTask,
+            });
+            editTaskSuccess();
+            if (isFromCalendar) {
+              setOpenDialog(false);
+            } else {
+              setFormType(VIEW);
+              form.setFieldsValue(newFormValues);
+              setLastSavedFormValues(newFormValues);
+            }
+          } else {
+            editTaskFailed();
+          }
+        });
       } else {
         editTaskFailed();
       }
-    }
-  );
+    });
+  }
 };
 
 export const computeSectionData = ({ tasks, currentSection }) => {
@@ -283,4 +340,83 @@ export const computeSectionData = ({ tasks, currentSection }) => {
     return getByTagId({ tasks, tagId: currentSection.id });
   }
   return [];
+};
+
+export const handleCompletePlaceholderRepeatingTask = ({
+  user,
+  taskDetails,
+  dispatch,
+}) => {
+  const repeatingTaskReferenceId = taskDetails.id;
+  const newTask = { ...taskDetails };
+  newTask.createdTime = new Date().toISOString();
+  newTask.endBy = null;
+  newTask.endByDate = null;
+  newTask.endByRepeatCount = null;
+  newTask.endByRepeatCountDate = null;
+  newTask.endBy = null;
+  newTask.id = null;
+  newTask.isCompleted = true;
+  newTask.isWontDo = false;
+  newTask.isPlaceHolderForRepeatingTask = false;
+  newTask.isRepeating = false;
+  newTask.modifiedTime = new Date().toISOString();
+  newTask.repeatFrequency = null;
+  newTask.repeatingTaskReferenceId = null;
+
+  delete newTask.start;
+  delete newTask.end;
+
+  return dispatch(addTaskAction(user.uid, newTask)).then((response) => {
+    if (response.success === SUCCESS) {
+      // Add this task date to excludedDates array
+      return dispatch(
+        updateRepeatingTaskAction(
+          user.uid,
+          repeatingTaskReferenceId,
+          newTask.taskDate
+        )
+      );
+    }
+  });
+};
+
+
+export const handleWontDoPlaceholderRepeatingTask = ({
+  user,
+  taskDetails,
+  dispatch,
+}) => {
+  const repeatingTaskReferenceId = taskDetails.id;
+  const newTask = { ...taskDetails };
+  newTask.createdTime = new Date().toISOString();
+  newTask.endBy = null;
+  newTask.endByDate = null;
+  newTask.endByRepeatCount = null;
+  newTask.endByRepeatCountDate = null;
+  newTask.endBy = null;
+  newTask.id = null;
+  newTask.isCompleted = false;
+  newTask.isWontDo = true;
+  newTask.isPlaceHolderForRepeatingTask = false;
+  newTask.isRepeating = false;
+  newTask.modifiedTime = new Date().toISOString();
+  newTask.repeatFrequency = null;
+  newTask.repeatingTaskReferenceId = null;
+
+  delete newTask.start;
+  delete newTask.end;
+
+  return dispatch(addTaskAction(user.uid, newTask)).then((response) => {
+    if (response.success === SUCCESS) {
+      // Add this task date to excludedDates array
+      return dispatch(
+        updateRepeatingTaskAction(
+          user.uid,
+          repeatingTaskReferenceId,
+          newTask.taskDate
+        )
+      );
+    }
+  });
 };

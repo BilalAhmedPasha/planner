@@ -1,4 +1,4 @@
-import { Typography, Space, Dropdown, Button, Switch } from "antd";
+import { Typography, Space, Dropdown, Button } from "antd";
 import { Calendar, dayjsLocalizer, Views } from "react-big-calendar";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
@@ -25,7 +25,6 @@ import { TIME_FORMAT_IN_DB } from "../../../constants/dateTime.constants";
 import { priorityColorMappings } from "../../../constants/priority.constants";
 import { CREATE, EDIT } from "../../../constants/formType.constants";
 import {
-  ENDLESS,
   END_BY_DATE,
   END_BY_REPEAT_COUNT,
 } from "../../../constants/repeating.constants";
@@ -33,87 +32,13 @@ import { disableWeekView } from "../../../utils/screen.utils";
 import useWindowSize from "../../../hooks/useWindowSize";
 import Spinner from "../../../components/Spinner";
 import Loading from "../../../components/Loading";
-import styled from "styled-components";
 import { tagsSelector } from "../state/userTags/userTags.reducer";
 import { averageColor } from "../../../utils/calendar.utils";
 import CalendarEvent from "./Custom/CalendarEvent";
+import { calculateCalendarEvents } from "./CalendarUtils";
+import CalendarWrapper from "./Custom/CalendarWrapper";
 
 dayjs.extend(timezone);
-
-const CalendarWrapper = styled.div`
-  height: 92vh;
-  overflow-y: auto;
-  .rbc-calendar {
-    color: ${(props) => (props.userTheme ? "#fff" : "#000")};
-  }
-
-  .rbc-current-time-indicator {
-    background-color: rgba(255, 87, 87, 1);
-    height: 0.1rem;
-  }
-
-  .rbc-today {
-    color: ${(props) => (props.userTheme ? "#fff" : "#000")};
-    background-color: ${(props) =>
-      props.userTheme
-        ? "rgba(39, 192, 255, 0.075)"
-        : "rgba(39, 192, 255, 0.15)"};
-  }
-
-  .rbc-header {
-    border-bottom: 0.75px solid
-      ${(props) =>
-        props.userTheme ? "rgba(255, 255, 255, 0.2)" : "rgba(66, 66, 66, 0.5)"};
-  }
-
-  .rbc-header + .rbc-header {
-    border-left: 0.75px solid
-      ${(props) =>
-        props.userTheme ? "rgba(255, 255, 255, 0.2)" : "rgba(66, 66, 66, 0.5)"};
-  }
-
-  .rbc-day-bg + .rbc-day-bg {
-    border-left: 0.75px solid
-      ${(props) =>
-        props.userTheme ? "rgba(255, 255, 255, 0.2)" : "rgba(66, 66, 66, 0.5)"};
-  }
-
-  .rbc-timeslot-group {
-    border-bottom: 0.75px solid
-      ${(props) =>
-        props.userTheme ? "rgba(255, 255, 255, 0.2)" : "rgba(66, 66, 66, 0.5)"};
-  }
-
-  .rbc-time-view {
-    border: 0.75px solid
-      ${(props) =>
-        props.userTheme ? "rgba(255, 255, 255, 0.2)" : "rgba(66, 66, 66, 0.5)"};
-  }
-
-  .rbc-time-content {
-    border-top: 0.75px solid
-      ${(props) =>
-        props.userTheme ? "rgba(255, 255, 255, 0.2)" : "rgba(66, 66, 66, 0.5)"};
-  }
-
-  .rbc-time-content > * + * > * {
-    border-left: 0.75px solid
-      ${(props) =>
-        props.userTheme ? "rgba(255, 255, 255, 0.2)" : "rgba(66, 66, 66, 0.5)"};
-  }
-
-  .rbc-time-header-content {
-    border-left: 0.75px solid
-      ${(props) =>
-        props.userTheme ? "rgba(255, 255, 255, 0.2)" : "rgba(66, 66, 66, 0.5)"};
-  }
-
-  .rbc-day-slot .rbc-time-slot {
-    border-top: 0px solid
-      ${(props) =>
-        props.userTheme ? "rgba(255, 255, 255, 0.2)" : "rgba(66, 66, 66, 0.5)"};
-  }
-`;
 
 const setStartAndEndDate = ({ event, setViewStartDate, setViewEndDate }) => {
   setViewStartDate(new Date(event[0]));
@@ -141,96 +66,10 @@ const CalendarComponent = ({
     new Date(dayjs(new Date()).endOf("week"))
   );
 
-  const taskEvents = useMemo(() => {
-    // Instead of calculating all taskEvents, only calculate currently visible
-    // All conversions happen in new Date() format of javascript
-    const taskEventList = [];
-    for (let i = 0; i < tasks.length; i++) {
-      if (!tasks[i].isDeleted && tasks[i].taskDate !== null) {
-        // If repeating task
-        if (tasks[i].isRepeating) {
-          // For each date from startDate to endDate check if this task is valid, if yes push with that dates configuration
-          for (
-            let currentDate = new Date(viewStartDate.getTime());
-            currentDate <= viewEndDate;
-            currentDate.setDate(currentDate.getDate() + 1)
-          ) {
-            // Check if tasks[i] is valid on currentDate
-            // tasks[i].taskDate is equal to currentDate ? 
-            if(new Date(tasks[i].taskDate) <= currentDate) {
-              // Check if endless
-              if(tasks[i].endBy ===  ENDLESS) {
-                if (tasks[i].isAllDay) {
-                  taskEventList.push({
-                    ...tasks[i],
-                    title: tasks[i].name,
-                    isPlaceholderForRepeatingTask:
-                      new Date(tasks[i].taskDate) === currentDate
-                        ? undefined
-                        : true,
-                    taskDate: currentDate.toISOString(),
-                    start: dayjs(currentDate).toDate(),
-                    end: dayjs(currentDate).toDate(),
-                    allDay: true,
-                  });
-                } else {
-                  const startTimeStamp = new Date(
-                    currentDate
-                      .toString()
-                      .replace("00:00:00", tasks[i].startTime)
-                  );
-                  const endTimeStamp = new Date(currentDate
-                    .toString()
-                    .replace("00:00:00", tasks[i].endTime));
-                  taskEventList.push({
-                    ...tasks[i],
-                    title: tasks[i].name,
-                    isPlaceholderForRepeatingTask:
-                      new Date(tasks[i].taskDate) === currentDate
-                        ? undefined
-                        : true,
-                    start: dayjs(startTimeStamp).toDate(),
-                    end: dayjs(endTimeStamp).toDate(),
-                    allDay: false,
-                  });
-                }
-              }
-            }
-          }
-        }
-        // else
-        else {
-          if (tasks[i].isAllDay) {
-            taskEventList.push({
-              ...tasks[i],
-              title: tasks[i].name,
-              start: dayjs(tasks[i].taskDate).toDate(),
-              end: dayjs(tasks[i].taskDate).toDate(),
-              allDay: true,
-            });
-          } else {
-            const startTimeStamp = tasks[i].taskDate.replace(
-              "00:00:00",
-              tasks[i].startTime
-            );
-            const endTimeStamp = tasks[i].taskDate.replace(
-              "00:00:00",
-              tasks[i].endTime
-            );
-
-            taskEventList.push({
-              ...tasks[i],
-              title: tasks[i].name,
-              start: dayjs(startTimeStamp).toDate(),
-              end: dayjs(endTimeStamp).toDate(),
-              allDay: false,
-            });
-          }
-        }
-      }
-    }
-    return taskEventList;
-  }, [tasks, viewStartDate, viewEndDate]);
+  const taskEvents = useMemo(
+    () => calculateCalendarEvents({ tasks, viewStartDate, viewEndDate }),
+    [tasks, viewStartDate, viewEndDate]
+  );
 
   const { views } = useMemo(
     () => ({
@@ -286,6 +125,7 @@ const CalendarComponent = ({
             border: `0.5px solid ${getListColor}`,
             opacity: event.isCompleted || event.isWontDo ? 0.5 : 1,
             padding: "3px",
+            overflow: "scroll"
           },
         };
       } else if (colorBy === TAGS) {
@@ -296,6 +136,7 @@ const CalendarComponent = ({
               border: `0.5px solid ${DEFAULT_TAG_COLOR}`,
               opacity: event.isCompleted || event.isWontDo ? 0.5 : 1,
               padding: "3px",
+              overflow: "scroll",
             },
           };
         } else {
@@ -310,6 +151,7 @@ const CalendarComponent = ({
               border: `0.5px solid ${colorMix}`,
               opacity: event.isCompleted || event.isWontDo ? 0.5 : 1,
               padding: "3px",
+              overflow: "scroll",
             },
           };
         }
@@ -320,6 +162,7 @@ const CalendarComponent = ({
             border: `0.5px solid ${priorityColorMappings[event.priority]}`,
             opacity: event.isCompleted || event.isWontDo ? 0.5 : 1,
             padding: "3px",
+            overflow: "scroll",
           },
         };
       }
@@ -482,7 +325,3 @@ const CalendarComponent = ({
 };
 
 export default React.memo(CalendarComponent);
-
-// 2024-04-29T00:00:00+05:30
-
-// 2024-05-11T18:30:00.000Z
