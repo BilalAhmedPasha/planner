@@ -22,7 +22,7 @@ import {
   WONT_DO,
 } from "../../../../constants/app.constants";
 import { cross, tick } from "../../../../constants/checkBox.constants";
-import { DAY } from "../../../../constants/dateTime.constants";
+import { DAY, DB_TIME_STAMP_FORMAT } from "../../../../constants/dateTime.constants";
 import dayjs from "../../../../utils/dateTime.utils";
 import {
   completeTaskAction,
@@ -111,7 +111,7 @@ const CheckBoxDropdown = ({
         if (taskDetails.excludedDates && taskDetails.excludedDates.length > 0) {
           while (
             taskDetails.excludedDates.includes(
-              updatedTaskDate.toDate().toISOString()
+              updatedTaskDate.startOf(DAY).format(DB_TIME_STAMP_FORMAT)
             )
           ) {
             updatedTaskDate = updatedTaskDate.add(
@@ -177,7 +177,7 @@ const CheckBoxDropdown = ({
         ) {
           while (
             taskDetails.excludedDates.includes(
-              updatedTaskDate.toDate().toISOString()
+              updatedTaskDate.startOf(DAY).format(DB_TIME_STAMP_FORMAT)
             )
           ) {
             updatedTaskDate = updatedTaskDate.add(

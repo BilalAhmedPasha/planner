@@ -8,3 +8,5 @@ export const TIME_ZONE = "Asia/Kolkata";
 export const DAY = "day";
 export const WEEK = "week";
 export const MONTH = "month";
+
+export const DB_TIME_STAMP_FORMAT = "YYYY-MM-DDTHH:mm:ssZ";

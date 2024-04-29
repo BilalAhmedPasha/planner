@@ -169,6 +169,7 @@ const SubTaskPanel = ({ form, subTaskPanelHeight, closeSubTaskPanel }) => {
                 cursor: "pointer",
                 width: "100%",
               }}
+              showNow={true}
             />
           </StyledFormItem>
         )}

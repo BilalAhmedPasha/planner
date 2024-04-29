@@ -1,10 +1,11 @@
+import { DAY, DB_TIME_STAMP_FORMAT } from "../../../constants/dateTime.constants";
 import {
   END_BY_DATE,
   END_BY_REPEAT_COUNT,
   MONTHLY,
   WEEKLY,
 } from "../../../constants/repeating.constants";
-import dayjs from "dayjs";
+import dayjs from "../../../utils/dateTime.utils";
 
 export const calculateCalendarEvents = ({
   tasks,
@@ -84,7 +85,10 @@ export const calculateCalendarEvents = ({
                   currentDate.getTime()
                     ? null
                     : tasks[i].id,
-                taskDate: currentDate.toISOString(),
+                taskDate: dayjs(currentDate)
+                  .tz()
+                  .startOf(DAY)
+                  .format(DB_TIME_STAMP_FORMAT),
                 start: dayjs(currentDate).toDate(),
                 end: dayjs(currentDate).toDate(),
                 allDay: true,
@@ -109,7 +113,10 @@ export const calculateCalendarEvents = ({
                   currentDate.getTime()
                     ? null
                     : tasks[i].id,
-                taskDate: currentDate.toISOString(),
+                taskDate: dayjs(currentDate)
+                  .tz()
+                  .startOf(DAY)
+                  .format(DB_TIME_STAMP_FORMAT),
                 start: dayjs(startTimeStamp).toDate(),
                 end: dayjs(endTimeStamp).toDate(),
                 allDay: false,

@@ -1,6 +1,6 @@
 import { Space, Typography, theme } from "antd";
 import { SyncOutlined } from "@ant-design/icons";
-import dayjs from "dayjs";
+import dayjs from "../../../../utils/dateTime.utils";
 import { useState } from "react";
 import { cross, tick } from "../../../../constants/checkBox.constants";
 import CheckBoxDropdown from "../../TaskListView/TaskListItem/CheckBoxDropdown";

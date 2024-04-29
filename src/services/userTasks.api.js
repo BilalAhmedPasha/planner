@@ -62,9 +62,6 @@ export const completeTaskApi = (
   const userDocRef = doc(db, "users", userId);
   const taskCollectionRef = collection(userDocRef, TASKS);
   const docRef = doc(taskCollectionRef, taskDetails.id);
-
-  
-
   if (!taskDetails.isRepeating) {
     const isWontDoNew = isCompleted ? false : taskDetails.isWontDo;
     return updateDoc(docRef, {
@@ -122,7 +119,6 @@ export const wontDoTaskApi = (
   const userDocRef = doc(db, "users", userId);
   const taskCollectionRef = collection(userDocRef, TASKS);
   const docRef = doc(taskCollectionRef, taskDetails.id);
-
   if (!taskDetails.isRepeating) {
     const isCompletedNew = isWontDo ? false : taskDetails.isCompleted;
     return updateDoc(docRef, {

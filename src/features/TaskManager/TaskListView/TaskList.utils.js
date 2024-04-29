@@ -14,8 +14,10 @@ import {
 } from "../../../constants/app.constants";
 import { DAY } from "../../../constants/calendar.constants";
 import {
+  DB_TIME_STAMP_FORMAT,
   TIME_FORMAT_IN_DB,
   TIME_ZONE,
+  DAY as DATETIME_DAY,
 } from "../../../constants/dateTime.constants";
 import { VIEW } from "../../../constants/formType.constants";
 import {
@@ -349,7 +351,10 @@ export const handleCompletePlaceholderRepeatingTask = ({
 }) => {
   const repeatingTaskReferenceId = taskDetails.id;
   const newTask = { ...taskDetails };
-  newTask.createdTime = new Date().toISOString();
+  newTask.createdTime = dayjs(new Date())
+    .tz()
+    .startOf(DATETIME_DAY)
+    .format(DB_TIME_STAMP_FORMAT);
   newTask.endBy = null;
   newTask.endByDate = null;
   newTask.endByRepeatCount = null;
@@ -360,7 +365,10 @@ export const handleCompletePlaceholderRepeatingTask = ({
   newTask.isWontDo = false;
   newTask.isPlaceHolderForRepeatingTask = false;
   newTask.isRepeating = false;
-  newTask.modifiedTime = new Date().toISOString();
+  newTask.modifiedTime =  dayjs(new Date())
+    .tz()
+    .startOf(DATETIME_DAY)
+    .format(DB_TIME_STAMP_FORMAT);
   newTask.repeatFrequency = null;
   newTask.repeatingTaskReferenceId = null;
 
@@ -389,7 +397,10 @@ export const handleWontDoPlaceholderRepeatingTask = ({
 }) => {
   const repeatingTaskReferenceId = taskDetails.id;
   const newTask = { ...taskDetails };
-  newTask.createdTime = new Date().toISOString();
+  newTask.createdTime = dayjs(new Date())
+    .tz()
+    .startOf(DATETIME_DAY)
+    .format(DB_TIME_STAMP_FORMAT);
   newTask.endBy = null;
   newTask.endByDate = null;
   newTask.endByRepeatCount = null;
@@ -400,7 +411,10 @@ export const handleWontDoPlaceholderRepeatingTask = ({
   newTask.isWontDo = true;
   newTask.isPlaceHolderForRepeatingTask = false;
   newTask.isRepeating = false;
-  newTask.modifiedTime = new Date().toISOString();
+  newTask.modifiedTime =  dayjs(new Date())
+    .tz()
+    .startOf(DATETIME_DAY)
+    .format(DB_TIME_STAMP_FORMAT);
   newTask.repeatFrequency = null;
   newTask.repeatingTaskReferenceId = null;
 

@@ -1,6 +1,4 @@
 import { Layout, theme, message } from "antd";
-import dayjs from "dayjs";
-import timezone from "dayjs/plugin/timezone";
 import React, { useEffect, useMemo, useState } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,7 +13,6 @@ import { fetchTagsAction } from "../state/userTags/userTags.actions";
 import { fetchTasksAction } from "../state/userTasks/userTasks.actions";
 import CalendarComponent from "./CalendarComponent";
 
-dayjs.extend(timezone);
 
 const CalendarView = ({ user, userTheme }) => {
   const {

@@ -1,7 +1,6 @@
 import { Typography, Space, Dropdown, Button } from "antd";
 import { Calendar, dayjsLocalizer, Views } from "react-big-calendar";
-import dayjs from "dayjs";
-import timezone from "dayjs/plugin/timezone";
+import dayjs from "../../../utils/dateTime.utils";
 import React, {
   useCallback,
   useEffect,
@@ -21,7 +20,7 @@ import {
 import { BgColorsOutlined } from "@ant-design/icons";
 import { PRIORITY } from "../../../constants/sort.constants";
 import { LISTS, LOADER_SIZE, TAGS } from "../../../constants/app.constants";
-import { TIME_FORMAT_IN_DB } from "../../../constants/dateTime.constants";
+import { DAY, TIME_FORMAT_IN_DB } from "../../../constants/dateTime.constants";
 import { priorityColorMappings } from "../../../constants/priority.constants";
 import { CREATE, EDIT } from "../../../constants/formType.constants";
 import {
@@ -37,8 +36,6 @@ import { averageColor } from "../../../utils/calendar.utils";
 import CalendarEvent from "./Custom/CalendarEvent";
 import { calculateCalendarEvents } from "./CalendarUtils";
 import CalendarWrapper from "./Custom/CalendarWrapper";
-
-dayjs.extend(timezone);
 
 const setStartAndEndDate = ({ event, setViewStartDate, setViewEndDate }) => {
   setViewStartDate(new Date(event[0]));
@@ -220,7 +217,7 @@ const CalendarComponent = ({
       setFormType(CREATE);
       window.clearTimeout(clickRef?.current);
       clickRef.current = window.setTimeout(() => {
-        const selectedDate = dayjs(range.start).startOf("day");
+        const selectedDate = dayjs(range.start).startOf(DAY);
         const startTime = dayjs(range.start);
         const endTime = dayjs(range.end);
         setFormValues(() => {
