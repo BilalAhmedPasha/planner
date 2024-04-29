@@ -11,6 +11,7 @@ import HabitDialogForm from "../HabitList/HabitDialogForm";
 import { CREATE } from "../../../constants/formType.constants";
 import { TIME_ZONE } from "../../../constants/dateTime.constants";
 import dayjs from "../../../utils/dateTime.utils";
+import { DEFAULT_REPEAT_CRITERIA, REPEAT_DAYS } from "../../../constants/habits.constants";
 
 const HabitListContainer = ({
   user,
@@ -61,7 +62,10 @@ const HabitListContainer = ({
   const FORM_VALUES = {
     name: "",
     startDate: dayjs.utc().tz(TIME_ZONE),
+    frequency: REPEAT_DAYS,
+    repeatCriteria: DEFAULT_REPEAT_CRITERIA,
   };
+
   const [numRows, setNumRows] = useState(10);
   useEffect(() => {
     const handleResize = () => {

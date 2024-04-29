@@ -1,7 +1,11 @@
-import { DatePicker, Form, Input, theme } from "antd";
+import { DatePicker, Form, Input, Select, theme } from "antd";
 import { DATE_FORMAT, DAY } from "../../../../constants/dateTime.constants";
 import { useState } from "react";
-import FrequencyField from "./FrequencyField";
+import RepeatCriteria from "./RepeatCriteria";
+import {
+  REPEAT_DAYS,
+  REPEAT_OPTIONS,
+} from "../../../../constants/habits.constants";
 
 const HabitDialogForm = ({
   form,
@@ -22,7 +26,12 @@ const HabitDialogForm = ({
   const disabledEndDate = (current) => {
     return startDate && current.startOf(DAY).isBefore(startDate.startOf(DAY));
   };
-  
+
+  const [repeatType, setRepeatType] = useState(REPEAT_DAYS);
+  const handleRepeatTypeChange = (e) => {
+    setRepeatType(e);
+  };
+
   return (
     <Form
       form={form}
@@ -59,7 +68,6 @@ const HabitDialogForm = ({
             width: "100%",
           }}
           onChange={handleStartDateChange}
-          placeholder="Select start date"
           allowClear={false}
         />
       </Form.Item>
@@ -72,7 +80,6 @@ const HabitDialogForm = ({
             width: "100%",
           }}
           disabledDate={disabledEndDate}
-          placeholder="Select end date"
         />
       </Form.Item>
 
@@ -85,7 +92,11 @@ const HabitDialogForm = ({
           },
         ]}
       >
-        <FrequencyField />
+        <Select options={REPEAT_OPTIONS} onChange={handleRepeatTypeChange} />
+      </Form.Item>
+
+      <Form.Item name="repeatCriteria">
+        <RepeatCriteria repeatType={repeatType} />
       </Form.Item>
     </Form>
   );
