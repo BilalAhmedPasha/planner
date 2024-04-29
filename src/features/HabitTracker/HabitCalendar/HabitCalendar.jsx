@@ -10,16 +10,26 @@ import { CaretLeftOutlined, CaretRightOutlined } from "@ant-design/icons";
 import { DAYS_LIST } from "../../../constants/dateTime.constants";
 
 const CalendarWrapper = styled.div``;
+
 const CalenderDays = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+`;
+
+const CalendarText = styled.h3`
+  color: ${(props) =>
+    props.today
+      ? props.colorPrimary
+      : props.currentMonth
+      ? props.colorTextBase
+      : props.colorBorder};
 `;
 
 const CalendarDay = styled.div`
   padding: 10px;
   margin: 5px;
   text-align: center;
-  color: #a1a1a1;
+  color: ${(props) => props.colorTextSecondary};
 `;
 
 const CalenderDates = styled.div`
@@ -38,19 +48,23 @@ const CalenderDate = styled.div`
   margin: 1rem;
   cursor: pointer;
   background-color: ${(props) => props.colorBgContainer};
-
   &:hover {
     background-color: ${(props) => props.colorBgTextHover};
   }
   box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
 `;
- 
+
 const HabitCalendar = () => {
   const {
-    token: { colorBgContainer, colorPrimary, colorBgTextHover },
+    token: {
+      colorBgContainer,
+      colorPrimary,
+      colorTextBase,
+      colorBgTextHover,
+      colorTextSecondary,
+      colorBorder,
+    },
   } = theme.useToken();
-
-
 
   const currentDate = dayjs();
   const [today, setToday] = useState(currentDate);
@@ -108,7 +122,7 @@ const HabitCalendar = () => {
       <CalenderDays>
         {DAYS_LIST.map((day, index) => {
           return (
-            <CalendarDay key={index}>
+            <CalendarDay key={index} colorTextSecondary={colorTextSecondary}>
               <h3>{day}</h3>
             </CalendarDay>
           );
@@ -129,14 +143,16 @@ const HabitCalendar = () => {
                   console.log("Right clicked", date.toDate());
                 }}
               >
-                <h3
-                  className={cn(
-                    currentMonth ? "" : "text-grey",
-                    today ? "color-blue" : ""
-                  )}
+                <CalendarText
+                  currentMonth={currentMonth}
+                  today={today}
+                  colorPrimary={colorPrimary}
+                  colorTextBase={colorTextBase}
+                  colorTextSecondary={colorTextSecondary}
+                  colorBorder={colorBorder}
                 >
                   {date.date()}
-                </h3>
+                </CalendarText>
               </CalenderDate>
             );
           }
