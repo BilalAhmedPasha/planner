@@ -7,6 +7,7 @@ import { useState } from "react";
 import { months } from "../../../constants/calendar.constants";
 import Typography from "antd/es/typography/Typography";
 import { CaretLeftOutlined, CaretRightOutlined } from "@ant-design/icons";
+import { DAYS_LIST } from "../../../constants/dateTime.constants";
 
 const CalendarWrapper = styled.div``;
 const CalenderDays = styled.div`
@@ -43,20 +44,26 @@ const CalenderDate = styled.div`
   }
   box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
 `;
-
+ 
 const HabitCalendar = () => {
   const {
     token: { colorBgContainer, colorPrimary, colorBgTextHover },
   } = theme.useToken();
 
-  const days = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
+
 
   const currentDate = dayjs();
   const [today, setToday] = useState(currentDate);
 
   return (
     <CalendarWrapper>
-      <div style={{ display: "flex", justifyContent: "space-between", overflow:"hidden" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          overflow: "hidden",
+        }}
+      >
         <Typography.Text
           style={{
             fontWeight: "bold",
@@ -99,7 +106,7 @@ const HabitCalendar = () => {
         </div>
       </div>
       <CalenderDays>
-        {days.map((day, index) => {
+        {DAYS_LIST.map((day, index) => {
           return (
             <CalendarDay key={index}>
               <h3>{day}</h3>
