@@ -1,4 +1,6 @@
 import { Layout, Typography, theme } from "antd";
+import HabitList from "./HabitList/HabitList";
+import HabitCalendar from "./HabitCalendar/HabitCalendar";
 
 const HabitTracker = () => {
   const {
@@ -10,8 +12,9 @@ const HabitTracker = () => {
       <Layout.Content
         style={{
           marginRight: "0.1rem",
-          padding: "1rem 3rem",
+          padding: "0.25rem 0.75rem",
           background: colorBgContainer,
+          height: "100vh",
         }}
       >
         <Typography.Text
@@ -22,22 +25,18 @@ const HabitTracker = () => {
         >
           {"Habits"}
         </Typography.Text>
+        <HabitList />
       </Layout.Content>
       <Layout.Content
         style={{
           marginLeft: "0.1rem",
-          padding: "1rem 3rem",
+          padding: "0.25rem 0.75rem",
           background: colorBgContainer,
+          height: "100vh",
+          overflow: "auto",
         }}
       >
-        <Typography.Text
-          style={{
-            fontWeight: "bold",
-            fontSize: "24px",
-          }}
-        >
-          {"Habit details"}
-        </Typography.Text>
+        <HabitCalendar />
       </Layout.Content>
     </>
   );

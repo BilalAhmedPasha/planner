@@ -1,5 +1,6 @@
 import { MdCalendarMonth } from "react-icons/md";
 import { GoTasklist } from "react-icons/go";
+import { TbRepeat } from "react-icons/tb";
 
 export const defaultAppNav = [
   {
@@ -14,10 +15,10 @@ export const defaultAppNav = [
     redirectUrl: "/calendar",
     id: "calendar",
   },
-  // {
-  //   label: "Habits",
-  //   icon: RedoOutlined,
-  //   redirectUrl: "/habits",
-  //   id: "habits",
-  // },
+  {
+    label: "Habits",
+    icon: TbRepeat,
+    redirectUrl: "/habits",
+    id: "habits",
+  },
 ];
