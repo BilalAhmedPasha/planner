@@ -16,3 +16,8 @@ export const DEFAULT_REPEAT_CRITERIA = {
   days: [1, 1, 1, 1, 1, 1, 1],
   interval: 2,
 };
+
+export const HABIT_MARKED_NOT_DONE = -1;
+export const HABIT_UNMARKED = 0;
+export const HABIT_MARKED_DONE = 1;
+

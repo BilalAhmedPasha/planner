@@ -37,3 +37,10 @@ export const deleteHabitApi = async (userId, currentHabitId) => {
   const docRef = doc(habitCollectionRef, currentHabitId);
   return deleteDoc(docRef);
 };
+
+export const markHabitApi = (userId, currentHabitId, date, value) => {
+  const userDocRef = doc(db, "users", userId);
+  const habitCollectionRef = collection(userDocRef, HABITS);
+  const docRef = doc(habitCollectionRef, currentHabitId);
+  return updateDoc(docRef, { [`history.${date}`]: value });
+};

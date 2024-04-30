@@ -4,6 +4,7 @@ import {
   deleteHabitApi,
   editHabitApi,
   fetchHabitsApi,
+  markHabitApi,
 } from "../../../../services/userHabits.api";
 import {
   ADD_HABIT,
@@ -18,6 +19,9 @@ import {
   FETCH_HABITS,
   FETCH_HABITS_ERROR,
   FETCH_HABITS_SUCCESS,
+  MARK_HABIT,
+  MARK_HABIT_SUCCESS,
+  MARK_HABIT_ERROR,
 } from "./userHabits.reducer";
 
 export const fetchHabits = () => ({
@@ -82,6 +86,22 @@ export const deleteHabitFailure = (error) => ({
   payload: { error },
 });
 
+export const markHabit = (payload) => ({
+  type: MARK_HABIT,
+  payload,
+});
+
+export const markHabitSuccess = ({ response }) => ({
+  type: MARK_HABIT_SUCCESS,
+  payload: response,
+  success: SUCCESS,
+});
+
+export const markHabitFailure = (error) => ({
+  type: MARK_HABIT_ERROR,
+  payload: { error },
+});
+
 export const fetchHabitsAction = (userId) => async (dispatch) => {
   dispatch(fetchHabits());
   try {
@@ -126,16 +146,32 @@ export const editHabitAction =
     }
   };
 
-export const deleteHabitAction = (userId, currentHabitId) => async (dispatch) => {
-  dispatch(deleteHabit());
-  try {
-    await deleteHabitApi(userId, currentHabitId);
-    return dispatch(
-      deleteHabitSuccess({
-        response: { id: currentHabitId },
-      })
-    );
-  } catch (error) {
-    return dispatch(deleteHabitFailure(error));
-  }
-};
+export const deleteHabitAction =
+  (userId, currentHabitId) => async (dispatch) => {
+    dispatch(deleteHabit());
+    try {
+      await deleteHabitApi(userId, currentHabitId);
+      return dispatch(
+        deleteHabitSuccess({
+          response: { id: currentHabitId },
+        })
+      );
+    } catch (error) {
+      return dispatch(deleteHabitFailure(error));
+    }
+  };
+
+export const markHabitAction =
+  (userId, currentHabitId, date, value) => async (dispatch) => {
+    dispatch(markHabit());
+    try {
+      await markHabitApi(userId, currentHabitId, date, value);
+      return dispatch(
+        markHabitSuccess({
+          response: { id: currentHabitId, date, value },
+        })
+      );
+    } catch (error) {
+      return dispatch(markHabitFailure(error));
+    }
+  };

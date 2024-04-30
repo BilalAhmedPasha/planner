@@ -41,6 +41,7 @@ const HabitTracker = ({ user }) => {
         setSelectedHabitDetail={setSelectedHabitDetail}
       />
       <HabitDetailContainer
+        user={user}
         selectedHabitDetail={selectedHabitDetail}
         setSelectedHabitDetail={setSelectedHabitDetail}
         isHabitDetailsDrawerCollapsed={isHabitDetailsDrawerCollapsed}
