@@ -6,6 +6,7 @@ import DaySelector from "../../../components/DaySelector";
 import { getLast7Days } from "../../../utils/habit.utils";
 import { EDIT } from "../../../constants/formType.constants";
 import dayjs from "../../../utils/dateTime.utils";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const StyledDiv = styled.div`
   padding: 0.75rem 1rem;
@@ -26,6 +27,7 @@ const StyledDiv = styled.div`
 
 const HabitItem = ({
   habit,
+  selectedHabitDetail,
   setSelectedHabitDetail,
   handleOpenHabitDialog,
   setFormConfig,
@@ -58,16 +60,23 @@ const HabitItem = ({
     handleOpenHabitDialog();
   };
 
+  const currentURL = useLocation();
+  const navigateTo = useNavigate();
   return (
     <StyledDiv
       opacity={1}
-      isSelected={false}
+      isSelected={selectedHabitDetail && selectedHabitDetail.id === habit.id}
       colorBgContainer={colorBgContainer}
       colorPrimaryBg={colorPrimaryBg}
       controlItemBgHover={controlItemBgHover}
       colorBgTextHover={colorBgTextHover}
       colorBorder={colorBorder}
-      onClick={() => setSelectedHabitDetail(habit)}
+      onClick={(e) => {
+        e.stopPropagation();
+        const urlPath = currentURL.pathname.split("/");
+        navigateTo(`/${urlPath[1]}/${habit.id}`);
+        setSelectedHabitDetail(habit);
+      }}
     >
       <Typography.Text
         style={{
@@ -95,7 +104,10 @@ const HabitItem = ({
               colorPrimary={colorPrimary}
               colorTextBase={colorTextSecondary}
               isSelected={false}
-              onClick={(e) => console.log(date)}
+              onClick={(e) => {
+                e.stopPropagation();
+                console.log(date);
+              }}
             >
               {date.getDate()}
             </DaySelector>
@@ -119,7 +131,10 @@ const HabitItem = ({
                 }}
               />
             }
-            onClick={handleEditHabit}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleEditHabit();
+            }}
           />
           <Button
             type="text"
@@ -133,7 +148,10 @@ const HabitItem = ({
                 }}
               />
             }
-            onClick={() => handleDeleteHabit({ habitId: habit.id })}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleDeleteHabit({ habitId: habit.id });
+            }}
           />
         </div>
       </Space>

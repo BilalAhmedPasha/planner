@@ -11,58 +11,66 @@ function App() {
     const [currentTitle, setCurrentTitle] = useState("Inbox");
 
     return (
-        <Routes>
-            <Route path="/" exact element={<Navigate to="/login" />} />
-            <Route
-                path="/login"
-                exact
-                element={<LoginPage title={currentTitle} />}
-            />
-            <Route
-                path="/calendar"
-                exact
-                element={
-                    <AppLayout setCurrentTitle={setCurrentTitle}>
-                        <Calendar title={currentTitle} />
-                    </AppLayout>
-                }
-            />
-
-            <Route
-                path="/habits"
-                exact
-                element={
-                    <AppLayout setCurrentTitle={setCurrentTitle}>
-                        <HabitTracker title={currentTitle} />
-                    </AppLayout>
-                }
-            />
-            <Route
-                path="/tasks/:sectionId/:documentId/:taskId"
-                element={
-                    <AppLayout setCurrentTitle={setCurrentTitle}>
-                        <TaskManager title={currentTitle} />
-                    </AppLayout>
-                }
-            />
-            <Route
-                path="/tasks/:sectionId/:documentId"
-                element={
-                    <AppLayout setCurrentTitle={setCurrentTitle}>
-                        <TaskManager title={currentTitle} />
-                    </AppLayout>
-                }
-            />
-            <Route
-                path="/tasks/:sectionId"
-                element={
-                    <AppLayout setCurrentTitle={setCurrentTitle}>
-                        <TaskManager title={currentTitle} />
-                    </AppLayout>
-                }
-            />
-            {/* <Route path="*" element={<Navigate to="/tasks/all" />} /> */}
-        </Routes>
+      <Routes>
+        <Route path="/" exact element={<Navigate to="/login" />} />
+        <Route
+          path="/login"
+          exact
+          element={<LoginPage title={currentTitle} />}
+        />
+        <Route
+          path="/calendar"
+          exact
+          element={
+            <AppLayout setCurrentTitle={setCurrentTitle}>
+              <Calendar title={currentTitle} />
+            </AppLayout>
+          }
+        />
+        <Route
+          path="/habits"
+          exact
+          element={
+            <AppLayout setCurrentTitle={setCurrentTitle}>
+              <HabitTracker title={currentTitle} />
+            </AppLayout>
+          }
+        />
+        <Route
+          path="/habits/:habitId"
+          exact
+          element={
+            <AppLayout setCurrentTitle={setCurrentTitle}>
+              <HabitTracker title={currentTitle} />
+            </AppLayout>
+          }
+        />
+        <Route
+          path="/tasks/:sectionId/:documentId/:taskId"
+          element={
+            <AppLayout setCurrentTitle={setCurrentTitle}>
+              <TaskManager title={currentTitle} />
+            </AppLayout>
+          }
+        />
+        <Route
+          path="/tasks/:sectionId/:documentId"
+          element={
+            <AppLayout setCurrentTitle={setCurrentTitle}>
+              <TaskManager title={currentTitle} />
+            </AppLayout>
+          }
+        />
+        <Route
+          path="/tasks/:sectionId"
+          element={
+            <AppLayout setCurrentTitle={setCurrentTitle}>
+              <TaskManager title={currentTitle} />
+            </AppLayout>
+          }
+        />
+        {/* <Route path="*" element={<Navigate to="/tasks/all" />} /> */}
+      </Routes>
     );
 }
 

@@ -11,7 +11,11 @@ import HabitDialogForm from "../HabitList/HabitDialogForm";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { deleteHabitAction } from "../state/userHabits/userHabits.actions";
 
-const HabitListContainer = ({ user, setSelectedHabitDetail }) => {
+const HabitListContainer = ({
+  user,
+  selectedHabitDetail,
+  setSelectedHabitDetail,
+}) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -30,9 +34,9 @@ const HabitListContainer = ({ user, setSelectedHabitDetail }) => {
   }, [url]);
 
   useEffect(() => {
-    if (pathParameters.length > 3 && habits.length > 0) {
+    if (pathParameters.length > 2 && habits.length > 0) {
       const selectedItemViaURL = habits.find(
-        (each) => each.id === pathParameters[3]
+        (each) => each.id === pathParameters[2]
       );
       selectedItemViaURL && setSelectedHabitDetail(selectedItemViaURL);
     }
@@ -154,6 +158,7 @@ const HabitListContainer = ({ user, setSelectedHabitDetail }) => {
           {habits.map((habit) => (
             <HabitItem
               habit={habit}
+              selectedHabitDetail={selectedHabitDetail}
               setSelectedHabitDetail={setSelectedHabitDetail}
               handleOpenHabitDialog={handleOpenHabitDialog}
               setFormConfig={setFormConfig}
