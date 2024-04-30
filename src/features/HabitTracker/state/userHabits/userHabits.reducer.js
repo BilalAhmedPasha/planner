@@ -74,7 +74,7 @@ const reducer = (state = INITIAL_STATE, action) => {
           isLoadingHabits: false,
           addHabitSuccess: true,
           totalHabits: state.totalHabits + 1,
-          habits: [action.payload, ...state.habits],
+          habits: [...state.habits, action.payload],
         };
       }
 

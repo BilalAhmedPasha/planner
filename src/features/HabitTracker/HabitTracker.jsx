@@ -1,11 +1,12 @@
-import { Layout, Typography, message, theme } from "antd";
-import HabitList from "./HabitList/HabitList";
-import HabitCalendar from "./HabitCalendar/HabitCalendar";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userSelector } from "../AppLayout/state/userSettings/userSettings.reducer";
-import { fetchHabitsAction } from "./state/userHabits/userHabits.actions";
-import { useEffect, useState } from "react";
 import HabitListContainer from "./HabitList/HabitList";
+import { fetchListsAction } from "../TaskManager/state/userLists/userLists.actions";
+import { fetchTagsAction } from "../TaskManager/state/userTags/userTags.actions";
+import { fetchTasksAction } from "../TaskManager/state/userTasks/userTasks.actions";
+import { fetchHabitsAction } from "./state/userHabits/userHabits.actions";
+import HabitDetailContainer from "./HabitDetail/HabitDetail.container";
 
 const HabitTracker = ({ user }) => {
   const dispatch = useDispatch();
@@ -13,52 +14,30 @@ const HabitTracker = ({ user }) => {
 
   useEffect(() => {
     if (user && user.uid !== userSetting.id) {
+      dispatch(fetchListsAction(user.uid));
+      dispatch(fetchTagsAction(user.uid));
+      dispatch(fetchTasksAction(user.uid));
       dispatch(fetchHabitsAction(user.uid));
     }
   }, [userSetting, dispatch, user]);
 
-  const [selectedHabitDetails, setSelectedHabitDetails] = useState([]);
+  const [selectedHabitDetail, setSelectedHabitDetail] = useState(null);
 
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
+  const [isHabitDetailsDrawerCollapsed, setIsHabitDetailsDrawerCollapsed] =
+    useState(true);
 
   return (
     <>
       <HabitListContainer
         user={user}
-        selectedHabitDetails={selectedHabitDetails}
-        setSelectedHabitDetails={setSelectedHabitDetails}
+        setSelectedHabitDetail={setSelectedHabitDetail}
       />
-      {/* <Layout.Content
-        style={{
-          marginRight: "0.1rem",
-          padding: "0.25rem 0.75rem",
-          background: colorBgContainer,
-          height: "100vh",
-        }}
-      >
-        <Typography.Text
-          style={{
-            fontWeight: "bold",
-            fontSize: "24px",
-          }}
-        >
-          {"Habits"}
-        </Typography.Text>
-        <HabitList />
-      </Layout.Content> */}
-      <Layout.Content
-        style={{
-          marginLeft: "0.1rem",
-          padding: "0.25rem 0.75rem",
-          background: colorBgContainer,
-          height: "100vh",
-          overflow: "auto",
-        }}
-      >
-        <HabitCalendar />
-      </Layout.Content>
+      <HabitDetailContainer
+        selectedHabitDetail={selectedHabitDetail}
+        setSelectedHabitDetail={setSelectedHabitDetail}
+        isHabitDetailsDrawerCollapsed={isHabitDetailsDrawerCollapsed}
+        setIsHabitDetailsDrawerCollapsed={setIsHabitDetailsDrawerCollapsed}
+      />
     </>
   );
 };

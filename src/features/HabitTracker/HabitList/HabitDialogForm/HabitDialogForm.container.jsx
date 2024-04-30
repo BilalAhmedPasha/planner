@@ -2,11 +2,13 @@ import { Form } from "antd";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { habitsSelector } from "../../state/userHabits/userHabits.reducer.js";
-import useWindowSize from "../../../../hooks/useWindowSize.js";
 import { CREATE, EDIT } from "../../../../constants/formType.constants.js";
-import { taskNavToDrawer } from "../../../../utils/screen.utils.js";
 import HabitDialogForm from "./HabitDialogForm.jsx";
 import Modal from "../../../../components/Modal/Modal.jsx";
+import { DAY } from "../../../../constants/calendar.constants.js";
+import { SUCCESS } from "../../../../constants/app.constants.js";
+import { addHabitAction } from "../../state/userHabits/userHabits.actions.js";
+import { editListAction } from "../../../TaskManager/state/userLists/userLists.actions.js";
 
 const HabitDialog = ({
   user,
@@ -52,35 +54,46 @@ const HabitDialog = ({
   };
 
   const [form] = Form.useForm();
-  const [disableAddButton, setDisableAddButton] = useState(
-    formValues.name.length === 0
-  );
 
   const handleOnOk = (formValues) => {
-    // if (formType === CREATE) {
-    //   handleAddHabit({
-    //     formValues,
-    //     dispatch,
-    //     user,
-    //     createHabitSuccess,
-    //     setOpenDialog,
-    //     createHabitFailed,
-    //   });
-    // } else if (formType === EDIT) {
-    //   handleEditHabit({
-    //     habitDetails: habitDetails,
-    //     formValues,
-    //     dispatch,
-    //     user,
-    //     editHabitSuccess,
-    //     setOpenDialog,
-    //     editHabitFailed,
-    //   });
-    // }
+    if (formType === CREATE) {
+      const newHabit = {
+        ...formValues,
+        startDate: formValues.startDate.startOf(DAY).format(),
+        endDate: formValues.endDate
+          ? formValues.endDate.startOf(DAY).format()
+          : null,
+      };
+      dispatch(addHabitAction(user.uid, newHabit)).then((response) => {
+        if (response.success === SUCCESS) {
+          setOpenDialog(false);
+          createHabitSuccess();
+        } else {
+          createHabitFailed();
+        }
+      });
+    } else if (formType === EDIT) {
+      const modifiedHabit = {
+        ...formValues,
+        startDate: formValues.startDate.startOf(DAY).format(),
+        endDate: formValues.endDate
+          ? formValues.endDate.startOf(DAY).format()
+          : null,
+      };
+      dispatch(editListAction(user.uid, modifiedHabit, formValues.id)).then(
+        (response) => {
+          if (response.success === SUCCESS) {
+            setOpenDialog(false);
+            editHabitSuccess();
+          } else {
+            editHabitFailed();
+          }
+        }
+      );
+    }
   };
 
   const { isLoadingHabits } = useSelector(habitsSelector);
-  const screenSize = useWindowSize();
 
   return (
     openDialog && (
@@ -101,13 +114,11 @@ const HabitDialog = ({
           layout="vertical"
           form={form}
           initialValues={formValues}
-          setDisableAddButton={setDisableAddButton}
           {...props}
         />
       </Modal>
     )
   );
 };
-
 
 export default HabitDialog;

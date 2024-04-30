@@ -1,5 +1,5 @@
-export const REPEAT_DAYS = "repeatDays";
-export const REPEAT_INTERVAL = "repeatInterval";
+export const REPEAT_DAYS = "days";
+export const REPEAT_INTERVAL = "interval";
 
 export const REPEAT_OPTIONS = [
   {

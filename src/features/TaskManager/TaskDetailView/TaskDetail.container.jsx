@@ -12,8 +12,8 @@ import {
   handleEditTask,
 } from "../TaskListView/TaskList.utils";
 import {
-  taskNavToDrawer,
-  taskDetailsToDrawer,
+  navToDrawer,
+  detailsToDrawer,
 } from "../../../utils/screen.utils";
 import { CloseOutlined } from "@ant-design/icons";
 import useWindowSize from "../../../hooks/useWindowSize";
@@ -146,14 +146,14 @@ const TaskDetailsContainer = ({
   const navigateTo = useNavigate();
 
   const screenSize = useWindowSize();
-  return taskDetailsToDrawer({ currentWidth: screenSize.width }) ? (
+  return detailsToDrawer({ currentWidth: screenSize.width }) ? (
     <Drawer
       title="Task Details"
       placement={"right"}
       closable={false}
       open={!isTaskDetailsDrawerCollapsed}
       width={
-        taskNavToDrawer({ currentWidth: screenSize.width }) ? "90vw" : "60vw"
+        navToDrawer({ currentWidth: screenSize.width }) ? "90vw" : "60vw"
       }
       destroyOnClose={true}
       extra={

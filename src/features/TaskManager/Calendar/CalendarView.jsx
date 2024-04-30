@@ -12,6 +12,7 @@ import { fetchListsAction } from "../state/userLists/userLists.actions";
 import { fetchTagsAction } from "../state/userTags/userTags.actions";
 import { fetchTasksAction } from "../state/userTasks/userTasks.actions";
 import CalendarComponent from "./CalendarComponent";
+import { fetchHabitsAction } from "../../HabitTracker/state/userHabits/userHabits.actions";
 
 
 const CalendarView = ({ user, userTheme }) => {
@@ -41,6 +42,7 @@ const CalendarView = ({ user, userTheme }) => {
       dispatch(fetchListsAction(user.uid));
       dispatch(fetchTagsAction(user.uid));
       dispatch(fetchTasksAction(user.uid));
+      dispatch(fetchHabitsAction(user.uid));
     }
   }, [userSetting, dispatch, user]);
 

@@ -11,7 +11,6 @@ const HabitDialogForm = ({
   form,
   layout,
   initialValues,
-  setDisableAddButton,
   ...props
 }) => {
   const {

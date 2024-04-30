@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import dayjs from "../utils/dateTime.utils";
 
 export const generateDate = (
@@ -36,6 +37,16 @@ export const generateDate = (
   }
 
   return arrayOfDate;
+};
+
+export const getLast7Days = () => {
+  const dates = [];
+  const today = dayjs().startOf("day");
+  for (let i = 0; i < 7; i++) {
+    const date = today.subtract(i, "day").toDate();
+    dates.unshift(date);
+  }
+  return dates;
 };
 
 export const cn = (...classes) => {

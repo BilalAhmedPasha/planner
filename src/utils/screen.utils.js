@@ -1,8 +1,8 @@
-export const taskNavToDrawer = ({ currentWidth }) => {
+export const navToDrawer = ({ currentWidth }) => {
   return currentWidth < 800 ? true : false;
 };
 
-export const taskDetailsToDrawer = ({ currentWidth }) => {
+export const detailsToDrawer = ({ currentWidth }) => {
   return currentWidth < 1200 ? true : false;
 };
 

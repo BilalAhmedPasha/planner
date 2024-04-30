@@ -11,13 +11,12 @@ import HabitDialogForm from "../HabitList/HabitDialogForm";
 import { CREATE } from "../../../constants/formType.constants";
 import { TIME_ZONE } from "../../../constants/dateTime.constants";
 import dayjs from "../../../utils/dateTime.utils";
-import { DEFAULT_REPEAT_CRITERIA, REPEAT_DAYS } from "../../../constants/habits.constants";
+import {
+  DEFAULT_REPEAT_CRITERIA,
+  REPEAT_DAYS,
+} from "../../../constants/habits.constants";
 
-const HabitListContainer = ({
-  user,
-  selectedHabitDetails,
-  setSelectedHabitDetails,
-}) => {
+const HabitListContainer = ({ user, setSelectedHabitDetail }) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -39,11 +38,12 @@ const HabitListContainer = ({
       const selectedItemViaURL = habits.find(
         (each) => each.id === pathParameters[3]
       );
-      selectedItemViaURL && setSelectedHabitDetails([selectedItemViaURL]);
+      selectedItemViaURL && setSelectedHabitDetail(selectedItemViaURL);
     }
-  }, [pathParameters, habits, setSelectedHabitDetails]);
+  }, [pathParameters, habits, setSelectedHabitDetail]);
 
   const [modal, contextHolder] = Modal.useModal();
+
   const deleteSuccess = ({ messageText }) => {
     messageApi.open({
       type: "success",
@@ -110,6 +110,13 @@ const HabitListContainer = ({
               formValues={FORM_VALUES}
             />
           )}
+          {habits.map((habit) => (
+            <HabitItem
+              habit={habit}
+              setSelectedHabitDetail={setSelectedHabitDetail}
+            />
+          ))}
+          {contextHolder}
         </Spinner>
       </Skeleton>
     </Layout.Content>

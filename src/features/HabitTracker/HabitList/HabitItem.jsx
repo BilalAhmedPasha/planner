@@ -1,6 +1,9 @@
-import { Typography, theme } from "antd";
+import { Typography, theme, Button, Space } from "antd";
 import styled from "styled-components";
-import { generateDate } from "../../../utils/habit.utils";
+import { AiOutlineDelete } from "react-icons/ai";
+import { FiEdit2 } from "react-icons/fi";
+import DaySelector from "../../../components/DaySelector";
+import { getLast7Days } from "../../../utils/habit.utils";
 
 const StyledDiv = styled.div`
   padding: 0.75rem 1rem;
@@ -15,22 +18,26 @@ const StyledDiv = styled.div`
   box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
   user-select: none;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 `;
 
-const HabitItem = ({ details }) => {
+const HabitItem = ({ habit, setSelectedHabitDetail }) => {
   const {
     token: {
       colorBgContainer,
+      colorTextLabel,
       controlItemBgHover,
       colorPrimaryBg,
       colorBgTextHover,
+      colorTextSecondary,
       colorBorder,
+      colorPrimary,
     },
   } = theme.useToken();
 
-  const dates = generateDate();
-  console.log(dates);
-  
+  const last7Dates = getLast7Days();
+
   return (
     <StyledDiv
       opacity={1}
@@ -40,19 +47,74 @@ const HabitItem = ({ details }) => {
       controlItemBgHover={controlItemBgHover}
       colorBgTextHover={colorBgTextHover}
       colorBorder={colorBorder}
+      onClick={() => setSelectedHabitDetail(habit)}
     >
-      <div>
-        <Typography.Text
+      <Typography.Text
+        style={{
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          width: "100%",
+        }}
+        ellipsis={true}
+      >
+        {habit.name}
+      </Typography.Text>
+      <Space>
+        <div
           style={{
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
           }}
-          ellipsis={true}
         >
-          {"Habit 1"}
-        </Typography.Text>
-      </div>
+          {last7Dates.map((date) => (
+            <DaySelector
+              height={2}
+              colorBgContainer={colorBgContainer}
+              colorBgTextHover={colorBgTextHover}
+              colorPrimary={colorPrimary}
+              colorTextBase={colorTextSecondary}
+              isSelected={false}
+              onClick={(e) => console.log(date)}
+            >
+              {date.getDate()}
+            </DaySelector>
+          ))}
+        </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <Button
+            type="text"
+            icon={
+              <FiEdit2
+                style={{
+                  fontSize: "1rem",
+                  color: colorTextLabel,
+                  opacity: 1,
+                  transition: "0.3s all ease",
+                }}
+              />
+            }
+          />
+          <Button
+            type="text"
+            icon={
+              <AiOutlineDelete
+                style={{
+                  fontSize: "1rem",
+                  color: colorTextLabel,
+                  opacity: 1,
+                  transition: "0.3s all ease",
+                }}
+              />
+            }
+          />
+        </div>
+      </Space>
     </StyledDiv>
   );
 };
