@@ -29,6 +29,7 @@ const HabitItem = ({
   setSelectedHabitDetail,
   handleOpenHabitDialog,
   setFormConfig,
+  handleDeleteHabit,
 }) => {
   const {
     token: {
@@ -51,7 +52,7 @@ const HabitItem = ({
       values: {
         ...habit,
         startDate: dayjs(habit.startDate),
-        endDate: habit.endDate? dayjs(habit.endDate) : null
+        endDate: habit.endDate ? dayjs(habit.endDate) : null,
       },
     });
     handleOpenHabitDialog();
@@ -132,6 +133,7 @@ const HabitItem = ({
                 }}
               />
             }
+            onClick={() => handleDeleteHabit({ habitId: habit.id })}
           />
         </div>
       </Space>

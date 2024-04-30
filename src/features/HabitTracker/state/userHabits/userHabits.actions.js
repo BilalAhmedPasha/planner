@@ -126,13 +126,13 @@ export const editHabitAction =
     }
   };
 
-export const deleteHabitAction = (userId, currentHabit) => async (dispatch) => {
+export const deleteHabitAction = (userId, currentHabitId) => async (dispatch) => {
   dispatch(deleteHabit());
   try {
-    await deleteHabitApi(userId, currentHabit);
+    await deleteHabitApi(userId, currentHabitId);
     return dispatch(
       deleteHabitSuccess({
-        response: { id: currentHabit.id },
+        response: { id: currentHabitId },
       })
     );
   } catch (error) {

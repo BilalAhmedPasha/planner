@@ -31,9 +31,9 @@ export const editHabitApi = (userId, modifiedHabit, habitId) => {
   return updateDoc(docRef, modifiedHabit);
 };
 
-export const deleteHabitApi = async (userId, currentHabit) => {
+export const deleteHabitApi = async (userId, currentHabitId) => {
   const userDocRef = doc(db, "users", userId);
   const habitCollectionRef = collection(userDocRef, HABITS);
-  const docRef = doc(habitCollectionRef, currentHabit.id);
+  const docRef = doc(habitCollectionRef, currentHabitId);
   return deleteDoc(docRef);
 };
