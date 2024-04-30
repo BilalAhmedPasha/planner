@@ -3,7 +3,7 @@ export const oneDarkTheme = {
   colorBgLayout: "#424242",
   colorBgContainer: "#282c34",
   colorTextBase: "#ffffff",
-  colorTextSecondary: "#a6adb4",
+  colorTextSecondary: "#9a9a9a",
   colorTextHeading: "#ffffff",
   colorPrimary: "#1890ff",
   colorInfo: "#1890ff",

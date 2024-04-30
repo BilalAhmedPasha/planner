@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { cn, generateDate } from "../../../../utils/habit.utils";
+import { checkIfValidDate, generateDate } from "../../../../utils/habit.utils";
 import "./HabitCalendar.css";
 import { Button, Layout, theme } from "antd";
 import dayjs from "../../../../utils/dateTime.utils";
@@ -18,11 +18,13 @@ const CalenderDays = styled.div`
 
 const CalendarText = styled.h3`
   color: ${(props) =>
-    props.today
+    !props.isValidDate
+      ? props.colorBorder
+      : props.today
       ? props.colorPrimary
       : props.currentMonth
       ? props.colorTextBase
-      : props.colorBorder};
+      : props.colorTextSecondary};
 `;
 
 const CalendarDay = styled.div`
@@ -46,10 +48,11 @@ const CalenderDate = styled.div`
   align-items: center;
   display: flex;
   margin: 1rem;
-  cursor: pointer;
+  cursor: ${(props) => props.cursor};
   background-color: ${(props) => props.colorBgContainer};
   &:hover {
-    background-color: ${(props) => props.colorBgTextHover};
+    background-color: ${(props) =>
+      props.isValidDate ? props.colorBgTextHover : props.colorBgContainer};
   }
   box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
 `;
@@ -68,6 +71,8 @@ const HabitCalendar = ({ habit }) => {
 
   const currentDate = dayjs();
   const [today, setToday] = useState(currentDate);
+
+ 
 
   return (
     <Layout.Content
@@ -147,16 +152,26 @@ const HabitCalendar = ({ habit }) => {
         <CalenderDates>
           {generateDate(today.month(), today.year()).map(
             ({ date, currentMonth, today }, index) => {
+              const isValidDate = checkIfValidDate({ date, habit });
               return (
                 <CalenderDate
                   key={index}
                   colorBgContainer={colorBgContainer}
                   colorBgTextHover={colorBgTextHover}
                   colorPrimary={colorPrimary}
-                  onClick={(e) => console.log("Clicked", date.toDate())}
+                  onClick={() => {
+                    if (isValidDate) {
+                      console.log("Clicked", date.toDate());
+                    }
+                  }}
                   onContextMenu={(e) => {
                     e.preventDefault();
+                    if (isValidDate) {
+                      console.log("Right clicked", date.toDate());
+                    }
                   }}
+                  cursor={isValidDate ? "pointer" : "not-allowed"}
+                  isValidDate={isValidDate}
                 >
                   <CalendarText
                     currentMonth={currentMonth}
@@ -165,6 +180,7 @@ const HabitCalendar = ({ habit }) => {
                     colorTextBase={colorTextBase}
                     colorTextSecondary={colorTextSecondary}
                     colorBorder={colorBorder}
+                    isValidDate={isValidDate}
                   >
                     {date.date()}
                   </CalendarText>

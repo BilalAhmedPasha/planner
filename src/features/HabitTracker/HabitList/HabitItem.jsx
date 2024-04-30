@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { AiOutlineDelete } from "react-icons/ai";
 import { FiEdit2 } from "react-icons/fi";
 import DaySelector from "../../../components/DaySelector";
-import { getLast7Days } from "../../../utils/habit.utils";
+import { checkIfValidDate, getLast7Days } from "../../../utils/habit.utils";
 import { EDIT } from "../../../constants/formType.constants";
 import dayjs from "../../../utils/dateTime.utils";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -25,6 +25,17 @@ const StyledDiv = styled.div`
   align-items: center;
 `;
 
+const DateText = styled.h5`
+  color: ${(props) =>
+    !props.isValidDate
+      ? props.colorBorder
+      : props.today
+      ? props.colorPrimary
+      : props.currentMonth
+      ? props.colorTextBase
+      : props.colorTextSecondary};
+`;
+
 const HabitItem = ({
   habit,
   selectedHabitDetail,
@@ -42,6 +53,7 @@ const HabitItem = ({
       colorBgTextHover,
       colorTextSecondary,
       colorBorder,
+      colorTextBase,
       colorPrimary,
     },
   } = theme.useToken();
@@ -96,22 +108,37 @@ const HabitItem = ({
             gap: "10px",
           }}
         >
-          {last7Dates.map((date) => (
-            <DaySelector
-              height={2}
-              colorBgContainer={colorBgContainer}
-              colorBgTextHover={colorBgTextHover}
-              colorPrimary={colorPrimary}
-              colorTextBase={colorTextSecondary}
-              isSelected={false}
-              onClick={(e) => {
-                e.stopPropagation();
-                console.log(date);
-              }}
-            >
-              {date.getDate()}
-            </DaySelector>
-          ))}
+          {last7Dates.map((date) => {
+            const isValidDate = checkIfValidDate({ date: dayjs(date), habit });
+            return (
+              <DaySelector
+                height={2}
+                colorBgContainer={colorBgContainer}
+                colorBgTextHover={colorBgTextHover}
+                colorPrimary={colorPrimary}
+                colorTextBase={colorTextSecondary}
+                isSelected={false}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (isValidDate) {
+                    console.log(date);
+                  }
+                }}
+                cursor={isValidDate ? "pointer" : "not-allowed"}
+                isValidDate={isValidDate}
+              >
+                <DateText
+                  isValidDate={isValidDate}
+                  colorBorder={colorBorder}
+                  colorPrimary={colorPrimary}
+                  colorTextBase={colorTextBase}
+                  colorTextSecondary={colorTextSecondary}
+                >
+                  {date.getDate()}
+                </DateText>
+              </DaySelector>
+            );
+          })}
         </div>
         <div
           style={{
