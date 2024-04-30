@@ -7,7 +7,7 @@ import {
 } from "../../../../constants/habits.constants";
 import DaySelector from "../../../../components/DaySelector";
 
-const RepeatCriteria = ({ value = {}, onChange, repeatType }) => {
+const RepeatCriteria = ({ value = {}, onChange, frequencyType }) => {
   const {
     token: { colorTextBase, colorBgContainer, colorPrimary, colorBgTextHover },
   } = theme.useToken();
@@ -43,7 +43,7 @@ const RepeatCriteria = ({ value = {}, onChange, repeatType }) => {
 
   return (
     <div>
-      {repeatType === REPEAT_DAYS && (
+      {frequencyType === REPEAT_DAYS && (
         <div
           style={{
             display: "flex",
@@ -69,7 +69,7 @@ const RepeatCriteria = ({ value = {}, onChange, repeatType }) => {
         </div>
       )}
 
-      {repeatType === REPEAT_INTERVAL && (
+      {frequencyType === REPEAT_INTERVAL && (
         <div>
           {"Every "}
           <InputNumber

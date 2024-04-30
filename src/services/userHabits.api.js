@@ -6,13 +6,16 @@ import {
   collection,
   getDocs,
   doc,
+  orderBy,
+  query,
 } from "@firebase/firestore";
 import { HABITS } from "../constants/app.constants";
 
 export const fetchHabitsApi = async (userId) => {
   const userDocRef = doc(db, "users", userId);
   const habitCollectionRef = collection(userDocRef, HABITS);
-  return getDocs(habitCollectionRef);
+  const docs = query(habitCollectionRef, orderBy("createdTime", "asc"));
+  return getDocs(docs);
 };
 
 export const addHabitApi = (userId, newHabit) => {

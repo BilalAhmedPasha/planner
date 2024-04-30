@@ -4,6 +4,8 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { FiEdit2 } from "react-icons/fi";
 import DaySelector from "../../../components/DaySelector";
 import { getLast7Days } from "../../../utils/habit.utils";
+import { EDIT } from "../../../constants/formType.constants";
+import dayjs from "../../../utils/dateTime.utils";
 
 const StyledDiv = styled.div`
   padding: 0.75rem 1rem;
@@ -22,7 +24,12 @@ const StyledDiv = styled.div`
   align-items: center;
 `;
 
-const HabitItem = ({ habit, setSelectedHabitDetail }) => {
+const HabitItem = ({
+  habit,
+  setSelectedHabitDetail,
+  handleOpenHabitDialog,
+  setFormConfig,
+}) => {
   const {
     token: {
       colorBgContainer,
@@ -37,6 +44,18 @@ const HabitItem = ({ habit, setSelectedHabitDetail }) => {
   } = theme.useToken();
 
   const last7Dates = getLast7Days();
+
+  const handleEditHabit = () => {
+    setFormConfig({
+      mode: EDIT,
+      values: {
+        ...habit,
+        startDate: dayjs(habit.startDate),
+        endDate: habit.endDate? dayjs(habit.endDate) : null
+      },
+    });
+    handleOpenHabitDialog();
+  };
 
   return (
     <StyledDiv
@@ -99,6 +118,7 @@ const HabitItem = ({ habit, setSelectedHabitDetail }) => {
                 }}
               />
             }
+            onClick={handleEditHabit}
           />
           <Button
             type="text"

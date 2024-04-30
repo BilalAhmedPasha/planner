@@ -1,5 +1,4 @@
 import { Form } from "antd";
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { habitsSelector } from "../../state/userHabits/userHabits.reducer.js";
 import { CREATE, EDIT } from "../../../../constants/formType.constants.js";
@@ -7,8 +6,10 @@ import HabitDialogForm from "./HabitDialogForm.jsx";
 import Modal from "../../../../components/Modal/Modal.jsx";
 import { DAY } from "../../../../constants/calendar.constants.js";
 import { SUCCESS } from "../../../../constants/app.constants.js";
-import { addHabitAction } from "../../state/userHabits/userHabits.actions.js";
-import { editListAction } from "../../../TaskManager/state/userLists/userLists.actions.js";
+import { addHabitAction, editHabitAction } from "../../state/userHabits/userHabits.actions.js";
+import dayjs from "../../../../utils/dateTime.utils.js";
+import { DB_TIME_STAMP_FORMAT } from "../../../../constants/dateTime.constants.js";
+
 
 const HabitDialog = ({
   user,
@@ -17,7 +18,6 @@ const HabitDialog = ({
   setOpenDialog,
   formValues,
   formType,
-  habitDetails,
   ...props
 }) => {
   const dispatch = useDispatch();
@@ -54,6 +54,7 @@ const HabitDialog = ({
   };
 
   const [form] = Form.useForm();
+  const habitId = formValues.id;
 
   const handleOnOk = (formValues) => {
     if (formType === CREATE) {
@@ -63,6 +64,8 @@ const HabitDialog = ({
         endDate: formValues.endDate
           ? formValues.endDate.startOf(DAY).format()
           : null,
+        createdTime: dayjs.utc().format(DB_TIME_STAMP_FORMAT),
+        modifiedTime: dayjs.utc().format(DB_TIME_STAMP_FORMAT),
       };
       dispatch(addHabitAction(user.uid, newHabit)).then((response) => {
         if (response.success === SUCCESS) {
@@ -79,8 +82,9 @@ const HabitDialog = ({
         endDate: formValues.endDate
           ? formValues.endDate.startOf(DAY).format()
           : null,
+        modifiedTime: dayjs.utc().format(DB_TIME_STAMP_FORMAT),
       };
-      dispatch(editListAction(user.uid, modifiedHabit, formValues.id)).then(
+      dispatch(editHabitAction(user.uid, modifiedHabit, habitId)).then(
         (response) => {
           if (response.success === SUCCESS) {
             setOpenDialog(false);
@@ -99,7 +103,7 @@ const HabitDialog = ({
     openDialog && (
       <Modal
         open={openDialog}
-        formTitle={formType === CREATE ? "Create Habit" : "Edit Habit"}
+        formTitle={formType === CREATE ? "Add New Habit" : "Edit Habit"}
         onOk={handleOnOk}
         onCancel={() => {
           setOpenDialog(false);

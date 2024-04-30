@@ -1,30 +1,24 @@
-import { Layout, Modal, Skeleton, message, theme } from "antd";
+import { Layout, Skeleton, message, theme } from "antd";
 import HabitItem from "./HabitItem";
 import { habitsSelector } from "../state/userHabits/userHabits.reducer";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Spinner from "../../../components/Spinner";
 import Loading from "../../../components/Loading";
 import HabitListHeader from "./HabitListHeader";
 import HabitDialogForm from "../HabitList/HabitDialogForm";
-import { CREATE } from "../../../constants/formType.constants";
-import { TIME_ZONE } from "../../../constants/dateTime.constants";
-import dayjs from "../../../utils/dateTime.utils";
-import {
-  DEFAULT_REPEAT_CRITERIA,
-  REPEAT_DAYS,
-} from "../../../constants/habits.constants";
 
 const HabitListContainer = ({ user, setSelectedHabitDetail }) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-  const [messageApi] = message.useMessage();
-  const [openAddHabitDialog, setOpenAddHabitDialog] = useState(false);
 
-  const handleAddHabit = () => {
-    setOpenAddHabitDialog(true);
+  const [messageApi, contextHolder] = message.useMessage();
+  const [openHabitDialog, setOpenHabitDialog] = useState(false);
+
+  const handleOpenHabitDialog = () => {
+    setOpenHabitDialog(true);
   };
 
   const { habits, isLoadingHabits } = useSelector(habitsSelector);
@@ -42,29 +36,8 @@ const HabitListContainer = ({ user, setSelectedHabitDetail }) => {
     }
   }, [pathParameters, habits, setSelectedHabitDetail]);
 
-  const [modal, contextHolder] = Modal.useModal();
+  const [formConfig, setFormConfig] = useState();
 
-  const deleteSuccess = ({ messageText }) => {
-    messageApi.open({
-      type: "success",
-      content: messageText,
-      duration: 3,
-    });
-  };
-  const deleteFailed = ({ messageText }) => {
-    messageApi.open({
-      type: "error",
-      content: messageText,
-      duration: 3,
-    });
-  };
-
-  const FORM_VALUES = {
-    name: "",
-    startDate: dayjs.utc().tz(TIME_ZONE),
-    frequency: REPEAT_DAYS,
-    repeatCriteria: DEFAULT_REPEAT_CRITERIA,
-  };
 
   const [numRows, setNumRows] = useState(10);
   useEffect(() => {
@@ -99,21 +72,26 @@ const HabitListContainer = ({ user, setSelectedHabitDetail }) => {
           spinning={isLoadingHabits && habits?.length > 0}
           indicator={Loading(0)}
         >
-          <HabitListHeader handleAddHabit={handleAddHabit} />
-          {openAddHabitDialog && (
+          <HabitListHeader
+            handleOpenHabitDialog={handleOpenHabitDialog}
+            setFormConfig={setFormConfig}
+          />
+          {openHabitDialog && (
             <HabitDialogForm
               user={user}
               messageApi={messageApi}
-              openDialog={openAddHabitDialog}
-              setOpenDialog={setOpenAddHabitDialog}
-              formType={CREATE}
-              formValues={FORM_VALUES}
+              openDialog={openHabitDialog}
+              setOpenDialog={setOpenHabitDialog}
+              formType={formConfig.mode}
+              formValues={formConfig.values}
             />
           )}
           {habits.map((habit) => (
             <HabitItem
               habit={habit}
               setSelectedHabitDetail={setSelectedHabitDetail}
+              handleOpenHabitDialog={handleOpenHabitDialog}
+              setFormConfig={setFormConfig}
             />
           ))}
           {contextHolder}

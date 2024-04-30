@@ -26,9 +26,12 @@ const HabitDialogForm = ({
     return startDate && current.startOf(DAY).isBefore(startDate.startOf(DAY));
   };
 
-  const [repeatType, setRepeatType] = useState(REPEAT_DAYS);
+  const [frequencyType, setFrequencyType] = useState(
+    initialValues["frequency"] || REPEAT_DAYS
+  );
+  
   const handleRepeatTypeChange = (e) => {
-    setRepeatType(e);
+    setFrequencyType(e);
   };
 
   return (
@@ -95,7 +98,7 @@ const HabitDialogForm = ({
       </Form.Item>
 
       <Form.Item name="repeatCriteria">
-        <RepeatCriteria repeatType={repeatType} />
+        <RepeatCriteria frequencyType={frequencyType} />
       </Form.Item>
     </Form>
   );

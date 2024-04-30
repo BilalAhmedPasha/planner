@@ -2,12 +2,32 @@ import { Button, Space, Typography, theme } from "antd";
 import { useSelector } from "react-redux";
 import { habitsSelector } from "../state/userHabits/userHabits.reducer.js";
 import { PlusOutlined } from "@ant-design/icons";
+import { CREATE } from "../../../constants/formType.constants.js";
+import { TIME_ZONE } from "../../../constants/dateTime.constants.js";
+import {
+  DEFAULT_REPEAT_CRITERIA,
+  REPEAT_DAYS,
+} from "../../../constants/habits.constants.js";
+import dayjs from "../../../utils/dateTime.utils.js";
 
-const HabitListHeader = ({ handleAddHabit }) => {
+const HabitListHeader = ({ handleOpenHabitDialog, setFormConfig }) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-  const { totalHabits } = useSelector(habitsSelector);
+  const { totalHabits, isLoadingHabits } = useSelector(habitsSelector);
+
+  const handleAddHabit = () => {
+    setFormConfig({
+      mode: CREATE,
+      values: {
+        name: "",
+        startDate: dayjs.utc().tz(TIME_ZONE),
+        frequency: REPEAT_DAYS,
+        repeatCriteria: DEFAULT_REPEAT_CRITERIA,
+      },
+    });
+    handleOpenHabitDialog();
+  };
 
   return (
     <div
@@ -40,7 +60,12 @@ const HabitListHeader = ({ handleAddHabit }) => {
           {totalHabits}
         </Typography.Text>
       </Space>
-      <Button type="dashed" icon={<PlusOutlined />} onClick={handleAddHabit} />
+      <Button
+        type="dashed"
+        icon={<PlusOutlined />}
+        onClick={handleAddHabit}
+        disabled={isLoadingHabits}
+      />
     </div>
   );
 };
