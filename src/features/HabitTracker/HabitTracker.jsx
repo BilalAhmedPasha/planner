@@ -7,6 +7,7 @@ import { fetchTagsAction } from "../TaskManager/state/userTags/userTags.actions"
 import { fetchTasksAction } from "../TaskManager/state/userTasks/userTasks.actions";
 import { fetchHabitsAction } from "./state/userHabits/userHabits.actions";
 import HabitDetailContainer from "./HabitDetail/HabitDetail.container";
+import { message } from "antd";
 
 const HabitTracker = ({ user }) => {
   const dispatch = useDispatch();
@@ -26,10 +27,17 @@ const HabitTracker = ({ user }) => {
   const [isHabitDetailsDrawerCollapsed, setIsHabitDetailsDrawerCollapsed] =
     useState(true);
 
+  useEffect(() => {
+    selectedHabitDetail
+      ? setIsHabitDetailsDrawerCollapsed(false)
+      : setIsHabitDetailsDrawerCollapsed(true);
+  }, [selectedHabitDetail]);
+
   return (
     <>
       <HabitListContainer
         user={user}
+        selectedHabitDetail={selectedHabitDetail}
         setSelectedHabitDetail={setSelectedHabitDetail}
       />
       <HabitDetailContainer
