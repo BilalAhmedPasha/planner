@@ -1,5 +1,9 @@
 import styled from "styled-components";
-import { HABIT_MARKED_DONE, HABIT_MARKED_NOT_DONE, HABIT_UNMARKED } from "../../constants/habits.constants";
+import {
+  HABIT_MARKED_DONE,
+  HABIT_MARKED_NOT_DONE,
+  HABIT_UNMARKED,
+} from "../../constants/habits.constants";
 
 const DaySelector = styled.div`
   height: ${(props) => props.height}rem;
@@ -7,9 +11,9 @@ const DaySelector = styled.div`
   align-items: center;
   justify-content: center;
   display: flex;
-  fontsize: 1.15rem;
   cursor: ${(props) => props.cursor};
   border-radius: 50%;
+  margin: 0.2rem;
   color: ${(props) => (props.isSelected ? "#ffffff" : props.colorTextBase)};
   background-color: ${(props) => {
     if (props.markedValue === HABIT_MARKED_DONE) {

@@ -49,6 +49,8 @@ const RepeatCriteria = ({ value = {}, onChange, frequencyType }) => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            width:"100%",
+            overflow:"scroll"
           }}
         >
           {frequencyState.days.map((each, index) => {
