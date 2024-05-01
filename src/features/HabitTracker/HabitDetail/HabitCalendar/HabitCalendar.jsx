@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { checkIfValidDate, generateDate } from "../../../../utils/habit.utils";
 import { Button, Layout, theme } from "antd";
 import dayjs from "../../../../utils/dateTime.utils";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { months } from "../../../../constants/calendar.constants";
 import Typography from "antd/es/typography/Typography";
 import { CaretLeftOutlined, CaretRightOutlined } from "@ant-design/icons";
@@ -17,6 +17,8 @@ import {
   HABIT_MARKED_DONE,
   HABIT_MARKED_NOT_DONE,
   HABIT_UNMARKED,
+  REPEAT_DAYS,
+  REPEAT_INTERVAL,
 } from "../../../../constants/habits.constants";
 import { habitsSelector } from "../../state/userHabits/userHabits.reducer";
 import Loading from "../../../../components/Loading";
@@ -35,15 +37,13 @@ const CalenderDays = styled.div`
 
 const CalendarText = styled.h2`
   padding: 0.3rem;
-  color: ${(props) =>
-    !props.currentMonth ||
-    props.isFuture ||
-    !props.isValidDate ||
-    props.markedValue !== 0
+  color: ${(props) => {
+    return !props.currentMonth || props.isFuture || !props.isValidDate
       ? props.colorBorder
-      : props.isToday
+      : props.isToday && props.markedValue === 0
       ? props.colorPrimary
-      : props.colorTextBase};
+      : props.colorTextBase;
+  }};
 `;
 
 const CalendarDay = styled.div`
@@ -194,23 +194,46 @@ const HabitCalendar = ({ user, habit, isInDrawer = false }) => {
     pending: 0,
   });
 
+  const validDaysCount = useMemo(() => {
+    let count = 0;
+    for (let i = dayjs(habit.startDate); i <= currentDate; i = i.add(1, DAY)) {
+      if (habit.repeatCriteria.days[i.day()] === 1) {
+        count++;
+      }
+    }
+    return count;
+  }, [habit.id, habit.startDate, habit.frequency, habit.repeatCriteria.days]);
+
   useEffect(() => {
     // Calculate history on first load of the habit
-    const totalDays = currentDate.diff(dayjs(habit.startDate), DAY);
+    let totalDays = currentDate.diff(dayjs(habit.startDate), DAY) + 1;
+    if (habit.frequency === REPEAT_INTERVAL) {
+      totalDays = Math.ceil(totalDays / habit.repeatCriteria.interval);
+    } else if (habit.frequency === REPEAT_DAYS) {
+      totalDays = validDaysCount;
+    }
     let achievedCount = 0;
     let unachievedCount = 0;
     if (habit.history) {
       for (let [key, value] of Object.entries(habit.history)) {
-        if (value === 1) achievedCount++;
-        if (value === -1) unachievedCount++;
+        if (checkIfValidDate({ date: dayjs(key), habit })) {
+          if (value === 1) achievedCount++;
+          if (value === -1) unachievedCount++;
+        }
       }
     }
     setHabitHistory({
       achieved: achievedCount,
       unachieved: unachievedCount,
-      pending: totalDays + 1 - (achievedCount + unachievedCount), // Include today also
+      pending: totalDays - (achievedCount + unachievedCount),
     });
-  }, [habit.id, habit.startDate]);
+  }, [
+    habit.id,
+    habit.startDate,
+    habit.frequency,
+    habit.repeatCriteria.interval,
+    validDaysCount,
+  ]);
 
   return (
     <Spinner spinning={isLoadingHabits} indicator={Loading(0)}>
@@ -352,6 +375,7 @@ const HabitCalendar = ({ user, habit, isInDrawer = false }) => {
                     colorPrimary={colorPrimary}
                     colorSuccess={colorSuccess}
                     colorError={colorError}
+                    colorTextBase={colorTextBase}
                     onClick={() => {
                       if (isValidDate && !isFuture) {
                         handleHabitDateClick({

@@ -48,7 +48,7 @@ const CalendarEvent = ({ event, user }) => {
           />
         </div>
         <Typography.Text strong={true} ellipsis={true} tooltip={false}>
-          {event.name} ({event.id})
+          {event.name}
         </Typography.Text>
       </Space>
       <br />
