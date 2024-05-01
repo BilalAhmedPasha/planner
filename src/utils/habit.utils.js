@@ -11,22 +11,28 @@ export const generateDate = (
 
   const arrayOfDate = [];
 
+  let today = dayjs().startOf(DAY);
   // Prefix dates
   for (let i = 0; i < firstDateOfMonth.day(); i++) {
+    let ithDate = firstDateOfMonth.day(i).startOf(DAY);
     arrayOfDate.push({
       currentMonth: false,
       date: firstDateOfMonth.day(i).startOf(DAY),
+      isPast: ithDate.isBefore(today),
+      isToday: ithDate.isSame(today),
+      isFuture: ithDate.isAfter(today),
     });
   }
 
-  // Month dates
+  // Current month dates
   for (let i = firstDateOfMonth.date(); i <= lastDateOfMonth.date(); i++) {
+    let ithDate = firstDateOfMonth.date(i).startOf(DAY);
     arrayOfDate.push({
       currentMonth: true,
-      date: firstDateOfMonth.date(i).startOf(DAY),
-      today:
-        firstDateOfMonth.date(i).toDate().toDateString() ===
-        dayjs().toDate().toDateString(),
+      date: ithDate,
+      isPast: ithDate.isBefore(today),
+      isToday: ithDate.isSame(today),
+      isFuture: ithDate.isAfter(today),
     });
   }
 
@@ -37,9 +43,13 @@ export const generateDate = (
     i <= lastDateOfMonth.date() + remaining;
     i++
   ) {
+    let ithDate = firstDateOfMonth.day(i).startOf(DAY);
     arrayOfDate.push({
       currentMonth: false,
       date: lastDateOfMonth.date(i).startOf(DAY),
+      isPast: ithDate.isBefore(today),
+      isToday: ithDate.isSame(today),
+      isFuture: ithDate.isAfter(today),
     });
   }
 

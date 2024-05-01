@@ -7,7 +7,7 @@ import { useState } from "react";
 import { months } from "../../../../constants/calendar.constants";
 import Typography from "antd/es/typography/Typography";
 import { CaretLeftOutlined, CaretRightOutlined } from "@ant-design/icons";
-import { DAYS_LIST } from "../../../../constants/dateTime.constants";
+import { DAY, DAYS_LIST } from "../../../../constants/dateTime.constants";
 import { useDispatch, useSelector } from "react-redux";
 import { markHabitAction } from "../../state/userHabits/userHabits.actions";
 import {
@@ -26,15 +26,13 @@ const CalenderDays = styled.div`
   grid-template-columns: repeat(7, 1fr);
 `;
 
-const CalendarText = styled.h3`
+const CalendarText = styled.h2`
   color: ${(props) =>
-    !props.isValidDate
+    !props.currentMonth || props.isFuture || !props.isValidDate
       ? props.colorBorder
-      : props.today
+      : props.isToday
       ? props.colorPrimary
-      : props.currentMonth
-      ? props.colorTextBase
-      : props.colorTextSecondary};
+      : props.colorTextBase};
 `;
 
 const CalendarDay = styled.div`
@@ -74,12 +72,15 @@ const CalenderDate = styled.div`
       } else if (props.markedValue === -1) {
         return props.colorError;
       }
-      return props.isValidDate
+      return props.isValidDate && !props.isFuture
         ? props.colorBgTextHover
         : props.colorBgContainer;
     }};
   }
-  box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
+  box-shadow: ${(props) =>
+    props.isValidDate && !props.isFuture
+      ? "rgba(99, 99, 99, 0.20) 0px 2px 8px 0px"
+      : "none"};
 `;
 
 const mapValue = (input) => {
@@ -212,8 +213,9 @@ const HabitCalendar = ({ user, habit }) => {
           </CalenderDays>
           <CalenderDates>
             {generateDate(today.month(), today.year()).map(
-              ({ date, currentMonth, today }, index) => {
+              ({ date, currentMonth, isPast, isToday, isFuture }, index) => {
                 const isValidDate = checkIfValidDate({ date, habit });
+                console.log(isPast, isToday, isFuture);
                 return (
                   <CalenderDate
                     key={index}
@@ -223,7 +225,7 @@ const HabitCalendar = ({ user, habit }) => {
                     colorSuccess={colorSuccess}
                     colorError={colorError}
                     onClick={() => {
-                      if (isValidDate) {
+                      if (isValidDate && !isFuture) {
                         handleHabitDateClick({ date: date });
                       }
                     }}
@@ -233,7 +235,10 @@ const HabitCalendar = ({ user, habit }) => {
                         console.log("Right clicked", date.toDate());
                       }
                     }}
-                    cursor={isValidDate ? "pointer" : "not-allowed"}
+                    cursor={
+                      isValidDate && !isFuture ? "pointer" : "not-allowed"
+                    }
+                    isFuture={isFuture}
                     isValidDate={isValidDate}
                     markedValue={
                       habit.history && habit.history[`${date.format()}`]
@@ -243,7 +248,8 @@ const HabitCalendar = ({ user, habit }) => {
                   >
                     <CalendarText
                       currentMonth={currentMonth}
-                      today={today}
+                      isFuture={isFuture}
+                      isToday={isToday}
                       colorPrimary={colorPrimary}
                       colorTextBase={colorTextBase}
                       colorTextSecondary={colorTextSecondary}
