@@ -10,7 +10,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { handleHabitDateClick } from "../HabitDetail/HabitCalendar/HabitCalendar";
 import useWindowSize from "../../../hooks/useWindowSize";
-import { disableWeekView, isOnVerySmallScreen, navToDrawer } from "../../../utils/screen.utils";
+import { navToDrawer } from "../../../utils/screen.utils";
 
 const StyledDiv = styled.div`
   padding: 0.75rem 1rem;
@@ -32,11 +32,11 @@ const StyledDiv = styled.div`
 
 const DateText = styled.h5`
   color: ${(props) =>
-    !props.isValidDate || props.markedValue !== 0
+    !props.isValidDate
       ? props.colorBorder
       : props.today
       ? props.colorPrimary
-      : props.currentMonth
+      : props.currentMonth || props.markedValue !== 0
       ? props.colorTextBase
       : props.colorTextSecondary};
 `;
@@ -105,7 +105,9 @@ const HabitItem = ({
         style={{
           whiteSpace: "nowrap",
           overflowX: "auto",
-          maxWidth: !navToDrawer({ currentWidth: screenSize.width }) ? "100%": "100%"
+          maxWidth: !navToDrawer({ currentWidth: screenSize.width })
+            ? "100%"
+            : "100%",
         }}
       >
         {habit.name}

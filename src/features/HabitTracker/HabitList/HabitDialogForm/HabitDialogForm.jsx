@@ -73,7 +73,6 @@ const HabitDialogForm = ({
           }}
           onChange={handleStartDateChange}
           allowClear={false}
-          disabled={formType !== CREATE}
         />
       </Form.Item>
 
