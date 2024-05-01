@@ -37,26 +37,26 @@ const renderTaskMenuIcon = ({
           isNavDrawerCollapsed ? (
             <MenuUnfoldOutlined
               style={{
-                fontSize: "20px",
+                fontSize: "1.25rem",
               }}
             />
           ) : (
             <MenuFoldOutlined
               style={{
-                fontSize: "20px",
+                fontSize: "1.25rem",
               }}
             />
           )
         ) : isMenuCollapsed ? (
           <MenuUnfoldOutlined
             style={{
-              fontSize: "20px",
+              fontSize: "1.25rem",
             }}
           />
         ) : (
           <MenuFoldOutlined
             style={{
-              fontSize: "20px",
+              fontSize: "1.25rem",
             }}
           />
         )
@@ -115,7 +115,7 @@ const TaskListHeader = ({
         <Typography.Text
           style={{
             fontWeight: "bold",
-            fontSize: "20px",
+            fontSize: "1.25rem",
             whiteSpace: "nowrap",
             overflowX: "auto",
           }}

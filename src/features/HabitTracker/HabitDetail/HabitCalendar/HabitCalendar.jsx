@@ -29,6 +29,7 @@ const CalenderDays = styled.div`
 `;
 
 const CalendarText = styled.h2`
+  padding: 0.3rem;
   color: ${(props) =>
     !props.currentMonth ||
     props.isFuture ||
@@ -41,8 +42,7 @@ const CalendarText = styled.h2`
 `;
 
 const CalendarDay = styled.div`
-  padding: 10px;
-  margin: 5px;
+  margin: 1rem 1.25rem 0.5rem 1.25rem;
   text-align: center;
   font-size: 1rem;
   color: ${(props) => props.colorTextSecondary};
@@ -161,7 +161,7 @@ const HabitCalendar = ({ user, habit, isInDrawer = false }) => {
             <Typography.Text
               style={{
                 fontWeight: "bold",
-                fontSize: "25px",
+                fontSize: "1.5rem",
               }}
               ellipsis={true}
             >

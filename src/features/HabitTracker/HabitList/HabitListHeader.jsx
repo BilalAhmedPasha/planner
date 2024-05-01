@@ -46,7 +46,7 @@ const HabitListHeader = ({ handleOpenHabitDialog, setFormConfig }) => {
         <Typography.Text
           style={{
             fontWeight: "bold",
-            fontSize: "20px",
+            fontSize: "1.25rem",
             whiteSpace: "nowrap",
             overflowX: "auto",
           }}

@@ -122,7 +122,7 @@ const HabitItem = ({
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: "10px",
+                gap: "0.5rem",
               }}
             >
               {last7Dates.map((date) => {
