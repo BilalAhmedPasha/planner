@@ -1,17 +1,13 @@
 import { Modal, Tag, theme, Typography } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import {
-  DEFAULT_BADGE_COLOR,
-} from "../../../../constants/color.constants";
-import {
-  SUCCESS,
-} from "../../../../constants/app.constants";
+import { DEFAULT_BADGE_COLOR } from "../../../../constants/color.constants";
+import { SUCCESS } from "../../../../constants/app.constants";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { cross, tick } from "../../../../constants/checkBox.constants";
 import PrimaryTaskListItemDetail from "./PrimaryTaskListItemDetail";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import CheckBoxDropdown from "./CheckBoxDropdown";
 
 const renderTags = ({ item, tags, colorBorder }) => {
@@ -72,6 +68,7 @@ const TaskItem = ({
   lists,
   tags,
   selectedTaskDetails,
+  setSelectedTaskDetails,
   setShowCheckBoxMenu,
   showCheckBoxMenu,
 }) => {
@@ -154,6 +151,9 @@ const TaskItem = ({
     });
   };
 
+  const url = useLocation();
+  const navigateTo = useNavigate();
+
   const handleSoftDelete = ({
     currentItem,
     softDeleteAction,
@@ -163,6 +163,12 @@ const TaskItem = ({
     dispatch(softDeleteAction(user.uid, currentItem)).then((response) => {
       if (response.success === SUCCESS) {
         success({ messageText: successMessage });
+        const parsedURL = url.pathname.split("/");
+        if (parsedURL[parsedURL.length - 1] === currentItem.id) {
+          const updatedURL = parsedURL.slice(0, -1).join("/");
+          setSelectedTaskDetails([]);
+          navigateTo(updatedURL);
+        }
       } else {
         failed({ messageText: failureMessage });
       }

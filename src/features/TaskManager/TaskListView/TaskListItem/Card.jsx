@@ -84,6 +84,7 @@ const Card = ({
             }
           });
         } else {
+          // TODO Check here
           const urlPath = currentURL.pathname.split("/");
           if (
             urlPath.length >= 4 &&
@@ -107,6 +108,7 @@ const Card = ({
         lists={lists}
         tags={tags}
         selectedTaskDetails={selectedTaskDetails}
+        setSelectedTaskDetails={setSelectedTaskDetails}
         setShowCheckBoxMenu={setShowCheckBoxMenu}
         showCheckBoxMenu={showCheckBoxMenu}
       />

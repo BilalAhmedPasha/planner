@@ -3,13 +3,14 @@ import HabitItem from "./HabitItem";
 import { habitsSelector } from "../state/userHabits/userHabits.reducer";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Spinner from "../../../components/Spinner";
 import Loading from "../../../components/Loading";
 import HabitListHeader from "./HabitListHeader";
 import HabitDialogForm from "../HabitList/HabitDialogForm";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { deleteHabitAction } from "../state/userHabits/userHabits.actions";
+import { SUCCESS } from "../../../constants/app.constants";
 
 const HabitListContainer = ({
   user,
@@ -74,11 +75,18 @@ const HabitListContainer = ({
     });
   };
 
+  const navigateTo = useNavigate();
   const dispatch = useDispatch();
   const handleDelete = ({ successMessage, failureMessage, habitId }) => {
     dispatch(deleteHabitAction(user.uid, habitId)).then((response) => {
       if (response.success === SUCCESS) {
         deleteSuccess({ messageText: successMessage });
+        const parsedURL = url.pathname.split("/");
+        if (parsedURL[parsedURL.length - 1] === habitId) {
+          const updatedURL = parsedURL.slice(0, -1).join("/");
+          setSelectedHabitDetail(null);
+          navigateTo(updatedURL);
+        }
       } else {
         deleteFailed({ messageText: failureMessage });
       }

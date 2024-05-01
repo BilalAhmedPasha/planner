@@ -43,7 +43,7 @@ const TaskListContainer = ({
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const [messageApi] = message.useMessage();
+  const [messageApi, messageContextHolder] = message.useMessage();
   const [openAddTaskDialog, setOpenAddTaskDialog] = useState(false);
 
   const handleAddTask = () => {
@@ -111,7 +111,7 @@ const TaskListContainer = ({
     setSortedSectionTasks(currentSectionTasksTemp);
   }, [sortBy, currentSectionTasks]);
 
-  const [modal, contextHolder] = Modal.useModal();
+  const [modal, modalContextHolder] = Modal.useModal();
   const deleteSuccess = ({ messageText }) => {
     messageApi.open({
       type: "success",
@@ -325,7 +325,8 @@ const TaskListContainer = ({
             selectedTaskDetails={selectedTaskDetails}
             setSelectedTaskDetails={setSelectedTaskDetails}
           />
-          {contextHolder}
+          {modalContextHolder}
+          {messageContextHolder}
         </Spinner>
       </Skeleton>
     </Layout.Content>
