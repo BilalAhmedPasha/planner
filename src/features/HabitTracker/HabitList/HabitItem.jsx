@@ -9,6 +9,8 @@ import dayjs from "../../../utils/dateTime.utils";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { handleHabitDateClick } from "../HabitDetail/HabitCalendar/HabitCalendar";
+import useWindowSize from "../../../hooks/useWindowSize";
+import { disableWeekView, isOnVerySmallScreen, navToDrawer } from "../../../utils/screen.utils";
 
 const StyledDiv = styled.div`
   padding: 0.75rem 1rem;
@@ -24,6 +26,7 @@ const StyledDiv = styled.div`
   user-select: none;
   cursor: pointer;
   display: flex;
+  justify-content: space-between;
   align-items: center;
 `;
 
@@ -77,6 +80,8 @@ const HabitItem = ({
     handleOpenHabitDialog();
   };
 
+  const screenSize = useWindowSize();
+
   const currentURL = useLocation();
   const navigateTo = useNavigate();
   const dispatch = useDispatch();
@@ -99,108 +104,119 @@ const HabitItem = ({
       <Typography.Text
         style={{
           whiteSpace: "nowrap",
-          overflow: "hidden",
-          width: "100%",
+          overflowX: "auto",
+          maxWidth: !navToDrawer({ currentWidth: screenSize.width }) ? "100%": "100%"
         }}
-        ellipsis={true}
       >
         {habit.name}
       </Typography.Text>
-      <Space>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "10px",
-          }}
-        >
-          {last7Dates.map((date) => {
-            const isValidDate = checkIfValidDate({ date: dayjs(date), habit });
-            const markedValue =
-              habit.history && habit.history[`${dayjs(date).format()}`]
-                ? habit.history[`${dayjs(date).format()}`]
-                : 0;
-            return (
-              <DaySelector
-                height={2}
-                colorBgContainer={colorBgContainer}
-                colorBgTextHover={colorBgTextHover}
-                colorPrimary={colorPrimary}
-                colorTextBase={colorTextSecondary}
-                colorSuccess={colorSuccess}
-                colorError={colorError}
-                isSelected={false}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (isValidDate) {
-                    handleHabitDateClick({
-                      habit: habit,
-                      date: dayjs(date),
-                      dispatch: dispatch,
-                      user: user
-                    });
-                  }
-                }}
-                cursor={isValidDate ? "pointer" : "not-allowed"}
-                isValidDate={isValidDate}
-                markedValue={markedValue}
-              >
-                <DateText
-                  isValidDate={isValidDate}
-                  colorBorder={colorBorder}
-                  colorPrimary={colorPrimary}
-                  colorTextBase={colorTextBase}
-                  colorTextSecondary={colorTextSecondary}
-                  markedValue={markedValue}
-                >
-                  {date.getDate()}
-                </DateText>
-              </DaySelector>
-            );
-          })}
-        </div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <Button
-            type="text"
-            icon={
-              <FiEdit2
-                style={{
-                  fontSize: "1rem",
-                  color: colorTextLabel,
-                  opacity: 1,
-                  transition: "0.3s all ease",
-                }}
-              />
-            }
-            onClick={(e) => {
-              e.stopPropagation();
-              handleEditHabit();
+      <div
+        style={{
+          whiteSpace: "nowrap",
+          paddingLeft: "0.25rem",
+        }}
+      >
+        <Space>
+          {!navToDrawer({ currentWidth: screenSize.width }) && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+              }}
+            >
+              {last7Dates.map((date) => {
+                const isValidDate = checkIfValidDate({
+                  date: dayjs(date),
+                  habit,
+                });
+                const markedValue =
+                  habit.history && habit.history[`${dayjs(date).format()}`]
+                    ? habit.history[`${dayjs(date).format()}`]
+                    : 0;
+                return (
+                  <DaySelector
+                    height={2}
+                    colorBgContainer={colorBgContainer}
+                    colorBgTextHover={colorBgTextHover}
+                    colorPrimary={colorPrimary}
+                    colorTextBase={colorTextSecondary}
+                    colorSuccess={colorSuccess}
+                    colorError={colorError}
+                    isSelected={false}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (isValidDate) {
+                        handleHabitDateClick({
+                          habit: habit,
+                          date: dayjs(date),
+                          dispatch: dispatch,
+                          user: user,
+                        });
+                      }
+                    }}
+                    cursor={isValidDate ? "pointer" : "not-allowed"}
+                    isValidDate={isValidDate}
+                    markedValue={markedValue}
+                  >
+                    <DateText
+                      isValidDate={isValidDate}
+                      colorBorder={colorBorder}
+                      colorPrimary={colorPrimary}
+                      colorTextBase={colorTextBase}
+                      colorTextSecondary={colorTextSecondary}
+                      markedValue={markedValue}
+                    >
+                      {date.getDate()}
+                    </DateText>
+                  </DaySelector>
+                );
+              })}
+            </div>
+          )}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
             }}
-          />
-          <Button
-            type="text"
-            icon={
-              <AiOutlineDelete
-                style={{
-                  fontSize: "1rem",
-                  color: colorTextLabel,
-                  opacity: 1,
-                  transition: "0.3s all ease",
-                }}
-              />
-            }
-            onClick={(e) => {
-              e.stopPropagation();
-              handleDeleteHabit({ habitId: habit.id });
-            }}
-          />
-        </div>
-      </Space>
+          >
+            <Button
+              type="text"
+              icon={
+                <FiEdit2
+                  style={{
+                    fontSize: "1rem",
+                    color: colorTextLabel,
+                    opacity: 1,
+                    transition: "0.3s all ease",
+                  }}
+                />
+              }
+              onClick={(e) => {
+                e.stopPropagation();
+                handleEditHabit();
+              }}
+            />
+            <Button
+              type="text"
+              icon={
+                <AiOutlineDelete
+                  style={{
+                    fontSize: "1rem",
+                    color: colorTextLabel,
+                    opacity: 1,
+                    transition: "0.3s all ease",
+                  }}
+                />
+              }
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDeleteHabit({ habitId: habit.id });
+              }}
+            />
+          </div>
+        </Space>
+      </div>
     </StyledDiv>
   );
 };
