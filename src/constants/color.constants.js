@@ -1,4 +1,4 @@
-export const DEFAULT_TAG_COLOR = "#082C92";
+export const DEFAULT_TAG_COLOR = "#689CEE";
 export const DEFAULT_LIST_COLOR = "#13F7CA";
 export const WHITE = "#ffffff";
 
@@ -31,6 +31,6 @@ export const TASK_CARD_BG_HOVER_COLOR = "#f4faff";
 export const TASK_CARD_BG_SELECTED_COLOR = "#e6f4ff";
 export const TASK_CARD_BOX_BOTTOM_BORDER_COLOR = "#f0f0f0";
 
-export const INBOX_LIST_COLOR = "#006d75";
+export const INBOX_LIST_COLOR = "#00B6C3";
 
-export const DEFAULT_BADGE_COLOR = "#108ee9";
+export const DEFAULT_BADGE_COLOR = "#34A3F4";

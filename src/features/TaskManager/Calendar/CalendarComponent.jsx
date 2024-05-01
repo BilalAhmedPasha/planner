@@ -1,7 +1,6 @@
 import { Typography, Space, Dropdown, Button } from "antd";
 import { Calendar, dayjsLocalizer, Views } from "react-big-calendar";
-import dayjs from "dayjs";
-import timezone from "dayjs/plugin/timezone";
+import dayjs from "../../../utils/dateTime.utils";
 import React, {
   useCallback,
   useEffect,
@@ -10,15 +9,18 @@ import React, {
   useState,
 } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import CustomToolbar from "./CustomToolBar/CustomToolBar";
+import Toolbar from "./Custom/ToolBar";
 import { useSelector } from "react-redux";
 import { listsSelector } from "../state/userLists/userLists.reducer";
 import { tasksSelector } from "../state/userTasks/userTasks.reducer";
-import { INBOX_LIST_COLOR } from "../../../constants/color.constants";
+import {
+  DEFAULT_TAG_COLOR,
+  INBOX_LIST_COLOR,
+} from "../../../constants/color.constants";
 import { BgColorsOutlined } from "@ant-design/icons";
 import { PRIORITY } from "../../../constants/sort.constants";
-import { LISTS, LOADER_SIZE } from "../../../constants/app.constants";
-import { TIME_FORMAT_IN_DB } from "../../../constants/dateTime.constants";
+import { LISTS, LOADER_SIZE, TAGS } from "../../../constants/app.constants";
+import { DAY, TIME_FORMAT_IN_DB } from "../../../constants/dateTime.constants";
 import { priorityColorMappings } from "../../../constants/priority.constants";
 import { CREATE, EDIT } from "../../../constants/formType.constants";
 import {
@@ -29,86 +31,19 @@ import { disableWeekView } from "../../../utils/screen.utils";
 import useWindowSize from "../../../hooks/useWindowSize";
 import Spinner from "../../../components/Spinner";
 import Loading from "../../../components/Loading";
-import styled from "styled-components";
+import { tagsSelector } from "../state/userTags/userTags.reducer";
+import { averageColor } from "../../../utils/calendar.utils";
+import CalendarEvent from "./Custom/CalendarEvent";
+import { calculateCalendarEvents } from "./CalendarUtils";
+import CalendarWrapper from "./Custom/CalendarWrapper";
 
-dayjs.extend(timezone);
-
-const CalendarWrapper = styled.div`
-  height: 92vh;
-  overflow-y: auto;
-  .rbc-calendar {
-    color: ${(props) => (props.userTheme ? "#fff" : "#000")};
-  }
-
-  .rbc-current-time-indicator {
-    background-color: rgba(255, 87, 87, 1);
-    height: 0.1rem;
-  }
-
-  .rbc-today {
-    color: ${(props) => (props.userTheme ? "#fff" : "#000")};
-    background-color: ${(props) =>
-      props.userTheme
-        ? "rgba(39, 192, 255, 0.075)"
-        : "rgba(39, 192, 255, 0.15)"};
-  }
-
-  .rbc-header {
-    border-bottom: 0.75px solid
-      ${(props) =>
-        props.userTheme ? "rgba(255, 255, 255, 0.2)" : "rgba(66, 66, 66, 0.5)"};
-  }
-
-  .rbc-header + .rbc-header {
-    border-left: 0.75px solid
-      ${(props) =>
-        props.userTheme ? "rgba(255, 255, 255, 0.2)" : "rgba(66, 66, 66, 0.5)"};
-  }
-
-  .rbc-day-bg + .rbc-day-bg {
-    border-left: 0.75px solid
-      ${(props) =>
-        props.userTheme ? "rgba(255, 255, 255, 0.2)" : "rgba(66, 66, 66, 0.5)"};
-  }
-
-  .rbc-timeslot-group {
-    border-bottom: 0.75px solid
-      ${(props) =>
-        props.userTheme ? "rgba(255, 255, 255, 0.2)" : "rgba(66, 66, 66, 0.5)"};
-  }
-
-  .rbc-time-view {
-    border: 0.75px solid
-      ${(props) =>
-        props.userTheme ? "rgba(255, 255, 255, 0.2)" : "rgba(66, 66, 66, 0.5)"};
-  }
-
-  .rbc-time-content {
-    border-top: 0.75px solid
-      ${(props) =>
-        props.userTheme ? "rgba(255, 255, 255, 0.2)" : "rgba(66, 66, 66, 0.5)"};
-  }
-
-  .rbc-time-content > * + * > * {
-    border-left: 0.75px solid
-      ${(props) =>
-        props.userTheme ? "rgba(255, 255, 255, 0.2)" : "rgba(66, 66, 66, 0.5)"};
-  }
-
-  .rbc-time-header-content {
-    border-left: 0.75px solid
-      ${(props) =>
-        props.userTheme ? "rgba(255, 255, 255, 0.2)" : "rgba(66, 66, 66, 0.5)"};
-  }
-
-  .rbc-day-slot .rbc-time-slot {
-    border-top: 0px solid
-      ${(props) =>
-        props.userTheme ? "rgba(255, 255, 255, 0.2)" : "rgba(66, 66, 66, 0.5)"};
-  }
-`;
+const setStartAndEndDate = ({ event, setViewStartDate, setViewEndDate }) => {
+  setViewStartDate(new Date(event[0]));
+  setViewEndDate(new Date(event[event.length - 1]));
+};
 
 const CalendarComponent = ({
+  user,
   userTheme,
   setFormType,
   setTaskDetails,
@@ -116,43 +51,22 @@ const CalendarComponent = ({
   initalFormValues,
 }) => {
   const { lists } = useSelector(listsSelector);
+  const { tags } = useSelector(tagsSelector);
   const { tasks, isLoadingTasks } = useSelector(tasksSelector);
   const localizer = useMemo(() => dayjsLocalizer(dayjs), []);
 
-  const taskEvents = useMemo(() => {
-    const taskEventList = [];
-    for (let i = 0; i < tasks.length; i++) {
-      if (!tasks[i].isDeleted && tasks[i].taskDate !== null) {
-        if (tasks[i].isAllDay) {
-          taskEventList.push({
-            ...tasks[i],
-            title: tasks[i].name,
-            start: dayjs(tasks[i].taskDate).toDate(),
-            end: dayjs(tasks[i].taskDate).toDate(),
-            allDay: true,
-          });
-        } else {
-          const startTimeStamp = tasks[i].taskDate.replace(
-            "00:00:00",
-            tasks[i].startTime
-          );
-          const endTimeStamp = tasks[i].taskDate.replace(
-            "00:00:00",
-            tasks[i].endTime
-          );
+  const [viewStartDate, setViewStartDate] = useState(
+    new Date(dayjs(new Date()).startOf("week"))
+  );
 
-          taskEventList.push({
-            ...tasks[i],
-            title: tasks[i].name,
-            start: dayjs(startTimeStamp).toDate(),
-            end: dayjs(endTimeStamp).toDate(),
-            allDay: false,
-          });
-        }
-      }
-    }
-    return taskEventList;
-  }, [tasks]);
+  const [viewEndDate, setViewEndDate] = useState(
+    new Date(dayjs(new Date()).endOf("week"))
+  );
+
+  const taskEvents = useMemo(
+    () => calculateCalendarEvents({ tasks, viewStartDate, viewEndDate }),
+    [tasks, viewStartDate, viewEndDate]
+  );
 
   const { views } = useMemo(
     () => ({
@@ -184,6 +98,10 @@ const CalendarComponent = ({
       key: LISTS,
     },
     {
+      label: "Tags",
+      key: TAGS,
+    },
+    {
       label: "Priority",
       key: PRIORITY,
     },
@@ -194,9 +112,8 @@ const CalendarComponent = ({
 
   const eventPropGetter = useCallback(
     (event) => {
-      let getListColor;
       if (colorBy === LISTS) {
-        getListColor =
+        const getListColor =
           lists.find((each) => each.id === event.listId)?.color ||
           INBOX_LIST_COLOR;
         return {
@@ -205,8 +122,36 @@ const CalendarComponent = ({
             border: `0.5px solid ${getListColor}`,
             opacity: event.isCompleted || event.isWontDo ? 0.5 : 1,
             padding: "3px",
+            overflow: "scroll"
           },
         };
+      } else if (colorBy === TAGS) {
+        if (event.tagIds.length === 0) {
+          return {
+            style: {
+              background: DEFAULT_TAG_COLOR,
+              border: `0.5px solid ${DEFAULT_TAG_COLOR}`,
+              opacity: event.isCompleted || event.isWontDo ? 0.5 : 1,
+              padding: "3px",
+              overflow: "scroll",
+            },
+          };
+        } else {
+          const colorMix = averageColor(
+            tags
+              .filter((tag) => event.tagIds.includes(tag.id))
+              .map((tag) => tag.color)
+          );
+          return {
+            style: {
+              background: colorMix,
+              border: `0.5px solid ${colorMix}`,
+              opacity: event.isCompleted || event.isWontDo ? 0.5 : 1,
+              padding: "3px",
+              overflow: "scroll",
+            },
+          };
+        }
       } else if (colorBy === PRIORITY) {
         return {
           style: {
@@ -214,11 +159,12 @@ const CalendarComponent = ({
             border: `0.5px solid ${priorityColorMappings[event.priority]}`,
             opacity: event.isCompleted || event.isWontDo ? 0.5 : 1,
             padding: "3px",
+            overflow: "scroll",
           },
         };
       }
     },
-    [lists, colorBy]
+    [lists, tags, colorBy]
   );
 
   const clickRef = useRef(null);
@@ -245,7 +191,7 @@ const CalendarComponent = ({
             description: event.description,
             listId: event.listId,
             priority: event.priority,
-            tags: event.tagIds,
+            tagIds: event.tagIds,
             taskDate: dayjs(event.taskDate),
             duration:
               event.startTime && event.endTime
@@ -271,7 +217,7 @@ const CalendarComponent = ({
       setFormType(CREATE);
       window.clearTimeout(clickRef?.current);
       clickRef.current = window.setTimeout(() => {
-        const selectedDate = dayjs(range.start).startOf("day");
+        const selectedDate = dayjs(range.start).startOf(DAY);
         const startTime = dayjs(range.start);
         const endTime = dayjs(range.end);
         setFormValues(() => {
@@ -335,6 +281,13 @@ const CalendarComponent = ({
         <CalendarWrapper userTheme={userTheme}>
           <Calendar
             events={taskEvents}
+            onRangeChange={(event) =>
+              setStartAndEndDate({
+                event: event,
+                setViewStartDate,
+                setViewEndDate,
+              })
+            }
             localizer={localizer}
             defaultView={
               disableWeekView({ currentWidth: screenSize.width })
@@ -343,7 +296,10 @@ const CalendarComponent = ({
             }
             views={views}
             components={{
-              toolbar: CustomToolbar,
+              toolbar: Toolbar,
+              event: ({ event }) => {
+                return <CalendarEvent event={event} user={user} />;
+              },
             }}
             timeslots={4}
             step={15}
@@ -356,7 +312,7 @@ const CalendarComponent = ({
             formats={formats}
             selectable={true}
             onSelecting={onSelecting}
-            longPressThreshold={250}
+            longPressThreshold={400}
             onSelectEvent={onSelectEvent}
           />
         </CalendarWrapper>

@@ -3,6 +3,7 @@ import {
   addDoc,
   deleteDoc,
   updateDoc,
+  arrayUnion,
   collection,
   getDocs,
   doc,
@@ -61,7 +62,6 @@ export const completeTaskApi = (
   const userDocRef = doc(db, "users", userId);
   const taskCollectionRef = collection(userDocRef, TASKS);
   const docRef = doc(taskCollectionRef, taskDetails.id);
-
   if (!taskDetails.isRepeating) {
     const isWontDoNew = isCompleted ? false : taskDetails.isWontDo;
     return updateDoc(docRef, {
@@ -119,7 +119,6 @@ export const wontDoTaskApi = (
   const userDocRef = doc(db, "users", userId);
   const taskCollectionRef = collection(userDocRef, TASKS);
   const docRef = doc(taskCollectionRef, taskDetails.id);
-
   if (!taskDetails.isRepeating) {
     const isCompletedNew = isWontDo ? false : taskDetails.isCompleted;
     return updateDoc(docRef, {
@@ -241,4 +240,15 @@ export const hardDeleteMultipleTaskApi = async (userId, selectedTasks) => {
     const docRef = doc(taskCollectionRef, task.id);
     await deleteDoc(docRef);
   });
+};
+
+export const updateRepeatingTaskApi = (
+  userId,
+  referenceTaskId,
+  excludeDate
+) => {
+  const userDocRef = doc(db, "users", userId);
+  const taskCollectionRef = collection(userDocRef, TASKS);
+  const docRef = doc(taskCollectionRef, referenceTaskId);
+  return updateDoc(docRef, { excludedDates: arrayUnion(excludeDate) });
 };

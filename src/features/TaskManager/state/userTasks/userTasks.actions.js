@@ -4,6 +4,7 @@ import {
   addTaskApi,
   softDeleteTaskApi,
   editTaskApi,
+  updateRepeatingTaskApi,
   completeTaskApi,
   wontDoTaskApi,
   hardDeleteTaskApi,
@@ -34,6 +35,9 @@ import {
   EDIT_TASK,
   EDIT_TASK_SUCCESS,
   EDIT_TASK_ERROR,
+  UPDATE_REPEATING_TASK,
+  UPDATE_REPEATING_TASK_SUCCESS,
+  UPDATE_REPEATING_TASK_ERROR,
   COMPLETE_TASK,
   COMPLETE_TASK_SUCCESS,
   COMPLETE_TASK_ERROR,
@@ -103,6 +107,22 @@ export const editTaskSuccess = ({ response }) => ({
 
 export const editTaskFailure = (error) => ({
   type: EDIT_TASK_ERROR,
+  payload: { error },
+});
+
+export const updateRepeatingTask = (payload) => ({
+  type: UPDATE_REPEATING_TASK,
+  payload,
+});
+
+export const updateRepeatingTaskSuccess = ({ response }) => ({
+  type: UPDATE_REPEATING_TASK_SUCCESS,
+  payload: response,
+  success: SUCCESS,
+});
+
+export const updateRepeatingTaskFailure = (error) => ({
+  type: UPDATE_REPEATING_TASK_ERROR,
   payload: { error },
 });
 
@@ -324,6 +344,22 @@ export const editTaskAction =
       return dispatch(editTaskFailure(error));
     }
   };
+
+export const updateRepeatingTaskAction =
+  (userId,referenceTaskId, excludeDate) => async (dispatch) => {
+    dispatch(updateRepeatingTask());
+    try {
+      await updateRepeatingTaskApi(userId, referenceTaskId, excludeDate);
+      return dispatch(
+        updateRepeatingTaskSuccess({
+          response: { id: referenceTaskId, excludeDate: excludeDate },
+        })
+      );
+    } catch (error) {
+      return dispatch(updateRepeatingTaskFailure(error));
+    }
+  };
+
 
 export const softDeleteTaskAction =
   (userId, currentTask) => async (dispatch) => {

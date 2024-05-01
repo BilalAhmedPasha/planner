@@ -100,6 +100,7 @@ const SecondaryTaskDetails = ({
           allowClear={formType !== VIEW}
           inputReadOnly={true}
           disabled={formType !== VIEW && !isScheduled}
+          showNow={true}
         />
       </Form.Item>
       <Form.Item

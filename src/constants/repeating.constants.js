@@ -9,3 +9,6 @@ export const repeatMapping = {
   weekly: WEEK,
   monthly: MONTH,
 };
+
+export const WEEKLY = "weekly";
+export const MONTHLY = "monthly";

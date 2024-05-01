@@ -7,7 +7,7 @@ import { useCallback, useEffect } from "react";
 import { disableWeekView } from "../../../../utils/screen.utils";
 import useWindowSize from "../../../../hooks/useWindowSize";
 
-const CustomToolbar = (props) => {
+const Toolbar = (props) => {
   const goToDayView = useCallback(() => {
     props.onView("day");
   }, [props]);
@@ -98,4 +98,4 @@ const CustomToolbar = (props) => {
   );
 };
 
-export default CustomToolbar;
+export default Toolbar;

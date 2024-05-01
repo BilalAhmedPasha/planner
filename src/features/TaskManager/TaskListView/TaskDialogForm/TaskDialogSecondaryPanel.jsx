@@ -310,6 +310,7 @@ const TaskDialogSecondaryPanel = ({ form, height, smallScreen, ...props }) => {
             open={props.disableTimeSelection ? false : undefined}
             allowClear={!props.disableTimeSelection}
             inputReadOnly={true}
+            showNow={true}
           />
         </Form.Item>
       )}

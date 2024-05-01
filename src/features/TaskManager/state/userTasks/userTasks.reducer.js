@@ -61,6 +61,10 @@ export const HARD_DELETE_MULTIPLE_TASK_SUCCESS =
 export const HARD_DELETE_MULTIPLE_TASK_ERROR =
   "HARD_DELETE_MULTIPLE_TASK_ERROR";
 
+export const UPDATE_REPEATING_TASK = "UPDATE_REPEATING_TASK";
+export const UPDATE_REPEATING_TASK_SUCCESS = "UPDATE_REPEATING_TASK_SUCCESS";
+export const UPDATE_REPEATING_TASK_ERROR = "UPDATE_REPEATING_TASK_ERROR";
+
 export const INITIAL_STATE = {
   isLoadingTasks: false,
   totalTasks: 0,
@@ -79,6 +83,20 @@ const fetchLoadingState = ({ state }) => {
 const modifyTasksAfterEdit = ({ currentTasks, editedTask }) => {
   return currentTasks.map((each) =>
     each.id === editedTask.id ? editedTask : each
+  );
+};
+
+const modifyTasksAfterUpdatingRepeatingTasks = ({
+  currentTasks,
+  modifiedTaskDetails,
+}) => {
+  return currentTasks.map((each) =>
+    each.id === modifiedTaskDetails.id
+      ? {
+          ...each,
+          excludedDates: each.excludedDates ? [...each.excludedDates, modifiedTaskDetails.excludeDate] : [modifiedTaskDetails.excludeDate],
+        }
+      : each
   );
 };
 
@@ -350,6 +368,31 @@ const reducer = (state = INITIAL_STATE, action) => {
         ...state,
         error: action.payload.error,
         editTaskSuccess: false,
+        isLoadingTasks: false,
+      };
+    }
+
+    case UPDATE_REPEATING_TASK: {
+      return fetchLoadingState({ state });
+    }
+
+    case UPDATE_REPEATING_TASK_SUCCESS: {
+      return {
+        ...state,
+        isLoadingTasks: false,
+        updateRepeatingSuccess: true,
+        tasks: modifyTasksAfterUpdatingRepeatingTasks({
+          currentTasks: state.tasks,
+          modifiedTaskDetails: action.payload,
+        }),
+      };
+    }
+
+    case UPDATE_REPEATING_TASK_ERROR: {
+      return {
+        ...state,
+        error: action.payload.error,
+        updateRepeatingSuccess: false,
         isLoadingTasks: false,
       };
     }

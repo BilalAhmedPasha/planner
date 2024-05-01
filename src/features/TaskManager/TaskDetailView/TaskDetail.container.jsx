@@ -163,7 +163,7 @@ const TaskDetailsContainer = ({
           onClick={() => {
             setIsTaskDetailsDrawerCollapsed(true);
             setSelectedTaskDetails([]);
-            navigateTo("./");
+            navigateTo(-1);
           }}
         />
       }
