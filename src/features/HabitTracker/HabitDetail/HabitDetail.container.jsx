@@ -4,7 +4,7 @@ import HabitCalendar from "./HabitCalendar/HabitCalendar";
 import NoHabitSelected from "./NoHabitSelected";
 import { Button, Drawer, Layout, Typography, theme } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const HabitDetailContainer = ({
   user,
@@ -17,8 +17,8 @@ const HabitDetailContainer = ({
     token: { colorBgContainer },
   } = theme.useToken();
 
+  const currentURL = useLocation();
   const navigateTo = useNavigate();
-
   const screenSize = useWindowSize();
 
   return detailsToDrawer({ currentWidth: screenSize.width }) ? (
@@ -35,7 +35,8 @@ const HabitDetailContainer = ({
           onClick={() => {
             setIsHabitDetailsDrawerCollapsed(true);
             setSelectedHabitDetail(null);
-            navigateTo(-1);
+            const url = currentURL.pathname.split("/").slice(0, -1).join("/");
+            navigateTo(url);
           }}
         />
       }
