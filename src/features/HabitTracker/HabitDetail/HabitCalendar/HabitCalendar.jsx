@@ -7,7 +7,11 @@ import { useState } from "react";
 import { months } from "../../../../constants/calendar.constants";
 import Typography from "antd/es/typography/Typography";
 import { CaretLeftOutlined, CaretRightOutlined } from "@ant-design/icons";
-import { DAY, DAYS_LIST } from "../../../../constants/dateTime.constants";
+import {
+  DAY,
+  DAYS_LIST,
+  MONTH,
+} from "../../../../constants/dateTime.constants";
 import { useDispatch, useSelector } from "react-redux";
 import { markHabitAction } from "../../state/userHabits/userHabits.actions";
 import {
@@ -177,6 +181,10 @@ const HabitCalendar = ({ user, habit }) => {
               <Button
                 type="text"
                 icon={<CaretLeftOutlined />}
+                disabled={today
+                  .month(today.month())
+                  .startOf(MONTH)
+                  .isSame(dayjs(habit.startDate).startOf(MONTH).toDate())}
                 onClick={() => {
                   setToday(today.month(today.month() - 1));
                 }}
@@ -193,6 +201,10 @@ const HabitCalendar = ({ user, habit }) => {
               <Button
                 type="text"
                 icon={<CaretRightOutlined />}
+                disabled={today
+                  .month(today.month())
+                  .startOf(MONTH)
+                  .isSame(dayjs().startOf(MONTH).toDate())}
                 onClick={() => {
                   setToday(today.month(today.month() + 1));
                 }}
