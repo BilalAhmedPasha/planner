@@ -1,17 +1,12 @@
 import styled from "styled-components";
 import { checkIfValidDate, generateDate } from "../../../../utils/habit.utils";
-import "./HabitCalendar.css";
-import { Button, Layout, Skeleton, theme } from "antd";
+import { Button, Layout, theme } from "antd";
 import dayjs from "../../../../utils/dateTime.utils";
 import { useState } from "react";
 import { months } from "../../../../constants/calendar.constants";
 import Typography from "antd/es/typography/Typography";
 import { CaretLeftOutlined, CaretRightOutlined } from "@ant-design/icons";
-import {
-  DAY,
-  DAYS_LIST,
-  MONTH,
-} from "../../../../constants/dateTime.constants";
+import { DAYS_LIST, MONTH } from "../../../../constants/dateTime.constants";
 import { useDispatch, useSelector } from "react-redux";
 import { markHabitAction } from "../../state/userHabits/userHabits.actions";
 import {
@@ -28,11 +23,16 @@ const CalendarWrapper = styled.div``;
 const CalenderDays = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+  justify-content: center;
+  align-items: center;
 `;
 
 const CalendarText = styled.h2`
   color: ${(props) =>
-    !props.currentMonth || props.isFuture || !props.isValidDate
+    !props.currentMonth ||
+    props.isFuture ||
+    !props.isValidDate ||
+    props.markedValue !== 0
       ? props.colorBorder
       : props.isToday
       ? props.colorPrimary
@@ -98,7 +98,24 @@ const mapValue = (input) => {
   }
 };
 
-const HabitCalendar = ({ user, habit }) => {
+export const handleHabitDateClick = ({ habit, date, dispatch, user }) => {
+  if (!habit.history || !habit.history.hasOwnProperty(date.format())) {
+    dispatch(
+      markHabitAction(user.uid, habit.id, date.format(), HABIT_MARKED_DONE)
+    );
+  } else {
+    dispatch(
+      markHabitAction(
+        user.uid,
+        habit.id,
+        date.format(),
+        mapValue(habit.history[`${date.format()}`])
+      )
+    );
+  }
+};
+
+const HabitCalendar = ({ user, habit, isInDrawer = false }) => {
   const {
     token: {
       colorBgContainer,
@@ -117,56 +134,58 @@ const HabitCalendar = ({ user, habit }) => {
 
   const dispatch = useDispatch();
 
-  const handleHabitDateClick = ({ date }) => {
-    if (!habit.history || !habit.history.hasOwnProperty(date.format())) {
-      dispatch(
-        markHabitAction(user.uid, habit.id, date.format(), HABIT_MARKED_DONE)
-      );
-    } else {
-      dispatch(
-        markHabitAction(
-          user.uid,
-          habit.id,
-          date.format(),
-          mapValue(habit.history[`${date.format()}`])
-        )
-      );
-    }
-  };
-
   const { isLoadingHabits } = useSelector(habitsSelector);
 
   return (
     <Layout.Content
       style={{
         marginLeft: "0.1rem",
-        padding: "0.25rem 0.75rem",
+        padding: "0rem 0.75rem 0.75rem 0.75rem",
         background: colorBgContainer,
         height: "100vh",
         overflow: "auto",
+        position: "relative",
       }}
     >
       <Spinner spinning={isLoadingHabits} indicator={Loading(0)}>
         <CalendarWrapper>
-          <Typography.Text
-            style={{
-              fontWeight: "bold",
-              fontSize: "25px",
-            }}
-          >
-            {habit.name}
-          </Typography.Text>
+          {!isInDrawer && (
+            <div
+              style={{
+                padding: "0.5rem 0rem",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "start",
+                top: 0,
+                zIndex: 1,
+                background: colorBgContainer,
+                position: "sticky",
+              }}
+            >
+              <Typography.Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "25px",
+                }}
+                ellipsis={true}
+              >
+                {habit.name}
+              </Typography.Text>
+            </div>
+          )}
           <div
             style={{
+              minWidth: "10rem",
               display: "flex",
               justifyContent: "space-between",
-              overflow: "hidden",
+              overflow: "scroll",
             }}
           >
             <Typography.Text
               style={{
                 fontSize: "20px",
               }}
+              ellipsis={true}
             >
               {months[today.month()]}, {today.year()}
             </Typography.Text>
@@ -227,7 +246,10 @@ const HabitCalendar = ({ user, habit }) => {
             {generateDate(today.month(), today.year()).map(
               ({ date, currentMonth, isPast, isToday, isFuture }, index) => {
                 const isValidDate = checkIfValidDate({ date, habit });
-                console.log(isPast, isToday, isFuture);
+                const markedValue =
+                  habit.history && habit.history[`${date.format()}`]
+                    ? habit.history[`${date.format()}`]
+                    : 0;
                 return (
                   <CalenderDate
                     key={index}
@@ -238,7 +260,7 @@ const HabitCalendar = ({ user, habit }) => {
                     colorError={colorError}
                     onClick={() => {
                       if (isValidDate && !isFuture) {
-                        handleHabitDateClick({ date: date });
+                        handleHabitDateClick({ habit, date, dispatch, user });
                       }
                     }}
                     onContextMenu={(e) => {
@@ -252,11 +274,7 @@ const HabitCalendar = ({ user, habit }) => {
                     }
                     isFuture={isFuture}
                     isValidDate={isValidDate}
-                    markedValue={
-                      habit.history && habit.history[`${date.format()}`]
-                        ? habit.history[`${date.format()}`]
-                        : 0
-                    }
+                    markedValue={markedValue}
                   >
                     <CalendarText
                       currentMonth={currentMonth}
@@ -267,6 +285,7 @@ const HabitCalendar = ({ user, habit }) => {
                       colorTextSecondary={colorTextSecondary}
                       colorBorder={colorBorder}
                       isValidDate={isValidDate}
+                      markedValue={markedValue}
                     >
                       {date.date()}
                     </CalendarText>

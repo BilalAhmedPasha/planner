@@ -7,6 +7,8 @@ import { checkIfValidDate, getLast7Days } from "../../../utils/habit.utils";
 import { EDIT } from "../../../constants/formType.constants";
 import dayjs from "../../../utils/dateTime.utils";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { handleHabitDateClick } from "../HabitDetail/HabitCalendar/HabitCalendar";
 
 const StyledDiv = styled.div`
   padding: 0.75rem 1rem;
@@ -27,7 +29,7 @@ const StyledDiv = styled.div`
 
 const DateText = styled.h5`
   color: ${(props) =>
-    !props.isValidDate
+    !props.isValidDate || props.markedValue !== 0
       ? props.colorBorder
       : props.today
       ? props.colorPrimary
@@ -38,6 +40,7 @@ const DateText = styled.h5`
 
 const HabitItem = ({
   habit,
+  user,
   selectedHabitDetail,
   setSelectedHabitDetail,
   handleOpenHabitDialog,
@@ -55,6 +58,8 @@ const HabitItem = ({
       colorBorder,
       colorTextBase,
       colorPrimary,
+      colorSuccess,
+      colorError,
     },
   } = theme.useToken();
 
@@ -74,6 +79,7 @@ const HabitItem = ({
 
   const currentURL = useLocation();
   const navigateTo = useNavigate();
+  const dispatch = useDispatch();
   return (
     <StyledDiv
       opacity={1}
@@ -110,6 +116,10 @@ const HabitItem = ({
         >
           {last7Dates.map((date) => {
             const isValidDate = checkIfValidDate({ date: dayjs(date), habit });
+            const markedValue =
+              habit.history && habit.history[`${dayjs(date).format()}`]
+                ? habit.history[`${dayjs(date).format()}`]
+                : 0;
             return (
               <DaySelector
                 height={2}
@@ -117,15 +127,23 @@ const HabitItem = ({
                 colorBgTextHover={colorBgTextHover}
                 colorPrimary={colorPrimary}
                 colorTextBase={colorTextSecondary}
+                colorSuccess={colorSuccess}
+                colorError={colorError}
                 isSelected={false}
                 onClick={(e) => {
                   e.stopPropagation();
                   if (isValidDate) {
-                    console.log(date);
+                    handleHabitDateClick({
+                      habit: habit,
+                      date: dayjs(date),
+                      dispatch: dispatch,
+                      user: user
+                    });
                   }
                 }}
                 cursor={isValidDate ? "pointer" : "not-allowed"}
                 isValidDate={isValidDate}
+                markedValue={markedValue}
               >
                 <DateText
                   isValidDate={isValidDate}
@@ -133,6 +151,7 @@ const HabitItem = ({
                   colorPrimary={colorPrimary}
                   colorTextBase={colorTextBase}
                   colorTextSecondary={colorTextSecondary}
+                  markedValue={markedValue}
                 >
                   {date.getDate()}
                 </DateText>

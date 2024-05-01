@@ -61,6 +61,7 @@ const RepeatCriteria = ({ value = {}, onChange, frequencyType }) => {
                 colorTextBase={colorTextBase}
                 isSelected={each}
                 onClick={(e) => toggleActiveState(e, index)}
+                cursor={"pointer"}
               >
                 {DAYS_LIST[index].substring(0, 2)}
               </DaySelector>

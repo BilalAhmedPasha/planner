@@ -35,7 +35,7 @@ const fetchLoadingState = ({ state }) => {
 
 const modifyHabitsAfterEdit = ({ currentHabits, editedHabit }) => {
   return currentHabits.map((each) =>
-    each.id === editedHabit.id ? editedHabit : each
+    each.id === editedHabit.id ? { ...each, ...editedHabit } : each
   );
 };
 

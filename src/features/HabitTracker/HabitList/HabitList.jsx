@@ -158,6 +158,7 @@ const HabitListContainer = ({
           {habits.map((habit) => (
             <HabitItem
               habit={habit}
+              user={user}
               selectedHabitDetail={selectedHabitDetail}
               setSelectedHabitDetail={setSelectedHabitDetail}
               handleOpenHabitDialog={handleOpenHabitDialog}
