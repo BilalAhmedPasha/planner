@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { checkIfValidDate, generateDate } from "../../../../utils/habit.utils";
 import { Button, Layout, theme } from "antd";
 import dayjs from "../../../../utils/dateTime.utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { months } from "../../../../constants/calendar.constants";
 import Typography from "antd/es/typography/Typography";
 import { CaretLeftOutlined, CaretRightOutlined } from "@ant-design/icons";
@@ -23,7 +23,8 @@ const CalendarWrapper = styled.div``;
 const CalenderDays = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  justify-content: center;
+  grid-row: 1;
+  justify-content: flex-start;
   align-items: center;
 `;
 
@@ -43,13 +44,15 @@ const CalendarDay = styled.div`
   padding: 10px;
   margin: 5px;
   text-align: center;
+  font-size: 1rem;
   color: ${(props) => props.colorTextSecondary};
 `;
 
 const CalenderDates = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  justify-content: center;
+  grid-row: 2;
+  justify-content: flex-start;
   align-items: center;
 `;
 
@@ -132,104 +135,110 @@ const HabitCalendar = ({ user, habit, isInDrawer = false }) => {
   const currentDate = dayjs();
   const [today, setToday] = useState(currentDate);
 
-  const dispatch = useDispatch();
+  useEffect(() => {
+    setToday(currentDate);
+  }, [habit.id]);
 
+  const dispatch = useDispatch();
   const { isLoadingHabits } = useSelector(habitsSelector);
 
   return (
-    <Layout.Content
-      style={{
-        marginLeft: "0.1rem",
-        padding: "0rem 0.75rem 0.75rem 0.75rem",
-        background: colorBgContainer,
-        height: "100vh",
-        overflow: "auto",
-        position: "relative",
-      }}
-    >
-      <Spinner spinning={isLoadingHabits} indicator={Loading(0)}>
-        <CalendarWrapper>
-          {!isInDrawer && (
-            <div
-              style={{
-                padding: "0.5rem 0rem",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "start",
-                top: 0,
-                zIndex: 1,
-                background: colorBgContainer,
-                position: "sticky",
-              }}
-            >
-              <Typography.Text
-                style={{
-                  fontWeight: "bold",
-                  fontSize: "25px",
-                }}
-                ellipsis={true}
-              >
-                {habit.name}
-              </Typography.Text>
-            </div>
-          )}
+    <Spinner spinning={isLoadingHabits} indicator={Loading(0)}>
+      <CalendarWrapper>
+        {!isInDrawer && (
           <div
             style={{
-              minWidth: "10rem",
+              padding: "0.5rem 1rem 0rem 1rem",
               display: "flex",
-              justifyContent: "space-between",
-              overflow: "scroll",
+              alignItems: "center",
+              justifyContent: "start",
+              top: 0,
+              zIndex: 1,
+              background: colorBgContainer,
+              position: "sticky",
             }}
           >
             <Typography.Text
               style={{
-                fontSize: "20px",
+                fontWeight: "bold",
+                fontSize: "25px",
               }}
               ellipsis={true}
             >
-              {months[today.month()]}, {today.year()}
+              {habit.name}
             </Typography.Text>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 5,
-                fontSize: "2rem",
+          </div>
+        )}
+        <div
+          style={{
+            padding: !isInDrawer ? "0.5rem 1rem" : "0rem",
+            marginTop: "0.5rem",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            overflowX: "auto",
+            width: "100%",
+          }}
+        >
+          <Typography.Text
+            style={{
+              fontSize: "1.25rem",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {months[today.month()]}, {today.year()}
+          </Typography.Text>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 5,
+              fontSize: "2rem",
+            }}
+          >
+            <Button
+              type="text"
+              icon={<CaretLeftOutlined />}
+              disabled={today
+                .month(today.month())
+                .startOf(MONTH)
+                .isSame(dayjs(habit.startDate).startOf(MONTH).toDate())}
+              onClick={() => {
+                setToday(today.month(today.month() - 1));
+              }}
+            />
+            <Button
+              type="text"
+              size="small"
+              onClick={() => {
+                setToday(currentDate);
               }}
             >
-              <Button
-                type="text"
-                icon={<CaretLeftOutlined />}
-                disabled={today
-                  .month(today.month())
-                  .startOf(MONTH)
-                  .isSame(dayjs(habit.startDate).startOf(MONTH).toDate())}
-                onClick={() => {
-                  setToday(today.month(today.month() - 1));
-                }}
-              />
-              <Button
-                type="text"
-                size="small"
-                onClick={() => {
-                  setToday(currentDate);
-                }}
-              >
-                <Typography.Text>{"Today"}</Typography.Text>
-              </Button>
-              <Button
-                type="text"
-                icon={<CaretRightOutlined />}
-                disabled={today
-                  .month(today.month())
-                  .startOf(MONTH)
-                  .isSame(dayjs().startOf(MONTH).toDate())}
-                onClick={() => {
-                  setToday(today.month(today.month() + 1));
-                }}
-              />
-            </div>
+              <Typography.Text>{"Today"}</Typography.Text>
+            </Button>
+            <Button
+              type="text"
+              icon={<CaretRightOutlined />}
+              disabled={today
+                .month(today.month())
+                .startOf(MONTH)
+                .isSame(dayjs().startOf(MONTH).toDate())}
+              onClick={() => {
+                setToday(today.month(today.month() + 1));
+              }}
+            />
           </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            overflowX: "auto",
+            marginBottom: "1rem",
+            width: "100%",
+          }}
+        >
           <CalenderDays>
             {DAYS_LIST.map((day, index) => {
               return (
@@ -237,7 +246,7 @@ const HabitCalendar = ({ user, habit, isInDrawer = false }) => {
                   key={index}
                   colorTextSecondary={colorTextSecondary}
                 >
-                  <h3>{day}</h3>
+                  <p>{day}</p>
                 </CalendarDay>
               );
             })}
@@ -294,9 +303,9 @@ const HabitCalendar = ({ user, habit, isInDrawer = false }) => {
               }
             )}
           </CalenderDates>
-        </CalendarWrapper>
-      </Spinner>
-    </Layout.Content>
+        </div>
+      </CalendarWrapper>
+    </Spinner>
   );
 };
 

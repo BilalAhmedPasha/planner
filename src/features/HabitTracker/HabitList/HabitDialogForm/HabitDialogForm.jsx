@@ -51,7 +51,7 @@ const HabitDialogForm = ({
           },
         ]}
       >
-        <Input autoComplete="off" maxLength={50} showCount />
+        <Input autoComplete="off" maxLength={30} showCount />
       </Form.Item>
       <Form.Item
         name="startDate"

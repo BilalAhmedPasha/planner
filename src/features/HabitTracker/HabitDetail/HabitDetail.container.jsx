@@ -23,14 +23,7 @@ const HabitDetailContainer = ({
 
   return detailsToDrawer({ currentWidth: screenSize.width }) ? (
     <Drawer
-      title={
-        <Typography.Text
-          style={{ whiteSpace: "nowrap", overflowX: "auto" }}
-          ellipsis
-        >
-          {selectedHabitDetail?.name}
-        </Typography.Text>
-      }
+      title={<Typography.Text>{selectedHabitDetail?.name}</Typography.Text>}
       placement={"right"}
       closable={false}
       open={!isHabitDetailsDrawerCollapsed}
@@ -38,7 +31,6 @@ const HabitDetailContainer = ({
       destroyOnClose={true}
       extra={
         <Button
-          type="text"
           icon={<CloseOutlined />}
           onClick={() => {
             setIsHabitDetailsDrawerCollapsed(true);
@@ -48,8 +40,13 @@ const HabitDetailContainer = ({
         />
       }
       styles={{
-        header: { height: "2.5rem", padding: "0.5rem 1rem" },
-        body: { padding: "0rem", overflow: "auto", display: "flex", minWidth:"10rem" },
+        header: {
+          display: "flex",
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          padding: "1.5rem 1rem",
+        },
+        body: { padding: "0rem 1rem", overflow: "auto" },
       }}
     >
       {selectedHabitDetail ? (
