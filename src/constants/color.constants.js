@@ -3,14 +3,14 @@ export const DEFAULT_LIST_COLOR = "#13F7CA";
 export const WHITE = "#ffffff";
 
 export const HIGH_COLOR = "#ff7875";
-export const MEDIUM_COLOR = "#faad14";
-export const LOW_COLOR = "#4096ff";
-export const NONE_COLOR = "#7cb305";
+export const MEDIUM_COLOR = "#ffbe3e";
+export const LOW_COLOR = "#40b5ad";
+export const NONE_COLOR = "#73b2ff";
 
 export const HIGH_BG_COLOR = "#ffccc7";
 export const MEDIUM_BG_COLOR = "#ffe58f";
-export const LOW_BG_COLOR = "#bae0ff";
-export const NONE_BG_COLOR = "#eaff8f";
+export const LOW_BG_COLOR = "#bafffb";
+export const NONE_BG_COLOR = "#bae0ff";
 
 export const OVERDUE_COLOR = "#ff4d4f";
 export const PRIMARY_RED_COLOR = "#ff7875";

@@ -1,13 +1,6 @@
-import { Form, Input } from "antd";
-import { SliderPicker } from "react-color";
+import { Form, Input, ColorPicker } from "antd";
 
-const ListDialogForm = ({
-  form,
-  color,
-  handleColorChange,
-  layout,
-  initialValues,
-}) => {
+const ListDialogForm = ({ form, handleColorChange, layout, initialValues }) => {
   return (
     <Form
       form={form}
@@ -28,7 +21,7 @@ const ListDialogForm = ({
         <Input autoComplete="off" maxLength={20} showCount />
       </Form.Item>
       <Form.Item name="color" label="Color">
-        <SliderPicker color={color} onChangeComplete={handleColorChange} />
+        <ColorPicker onChangeComplete={handleColorChange} showText />
       </Form.Item>
     </Form>
   );

@@ -1,22 +1,8 @@
-import {
-  Badge,
-  Button,
-  Drawer,
-  Dropdown,
-  Layout,
-  Menu,
-  Modal,
-  Space,
-} from "antd";
+import { Badge, Button, Drawer, Dropdown, Layout, Menu, Modal, Space } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SideMenu from "../../../components/SideMenu";
-import {
-  DELETE,
-  LISTS,
-  SUCCESS,
-  TAGS,
-} from "../../../constants/app.constants";
+import { DELETE, LISTS, SUCCESS, TAGS } from "../../../constants/app.constants";
 import { CREATE, EDIT } from "../../../constants/formType.constants";
 import {
   defaultTaskNav1,
@@ -29,7 +15,7 @@ import { deleteListAction } from "../state/userLists/userLists.actions";
 import { listsSelector } from "../state/userLists/userLists.reducer";
 import { deleteTagAction } from "../state/userTags/userTags.actions";
 import { tagsSelector } from "../state/userTags/userTags.reducer";
-import { Link, useHistory, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
 import {
   UnorderedListOutlined,
   TagOutlined,
@@ -40,7 +26,6 @@ import {
 } from "@ant-design/icons";
 import Loading from "../../../components/Loading";
 import Spinner from "../../../components/Spinner";
-import { TASK_NAV_BADGE_COLOR } from "../../../constants/color.constants";
 import {
   hardDeleteListTaskAction,
   deleteTaskTagAction,
@@ -50,6 +35,7 @@ import {
   taskNavToDrawer,
 } from "../../../utils/screen.utils";
 import useWindowSize from "../../../hooks/useWindowSize";
+import { TASK_NAV_BADGE_COLOR } from "../../../constants/color.constants";
 
 const renderColorDot = (color) => {
   return (
@@ -81,7 +67,6 @@ const renderMenuItems = (itemsArray) => {
 
 const renderSubMenuItems = ({
   items,
-  itemCount,
   key,
   title,
   onAddClick,
@@ -102,12 +87,6 @@ const renderSubMenuItems = ({
         >
           {title}
           <Space>
-            <Badge
-              count={itemCount}
-              showZero
-              color={TASK_NAV_BADGE_COLOR}
-              overflowCount={10}
-            />
             <Button icon={<PlusOutlined />} type="text" onClick={onAddClick} />
           </Space>
         </div>
@@ -143,7 +122,10 @@ const renderSubMenuItems = ({
                     items: moreMenuItemList,
                     onClick: (e) => {
                       e.domEvent.stopPropagation();
-                      onMoreClick({ e, currentItem: each });
+                      onMoreClick({
+                        e,
+                        currentItem: each,
+                      });
                     },
                   }}
                   trigger={["click"]}
@@ -201,7 +183,7 @@ const TaskNav = ({
     });
   };
 
-  const history = useHistory();
+  const navigateTo = useNavigate();
   const { documentId } = useParams();
 
   const handleDelete = ({
@@ -223,7 +205,7 @@ const TaskNav = ({
         if (response.success === SUCCESS) {
           deleteSuccess({ messageText: successMessage });
           if (documentId === currentItem.id) {
-            history.push("/tasks/all");
+            navigateTo("/tasks/all");
           }
         } else {
           deleteFailed({ messageText: failureMessage });
@@ -434,7 +416,10 @@ const TaskNav = ({
       placement={"left"}
       closable={false}
       open={!isNavDrawerCollapsed}
-      bodyStyle={{ padding: "0px", overflow: "auto" }}
+      styles={{
+        header: { height: "2.5rem", padding: "1rem" },
+        body: { padding: "0px", overflow: "auto" },
+      }}
       destroyOnClose={true}
       width={
         isOnVerySmallScreen({ currentWidth: screenSize.width }) ? "80vw" : 300
@@ -446,7 +431,6 @@ const TaskNav = ({
           onClick={() => setIsNavDrawerCollapsed(true)}
         />
       }
-      headerStyle={{ height: "2.5rem", padding: "1rem" }}
     >
       {taskNavContent()}
     </Drawer>

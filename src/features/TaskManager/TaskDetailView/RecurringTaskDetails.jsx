@@ -12,6 +12,7 @@ import {
 } from "@ant-design/icons";
 import { DATE_FORMAT } from "../../../constants/dateTime.constants";
 import NumericInput from "../../../components/NumericInput/NumericInput";
+
 const RecurringTaskDetails = ({
   form,
   formType,
@@ -22,7 +23,7 @@ const RecurringTaskDetails = ({
   showEndByRepeatCount,
   disabledEndDate,
   openTaskEndDatePicker,
-  setOpenTaskEndDatePicker
+  setOpenTaskEndDatePicker,
 }) => {
   const {
     token: { colorInfoText, colorBorder },
@@ -174,7 +175,11 @@ const RecurringTaskDetails = ({
             },
           },
         ]}
-        style={{ marginBottom: "0.5rem", width: "33%", minWidth: "5rem" }}
+        style={{
+          marginBottom: "0.5rem",
+          width: "33%",
+          minWidth: "5rem",
+        }}
       >
         <NumericInput
           suffix={

@@ -16,7 +16,7 @@ import Icon, {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
 } from "@ant-design/icons";
-import { ReactComponent as SortTextSvg } from "../../../svg/sort-text.svg";
+import SortTextSvg from "../../../svg/sort-text.svg?react";
 import { taskNavToDrawer } from "../../../utils/screen.utils";
 import useWindowSize from "../../../hooks/useWindowSize";
 import { DELETED } from "../../../constants/app.constants";
@@ -115,7 +115,7 @@ const TaskListHeader = ({
         <Typography.Text
           style={{
             fontWeight: "bold",
-            fontSize: "24px",
+            fontSize: "20px",
             whiteSpace: "nowrap",
             overflowX: "auto",
           }}
@@ -129,7 +129,6 @@ const TaskListHeader = ({
           >{`${sortedSectionTasks?.length}`}</Typography.Text>
         )}
       </Space>
-
       {!hideAddIcon && (
         <Space size="small" direction="horizontal">
           {currentSection?.id !== DELETED && (
@@ -255,7 +254,7 @@ const TaskListHeader = ({
           />
 
           <Button
-            size="large"
+            size="middle"
             type="text"
             icon={<ClearOutlined />}
             onClick={handlePermanentDelete}

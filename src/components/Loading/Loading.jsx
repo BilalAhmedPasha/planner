@@ -1,4 +1,5 @@
 import { LoadingOutlined } from "@ant-design/icons";
+
 const circularLoading = (size) => {
   return (
     <LoadingOutlined

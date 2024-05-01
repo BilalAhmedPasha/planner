@@ -1,19 +1,16 @@
-import {
-  FormOutlined,
-  CalendarOutlined,
-  // RedoOutlined,
-} from "@ant-design/icons";
+import { MdCalendarMonth } from "react-icons/md";
+import { GoTasklist } from "react-icons/go";
 
 export const defaultAppNav = [
   {
     label: "Tasks",
-    icon: FormOutlined,
+    icon: GoTasklist,
     redirectUrl: "/tasks/all",
     id: "tasks",
   },
   {
     label: "Calendar",
-    icon: CalendarOutlined,
+    icon: MdCalendarMonth,
     redirectUrl: "/calendar",
     id: "calendar",
   },

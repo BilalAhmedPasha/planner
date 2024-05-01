@@ -274,7 +274,7 @@ const SubTaskPanel = ({ form, subTaskPanelHeight, closeSubTaskPanel }) => {
           <Input
             autoComplete="off"
             maxLength={25}
-            bordered={false}
+            variant="borderless"
             placeholder={"Task name"}
             style={{ padding: "0.5rem 0rem 0rem 0rem" }}
             onInput={handleSubTaskNameChange}
@@ -288,7 +288,7 @@ const SubTaskPanel = ({ form, subTaskPanelHeight, closeSubTaskPanel }) => {
               maxRows: 3,
             }}
             maxLength={200}
-            bordered={false}
+            variant="borderless"
             placeholder={"Description"}
             style={{ padding: "0.5rem 0rem 0rem 0rem" }}
           />
@@ -338,7 +338,7 @@ const SubTaskPanel = ({ form, subTaskPanelHeight, closeSubTaskPanel }) => {
               content={scheduleContent}
               trigger="click"
               placement="bottomLeft"
-              showArrow={false}
+              suffixIcon={null}
             >
               <Button type="default" icon={<ClockCircleOutlined />}>
                 {startDate ? dayjs(startDate).format(DATE_FORMAT) : "Schedule"}

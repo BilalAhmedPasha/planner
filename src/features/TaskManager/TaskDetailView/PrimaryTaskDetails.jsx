@@ -18,6 +18,7 @@ const MultiSelect = styled(Select)`
     overflow: auto;
   }
 `;
+
 const PrimaryTaskDetails = ({
   form,
   formType,
@@ -43,7 +44,7 @@ const PrimaryTaskDetails = ({
       >
         <Slider
           initialvalues={form.getFieldValue("progress")}
-          trackStyle={{ height: "3px" }}
+          railSize="3"
           disabled={formType === VIEW}
           tooltip={{
             open: false,
@@ -67,7 +68,7 @@ const PrimaryTaskDetails = ({
           placeholder="Task description"
           readOnly={formType === VIEW}
           style={{ padding: "0rem" }}
-          bordered={false}
+          variant="borderless"
         />
       </Form.Item>
       <div
@@ -100,7 +101,6 @@ const PrimaryTaskDetails = ({
             initialvalues={form.getFieldValue("priority")}
             onSelect={(event) => handlePriorityColor(event)}
             options={priorityOptions}
-            // disabled={formType === VIEW}
             readOnly={true}
             open={formType === VIEW ? false : undefined}
           />
@@ -139,13 +139,16 @@ const PrimaryTaskDetails = ({
               },
               ...listOptions,
             ]}
-            // disabled={formType === VIEW}
             open={formType === VIEW ? false : undefined}
           />
         </Form.Item>
         <Form.Item
           name="tagIds"
-          style={{ marginBottom: "0.5rem", width: "45%", minWidth: "10rem" }}
+          style={{
+            marginBottom: "0.5rem",
+            width: "45%",
+            minWidth: "10rem",
+          }}
         >
           <MultiSelect
             suffixIcon={
@@ -166,11 +169,9 @@ const PrimaryTaskDetails = ({
             mode="multiple"
             options={tagOptions}
             tagRender={(props) => tagRender(formType !== VIEW, props)}
-            showArrow={true}
             initialvalues={form.getFieldValue("tagIds")}
             placeholder="Tags"
             showSearch={false}
-            // disabled={formType === VIEW}
             open={formType === VIEW ? false : undefined}
           />
         </Form.Item>

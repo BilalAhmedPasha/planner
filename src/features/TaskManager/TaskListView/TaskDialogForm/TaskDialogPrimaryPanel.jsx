@@ -5,10 +5,7 @@ import SubTaskPanel from "./SubTaskPanel";
 import styled from "styled-components";
 import { showSubTasks } from "../../../../constants/app.constants";
 
-const StyledFormItem = styled(Form.Item)`
-  // TODO
-  // margin: 0.5rem 0rem;
-`;
+const StyledFormItem = styled(Form.Item)``;
 
 const TaskDialogPrimaryPanel = ({
   form,

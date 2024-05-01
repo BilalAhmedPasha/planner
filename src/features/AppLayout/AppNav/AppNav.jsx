@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Avatar, Button, Dropdown, Layout, Menu, Modal } from "antd";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import SideMenu from "../../../components/SideMenu";
 import { UserAuth } from "../../../context/AuthContext";
 import { defaultAppNav } from "./defaultAppNav.config";
@@ -8,8 +8,7 @@ import { LogoutOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { LOGOUT } from "../../../constants/app.constants";
 import { useDispatch } from "react-redux";
 import { removeUserSettingAction } from "../state/userSettings/userSettings.actions";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
+import { MdOutlineLightMode, MdOutlineDarkMode } from "react-icons/md";
 
 const renderMenuItems = (itemsArray) => {
   return itemsArray.map((each) => {
@@ -23,14 +22,15 @@ const renderMenuItems = (itemsArray) => {
 
 const AppNav = ({ setCurrentTitle, userTheme, updateTheme }) => {
   const { logOut, user } = UserAuth();
-  const history = useHistory();
+  const navigateTo = useNavigate();
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (user === null) {
-      history.push("/login");
+      navigateTo("/login");
     }
-  }, [history, user]);
+  }, [navigateTo, user]);
 
   const handleSignOut = async () => {
     try {
@@ -94,7 +94,6 @@ const AppNav = ({ setCurrentTitle, userTheme, updateTheme }) => {
 
   return (
     <Layout.Sider
-      theme="light"
       style={{
         overflow: "auto",
         height: "100vh",
@@ -102,6 +101,7 @@ const AppNav = ({ setCurrentTitle, userTheme, updateTheme }) => {
         top: 0,
         left: 0,
       }}
+      theme="light"
       collapsedWidth={50}
       collapsed
     >
@@ -123,9 +123,7 @@ const AppNav = ({ setCurrentTitle, userTheme, updateTheme }) => {
         <Button
           size="large"
           type="text"
-          icon={
-            userTheme ? <DarkModeOutlinedIcon /> : <LightModeOutlinedIcon />
-          }
+          icon={userTheme ? <MdOutlineDarkMode /> : <MdOutlineLightMode />}
           style={{ cursor: "pointer" }}
           onClick={updateTheme}
         />

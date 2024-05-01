@@ -66,7 +66,7 @@ const CalendarView = ({ user, userTheme }) => {
   return (
     <Layout.Content
       style={{
-        padding: "1vh 0.75rem",
+        padding: "0.25rem 0.75rem",
         background: colorBgContainer,
         height: "100vh",
       }}

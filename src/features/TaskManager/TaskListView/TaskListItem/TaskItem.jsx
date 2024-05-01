@@ -33,8 +33,8 @@ import {
   repeatMapping,
 } from "../../../../constants/repeating.constants";
 import PrimaryTaskListItemDetail from "./PrimaryTaskListItemDetail";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const getPriorityColor = ({ item, completedColor, completedBGColor }) => {
   if (item.isCompleted || item.isWontDo) {
@@ -49,13 +49,6 @@ const getPriorityColor = ({ item, completedColor, completedBGColor }) => {
   }
   return { color: NONE_COLOR, bgColor: NONE_BG_COLOR };
 };
-
-const StyledLink = styled(Link)`
-  align-items: center;
-  :hover {
-    text-decoration: underline;
-  }
-`;
 
 const renderTags = ({ item, tags, colorBorder }) => {
   if (item?.tagIds?.length > 0) {
@@ -102,7 +95,12 @@ const renderTags = ({ item, tags, colorBorder }) => {
     return tagsArray;
   }
 };
-
+const StyledLink = styled(Link)`
+  align-items: center;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 const TaskItem = ({
   user,
   messageApi,
@@ -362,7 +360,10 @@ const TaskItem = ({
     <div style={{ width: "100%" }}>
       <div style={{ float: "left", marginTop: "0.15rem" }}>
         <Dropdown
-          menu={{ items: checkBoxMenuItems, onClick: handleMenuClick }}
+          menu={{
+            items: checkBoxMenuItems,
+            onClick: handleMenuClick,
+          }}
           placement="bottomLeft"
           open={showCheckBoxMenu}
           disabled={taskDetails.isDeleted}
@@ -390,7 +391,7 @@ const TaskItem = ({
                 completedBGColor: colorBorderSecondary,
               }).color
             }
-            hoverBGColor={
+            hoverBgColor={
               getPriorityColor({
                 item: taskDetails,
                 completedColor: colorBorder,

@@ -5,7 +5,10 @@ import TaskDialogForm from "./TaskDialogForm";
 import { Form } from "antd";
 import { tasksSelector } from "../../state/userTasks/userTasks.reducer";
 import { CREATE, EDIT } from "../../../../constants/formType.constants";
-import { handleAddTask, handleEditTask } from "../../TaskListView/TaskList.utils";
+import {
+  handleAddTask,
+  handleEditTask,
+} from "../../TaskListView/TaskList.utils";
 import { taskNavToDrawer } from "../../../../utils/screen.utils";
 import useWindowSize from "../../../../hooks/useWindowSize";
 

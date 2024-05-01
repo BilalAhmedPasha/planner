@@ -13,16 +13,9 @@ const StyledFormItem = styled(Form.Item)`
   margin: 1.5rem 2rem;
 `;
 
-const SignUpForm = ({
-  setShowSignIn,
-  errorMessage,
-  setErrorMessage,
-}) => {
-  const {
-    googleSignIn,
-    githubSignIn,
-    registerUserWithEmailAndPassword,
-  } = UserAuth();
+const SignUpForm = ({ setShowSignIn, errorMessage, setErrorMessage }) => {
+  const { googleSignIn, githubSignIn, registerUserWithEmailAndPassword } =
+    UserAuth();
 
   const onFinish = (values) => {
     const name = values.username;
@@ -36,7 +29,6 @@ const SignUpForm = ({
   const onSignInClick = () => {
     setShowSignIn(true);
   };
-
 
   const onErrorMessageClose = () => {
     setErrorMessage("");

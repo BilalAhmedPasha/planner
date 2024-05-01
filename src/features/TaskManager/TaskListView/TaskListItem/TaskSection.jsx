@@ -2,7 +2,11 @@ import { Collapse, Typography, theme, Space } from "antd";
 import update from "immutability-helper";
 import Card from "./Card";
 import { useParams } from "react-router-dom";
-import { COMPLETED, DELETED, WONT_DO } from "../../../../constants/app.constants";
+import {
+  COMPLETED,
+  DELETED,
+  WONT_DO,
+} from "../../../../constants/app.constants";
 import {
   activePanel,
   MARKED,
@@ -109,11 +113,11 @@ const TaskListSection = ({
       sectionId !== WONT_DO ? (
         <Collapse
           ghost={true}
-          bordered={false}
+          variant="borderless"
+          defaultActiveKey={activePanel}
           style={{
             background: token.colorBgContainer,
           }}
-          defaultActiveKey={activePanel}
         >
           {Object.keys(sectionalTasks).map((each) => {
             if (
@@ -142,7 +146,12 @@ const TaskListSection = ({
                   }
                   key={sectionalTasks[each].sectionKey}
                 >
-                  <div style={{ marginTop: "-1rem", marginBottom: "-1rem" }}>
+                  <div
+                    style={{
+                      marginTop: "-1rem",
+                      marginBottom: "-1rem",
+                    }}
+                  >
                     {sectionalTasks[each].tasks.map((card) => (
                       <Card
                         user={user}

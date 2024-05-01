@@ -1,10 +1,6 @@
 import { Button, Form, Input, Space } from "antd";
 import { EDIT, VIEW } from "../../../constants/formType.constants";
-import {
-  EditFilled,
-  SaveOutlined,
-  CloseOutlined,
-} from "@ant-design/icons";
+import { EditFilled, SaveOutlined, CloseOutlined } from "@ant-design/icons";
 
 const TaskDetailHeader = ({ formType, setFormType, onReset }) => {
   return (
@@ -17,7 +13,6 @@ const TaskDetailHeader = ({ formType, setFormType, onReset }) => {
         alignItems: "center",
       }}
     >
-      {" "}
       <Form.Item
         name="name"
         rules={[
@@ -38,7 +33,7 @@ const TaskDetailHeader = ({ formType, setFormType, onReset }) => {
             margin: "0rem",
           }}
           readOnly={formType === VIEW}
-          bordered={false}
+          variant="borderless"
         />
       </Form.Item>
       {formType === VIEW ? (

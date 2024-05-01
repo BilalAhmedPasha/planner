@@ -27,7 +27,10 @@ import {
   MEDIUM_COLOR,
   NONE_COLOR,
 } from "../../../../constants/color.constants";
-import { INBOX, MULTI_DATE_AVAILABLE } from "../../../../constants/app.constants";
+import {
+  INBOX,
+  MULTI_DATE_AVAILABLE,
+} from "../../../../constants/app.constants";
 import {
   DATE_FORMAT,
   DAY,
@@ -232,7 +235,7 @@ const TaskDialogSecondaryPanel = ({ form, height, smallScreen, ...props }) => {
           tagRender={tagRender}
           placeholder="Select tags"
           showSearch={false}
-          showArrow={true}
+          suffixIcon={null}
         />
       </Form.Item>
       {MULTI_DATE_AVAILABLE && (
@@ -354,7 +357,6 @@ const TaskDialogSecondaryPanel = ({ form, height, smallScreen, ...props }) => {
           />
         </Form.Item>
       )}
-
       {isScheduled && isRepeating && showEndByDate && (
         <Form.Item
           name={END_BY_DATE}

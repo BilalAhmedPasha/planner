@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Layout, ConfigProvider, theme } from "antd";
 import AppNav from "./AppNav";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
 import { useDispatch } from "react-redux";
 import {
@@ -66,7 +66,7 @@ const AppLayout = ({ setCurrentTitle, children }) => {
             userTheme: parseInt(themeId),
           })
         );
-        
+
         // Update firestore document
         await setDoc(
           userDocRef,
@@ -92,12 +92,12 @@ const AppLayout = ({ setCurrentTitle, children }) => {
     });
   };
 
-  const history = useHistory();
+  const navigateTo = useNavigate();
   useEffect(() => {
     if (user === null) {
-      return history.push("/login");
+      return navigateTo("/login");
     }
-  }, [user, history]);
+  }, [user, navigateTo]);
 
   const { defaultAlgorithm } = theme;
   const childrenWithProps = React.Children.map(children, (child) => {

@@ -1,7 +1,6 @@
 import Card from "../TaskListView/TaskListItem/Card";
 
 const SubTaskInDetails = ({ taskDetails }) => {
-  
   return (
     <div>
       <Card

@@ -17,7 +17,7 @@ import {
 } from "../../../utils/screen.utils";
 import { CloseOutlined } from "@ant-design/icons";
 import useWindowSize from "../../../hooks/useWindowSize";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const TaskDetailsContainer = ({
   user,
@@ -49,7 +49,9 @@ const TaskDetailsContainer = ({
   useEffect(() => {
     selectedTaskDetails.length === 1 &&
       setLastSavedFormValues(
-        getFormValueFromTaskDetail({ taskDetails: selectedTaskDetails[0] })
+        getFormValueFromTaskDetail({
+          taskDetails: selectedTaskDetails[0],
+        })
       );
   }, [selectedTaskDetails]);
 
@@ -141,7 +143,7 @@ const TaskDetailsContainer = ({
     );
   };
 
-  const history = useHistory();
+  const navigateTo = useNavigate();
 
   const screenSize = useWindowSize();
   return taskDetailsToDrawer({ currentWidth: screenSize.width }) ? (
@@ -153,7 +155,6 @@ const TaskDetailsContainer = ({
       width={
         taskNavToDrawer({ currentWidth: screenSize.width }) ? "90vw" : "60vw"
       }
-      bodyStyle={{ padding: "0.5rem 1rem", overflow: "auto" }}
       destroyOnClose={true}
       extra={
         <Button
@@ -162,12 +163,14 @@ const TaskDetailsContainer = ({
           onClick={() => {
             setIsTaskDetailsDrawerCollapsed(true);
             setSelectedTaskDetails([]);
-            // Unstack URL
-            history.push("./");
+            navigateTo("./");
           }}
         />
       }
-      headerStyle={{ height: "2.5rem", padding: "0.5rem 1rem" }}
+      styles={{
+        header: { height: "2.5rem", padding: "0.5rem 1rem" },
+        body: { padding: "0.5rem 1rem", overflow: "auto" },
+      }}
     >
       {renderTaskDetailsContent()}
     </Drawer>

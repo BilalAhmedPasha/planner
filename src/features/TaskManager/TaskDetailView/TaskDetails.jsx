@@ -220,7 +220,6 @@ const TaskDetails = ({
         setOpenTaskEndDatePicker={setOpenTaskEndDatePicker}
       />
       <Divider />
-      {/* <div style={{ overflow: "auto" }}> */}
       {showSubTasks && (
         <Button
           type="text"

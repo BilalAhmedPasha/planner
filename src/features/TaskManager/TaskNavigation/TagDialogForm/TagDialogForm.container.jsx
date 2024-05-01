@@ -59,7 +59,7 @@ const TagDialog = ({
     const newTag = {
       name: e.name.replace(/\s/g, "").toLowerCase(),
       label: e.name,
-      color: e.color?.hex,
+      color: e.color?.toHexString(),
       createdTime: dayjs.utc().format(),
       modifiedTime: dayjs.utc().format(),
       type: TAGS,
@@ -78,7 +78,7 @@ const TagDialog = ({
     const modifiedTag = {
       name: e.name.replace(/\s/g, "").toLowerCase(),
       label: e.name,
-      color: e.color?.hex,
+      color: e.color?.toHexString(),
       createdTime: formValues.createdTime,
       modifiedTime: dayjs.utc().format(),
       type: TAGS,
@@ -96,19 +96,19 @@ const TagDialog = ({
   };
 
   const [color, setColor] = useState(
-    formType === CREATE ? { hex: DEFAULT_TAG_COLOR } : { hex: formValues.color }
+    formType === CREATE ? DEFAULT_TAG_COLOR : formValues.color
   );
 
   const DEFAULT_VALUES = useMemo(() => {
     if (formType === CREATE) {
       return {
         name: "",
-        color: { hex: DEFAULT_TAG_COLOR },
+        color: DEFAULT_TAG_COLOR,
       };
     } else if (formType === EDIT) {
       return {
         name: formValues.label,
-        color: { hex: formValues.color },
+        color: formValues.color,
       };
     }
   }, [formType, formValues]);
