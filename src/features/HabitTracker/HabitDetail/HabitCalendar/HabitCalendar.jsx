@@ -6,7 +6,11 @@ import { useEffect, useState } from "react";
 import { months } from "../../../../constants/calendar.constants";
 import Typography from "antd/es/typography/Typography";
 import { CaretLeftOutlined, CaretRightOutlined } from "@ant-design/icons";
-import { DAYS_LIST, MONTH } from "../../../../constants/dateTime.constants";
+import {
+  DAY,
+  DAYS_LIST,
+  MONTH,
+} from "../../../../constants/dateTime.constants";
 import { useDispatch, useSelector } from "react-redux";
 import { markHabitAction } from "../../state/userHabits/userHabits.actions";
 import {
@@ -17,6 +21,7 @@ import {
 import { habitsSelector } from "../../state/userHabits/userHabits.reducer";
 import Loading from "../../../../components/Loading";
 import Spinner from "../../../../components/Spinner";
+import HabitHistory from "./HabitHistory";
 
 const CalendarWrapper = styled.div``;
 
@@ -101,21 +106,62 @@ const mapValue = (input) => {
   }
 };
 
-export const handleHabitDateClick = ({ habit, date, dispatch, user }) => {
+const countChange = (prevState, prevStateTarget, newState, newStateTarget) => {
+  return (
+    (prevState === prevStateTarget ? -1 : 0) +
+    (newState === newStateTarget ? 1 : 0)
+  );
+};
+
+export const handleHabitDateClick = ({
+  habit,
+  date,
+  dispatch,
+  user,
+  setHabitHistory,
+}) => {
   if (!habit.history || !habit.history.hasOwnProperty(date.format())) {
     dispatch(
       markHabitAction(user.uid, habit.id, date.format(), HABIT_MARKED_DONE)
     );
+    setHabitHistory((prevHabitHistory) => {
+      return {
+        ...prevHabitHistory,
+        achieved: prevHabitHistory.achieved + 1,
+        pending: prevHabitHistory.pending - 1,
+      };
+    });
   } else {
-    dispatch(
-      markHabitAction(
-        user.uid,
-        habit.id,
-        date.format(),
-        mapValue(habit.history[`${date.format()}`])
-      )
-    );
+    const prevState = habit.history[`${date.format()}`];
+    const newState = mapValue(habit.history[`${date.format()}`]);
+    dispatch(markHabitAction(user.uid, habit.id, date.format(), newState));
+    setHabitHistory((prevHabitHistory) => {
+      return {
+        ...prevHabitHistory,
+        achieved:
+          prevHabitHistory.achieved +
+          countChange(
+            prevState,
+            HABIT_MARKED_DONE,
+            newState,
+            HABIT_MARKED_DONE
+          ),
+        unachieved:
+          prevHabitHistory.unachieved +
+          countChange(
+            prevState,
+            HABIT_MARKED_NOT_DONE,
+            newState,
+            HABIT_MARKED_NOT_DONE
+          ),
+        pending:
+          prevHabitHistory.pending +
+          countChange(prevState, HABIT_UNMARKED, newState, HABIT_UNMARKED),
+      };
+    });
   }
+
+  // Update history
 };
 
 const HabitCalendar = ({ user, habit, isInDrawer = false }) => {
@@ -142,16 +188,40 @@ const HabitCalendar = ({ user, habit, isInDrawer = false }) => {
   const dispatch = useDispatch();
   const { isLoadingHabits } = useSelector(habitsSelector);
 
+  const [habitHistory, setHabitHistory] = useState({
+    achieved: 0,
+    unachieved: 0,
+    pending: 0,
+  });
+
+  useEffect(() => {
+    // Calculate history on first load of the habit
+    const totalDays = currentDate.diff(dayjs(habit.startDate), DAY);
+    let achievedCount = 0;
+    let unachievedCount = 0;
+    if (habit.history) {
+      for (let [key, value] of Object.entries(habit.history)) {
+        if (value === 1) achievedCount++;
+        if (value === -1) unachievedCount++;
+      }
+    }
+    setHabitHistory({
+      achieved: achievedCount,
+      unachieved: unachievedCount,
+      pending: totalDays + 1 - (achievedCount + unachievedCount), // Include today also
+    });
+  }, [habit.id, habit.startDate]);
+
   return (
     <Spinner spinning={isLoadingHabits} indicator={Loading(0)}>
       <CalendarWrapper>
         {!isInDrawer && (
           <div
             style={{
-              padding: "0.5rem 1rem 0rem 1rem",
+              padding: "0.5rem 1rem 0.5rem 1rem",
               display: "flex",
-              alignItems: "center",
-              justifyContent: "start",
+              flexDirection: "column",
+              justifyContent: "center",
               top: 0,
               zIndex: 1,
               background: colorBgContainer,
@@ -167,12 +237,27 @@ const HabitCalendar = ({ user, habit, isInDrawer = false }) => {
             >
               {habit.name}
             </Typography.Text>
+            <div style={{ marginTop: "0.5rem" }}>
+              <HabitHistory
+                habitHistory={habitHistory}
+                colorSuccess={colorSuccess}
+                colorError={colorError}
+              />
+            </div>
+          </div>
+        )}
+        {isInDrawer && (
+          <div style={{ margin: "0.75rem 0rem" }}>
+            <HabitHistory
+              habitHistory={habitHistory}
+              colorSuccess={colorSuccess}
+              colorError={colorError}
+            />
           </div>
         )}
         <div
           style={{
             padding: !isInDrawer ? "0.5rem 1rem" : "0rem",
-            marginTop: "0.5rem",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
@@ -269,7 +354,13 @@ const HabitCalendar = ({ user, habit, isInDrawer = false }) => {
                     colorError={colorError}
                     onClick={() => {
                       if (isValidDate && !isFuture) {
-                        handleHabitDateClick({ habit, date, dispatch, user });
+                        handleHabitDateClick({
+                          habit,
+                          date,
+                          dispatch,
+                          user,
+                          setHabitHistory,
+                        });
                       }
                     }}
                     onContextMenu={(e) => {

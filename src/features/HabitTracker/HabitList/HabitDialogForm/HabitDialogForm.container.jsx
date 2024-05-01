@@ -117,6 +117,7 @@ const HabitDialog = ({
         <HabitDialogForm
           layout="vertical"
           form={form}
+          formType={formType}
           initialValues={formValues}
           {...props}
         />

@@ -6,11 +6,13 @@ import {
   REPEAT_DAYS,
   REPEAT_OPTIONS,
 } from "../../../../constants/habits.constants";
+import { CREATE } from "../../../../constants/formType.constants";
 
 const HabitDialogForm = ({
   form,
   layout,
   initialValues,
+  formType,
   ...props
 }) => {
   const {
@@ -29,7 +31,7 @@ const HabitDialogForm = ({
   const [frequencyType, setFrequencyType] = useState(
     initialValues["frequency"] || REPEAT_DAYS
   );
-  
+
   const handleRepeatTypeChange = (e) => {
     setFrequencyType(e);
   };
@@ -71,6 +73,7 @@ const HabitDialogForm = ({
           }}
           onChange={handleStartDateChange}
           allowClear={false}
+          disabled={formType !== CREATE}
         />
       </Form.Item>
 
