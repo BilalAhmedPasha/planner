@@ -32,7 +32,7 @@ import {
 } from "../state/userTasks/userTasks.actions";
 import {
   isOnVerySmallScreen,
-  taskNavToDrawer,
+  navToDrawer,
 } from "../../../utils/screen.utils";
 import useWindowSize from "../../../hooks/useWindowSize";
 import { TASK_NAV_BADGE_COLOR } from "../../../constants/color.constants";
@@ -410,7 +410,7 @@ const TaskNav = ({
   };
 
   const screenSize = useWindowSize();
-  return taskNavToDrawer({ currentWidth: screenSize.width }) ? (
+  return navToDrawer({ currentWidth: screenSize.width }) ? (
     <Drawer
       title="Task Menu"
       placement={"left"}

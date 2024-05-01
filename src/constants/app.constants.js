@@ -15,6 +15,7 @@ export const DELETED = "deleted";
 export const TAGS = "tags";
 export const LISTS = "lists";
 export const TASKS = "tasks";
+export const HABITS = "habits";
 
 export const LOADER_SIZE = 35;
 

@@ -17,7 +17,7 @@ import Icon, {
   MenuUnfoldOutlined,
 } from "@ant-design/icons";
 import SortTextSvg from "../../../svg/sort-text.svg?react";
-import { taskNavToDrawer } from "../../../utils/screen.utils";
+import { navToDrawer } from "../../../utils/screen.utils";
 import useWindowSize from "../../../hooks/useWindowSize";
 import { DELETED } from "../../../constants/app.constants";
 import { PRIORITY, TIME } from "../../../constants/sort.constants";
@@ -33,30 +33,30 @@ const renderTaskMenuIcon = ({
     <Button
       type="text"
       icon={
-        taskNavToDrawer({ currentWidth: screenSize.width }) ? (
+        navToDrawer({ currentWidth: screenSize.width }) ? (
           isNavDrawerCollapsed ? (
             <MenuUnfoldOutlined
               style={{
-                fontSize: "20px",
+                fontSize: "1.25rem",
               }}
             />
           ) : (
             <MenuFoldOutlined
               style={{
-                fontSize: "20px",
+                fontSize: "1.25rem",
               }}
             />
           )
         ) : isMenuCollapsed ? (
           <MenuUnfoldOutlined
             style={{
-              fontSize: "20px",
+              fontSize: "1.25rem",
             }}
           />
         ) : (
           <MenuFoldOutlined
             style={{
-              fontSize: "20px",
+              fontSize: "1.25rem",
             }}
           />
         )
@@ -115,7 +115,7 @@ const TaskListHeader = ({
         <Typography.Text
           style={{
             fontWeight: "bold",
-            fontSize: "20px",
+            fontSize: "1.25rem",
             whiteSpace: "nowrap",
             overflowX: "auto",
           }}

@@ -28,7 +28,7 @@ const TaskDetailHeader = ({ formType, setFormType, onReset }) => {
           maxLength={25}
           style={{
             fontWeight: "bold",
-            fontSize: "24px",
+            fontSize: "1.5rem",
             padding: "0rem",
             margin: "0rem",
           }}

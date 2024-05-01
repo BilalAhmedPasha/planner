@@ -1,5 +1,14 @@
 import { useState, useEffect, useMemo } from "react";
-import { Button, Drawer, Form, Layout, Skeleton, message, theme } from "antd";
+import {
+  Button,
+  Drawer,
+  Form,
+  Layout,
+  Skeleton,
+  Typography,
+  message,
+  theme,
+} from "antd";
 import { VIEW } from "../../../constants/formType.constants";
 import NotTaskSelected from "./NotTaskSelected";
 import TaskDetails from "./TaskDetails";
@@ -11,13 +20,10 @@ import {
   getFormValueFromTaskDetail,
   handleEditTask,
 } from "../TaskListView/TaskList.utils";
-import {
-  taskNavToDrawer,
-  taskDetailsToDrawer,
-} from "../../../utils/screen.utils";
+import { navToDrawer, detailsToDrawer } from "../../../utils/screen.utils";
 import { CloseOutlined } from "@ant-design/icons";
 import useWindowSize from "../../../hooks/useWindowSize";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const TaskDetailsContainer = ({
   user,
@@ -143,32 +149,36 @@ const TaskDetailsContainer = ({
     );
   };
 
+  const currentURL = useLocation();
   const navigateTo = useNavigate();
 
   const screenSize = useWindowSize();
-  return taskDetailsToDrawer({ currentWidth: screenSize.width }) ? (
+  return detailsToDrawer({ currentWidth: screenSize.width }) ? (
     <Drawer
-      title="Task Details"
+      title={<Typography.Text>{"Task Details"}</Typography.Text>}
       placement={"right"}
       closable={false}
       open={!isTaskDetailsDrawerCollapsed}
-      width={
-        taskNavToDrawer({ currentWidth: screenSize.width }) ? "90vw" : "60vw"
-      }
+      width={navToDrawer({ currentWidth: screenSize.width }) ? "90vw" : "60vw"}
       destroyOnClose={true}
       extra={
         <Button
-          type="text"
           icon={<CloseOutlined />}
           onClick={() => {
             setIsTaskDetailsDrawerCollapsed(true);
             setSelectedTaskDetails([]);
-            navigateTo(-1);
+            const url = currentURL.pathname.split("/").slice(0, -1).join("/");
+            navigateTo(url);
           }}
         />
       }
       styles={{
-        header: { height: "2.5rem", padding: "0.5rem 1rem" },
+        header: {
+          display: "flex",
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          padding: "1.5rem 1rem",
+        },
         body: { padding: "0.5rem 1rem", overflow: "auto" },
       }}
     >

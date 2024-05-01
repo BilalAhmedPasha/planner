@@ -8,6 +8,7 @@ import TaskListContainer from "./TaskListView/TaskList";
 import { userSelector } from "../AppLayout/state/userSettings/userSettings.reducer";
 import { fetchTasksAction } from "./state/userTasks/userTasks.actions";
 import TaskDetailsContainer from "./TaskDetailView";
+import { fetchHabitsAction } from "../HabitTracker/state/userHabits/userHabits.actions";
 
 const TaskManager = ({ user }) => {
   const dispatch = useDispatch();
@@ -18,6 +19,7 @@ const TaskManager = ({ user }) => {
       dispatch(fetchListsAction(user.uid));
       dispatch(fetchTagsAction(user.uid));
       dispatch(fetchTasksAction(user.uid));
+      dispatch(fetchHabitsAction(user.uid));
     }
   }, [userSetting, dispatch, user]);
 

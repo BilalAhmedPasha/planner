@@ -9,7 +9,7 @@ import {
   handleAddTask,
   handleEditTask,
 } from "../../TaskListView/TaskList.utils";
-import { taskNavToDrawer } from "../../../../utils/screen.utils";
+import { navToDrawer } from "../../../../utils/screen.utils";
 import useWindowSize from "../../../../hooks/useWindowSize";
 
 const TaskDialog = ({
@@ -107,7 +107,7 @@ const TaskDialog = ({
         form={form}
         centered={true}
         width={
-          taskNavToDrawer({ currentWidth: screenSize.width }) ? "90vw" : "50vw"
+          navToDrawer({ currentWidth: screenSize.width }) ? "90vw" : "50vw"
         }
         destroyOnClose={true}
         loading={isLoadingTasks}
