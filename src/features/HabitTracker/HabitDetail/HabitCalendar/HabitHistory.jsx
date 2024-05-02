@@ -8,7 +8,7 @@ import { HiOutlineQuestionMarkCircle } from "react-icons/hi2";
 
 const HabitHistory = ({ habitHistory, colorSuccess, colorError }) => {
   const {
-    token: { colorBgContainer, colorTextBase },
+    token: { colorBgContainer, colorTextBase, colorTextSecondary },
   } = theme.useToken();
   return (
     <div
@@ -16,6 +16,8 @@ const HabitHistory = ({ habitHistory, colorSuccess, colorError }) => {
         display: "flex",
         textAlign: "center",
         justifyContent: "space-between",
+        width: "100%",
+        gap: "2rem",
       }}
     >
       <span style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
@@ -38,7 +40,7 @@ const HabitHistory = ({ habitHistory, colorSuccess, colorError }) => {
             color: colorTextBase,
           }}
         >
-          <HiOutlineQuestionMarkCircle />
+          <HiOutlineQuestionMarkCircle style={{ color: colorTextSecondary }} />
         </Tooltip>
       </span>
       <span style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
@@ -59,11 +61,13 @@ const HabitHistory = ({ habitHistory, colorSuccess, colorError }) => {
             color: colorTextBase,
           }}
         >
-          <HiOutlineQuestionMarkCircle />
+          <HiOutlineQuestionMarkCircle style={{ color: colorTextSecondary }} />
         </Tooltip>
       </span>
       <span style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-        <MdOutlinePending style={{ fontSize: "1.25rem" }} />
+        <MdOutlinePending
+          style={{ fontSize: "1.25rem", color: colorTextBase }}
+        />
         <Typography.Text
           style={{
             fontSize: "1rem",
