@@ -5,22 +5,28 @@ import {
   MdOutlinePending,
 } from "react-icons/md";
 import { HiOutlineQuestionMarkCircle } from "react-icons/hi2";
+import styled from "styled-components";
+
+const FlexContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+`;
+
+const GridItem = styled.span`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+`;
 
 const HabitHistory = ({ habitHistory, colorSuccess, colorError }) => {
   const {
     token: { colorBgContainer, colorTextBase, colorTextSecondary },
   } = theme.useToken();
   return (
-    <div
-      style={{
-        display: "flex",
-        textAlign: "center",
-        justifyContent: "space-between",
-        width: "100%",
-        gap: "2rem",
-      }}
-    >
-      <span style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+    <FlexContainer>
+      <GridItem>
         <MdOutlineCheckCircle
           style={{ fontSize: "1.25rem", color: colorSuccess }}
         />
@@ -42,8 +48,8 @@ const HabitHistory = ({ habitHistory, colorSuccess, colorError }) => {
         >
           <HiOutlineQuestionMarkCircle style={{ color: colorTextSecondary }} />
         </Tooltip>
-      </span>
-      <span style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+      </GridItem>
+      <GridItem>
         <MdOutlineCancel style={{ fontSize: "1.25rem", color: colorError }} />
         <Typography.Text
           style={{
@@ -63,8 +69,8 @@ const HabitHistory = ({ habitHistory, colorSuccess, colorError }) => {
         >
           <HiOutlineQuestionMarkCircle style={{ color: colorTextSecondary }} />
         </Tooltip>
-      </span>
-      <span style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+      </GridItem>
+      <GridItem>
         <MdOutlinePending
           style={{ fontSize: "1.25rem", color: colorTextBase }}
         />
@@ -76,8 +82,8 @@ const HabitHistory = ({ habitHistory, colorSuccess, colorError }) => {
         >
           {`Pending ${habitHistory.pending}`}
         </Typography.Text>
-      </span>
-    </div>
+      </GridItem>
+    </FlexContainer>
   );
 };
 

@@ -1,6 +1,6 @@
 import { Typography, Space, Dropdown, Button } from "antd";
 import { Calendar, dayjsLocalizer, Views } from "react-big-calendar";
-import dayjs from "../../../utils/dateTime.utils";
+import dayjs from "../../utils/dateTime.utils";
 import React, {
   useCallback,
   useEffect,
@@ -11,28 +11,28 @@ import React, {
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Toolbar from "./Custom/ToolBar";
 import { useSelector } from "react-redux";
-import { listsSelector } from "../state/userLists/userLists.reducer";
-import { tasksSelector } from "../state/userTasks/userTasks.reducer";
+import { listsSelector } from "../TaskManager/state/userLists/userLists.reducer";
+import { tasksSelector } from "../TaskManager/state/userTasks/userTasks.reducer";
 import {
   DEFAULT_TAG_COLOR,
   INBOX_LIST_COLOR,
-} from "../../../constants/color.constants";
+} from "../../constants/color.constants";
 import { BgColorsOutlined } from "@ant-design/icons";
-import { PRIORITY } from "../../../constants/sort.constants";
-import { LISTS, LOADER_SIZE, TAGS } from "../../../constants/app.constants";
-import { DAY, TIME_FORMAT_IN_DB } from "../../../constants/dateTime.constants";
-import { priorityColorMappings } from "../../../constants/priority.constants";
-import { CREATE, EDIT } from "../../../constants/formType.constants";
+import { PRIORITY } from "../../constants/sort.constants";
+import { LISTS, LOADER_SIZE, TAGS } from "../../constants/app.constants";
+import { DAY, TIME_FORMAT_IN_DB } from "../../constants/dateTime.constants";
+import { priorityColorMappings } from "../../constants/priority.constants";
+import { CREATE, EDIT } from "../../constants/formType.constants";
 import {
   END_BY_DATE,
   END_BY_REPEAT_COUNT,
-} from "../../../constants/repeating.constants";
-import { disableWeekView } from "../../../utils/screen.utils";
-import useWindowSize from "../../../hooks/useWindowSize";
-import Spinner from "../../../components/Spinner";
-import Loading from "../../../components/Loading";
-import { tagsSelector } from "../state/userTags/userTags.reducer";
-import { averageColor } from "../../../utils/calendar.utils";
+} from "../../constants/repeating.constants";
+import { disableWeekView } from "../../utils/screen.utils";
+import useWindowSize from "../../hooks/useWindowSize";
+import Spinner from "../../components/Spinner";
+import Loading from "../../components/Loading";
+import { tagsSelector } from "../TaskManager/state/userTags/userTags.reducer";
+import { averageColor } from "../../utils/calendar.utils";
 import CalendarEvent from "./Custom/CalendarEvent";
 import { calculateCalendarEvents } from "./CalendarUtils";
 import CalendarWrapper from "./Custom/CalendarWrapper";
@@ -312,7 +312,7 @@ const CalendarComponent = ({
             formats={formats}
             selectable={true}
             onSelecting={onSelecting}
-            longPressThreshold={400}
+            longPressThreshold={250}
             onSelectEvent={onSelectEvent}
           />
         </CalendarWrapper>

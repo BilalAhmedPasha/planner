@@ -1,11 +1,11 @@
-import { DAY, DB_TIME_STAMP_FORMAT } from "../../../constants/dateTime.constants";
+import { DAY, DB_TIME_STAMP_FORMAT } from "../../constants/dateTime.constants";
 import {
   END_BY_DATE,
   END_BY_REPEAT_COUNT,
   MONTHLY,
   WEEKLY,
-} from "../../../constants/repeating.constants";
-import dayjs from "../../../utils/dateTime.utils";
+} from "../../constants/repeating.constants";
+import dayjs from "../../utils/dateTime.utils";
 
 export const calculateCalendarEvents = ({
   tasks,

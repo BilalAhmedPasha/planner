@@ -2,17 +2,17 @@ import { Layout, theme, message } from "antd";
 import React, { useEffect, useMemo, useState } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useDispatch, useSelector } from "react-redux";
-import { INBOX } from "../../../constants/app.constants";
-import { NONE } from "../../../constants/priority.constants";
-import TaskDialogForm from "../TaskListView/TaskDialogForm";
-import { CREATE } from "../../../constants/formType.constants";
-import { ENDLESS } from "../../../constants/repeating.constants";
-import { userSelector } from "../../AppLayout/state/userSettings/userSettings.reducer";
-import { fetchListsAction } from "../state/userLists/userLists.actions";
-import { fetchTagsAction } from "../state/userTags/userTags.actions";
-import { fetchTasksAction } from "../state/userTasks/userTasks.actions";
+import { INBOX } from "../../constants/app.constants";
+import { NONE } from "../../constants/priority.constants";
+import TaskDialogForm from "../TaskManager/TaskListView/TaskDialogForm";
+import { CREATE } from "../../constants/formType.constants";
+import { ENDLESS } from "../../constants/repeating.constants";
+import { userSelector } from "../AppLayout/state/userSettings/userSettings.reducer";
+import { fetchListsAction } from "../TaskManager/state/userLists/userLists.actions";
+import { fetchTagsAction } from "../TaskManager/state/userTags/userTags.actions";
+import { fetchTasksAction } from "../TaskManager/state/userTasks/userTasks.actions";
 import CalendarComponent from "./CalendarComponent";
-import { fetchHabitsAction } from "../../HabitTracker/state/userHabits/userHabits.actions";
+import { fetchHabitsAction } from "../HabitTracker/state/userHabits/userHabits.actions";
 
 
 const CalendarView = ({ user, userTheme }) => {

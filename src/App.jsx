@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
-import Calendar from "./features/TaskManager/Calendar";
+import Calendar from "./features/Calendar";
 import HabitTracker from "./features/HabitTracker";
 import AppLayout from "./features/AppLayout";
 import TaskManager from "./features/TaskManager";
@@ -69,7 +69,7 @@ function App() {
             </AppLayout>
           }
         />
-        {/* <Route path="*" element={<Navigate to="/tasks/all" />} /> */}
+        <Route path="*" element={<Navigate to="/tasks/today" />} />
       </Routes>
     );
 }

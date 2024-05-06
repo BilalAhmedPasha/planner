@@ -1,9 +1,9 @@
+import { useState } from "react";
 import { Space, Typography, theme } from "antd";
 import { SyncOutlined } from "@ant-design/icons";
-import dayjs from "../../../../utils/dateTime.utils";
-import { useState } from "react";
-import { cross, tick } from "../../../../constants/checkBox.constants";
-import CheckBoxDropdown from "../../TaskListView/TaskListItem/CheckBoxDropdown";
+import dayjs from "../../../utils/dateTime.utils";
+import { cross, tick } from "../../../constants/checkBox.constants";
+import CheckBoxDropdown from "../../TaskManager/TaskListView/TaskListItem/CheckBoxDropdown";
 
 const CalendarEvent = ({ event, user }) => {
   const {

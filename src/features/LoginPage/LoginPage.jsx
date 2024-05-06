@@ -32,7 +32,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (user !== null && JSON.stringify(user) !== "{}") {
-      navigateTo("/tasks/all");
+      navigateTo("/tasks/today");
     }
   }, [navigateTo, user]);
 

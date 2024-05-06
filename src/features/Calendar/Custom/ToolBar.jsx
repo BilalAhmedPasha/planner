@@ -1,11 +1,11 @@
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Navigate } from "react-big-calendar";
 import { Button, Segmented, Typography } from "antd";
-import { DAY, WEEK } from "../../../../constants/calendar.constants";
+import { DAY, WEEK } from "../../../constants/calendar.constants";
 import { CaretLeftOutlined, CaretRightOutlined } from "@ant-design/icons";
 import { useCallback, useEffect } from "react";
-import { disableWeekView } from "../../../../utils/screen.utils";
-import useWindowSize from "../../../../hooks/useWindowSize";
+import { disableWeekView } from "../../../utils/screen.utils";
+import useWindowSize from "../../../hooks/useWindowSize";
 
 const Toolbar = (props) => {
   const goToDayView = useCallback(() => {

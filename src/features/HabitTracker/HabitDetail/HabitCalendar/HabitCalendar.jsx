@@ -273,11 +273,6 @@ const HabitCalendar = ({ user, habit, isInDrawer = false }) => {
           <div
             style={{
               margin: "1rem 0rem",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              overflowX: "auto",
-              width: "100%",
             }}
           >
             <HabitHistory
@@ -285,7 +280,7 @@ const HabitCalendar = ({ user, habit, isInDrawer = false }) => {
               colorSuccess={colorSuccess}
               colorError={colorError}
             />
-          </div>
+           </div>
         )}
         <div
           style={{

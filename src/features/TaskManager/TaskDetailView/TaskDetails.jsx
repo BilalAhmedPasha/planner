@@ -22,7 +22,6 @@ import SubTaskInDetails from "./SubTaskInDetails";
 import TaskDetailHeader from "./TaskDetailsHeader";
 import PrimaryTaskDetails from "./PrimaryTaskDetails";
 import SecondaryTaskDetails from "./SecondaryTaskDetails";
-import RecurringTaskDetails from "./RecurringTaskDetails";
 
 const getPriorityColor = (event) => {
   if (event === HIGH) {
@@ -190,27 +189,20 @@ const TaskDetails = ({
         setFormType={setFormType}
         onReset={onReset}
       />
-      <PrimaryTaskDetails
-        form={form}
-        formType={formType}
-        handlePriorityColor={handlePriorityColor}
-        priorityColor={priorityColor}
-        listOptions={listOptions}
-        tagOptions={tagOptions}
-        tagRender={tagRender}
-      />
+      <PrimaryTaskDetails form={form} formType={formType} />
       <SecondaryTaskDetails
+        form={form}
         formType={formType}
         handleStartDateChange={handleStartDateChange}
         openTaskDatePicker={openTaskDatePicker}
         setOpenTaskDatePicker={setOpenTaskDatePicker}
         isScheduled={isScheduled}
         handleRepeatDropDownChange={handleRepeatDropDownChange}
-      />
-      <RecurringTaskDetails
-        form={form}
-        formType={formType}
-        isScheduled={isScheduled}
+        handlePriorityColor={handlePriorityColor}
+        priorityColor={priorityColor}
+        listOptions={listOptions}
+        tagOptions={tagOptions}
+        tagRender={tagRender}
         isRepeating={isRepeating}
         handleEndByDropDownChange={handleEndByDropDownChange}
         showEndByDate={showEndByDate}
