@@ -16,8 +16,6 @@ function App() {
     <Routes>
       <Route path="/" exact element={<Navigate to="/login" />} />
       <Route path="/login" exact element={<LoginPage title={currentTitle} />} />
-<<<<<<< Updated upstream
-=======
       {[
         "/tasks/:sectionId/:documentId/:taskId",
         "/tasks/:sectionId/:documentId",
@@ -33,66 +31,18 @@ function App() {
           }
         />
       ))}
->>>>>>> Stashed changes
+
       <Route
         path="/calendar"
         exact
         element={
-          <AppLayout setCurrentTitle={setCurrentTitle}>
-<<<<<<< Updated upstream
-            <Calendar title={currentTitle} />
-          </AppLayout>
-        }
-      />
-      <Route
-        path="/habits"
-        exact
-        element={
-          <AppLayout setCurrentTitle={setCurrentTitle}>
-            <HabitTracker title={currentTitle} />
-          </AppLayout>
-        }
-      />
-      <Route
-        path="/habits/:habitId"
-        exact
-        element={
-          <AppLayout setCurrentTitle={setCurrentTitle}>
-            <HabitTracker title={currentTitle} />
-          </AppLayout>
-        }
-      />
-      <Route
-        path="/tasks/:sectionId/:documentId/:taskId"
-        element={
-          <AppLayout setCurrentTitle={setCurrentTitle}>
-            <TaskManager title={currentTitle} />
-          </AppLayout>
-        }
-      />
-      <Route
-        path="/tasks/:sectionId/:documentId"
-        element={
-          <AppLayout setCurrentTitle={setCurrentTitle}>
-            <TaskManager title={currentTitle} />
-          </AppLayout>
-        }
-      />
-      <Route
-        path="/tasks/:sectionId"
-        element={
-          <AppLayout setCurrentTitle={setCurrentTitle}>
-            <TaskManager title={currentTitle} />
-          </AppLayout>
-        }
-      />
-=======
-            <React.Suspense
-              fallback={<FullPageSpinner indicator={Loading(50)} />}
-            >
+          <React.Suspense
+            fallback={<FullPageSpinner indicator={Loading(0)} />}
+          >
+            <AppLayout setCurrentTitle={setCurrentTitle}>
               <Calendar title={currentTitle} />
-            </React.Suspense>
-          </AppLayout>
+            </AppLayout>
+          </React.Suspense>
         }
       />
       {["/habits/:habitId", "/habits"].map((path, index) => (
@@ -100,18 +50,16 @@ function App() {
           key={index}
           path={path}
           element={
-            <AppLayout setCurrentTitle={setCurrentTitle}>
-              <React.Suspense
-                fallback={<FullPageSpinner indicator={Loading(50)} />}
-              >
+            <React.Suspense
+              fallback={<FullPageSpinner indicator={Loading(0)} />}
+            >
+              <AppLayout setCurrentTitle={setCurrentTitle}>
                 <HabitTracker title={currentTitle} />
-              </React.Suspense>
-            </AppLayout>
+              </AppLayout>
+            </React.Suspense>
           }
         />
       ))}
-
->>>>>>> Stashed changes
       <Route path="*" element={<Navigate to="/tasks/today" />} />
     </Routes>
   );
