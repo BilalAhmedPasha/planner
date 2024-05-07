@@ -1,7 +1,6 @@
 import { Layout, message, Modal, Skeleton, theme } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Loading from "../../../components/Loading";
 import {
   COMPLETED,
   DELETED,
@@ -17,7 +16,6 @@ import { ExclamationCircleOutlined } from "@ant-design/icons";
 import dayjs from "../../../utils/dateTime.utils";
 import { DAY, TIME_ZONE } from "../../../constants/dateTime.constants";
 import { hardDeleteTaskAction } from "../state/userTasks/userTasks.actions";
-import Spinner from "../../../components/Spinner";
 import { PRIORITY, TIME, TITLE } from "../../../constants/sort.constants";
 import { useParams, useLocation } from "react-router-dom";
 import { NONE } from "../../../constants/priority.constants";
@@ -258,10 +256,11 @@ const ListView = ({
   };
 
   const [numRows, setNumRows] = useState(10);
+
   useEffect(() => {
     const handleResize = () => {
       const windowHeight = window.innerHeight;
-      const rowHeight = 32;
+      const rowHeight = 70;
       const availableRows = Math.floor(windowHeight / rowHeight) - 1;
       setNumRows(availableRows);
     };
@@ -296,27 +295,25 @@ const ListView = ({
         isNavDrawerCollapsed={isNavDrawerCollapsed}
         setIsNavDrawerCollapsed={setIsNavDrawerCollapsed}
       />
-      <Skeleton
-        active
-        block={true}
-        shape="circle"
-        loading={isLoadingTasks && tasks?.length === 0}
-        paragraph={{ rows: numRows }}
-        style={{ padding: "2rem" }}
-      >
-        <Spinner
-          spinning={isLoadingTasks && tasks?.length > 0}
-          indicator={Loading(0)}
-        >
-          <ListSections
-            user={user}
-            tasks={sortedSectionTasks}
-            sortBy={sortBy}
-            selectedTaskDetails={selectedTaskDetails}
-            setSelectedTaskDetails={setSelectedTaskDetails}
+
+      {isLoadingTasks && tasks?.length === 0 ? (
+        Array.from({ length: numRows }).map((each) => (
+          <Skeleton.Button
+            active={true}
+            style={{ margin: "0.25rem 1rem", width: "95%", height: 70 }}
+            block={true}
           />
-        </Spinner>
-      </Skeleton>
+        ))
+      ) : (
+        <ListSections
+          user={user}
+          tasks={sortedSectionTasks}
+          sortBy={sortBy}
+          selectedTaskDetails={selectedTaskDetails}
+          setSelectedTaskDetails={setSelectedTaskDetails}
+        />
+      )}
+
       {openAddTaskDialog && (
         <DialogForm
           user={user}

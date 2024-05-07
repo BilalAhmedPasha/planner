@@ -8,6 +8,7 @@ import { fetchTasksAction } from "./state/userTasks/userTasks.actions";
 import { fetchHabitsAction } from "../HabitTracker/state/userHabits/userHabits.actions";
 import SideNav from "./SideNav";
 import ListView from "./ListView";
+import DetailView from "./DetailView";
 
 const TaskManager = ({ user }) => {
   const dispatch = useDispatch();
@@ -62,13 +63,13 @@ const TaskManager = ({ user }) => {
         setIsNavDrawerCollapsed={setIsNavDrawerCollapsed}
         setIsTaskDetailsDrawerCollapsed={setIsTaskDetailsDrawerCollapsed}
       />
-      {/* <DetailView
+      <DetailView
         user={user}
         selectedTaskDetails={selectedTaskDetails}
         setSelectedTaskDetails={setSelectedTaskDetails}
         isTaskDetailsDrawerCollapsed={isTaskDetailsDrawerCollapsed}
         setIsTaskDetailsDrawerCollapsed={setIsTaskDetailsDrawerCollapsed}
-      /> */}
+      />
       {contextHolder}
     </>
   );

@@ -19,7 +19,7 @@ import Spinner from "../../../components/Spinner";
 import {
   getFormValueFromTaskDetail,
   handleEditTask,
-} from "../ListView/TaskList.utils";
+} from "../ListView/List.utils";
 import { navToDrawer, detailsToDrawer } from "../../../utils/screen.utils";
 import { CloseOutlined } from "@ant-design/icons";
 import useWindowSize from "../../../hooks/useWindowSize";
@@ -104,48 +104,41 @@ const DetailsContainer = ({
 
   const renderTaskDetailsContent = () => {
     return (
-      <Skeleton
-        active
-        loading={isLoadingTasks && selectedTaskDetails?.length === 0}
-        paragraph={{ rows: numRows }}
-        style={{ padding: "1rem" }}
+      <Spinner
+        spinning={isLoadingTasks && selectedTaskDetails?.length > 0}
+        indicator={Loading(0)}
       >
-        <Spinner
-          spinning={isLoadingTasks && selectedTaskDetails?.length > 0}
-          indicator={Loading(0)}
-        >
-          {selectedTaskDetails.length === 1 ? (
-            <Form
+        {selectedTaskDetails.length === 1 ? (
+          <Form
+            form={form}
+            name="detail_form"
+            onFinish={(formValues) =>
+              handleEditTask({
+                taskDetails: selectedTaskDetails[0],
+                formValues,
+                dispatch,
+                user,
+                editTaskSuccess,
+                setFormType,
+                form,
+                setLastSavedFormValues,
+                editTaskFailed,
+              })
+            }
+            initialValues={formValues}
+          >
+            <TaskDetails
+              taskDetails={selectedTaskDetails[0]}
               form={form}
-              name="detail_form"
-              onFinish={(formValues) =>
-                handleEditTask({
-                  taskDetails: selectedTaskDetails[0],
-                  formValues,
-                  dispatch,
-                  user,
-                  editTaskSuccess,
-                  setFormType,
-                  form,
-                  setLastSavedFormValues,
-                  editTaskFailed,
-                })
-              }
-              initialValues={formValues}
-            >
-              <TaskDetails
-                taskDetails={selectedTaskDetails[0]}
-                form={form}
-                formType={formType}
-                setFormType={setFormType}
-                lastSavedFormValues={lastSavedFormValues}
-              />
-            </Form>
-          ) : (
-            <NotTaskSelected selectedTaskDetails={selectedTaskDetails} />
-          )}
-        </Spinner>
-      </Skeleton>
+              formType={formType}
+              setFormType={setFormType}
+              lastSavedFormValues={lastSavedFormValues}
+            />
+          </Form>
+        ) : (
+          <NotTaskSelected selectedTaskDetails={selectedTaskDetails} />
+        )}
+      </Spinner>
     );
   };
 

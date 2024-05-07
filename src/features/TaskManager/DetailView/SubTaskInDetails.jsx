@@ -1,11 +1,8 @@
-import Card from "../ListView/TaskListSection/Card";
+import ItemContainer from "../ListView/Item/Item.container";
 
 const SubTaskInDetails = ({ taskDetails }) => {
   return (
-    <div>
-      <Card
-        // user={user}
-        // messageApi={messageApi}
+      <ItemContainer
         key={"1"}
         cardDetails={taskDetails}
         moveCard={(id, atIndex) => {}}
@@ -15,7 +12,6 @@ const SubTaskInDetails = ({ taskDetails }) => {
         setSelectedTaskDetails={() => {}}
         isInCollapse={false}
       />
-    </div>
   );
 };
 

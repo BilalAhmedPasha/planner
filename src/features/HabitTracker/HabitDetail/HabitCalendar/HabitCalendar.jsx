@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { checkIfValidDate, generateDate } from "../../../../utils/habit.utils";
-import { Button, Layout, theme } from "antd";
+import { Button, theme } from "antd";
 import dayjs from "../../../../utils/dateTime.utils";
 import { useEffect, useMemo, useState } from "react";
 import { months } from "../../../../constants/calendar.constants";
@@ -21,8 +21,6 @@ import {
   REPEAT_INTERVAL,
 } from "../../../../constants/habits.constants";
 import { habitsSelector } from "../../state/userHabits/userHabits.reducer";
-import Loading from "../../../../components/Loading";
-import Spinner from "../../../../components/Spinner";
 import HabitHistory from "./HabitHistory";
 
 const CalendarWrapper = styled.div``;
@@ -236,195 +234,188 @@ const HabitCalendar = ({ user, habit, isInDrawer = false }) => {
   ]);
 
   return (
-    <Spinner spinning={isLoadingHabits} indicator={Loading(0)}>
-      <CalendarWrapper>
-        {!isInDrawer && (
-          <div
+    <CalendarWrapper>
+      {!isInDrawer && (
+        <div
+          style={{
+            padding: "0.5rem 1rem 0.5rem 1rem",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            top: 0,
+            zIndex: 1,
+            background: colorBgContainer,
+            position: "sticky",
+          }}
+        >
+          <Typography.Text
             style={{
-              padding: "0.5rem 1rem 0.5rem 1rem",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              top: 0,
-              zIndex: 1,
-              background: colorBgContainer,
-              position: "sticky",
+              fontWeight: "bold",
+              fontSize: "1.5rem",
             }}
+            ellipsis={true}
           >
-            <Typography.Text
-              style={{
-                fontWeight: "bold",
-                fontSize: "1.5rem",
-              }}
-              ellipsis={true}
-            >
-              {habit.name}
-            </Typography.Text>
-            <div style={{ marginTop: "0.5rem" }}>
-              <HabitHistory
-                habitHistory={habitHistory}
-                colorSuccess={colorSuccess}
-                colorError={colorError}
-              />
-            </div>
-          </div>
-        )}
-        {isInDrawer && (
-          <div
-            style={{
-              margin: "1rem 0rem",
-            }}
-          >
+            {habit.name}
+          </Typography.Text>
+          <div style={{ marginTop: "0.5rem" }}>
             <HabitHistory
               habitHistory={habitHistory}
               colorSuccess={colorSuccess}
               colorError={colorError}
             />
-           </div>
-        )}
-        <div
-          style={{
-            padding: !isInDrawer ? "0.5rem 1rem" : "0rem",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            overflowX: "auto",
-            width: "100%",
-          }}
-        >
-          <Typography.Text
-            style={{
-              fontSize: "1.25rem",
-              whiteSpace: "nowrap",
-            }}
-          >
-            {months[today.month()]}, {today.year()}
-          </Typography.Text>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 5,
-              fontSize: "2rem",
-            }}
-          >
-            <Button
-              type="text"
-              icon={<CaretLeftOutlined />}
-              disabled={today
-                .month(today.month())
-                .startOf(MONTH)
-                .isSame(dayjs(habit.startDate).startOf(MONTH).toDate())}
-              onClick={() => {
-                setToday(today.month(today.month() - 1));
-              }}
-            />
-            <Button
-              type="text"
-              size="small"
-              onClick={() => {
-                setToday(currentDate);
-              }}
-            >
-              <Typography.Text>{"Today"}</Typography.Text>
-            </Button>
-            <Button
-              type="text"
-              icon={<CaretRightOutlined />}
-              disabled={today
-                .month(today.month())
-                .startOf(MONTH)
-                .isSame(dayjs().startOf(MONTH).toDate())}
-              onClick={() => {
-                setToday(today.month(today.month() + 1));
-              }}
-            />
           </div>
         </div>
+      )}
+      {isInDrawer && (
+        <div
+          style={{
+            margin: "1rem 0rem",
+          }}
+        >
+          <HabitHistory
+            habitHistory={habitHistory}
+            colorSuccess={colorSuccess}
+            colorError={colorError}
+          />
+        </div>
+      )}
+      <div
+        style={{
+          padding: !isInDrawer ? "0.5rem 1rem" : "0rem",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          overflowX: "auto",
+          width: "100%",
+        }}
+      >
+        <Typography.Text
+          style={{
+            fontSize: "1.25rem",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {months[today.month()]}, {today.year()}
+        </Typography.Text>
         <div
           style={{
             display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            overflowX: "auto",
-            marginBottom: "1rem",
-            width: "100%",
+            alignItems: "center",
+            gap: 5,
+            fontSize: "2rem",
           }}
         >
-          <CalenderDays>
-            {DAYS_LIST.map((day, index) => {
+          <Button
+            type="text"
+            icon={<CaretLeftOutlined />}
+            disabled={today
+              .month(today.month())
+              .startOf(MONTH)
+              .isSame(dayjs(habit.startDate).startOf(MONTH).toDate())}
+            onClick={() => {
+              setToday(today.month(today.month() - 1));
+            }}
+          />
+          <Button
+            type="text"
+            size="small"
+            onClick={() => {
+              setToday(currentDate);
+            }}
+          >
+            <Typography.Text>{"Today"}</Typography.Text>
+          </Button>
+          <Button
+            type="text"
+            icon={<CaretRightOutlined />}
+            disabled={today
+              .month(today.month())
+              .startOf(MONTH)
+              .isSame(dayjs().startOf(MONTH).toDate())}
+            onClick={() => {
+              setToday(today.month(today.month() + 1));
+            }}
+          />
+        </div>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          overflowX: "auto",
+          marginBottom: "1rem",
+          width: "100%",
+        }}
+      >
+        <CalenderDays>
+          {DAYS_LIST.map((day, index) => {
+            return (
+              <CalendarDay key={index} colorTextSecondary={colorTextSecondary}>
+                <p>{day}</p>
+              </CalendarDay>
+            );
+          })}
+        </CalenderDays>
+        <CalenderDates>
+          {generateDate(today.month(), today.year()).map(
+            ({ date, currentMonth, isPast, isToday, isFuture }, index) => {
+              const isValidDate = checkIfValidDate({ date, habit });
+              const markedValue =
+                habit.history && habit.history[`${date.format()}`]
+                  ? habit.history[`${date.format()}`]
+                  : 0;
               return (
-                <CalendarDay
+                <CalenderDate
                   key={index}
-                  colorTextSecondary={colorTextSecondary}
-                >
-                  <p>{day}</p>
-                </CalendarDay>
-              );
-            })}
-          </CalenderDays>
-          <CalenderDates>
-            {generateDate(today.month(), today.year()).map(
-              ({ date, currentMonth, isPast, isToday, isFuture }, index) => {
-                const isValidDate = checkIfValidDate({ date, habit });
-                const markedValue =
-                  habit.history && habit.history[`${date.format()}`]
-                    ? habit.history[`${date.format()}`]
-                    : 0;
-                return (
-                  <CalenderDate
-                    key={index}
-                    colorBgContainer={colorBgContainer}
-                    colorBgTextHover={colorBgTextHover}
-                    colorPrimary={colorPrimary}
-                    colorSuccess={colorSuccess}
-                    colorError={colorError}
-                    colorTextBase={colorTextBase}
-                    onClick={() => {
-                      if (isValidDate && !isFuture) {
-                        handleHabitDateClick({
-                          habit,
-                          date,
-                          dispatch,
-                          user,
-                          setHabitHistory,
-                        });
-                      }
-                    }}
-                    onContextMenu={(e) => {
-                      e.preventDefault();
-                      if (isValidDate) {
-                        console.log("Right clicked", date.toDate());
-                      }
-                    }}
-                    cursor={
-                      isValidDate && !isFuture ? "pointer" : "not-allowed"
+                  colorBgContainer={colorBgContainer}
+                  colorBgTextHover={colorBgTextHover}
+                  colorPrimary={colorPrimary}
+                  colorSuccess={colorSuccess}
+                  colorError={colorError}
+                  colorTextBase={colorTextBase}
+                  onClick={() => {
+                    if (isValidDate && !isFuture) {
+                      handleHabitDateClick({
+                        habit,
+                        date,
+                        dispatch,
+                        user,
+                        setHabitHistory,
+                      });
                     }
+                  }}
+                  onContextMenu={(e) => {
+                    e.preventDefault();
+                    if (isValidDate) {
+                      console.log("Right clicked", date.toDate());
+                    }
+                  }}
+                  cursor={isValidDate && !isFuture ? "pointer" : "not-allowed"}
+                  isFuture={isFuture}
+                  isValidDate={isValidDate}
+                  markedValue={markedValue}
+                >
+                  <CalendarText
+                    currentMonth={currentMonth}
                     isFuture={isFuture}
+                    isToday={isToday}
+                    colorPrimary={colorPrimary}
+                    colorTextBase={colorTextBase}
+                    colorTextSecondary={colorTextSecondary}
+                    colorBorder={colorBorder}
                     isValidDate={isValidDate}
                     markedValue={markedValue}
                   >
-                    <CalendarText
-                      currentMonth={currentMonth}
-                      isFuture={isFuture}
-                      isToday={isToday}
-                      colorPrimary={colorPrimary}
-                      colorTextBase={colorTextBase}
-                      colorTextSecondary={colorTextSecondary}
-                      colorBorder={colorBorder}
-                      isValidDate={isValidDate}
-                      markedValue={markedValue}
-                    >
-                      {date.date()}
-                    </CalendarText>
-                  </CalenderDate>
-                );
-              }
-            )}
-          </CalenderDates>
-        </div>
-      </CalendarWrapper>
-    </Spinner>
+                    {date.date()}
+                  </CalendarText>
+                </CalenderDate>
+              );
+            }
+          )}
+        </CalenderDates>
+      </div>
+    </CalendarWrapper>
   );
 };
 

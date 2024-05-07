@@ -86,9 +86,9 @@ export const deleteHabitFailure = (error) => ({
   payload: { error },
 });
 
-export const markHabit = (payload) => ({
+export const markHabit = ({ response }) => ({
   type: MARK_HABIT,
-  payload,
+  payload: response,
 });
 
 export const markHabitSuccess = ({ response }) => ({
@@ -97,9 +97,9 @@ export const markHabitSuccess = ({ response }) => ({
   success: SUCCESS,
 });
 
-export const markHabitFailure = (error) => ({
+export const markHabitFailure = ({ response }) => ({
   type: MARK_HABIT_ERROR,
-  payload: { error },
+  payload: response,
 });
 
 export const fetchHabitsAction = (userId) => async (dispatch) => {
@@ -163,7 +163,11 @@ export const deleteHabitAction =
 
 export const markHabitAction =
   (userId, currentHabitId, date, value) => async (dispatch) => {
-    dispatch(markHabit());
+    dispatch(
+      markHabit({
+        response: { id: currentHabitId, date, value },
+      })
+    );
     try {
       await markHabitApi(userId, currentHabitId, date, value);
       return dispatch(
@@ -172,6 +176,10 @@ export const markHabitAction =
         })
       );
     } catch (error) {
-      return dispatch(markHabitFailure(error));
+      return dispatch(
+        markHabitFailure({
+          response: { id: currentHabitId, date, error },
+        })
+      );
     }
   };
