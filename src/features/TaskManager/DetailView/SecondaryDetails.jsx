@@ -48,7 +48,7 @@ const GridItem = styled(Form.Item)`
   margin-bottom: 0rem;
 `;
 
-const SecondaryTaskDetails = ({
+const SecondaryDetails = ({
   form,
   formType,
   handleStartDateChange,
@@ -417,4 +417,4 @@ const SecondaryTaskDetails = ({
   );
 };
 
-export default SecondaryTaskDetails;
+export default SecondaryDetails;

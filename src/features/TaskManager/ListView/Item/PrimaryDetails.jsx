@@ -128,7 +128,7 @@ const renderTaskDate = ({ item }) => {
   }
 };
 
-const PrimaryTaskListItemDetail = ({
+const PrimaryDetails = ({
   taskDetails,
   selectedTaskDetails,
   lists,
@@ -275,4 +275,4 @@ const PrimaryTaskListItemDetail = ({
   );
 };
 
-export default PrimaryTaskListItemDetail;
+export default PrimaryDetails;

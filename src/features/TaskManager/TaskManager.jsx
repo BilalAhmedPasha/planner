@@ -7,7 +7,7 @@ import { userSelector } from "../AppLayout/state/userSettings/userSettings.reduc
 import { fetchTasksAction } from "./state/userTasks/userTasks.actions";
 import { fetchHabitsAction } from "../HabitTracker/state/userHabits/userHabits.actions";
 import SideNav from "./SideNav";
-import ListView from "./ListView/ListView";
+import ListView from "./ListView";
 
 const TaskManager = ({ user }) => {
   const dispatch = useDispatch();

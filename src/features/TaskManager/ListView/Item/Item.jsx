@@ -5,7 +5,7 @@ import { SUCCESS } from "../../../../constants/app.constants";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { cross, tick } from "../../../../constants/checkBox.constants";
-import PrimaryTaskListItemDetail from "./PrimaryTaskListItemDetail";
+import PrimaryTaskListItemDetail from "./PrimaryDetails";
 import styled from "styled-components";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import CheckBoxDropdown from "./CheckBoxDropdown";
@@ -61,7 +61,7 @@ const StyledLink = styled(Link)`
     text-decoration: underline;
   }
 `;
-const TaskItem = ({
+const Item = ({
   user,
   messageApi,
   taskDetails,
@@ -264,4 +264,4 @@ const TaskItem = ({
     </div>
   );
 };
-export default TaskItem;
+export default Item;

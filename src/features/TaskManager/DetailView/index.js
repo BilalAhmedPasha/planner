@@ -1,1 +1,1 @@
-export { default } from "./TaskDetail.container";
+export { default } from "./Details.container";

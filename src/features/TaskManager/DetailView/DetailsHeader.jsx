@@ -2,7 +2,7 @@ import { Button, Form, Input, Space } from "antd";
 import { EDIT, VIEW } from "../../../constants/formType.constants";
 import { EditFilled, SaveOutlined, CloseOutlined } from "@ant-design/icons";
 
-const TaskDetailHeader = ({ formType, setFormType, onReset }) => {
+const DetailsHeader = ({ formType, setFormType, onReset }) => {
   return (
     <div
       style={{
@@ -60,4 +60,4 @@ const TaskDetailHeader = ({ formType, setFormType, onReset }) => {
   );
 };
 
-export default TaskDetailHeader;
+export default DetailsHeader;

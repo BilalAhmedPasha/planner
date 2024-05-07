@@ -3,7 +3,7 @@ import { Space, Typography, theme } from "antd";
 import { SyncOutlined } from "@ant-design/icons";
 import dayjs from "../../../utils/dateTime.utils";
 import { cross, tick } from "../../../constants/checkBox.constants";
-import CheckBoxDropdown from "../../TaskManager/ListView/ListItem/CheckBoxDropdown";
+import CheckBoxDropdown from "../../TaskManager/ListView/Item/CheckBoxDropdown";
 
 const CalendarEvent = ({ event, user }) => {
   const {

@@ -37,7 +37,7 @@ import {
   getTasksByDate,
   getTasksByNextXDays,
   getWontDoTasks,
-} from "./ListSection/ListSection.utils";
+} from "./Sections/Section.utils";
 import {
   addTaskAction,
   editTaskAction,
@@ -365,7 +365,7 @@ export const handleCompletePlaceholderRepeatingTask = ({
   newTask.isWontDo = false;
   newTask.isPlaceHolderForRepeatingTask = false;
   newTask.isRepeating = false;
-  newTask.modifiedTime =  dayjs(new Date())
+  newTask.modifiedTime = dayjs(new Date())
     .tz()
     .startOf(DATETIME_DAY)
     .format(DB_TIME_STAMP_FORMAT);
@@ -389,7 +389,6 @@ export const handleCompletePlaceholderRepeatingTask = ({
   });
 };
 
-
 export const handleWontDoPlaceholderRepeatingTask = ({
   user,
   taskDetails,
@@ -411,7 +410,7 @@ export const handleWontDoPlaceholderRepeatingTask = ({
   newTask.isWontDo = true;
   newTask.isPlaceHolderForRepeatingTask = false;
   newTask.isRepeating = false;
-  newTask.modifiedTime =  dayjs(new Date())
+  newTask.modifiedTime = dayjs(new Date())
     .tz()
     .startOf(DATETIME_DAY)
     .format(DB_TIME_STAMP_FORMAT);

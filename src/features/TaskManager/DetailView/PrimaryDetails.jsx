@@ -1,7 +1,7 @@
 import { Form, Input, Slider } from "antd";
 import { VIEW } from "../../../constants/formType.constants";
 
-const PrimaryTaskDetails = ({
+const PrimaryDetails = ({
   form,
   formType,
 }) => {
@@ -48,4 +48,4 @@ const PrimaryTaskDetails = ({
   );
 };
 
-export default PrimaryTaskDetails;
+export default PrimaryDetails;

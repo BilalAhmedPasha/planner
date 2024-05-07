@@ -70,7 +70,7 @@ const renderTaskMenuIcon = ({
   );
 };
 
-const ListHeader = ({
+const Header = ({
   currentSection,
   sortedSectionTasks,
   showMultiSelectConfirm,
@@ -265,4 +265,4 @@ const ListHeader = ({
   );
 };
 
-export default ListHeader;
+export default Header;

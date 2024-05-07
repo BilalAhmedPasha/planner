@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { LISTS, TAGS } from "../../../../constants/app.constants";
 import { listsSelector } from "../../state/userLists/userLists.reducer";
 import { tagsSelector } from "../../state/userTags/userTags.reducer";
-import TaskItem from "./TaskItem";
+import TaskItem from "./Item";
 
 const StyledDiv = styled.div`
   padding: 0.75rem 1rem;
@@ -23,7 +23,7 @@ const StyledDiv = styled.div`
   cursor: pointer;
 `;
 
-const Card = ({
+const ItemContainer = ({
   user,
   messageApi,
   cardDetails,
@@ -116,4 +116,4 @@ const Card = ({
   );
 };
 
-export default Card;
+export default ItemContainer;

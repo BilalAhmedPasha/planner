@@ -11,7 +11,7 @@ import {
 } from "antd";
 import { VIEW } from "../../../constants/formType.constants";
 import NotTaskSelected from "./NotTaskSelected";
-import TaskDetails from "./TaskDetails";
+import TaskDetails from "./Details";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../../components/Loading";
 import { tasksSelector } from "../state/userTasks/userTasks.reducer";
@@ -25,7 +25,7 @@ import { CloseOutlined } from "@ant-design/icons";
 import useWindowSize from "../../../hooks/useWindowSize";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const TaskDetailsContainer = ({
+const DetailsContainer = ({
   user,
   selectedTaskDetails,
   setSelectedTaskDetails,
@@ -198,4 +198,4 @@ const TaskDetailsContainer = ({
   );
 };
 
-export default TaskDetailsContainer;
+export default DetailsContainer;

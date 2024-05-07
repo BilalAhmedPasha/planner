@@ -12,7 +12,7 @@ import {
 import { navToDrawer } from "../../../../utils/screen.utils";
 import useWindowSize from "../../../../hooks/useWindowSize";
 
-const TaskDialogContainer = ({
+const DialogContainer = ({
   user,
   messageApi,
   openDialog,
@@ -125,4 +125,4 @@ const TaskDialogContainer = ({
   );
 };
 
-export default TaskDialogContainer;
+export default DialogContainer;

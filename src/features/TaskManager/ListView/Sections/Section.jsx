@@ -1,6 +1,6 @@
 import { Collapse, Typography, theme, Space } from "antd";
 import update from "immutability-helper";
-import Card from "../ListItem/Card";
+import ItemContainer from "../Item/Item.container";
 import { useParams } from "react-router-dom";
 import {
   COMPLETED,
@@ -13,7 +13,7 @@ import {
   OVERDUE,
 } from "../../../../constants/section.constants";
 
-const renderCardOutsideCollapse = ({
+const renderItemContainerOutsideCollapse = ({
   tasks,
   user,
   messageApi,
@@ -26,15 +26,15 @@ const renderCardOutsideCollapse = ({
   return (
     <div>
       {tasks.map((card) => (
-        <Card
+        <ItemContainer
           user={user}
           messageApi={messageApi}
           key={card.id}
           cardDetails={card}
-          moveCard={(id, atIndex) =>
+          moveItemContainer={(id, atIndex) =>
             moveSectionTask(id, atIndex, tasks, sectionId)
           }
-          findCard={(id) => findSectionTask(id, tasks)}
+          findItemContainer={(id) => findSectionTask(id, tasks)}
           selectedTaskDetails={selectedTaskDetails}
           setSelectedTaskDetails={setSelectedTaskDetails}
           isInCollapse={false}
@@ -44,7 +44,7 @@ const renderCardOutsideCollapse = ({
   );
 };
 
-const TaskListSection = ({
+const Section = ({
   sectionalTasks,
   setSectionTasks,
   selectedTaskDetails,
@@ -93,7 +93,7 @@ const TaskListSection = ({
           if (each !== MARKED && each !== OVERDUE) {
             return (
               <div key={each}>
-                {renderCardOutsideCollapse({
+                {renderItemContainerOutsideCollapse({
                   tasks: sectionalTasks[each].tasks,
                   user,
                   messageApi,
@@ -153,12 +153,12 @@ const TaskListSection = ({
                     }}
                   >
                     {sectionalTasks[each].tasks.map((card) => (
-                      <Card
+                      <ItemContainer
                         user={user}
                         messageApi={messageApi}
                         key={card.id}
                         cardDetails={card}
-                        moveCard={(id, atIndex) =>
+                        moveItemContainer={(id, atIndex) =>
                           moveSectionTask(
                             id,
                             atIndex,
@@ -166,7 +166,7 @@ const TaskListSection = ({
                             each
                           )
                         }
-                        findCard={(id) =>
+                        findItemContainer={(id) =>
                           findSectionTask(id, sectionalTasks[each].tasks)
                         }
                         selectedTaskDetails={selectedTaskDetails}
@@ -183,7 +183,7 @@ const TaskListSection = ({
         </Collapse>
       ) : (
         Object.keys(sectionalTasks).map((each) => {
-          return renderCardOutsideCollapse({
+          return renderItemContainerOutsideCollapse({
             tasks: sectionalTasks[each].tasks,
             user,
             messageApi,
@@ -199,4 +199,4 @@ const TaskListSection = ({
   );
 };
 
-export default TaskListSection;
+export default Section;

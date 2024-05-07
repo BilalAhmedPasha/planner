@@ -18,10 +18,10 @@ import {
   PRIORITY_SECTIONS,
 } from "../../../../constants/section.constants.js";
 import { PRIORITY, TITLE } from "../../../../constants/sort.constants.js";
-import TaskListSection from "./ListSection.jsx";
-import { isTaskOverdue, isTaskToday } from "./ListSection.utils.js";
+import Section from "./Section.jsx";
+import { isTaskOverdue, isTaskToday } from "./Section.utils.js";
 
-const TaskSectionContainer = ({
+const SectionsContainer = ({
   user,
   tasks,
   sortBy,
@@ -121,7 +121,7 @@ const TaskSectionContainer = ({
   const [messageApi, contextHolder] = message.useMessage();
   return (
     <>
-      <TaskListSection
+      <Section
         sectionalTasks={sectionalTasks}
         setSectionTasks={setSectionalTasks}
         selectedTaskDetails={selectedTaskDetails}
@@ -135,4 +135,4 @@ const TaskSectionContainer = ({
   );
 };
 
-export default TaskSectionContainer;
+export default SectionsContainer;

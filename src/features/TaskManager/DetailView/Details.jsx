@@ -19,9 +19,9 @@ import {
   END_BY_REPEAT_COUNT,
 } from "../../../constants/repeating.constants";
 import SubTaskInDetails from "./SubTaskInDetails";
-import TaskDetailHeader from "./TaskDetailsHeader";
-import PrimaryTaskDetails from "./PrimaryTaskDetails";
-import SecondaryTaskDetails from "./SecondaryTaskDetails";
+import TaskDetailHeader from "./DetailsHeader";
+import PrimaryTaskDetails from "./PrimaryDetails";
+import SecondaryTaskDetails from "./SecondaryDetails";
 
 const getPriorityColor = (event) => {
   if (event === HIGH) {
@@ -35,7 +35,7 @@ const getPriorityColor = (event) => {
   }
 };
 
-const TaskDetails = ({
+const Details = ({
   taskDetails,
   form,
   formType,
@@ -230,4 +230,4 @@ const TaskDetails = ({
   );
 };
 
-export default TaskDetails;
+export default Details;
