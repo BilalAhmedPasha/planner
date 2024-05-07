@@ -7,7 +7,7 @@ import { showSubTasks } from "../../../../constants/app.constants";
 
 const StyledFormItem = styled(Form.Item)``;
 
-const TaskDialogPrimaryPanel = ({
+const PrimaryPanel = ({
   form,
   height,
   smallScreen,
@@ -86,4 +86,4 @@ const TaskDialogPrimaryPanel = ({
   );
 };
 
-export default TaskDialogPrimaryPanel;
+export default PrimaryPanel;

@@ -3,8 +3,8 @@ import {
   hardDeleteMultipleTaskAction,
   softDeleteMultipleTaskAction,
   softRestoreMultipleTaskAction,
-} from "../state/userTasks/userTasks.actions";
-import { moreMenuItemList } from "../../../constants/taskList.constants";
+} from "../../state/userTasks/userTasks.actions";
+import { moreMenuItemList } from "../../../../constants/taskList.constants";
 import Icon, {
   PlusOutlined,
   ClearOutlined,
@@ -16,11 +16,11 @@ import Icon, {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
 } from "@ant-design/icons";
-import SortTextSvg from "../../../svg/sort-text.svg?react";
-import { navToDrawer } from "../../../utils/screen.utils";
-import useWindowSize from "../../../hooks/useWindowSize";
-import { DELETED } from "../../../constants/app.constants";
-import { PRIORITY, TIME } from "../../../constants/sort.constants";
+import SortTextSvg from "../../../../svg/sort-text.svg?react";
+import { navToDrawer } from "../../../../utils/screen.utils";
+import useWindowSize from "../../../../hooks/useWindowSize";
+import { DELETED } from "../../../../constants/app.constants";
+import { PRIORITY, TIME } from "../../../../constants/sort.constants";
 
 const renderTaskMenuIcon = ({
   screenSize,
@@ -70,7 +70,7 @@ const renderTaskMenuIcon = ({
   );
 };
 
-const TaskListHeader = ({
+const ListHeader = ({
   currentSection,
   sortedSectionTasks,
   showMultiSelectConfirm,
@@ -265,4 +265,4 @@ const TaskListHeader = ({
   );
 };
 
-export default TaskListHeader;
+export default ListHeader;

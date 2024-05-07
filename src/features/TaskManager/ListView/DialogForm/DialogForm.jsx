@@ -1,10 +1,10 @@
 import { Form, Layout, theme } from "antd";
 import useWindowSize from "../../../../hooks/useWindowSize";
 import { detailsToDrawer } from "../../../../utils/screen.utils";
-import TaskDialogPrimaryPanel from "./TaskDialogPrimaryPanel";
-import TaskDialogSecondaryPanel from "./TaskDialogSecondaryPanel";
+import TaskDialogPrimaryPanel from "./PrimaryPanel";
+import TaskDialogSecondaryPanel from "./SecondaryPanel";
 
-const TaskDialogForm = ({
+const DialogForm = ({
   form,
   layout,
   initialValues,
@@ -66,4 +66,4 @@ const TaskDialogForm = ({
   );
 };
 
-export default TaskDialogForm;
+export default DialogForm;

@@ -19,7 +19,7 @@ import Spinner from "../../../components/Spinner";
 import {
   getFormValueFromTaskDetail,
   handleEditTask,
-} from "../TaskListView/TaskList.utils";
+} from "../ListView/TaskList.utils";
 import { navToDrawer, detailsToDrawer } from "../../../utils/screen.utils";
 import { CloseOutlined } from "@ant-design/icons";
 import useWindowSize from "../../../hooks/useWindowSize";

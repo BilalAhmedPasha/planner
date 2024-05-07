@@ -1,14 +1,13 @@
 import { message } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import TaskNav from "./TaskNavigation";
 import { fetchListsAction } from "./state/userLists/userLists.actions";
 import { fetchTagsAction } from "./state/userTags/userTags.actions";
-import TaskListContainer from "./TaskListView/TaskList";
 import { userSelector } from "../AppLayout/state/userSettings/userSettings.reducer";
 import { fetchTasksAction } from "./state/userTasks/userTasks.actions";
-import TaskDetailsContainer from "./TaskDetailView";
 import { fetchHabitsAction } from "../HabitTracker/state/userHabits/userHabits.actions";
+import SideNav from "./SideNav";
+import ListView from "./ListView/ListView";
 
 const TaskManager = ({ user }) => {
   const dispatch = useDispatch();
@@ -42,7 +41,7 @@ const TaskManager = ({ user }) => {
 
   return (
     <>
-      <TaskNav
+      <SideNav
         user={user}
         messageApi={messageApi}
         currentSelectedTaskSection={currentSelectedTaskSection}
@@ -52,7 +51,7 @@ const TaskManager = ({ user }) => {
         isNavDrawerCollapsed={isNavDrawerCollapsed}
         setIsNavDrawerCollapsed={setIsNavDrawerCollapsed}
       />
-      <TaskListContainer
+      <ListView
         user={user}
         currentSection={currentSelectedTaskSection}
         selectedTaskDetails={selectedTaskDetails}
@@ -63,13 +62,13 @@ const TaskManager = ({ user }) => {
         setIsNavDrawerCollapsed={setIsNavDrawerCollapsed}
         setIsTaskDetailsDrawerCollapsed={setIsTaskDetailsDrawerCollapsed}
       />
-      <TaskDetailsContainer
+      {/* <DetailView
         user={user}
         selectedTaskDetails={selectedTaskDetails}
         setSelectedTaskDetails={setSelectedTaskDetails}
         isTaskDetailsDrawerCollapsed={isTaskDetailsDrawerCollapsed}
         setIsTaskDetailsDrawerCollapsed={setIsTaskDetailsDrawerCollapsed}
-      />
+      /> */}
       {contextHolder}
     </>
   );

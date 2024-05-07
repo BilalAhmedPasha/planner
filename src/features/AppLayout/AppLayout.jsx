@@ -10,8 +10,6 @@ import {
 } from "./state/userSettings/userSettings.actions";
 import db from "../../firebase";
 import { doc, setDoc, getDoc } from "@firebase/firestore";
-import FullPageSpinner from "../../components/FullPageSpinner";
-import Loading from "../../components/Loading";
 import { oneDarkTheme } from "../../constants/onedarkTheme.constants";
 
 const AppLayout = ({ setCurrentTitle, children }) => {
@@ -119,19 +117,15 @@ const AppLayout = ({ setCurrentTitle, children }) => {
             }
       }
     >
-      {user === null || JSON.stringify(user) === "{}" ? (
-        <FullPageSpinner indicator={Loading(50)} />
-      ) : (
-        <Layout style={{ height: "100vh" }}>
-          <AppNav
-            setCurrentTitle={setCurrentTitle}
-            userTheme={userTheme}
-            setUserTheme={setUserTheme}
-            updateTheme={updateTheme}
-          />
-          {childrenWithProps}
-        </Layout>
-      )}
+      <Layout style={{ height: "100vh" }}>
+        <AppNav
+          setCurrentTitle={setCurrentTitle}
+          userTheme={userTheme}
+          setUserTheme={setUserTheme}
+          updateTheme={updateTheme}
+        />
+        {childrenWithProps}
+      </Layout>
     </ConfigProvider>
   );
 };

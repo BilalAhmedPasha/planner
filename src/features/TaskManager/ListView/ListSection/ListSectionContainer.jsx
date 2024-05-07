@@ -18,10 +18,10 @@ import {
   PRIORITY_SECTIONS,
 } from "../../../../constants/section.constants.js";
 import { PRIORITY, TITLE } from "../../../../constants/sort.constants.js";
-import TaskListSection from "./TaskSection.jsx";
-import { isTaskOverdue, isTaskToday } from "./TaskUtils.js";
+import TaskListSection from "./ListSection.jsx";
+import { isTaskOverdue, isTaskToday } from "./ListSection.utils.js";
 
-const Container = ({
+const TaskSectionContainer = ({
   user,
   tasks,
   sortBy,
@@ -135,4 +135,4 @@ const Container = ({
   );
 };
 
-export default Container;
+export default TaskSectionContainer;

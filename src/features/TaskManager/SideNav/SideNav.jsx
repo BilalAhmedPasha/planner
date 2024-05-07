@@ -1,4 +1,4 @@
-import { Badge, Button, Drawer, Dropdown, Layout, Menu, Modal, Space } from "antd";
+import { Button, Drawer, Dropdown, Layout, Menu, Modal, Space } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SideMenu from "../../../components/SideMenu";
@@ -30,12 +30,8 @@ import {
   hardDeleteListTaskAction,
   deleteTaskTagAction,
 } from "../state/userTasks/userTasks.actions";
-import {
-  isOnVerySmallScreen,
-  navToDrawer,
-} from "../../../utils/screen.utils";
+import { isOnVerySmallScreen, navToDrawer } from "../../../utils/screen.utils";
 import useWindowSize from "../../../hooks/useWindowSize";
-import { TASK_NAV_BADGE_COLOR } from "../../../constants/color.constants";
 
 const renderColorDot = (color) => {
   return (
@@ -73,6 +69,7 @@ const renderSubMenuItems = ({
   icon,
   onMoreClick,
   setOpenSubMenuKeys,
+  isLoading,
 }) => {
   return (
     <Menu.SubMenu
@@ -106,39 +103,41 @@ const renderSubMenuItems = ({
       {items.map((each) => {
         return (
           <Menu.Item key={`/tasks/${key}/${each.id}`}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                overflow: "auto",
-              }}
-            >
-              <Link to={`/tasks/${key}/${each.id}`}>{each.label}</Link>
-              <Space>
-                {renderColorDot(each.color)}
-                <Dropdown
-                  menu={{
-                    items: moreMenuItemList,
-                    onClick: (e) => {
-                      e.domEvent.stopPropagation();
-                      onMoreClick({
-                        e,
-                        currentItem: each,
-                      });
-                    },
-                  }}
-                  trigger={["click"]}
-                  placement="bottomLeft"
-                >
-                  <Button
-                    icon={<MoreOutlined />}
-                    type="text"
-                    onClick={(e) => e.stopPropagation()}
-                  />
-                </Dropdown>
-              </Space>
-            </div>
+            <Spinner spinning={isLoading} indicator={Loading(0)}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  overflow: "auto",
+                }}
+              >
+                <Link to={`/tasks/${key}/${each.id}`}>{each.label}</Link>
+                <Space>
+                  {renderColorDot(each.color)}
+                  <Dropdown
+                    menu={{
+                      items: moreMenuItemList,
+                      onClick: (e) => {
+                        e.domEvent.stopPropagation();
+                        onMoreClick({
+                          e,
+                          currentItem: each,
+                        });
+                      },
+                    }}
+                    trigger={["click"]}
+                    placement="bottomLeft"
+                  >
+                    <Button
+                      icon={<MoreOutlined />}
+                      type="text"
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  </Dropdown>
+                </Space>
+              </div>
+            </Spinner>
           </Menu.Item>
         );
       })}
@@ -146,7 +145,7 @@ const renderSubMenuItems = ({
   );
 };
 
-const TaskNav = ({
+const SideNav = ({
   user,
   messageApi,
   currentSelectedTaskSection,
@@ -340,10 +339,7 @@ const TaskNav = ({
 
   const taskNavContent = () => {
     return (
-      <Spinner
-        spinning={isLoadingLists || isLoadingTags}
-        indicator={Loading(0)}
-      >
+      <>
         <SideMenu
           selectedAppMenuKey={selectedAppMenuKey}
           openSubMenuKeys={openSubMenuKeys}
@@ -381,6 +377,7 @@ const TaskNav = ({
             isLoading: isLoadingTags,
             setOpenSubMenuKeys: setOpenSubMenuKeys,
           })}
+
           <Menu.Divider />
           {renderMenuItems(defaultTaskNav2)}
         </SideMenu>
@@ -405,7 +402,7 @@ const TaskNav = ({
           />
         )}
         {contextHolder}
-      </Spinner>
+      </>
     );
   };
 
@@ -451,4 +448,4 @@ const TaskNav = ({
   );
 };
 
-export default TaskNav;
+export default SideNav;

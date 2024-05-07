@@ -1,19 +1,19 @@
 import React, { useMemo, useState } from "react";
-import Modal from "../../../../components/Modal";
-import TagDialogForm from "./TagDialogForm";
-import { SUCCESS, TAGS } from "../../../../constants/app.constants";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addTagAction,
-  editTagAction,
-} from "../../state/userTags/userTags.actions";
-import { DEFAULT_TAG_COLOR } from "../../../../constants/color.constants";
+import Modal from "../../../../components/Modal";
+import ListDialogForm from "./ListDialogForm";
+import { LISTS, SUCCESS } from "../../../../constants/app.constants";
 import { CREATE, EDIT } from "../../../../constants/formType.constants";
+import { DEFAULT_LIST_COLOR } from "../../../../constants/color.constants";
+import {
+  addListAction,
+  editListAction,
+} from "../../state/userLists/userLists.actions";
 import { Form } from "antd";
 import dayjs from "../../../../utils/dateTime.utils";
-import { tagsSelector } from "../../state/userTags/userTags.reducer";
+import { listsSelector } from "../../state/userLists/userLists.reducer";
 
-const TagDialog = ({
+const ListDialog = ({
   user,
   messageApi,
   openDialog,
@@ -23,87 +23,87 @@ const TagDialog = ({
 }) => {
   const dispatch = useDispatch();
 
-  const createTagSuccess = () => {
+  const createListSuccess = () => {
     messageApi.open({
       type: "success",
-      content: "Tag created",
+      content: "List created",
       duration: 3,
     });
   };
 
-  const createTagFailed = () => {
+  const createListFailed = () => {
     messageApi.open({
       type: "error",
-      content: "Failed to create tag",
+      content: "Failed to create list",
       duration: 3,
     });
   };
 
-  const editTagSuccess = () => {
+  const editListSuccess = () => {
     messageApi.open({
       type: "success",
-      content: "Tag edited",
+      content: "List edited",
       duration: 3,
     });
   };
 
-  const editTagFailed = () => {
+  const editListFailed = () => {
     messageApi.open({
       type: "error",
-      content: "Failed to edit tag",
+      content: "Failed to edit list",
       duration: 3,
     });
   };
 
-  const handleAddTag = (e) => {
-    const newTag = {
+  const [color, setColor] = useState(
+    formType === CREATE ? DEFAULT_LIST_COLOR : formValues.color
+  );
+
+  const handleAddList = (e) => {
+    const newList = {
       name: e.name.replace(/\s/g, "").toLowerCase(),
       label: e.name,
-      color: e.color?.toHexString(),
+      color: color,
       createdTime: dayjs.utc().format(),
       modifiedTime: dayjs.utc().format(),
-      type: TAGS,
+      type: LISTS,
     };
-    dispatch(addTagAction(user.uid, newTag)).then((response) => {
+    dispatch(addListAction(user.uid, newList)).then((response) => {
       if (response.success === SUCCESS) {
         setOpenDialog(false);
-        createTagSuccess();
+        createListSuccess();
       } else {
-        createTagFailed();
+        createListFailed();
       }
     });
   };
 
-  const handleEditTag = (e) => {
-    const modifiedTag = {
+  const handleEditList = (e) => {
+    const modifiedList = {
       name: e.name.replace(/\s/g, "").toLowerCase(),
       label: e.name,
-      color: e.color?.toHexString(),
+      color: color,
       createdTime: formValues.createdTime,
       modifiedTime: dayjs.utc().format(),
-      type: TAGS,
+      type: LISTS,
     };
-    dispatch(editTagAction(user.uid, modifiedTag, formValues.id)).then(
+    dispatch(editListAction(user.uid, modifiedList, formValues.id)).then(
       (response) => {
         if (response.success === SUCCESS) {
           setOpenDialog(false);
-          editTagSuccess();
+          editListSuccess();
         } else {
-          editTagFailed();
+          editListFailed();
         }
       }
     );
   };
 
-  const [color, setColor] = useState(
-    formType === CREATE ? DEFAULT_TAG_COLOR : formValues.color
-  );
-
   const DEFAULT_VALUES = useMemo(() => {
     if (formType === CREATE) {
       return {
         name: "",
-        color: DEFAULT_TAG_COLOR,
+        color: DEFAULT_LIST_COLOR,
       };
     } else if (formType === EDIT) {
       return {
@@ -115,9 +115,9 @@ const TagDialog = ({
 
   const formTitle = useMemo(() => {
     if (formType === CREATE) {
-      return "Create New Tag";
+      return "Create New List";
     } else if (formType === EDIT) {
-      return "Edit tag";
+      return "Edit list";
     }
   }, [formType]);
 
@@ -131,26 +131,25 @@ const TagDialog = ({
 
   const [form] = Form.useForm();
 
-  const { isLoadingTags } = useSelector(tagsSelector);
-
+  const { isLoadingLists } = useSelector(listsSelector);
   return (
     openDialog && (
       <Modal
         open={openDialog}
         formTitle={formTitle}
-        onOk={formType === CREATE ? handleAddTag : handleEditTag}
+        onOk={formType === CREATE ? handleAddList : handleEditList}
         onCancel={() => {
           setOpenDialog(false);
         }}
         okText={okText}
         form={form}
-        loading={isLoadingTags}
+        loading={isLoadingLists}
       >
-        <TagDialogForm
+        <ListDialogForm
           form={form}
           color={color}
           handleColorChange={(color) => {
-            return setColor(color);
+            return setColor(color.toHexString());
           }}
           initialValues={DEFAULT_VALUES}
           layout="vertical"
@@ -160,4 +159,4 @@ const TagDialog = ({
   );
 };
 
-export default TagDialog;
+export default ListDialog;

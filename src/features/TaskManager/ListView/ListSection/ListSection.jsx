@@ -1,6 +1,6 @@
 import { Collapse, Typography, theme, Space } from "antd";
 import update from "immutability-helper";
-import Card from "./Card";
+import Card from "../ListItem/Card";
 import { useParams } from "react-router-dom";
 import {
   COMPLETED,

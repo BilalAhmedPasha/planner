@@ -37,7 +37,7 @@ import {
   getTasksByDate,
   getTasksByNextXDays,
   getWontDoTasks,
-} from "../TaskListView/TaskListItem/TaskUtils";
+} from "./ListSection/ListSection.utils";
 import {
   addTaskAction,
   editTaskAction,

@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../../../components/Modal";
-import TaskDialogForm from "./TaskDialogForm";
+import TaskDialogForm from "./DialogForm";
 import { Form } from "antd";
 import { tasksSelector } from "../../state/userTasks/userTasks.reducer";
 import { CREATE, EDIT } from "../../../../constants/formType.constants";
 import {
   handleAddTask,
   handleEditTask,
-} from "../../TaskListView/TaskList.utils";
+} from "../List.utils";
 import { navToDrawer } from "../../../../utils/screen.utils";
 import useWindowSize from "../../../../hooks/useWindowSize";
 
-const TaskDialog = ({
+const TaskDialogContainer = ({
   user,
   messageApi,
   openDialog,
@@ -125,4 +125,4 @@ const TaskDialog = ({
   );
 };
 
-export default TaskDialog;
+export default TaskDialogContainer;

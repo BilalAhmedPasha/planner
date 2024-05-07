@@ -8,70 +8,66 @@ import "./App.css";
 import LoginPage from "./features/LoginPage";
 
 function App() {
-    const [currentTitle, setCurrentTitle] = useState("Inbox");
+  const [currentTitle, setCurrentTitle] = useState("Inbox");
 
-    return (
-      <Routes>
-        <Route path="/" exact element={<Navigate to="/login" />} />
-        <Route
-          path="/login"
-          exact
-          element={<LoginPage title={currentTitle} />}
-        />
-        <Route
-          path="/calendar"
-          exact
-          element={
-            <AppLayout setCurrentTitle={setCurrentTitle}>
-              <Calendar title={currentTitle} />
-            </AppLayout>
-          }
-        />
-        <Route
-          path="/habits"
-          exact
-          element={
-            <AppLayout setCurrentTitle={setCurrentTitle}>
-              <HabitTracker title={currentTitle} />
-            </AppLayout>
-          }
-        />
-        <Route
-          path="/habits/:habitId"
-          exact
-          element={
-            <AppLayout setCurrentTitle={setCurrentTitle}>
-              <HabitTracker title={currentTitle} />
-            </AppLayout>
-          }
-        />
-        <Route
-          path="/tasks/:sectionId/:documentId/:taskId"
-          element={
-            <AppLayout setCurrentTitle={setCurrentTitle}>
-              <TaskManager title={currentTitle} />
-            </AppLayout>
-          }
-        />
-        <Route
-          path="/tasks/:sectionId/:documentId"
-          element={
-            <AppLayout setCurrentTitle={setCurrentTitle}>
-              <TaskManager title={currentTitle} />
-            </AppLayout>
-          }
-        />
-        <Route
-          path="/tasks/:sectionId"
-          element={
-            <AppLayout setCurrentTitle={setCurrentTitle}>
-              <TaskManager title={currentTitle} />
-            </AppLayout>
-          }
-        />
-        <Route path="*" element={<Navigate to="/tasks/today" />} />
-      </Routes>
-    );
+  return (
+    <Routes>
+      <Route path="/" exact element={<Navigate to="/login" />} />
+      <Route path="/login" exact element={<LoginPage title={currentTitle} />} />
+      <Route
+        path="/calendar"
+        exact
+        element={
+          <AppLayout setCurrentTitle={setCurrentTitle}>
+            <Calendar title={currentTitle} />
+          </AppLayout>
+        }
+      />
+      <Route
+        path="/habits"
+        exact
+        element={
+          <AppLayout setCurrentTitle={setCurrentTitle}>
+            <HabitTracker title={currentTitle} />
+          </AppLayout>
+        }
+      />
+      <Route
+        path="/habits/:habitId"
+        exact
+        element={
+          <AppLayout setCurrentTitle={setCurrentTitle}>
+            <HabitTracker title={currentTitle} />
+          </AppLayout>
+        }
+      />
+      <Route
+        path="/tasks/:sectionId/:documentId/:taskId"
+        element={
+          <AppLayout setCurrentTitle={setCurrentTitle}>
+            <TaskManager title={currentTitle} />
+          </AppLayout>
+        }
+      />
+      <Route
+        path="/tasks/:sectionId/:documentId"
+        element={
+          <AppLayout setCurrentTitle={setCurrentTitle}>
+            <TaskManager title={currentTitle} />
+          </AppLayout>
+        }
+      />
+      <Route
+        path="/tasks/:sectionId"
+        element={
+          <AppLayout setCurrentTitle={setCurrentTitle}>
+            <TaskManager title={currentTitle} />
+          </AppLayout>
+        }
+      />
+      <Route path="*" element={<Navigate to="/tasks/today" />} />
+    </Routes>
+  );
 }
 
 export default App;

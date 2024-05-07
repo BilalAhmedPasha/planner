@@ -4,7 +4,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useDispatch, useSelector } from "react-redux";
 import { INBOX } from "../../constants/app.constants";
 import { NONE } from "../../constants/priority.constants";
-import TaskDialogForm from "../TaskManager/TaskListView/TaskDialogForm";
+import TaskDialogForm from "../TaskManager/ListView/DialogForm";
 import { CREATE } from "../../constants/formType.constants";
 import { ENDLESS } from "../../constants/repeating.constants";
 import { userSelector } from "../AppLayout/state/userSettings/userSettings.reducer";

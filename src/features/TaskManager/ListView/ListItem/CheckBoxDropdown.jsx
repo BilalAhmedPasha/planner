@@ -32,7 +32,7 @@ import { useDispatch } from "react-redux";
 import {
   handleCompletePlaceholderRepeatingTask,
   handleWontDoPlaceholderRepeatingTask,
-} from "../TaskList.utils";
+} from "../List.utils";
 
 const getPriorityColor = ({
   isInCalendar,

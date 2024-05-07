@@ -54,7 +54,7 @@ const MultiSelect = styled(Select)`
   }
 `;
 
-const TaskDialogSecondaryPanel = ({ form, height, smallScreen, ...props }) => {
+const SecondaryPanel = ({ form, height, smallScreen, ...props }) => {
   const { lists } = useSelector(listsSelector);
   const { tags } = useSelector(tagsSelector);
 
@@ -405,4 +405,4 @@ const TaskDialogSecondaryPanel = ({ form, height, smallScreen, ...props }) => {
   );
 };
 
-export default TaskDialogSecondaryPanel;
+export default SecondaryPanel;

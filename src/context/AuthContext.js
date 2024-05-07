@@ -16,7 +16,7 @@ const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState({});
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   // Google auth
@@ -61,7 +61,6 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    setLoading(true);
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       currentUser ? setUser(currentUser) : setUser(null);
       setError("");
