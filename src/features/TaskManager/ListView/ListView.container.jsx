@@ -300,7 +300,7 @@ const ListView = ({
         Array.from({ length: numRows }).map((each) => (
           <Skeleton.Button
             active={true}
-            style={{ margin: "0.25rem 1rem", width: "95%", height: 70 }}
+            style={{ margin: "0.5rem 1rem", width: "95%", height: 70 }}
             block={true}
           />
         ))

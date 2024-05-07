@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Modal from "../../../../components/Modal";
 import TagDialogForm from "./TagDialogForm";
 import { SUCCESS, TAGS } from "../../../../constants/app.constants";

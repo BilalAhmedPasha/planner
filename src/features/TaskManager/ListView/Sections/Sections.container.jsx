@@ -1,5 +1,5 @@
 import { message } from "antd";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ALL } from "../../../../constants/app.constants.js";
 import {
   HIGH,

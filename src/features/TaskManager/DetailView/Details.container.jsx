@@ -1,14 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import {
-  Button,
-  Drawer,
-  Form,
-  Layout,
-  Skeleton,
-  Typography,
-  message,
-  theme,
-} from "antd";
+import { Button, Drawer, Form, Layout, Typography, message, theme } from "antd";
 import { VIEW } from "../../../constants/formType.constants";
 import NotTaskSelected from "./NotTaskSelected";
 import TaskDetails from "./Details";

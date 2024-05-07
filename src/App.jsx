@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import AppLayout from "./features/AppLayout";
-import TaskManager from "./features/TaskManager";
 import "./App.css";
 import LoginPage from "./features/LoginPage";
 import FullPageSpinner from "./components/FullPageSpinner";
 import Loading from "./components/Loading";
+
+const TaskManager = React.lazy(() => import("./features/TaskManager"));
 const Calendar = React.lazy(() => import("./features/Calendar"));
 const HabitTracker = React.lazy(() => import("./features/HabitTracker"));
 
 function App() {
   const [currentTitle, setCurrentTitle] = useState("Inbox");
-
   return (
     <Routes>
       <Route path="/" exact element={<Navigate to="/login" />} />
@@ -25,19 +25,30 @@ function App() {
           key={index}
           path={path}
           element={
-            <AppLayout setCurrentTitle={setCurrentTitle}>
-              <TaskManager title={currentTitle} />
-            </AppLayout>
+            <React.Suspense
+              fallback={
+                <AppLayout setCurrentTitle={setCurrentTitle}>
+                  <FullPageSpinner indicator={Loading(0)} />
+                </AppLayout>
+              }
+            >
+              <AppLayout setCurrentTitle={setCurrentTitle}>
+                <TaskManager title={currentTitle} />
+              </AppLayout>
+            </React.Suspense>
           }
         />
       ))}
-
       <Route
         path="/calendar"
         exact
         element={
           <React.Suspense
-            fallback={<FullPageSpinner indicator={Loading(0)} />}
+            fallback={
+              <AppLayout setCurrentTitle={setCurrentTitle}>
+                <FullPageSpinner indicator={Loading(0)} />
+              </AppLayout>
+            }
           >
             <AppLayout setCurrentTitle={setCurrentTitle}>
               <Calendar title={currentTitle} />
@@ -51,7 +62,11 @@ function App() {
           path={path}
           element={
             <React.Suspense
-              fallback={<FullPageSpinner indicator={Loading(0)} />}
+              fallback={
+                <AppLayout setCurrentTitle={setCurrentTitle}>
+                  <FullPageSpinner indicator={Loading(0)} />
+                </AppLayout>
+              }
             >
               <AppLayout setCurrentTitle={setCurrentTitle}>
                 <HabitTracker title={currentTitle} />
