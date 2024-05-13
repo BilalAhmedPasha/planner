@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const CalendarWrapper = styled.div`
-  height: 92vh;
+  height: ${(props) => (props.isOnVerySmallScreen ? "85vh" : "92vh")};
   overflow-y: auto;
   .rbc-calendar {
     color: ${(props) => (props.userTheme ? "#fff" : "#000")};
@@ -74,6 +74,5 @@ const CalendarWrapper = styled.div`
         props.userTheme ? "rgba(255, 255, 255, 0.2)" : "rgba(66, 66, 66, 0.5)"};
   }
 `;
-
 
 export default CalendarWrapper;

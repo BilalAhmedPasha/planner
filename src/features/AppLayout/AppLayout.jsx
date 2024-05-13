@@ -123,8 +123,8 @@ const AppLayout = ({ setCurrentTitle, children }) => {
           userTheme={userTheme}
           setUserTheme={setUserTheme}
           updateTheme={updateTheme}
+          childrenWithProps={childrenWithProps}
         />
-        {childrenWithProps}
       </Layout>
     </ConfigProvider>
   );

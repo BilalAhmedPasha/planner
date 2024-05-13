@@ -27,7 +27,7 @@ import {
   END_BY_DATE,
   END_BY_REPEAT_COUNT,
 } from "../../constants/repeating.constants";
-import { disableWeekView } from "../../utils/screen.utils";
+import { disableWeekView, isOnVerySmallScreen } from "../../utils/screen.utils";
 import useWindowSize from "../../hooks/useWindowSize";
 import Spinner from "../../components/Spinner";
 import Loading from "../../components/Loading";
@@ -122,7 +122,7 @@ const CalendarComponent = ({
             border: `0.5px solid ${getListColor}`,
             opacity: event.isCompleted || event.isWontDo ? 0.5 : 1,
             padding: "3px",
-            overflow: "scroll"
+            overflow: "scroll",
           },
         };
       } else if (colorBy === TAGS) {
@@ -278,7 +278,12 @@ const CalendarComponent = ({
         indicator={Loading(LOADER_SIZE)}
         delay={0}
       >
-        <CalendarWrapper userTheme={userTheme}>
+        <CalendarWrapper
+          userTheme={userTheme}
+          isOnVerySmallScreen={isOnVerySmallScreen({
+            currentWidth: screenSize.width,
+          })}
+        >
           <Calendar
             events={taskEvents}
             onRangeChange={(event) =>

@@ -66,7 +66,6 @@ const CalendarView = ({ user, userTheme }) => {
       style={{
         padding: "0.25rem 0.75rem",
         background: colorBgContainer,
-        height: "100vh",
       }}
     >
       <CalendarComponent
