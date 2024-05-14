@@ -407,7 +407,7 @@ const HabitCalendar = ({ user, habit, isInDrawer = false }) => {
                     isValidDate={isValidDate}
                     markedValue={markedValue}
                   >
-                    {date.date()}
+                    {date.date() <= 9 ? `0${date.date()}` : date.date()}
                   </CalendarText>
                 </CalenderDate>
               );

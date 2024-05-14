@@ -169,7 +169,7 @@ const HabitItem = ({
                       colorTextSecondary={colorTextSecondary}
                       markedValue={markedValue}
                     >
-                      {date.getDate()}
+                      {date.getDate() <= 9 ? `0${date.getDate()}` : date.getDate()}
                     </DateText>
                   </DaySelector>
                 );

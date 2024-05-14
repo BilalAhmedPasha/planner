@@ -11,4 +11,4 @@ export const MONTH = "month";
 
 export const DB_TIME_STAMP_FORMAT = "YYYY-MM-DDTHH:mm:ssZ";
 
-export const DAYS_LIST = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
+export const DAYS_LIST = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
