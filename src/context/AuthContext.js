@@ -16,7 +16,7 @@ const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState({});
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState();
   const [error, setError] = useState("");
 
   // Google auth
@@ -27,8 +27,7 @@ export const AuthContextProvider = ({ children }) => {
       prompt: "select_account",
     });
     signInWithPopup(auth, provider)
-      .then((res) => {
-      })
+      .then((res) => {})
       .catch((error) => {
         setError(error);
       })
@@ -61,6 +60,7 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    setLoading(true);
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       currentUser ? setUser(currentUser) : setUser(null);
       setError("");
