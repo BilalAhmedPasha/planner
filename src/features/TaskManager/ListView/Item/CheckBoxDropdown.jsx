@@ -258,6 +258,7 @@ const CheckBoxDropdown = ({
       disabled={taskDetails.isDeleted}
     >
       <CheckBoxInput
+        id={taskDetails.name}
         uniCode={checkBoxContent}
         backgroundColor={colorConfig.color}
         borderColor={colorConfig.color}

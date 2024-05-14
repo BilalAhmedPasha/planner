@@ -31,22 +31,23 @@ const renderThemeChangeButton = ({
     <Button
       size="large"
       type="text"
-      icon={userTheme ? <MdOutlineDarkMode style={style}/> : <MdOutlineLightMode style={style} />}
+      icon={
+        userTheme ? (
+          <MdOutlineDarkMode style={style} />
+        ) : (
+          <MdOutlineLightMode style={style} />
+        )
+      }
       style={{ cursor: "pointer" }}
       onClick={updateTheme}
     />
   );
 };
 
-const renderAvatarIcon = ({ menuProps, user, size }) => {
+const renderAvatarIcon = ({ menuProps, user, size, style }) => {
   return (
     <Dropdown menu={menuProps} placement="bottomLeft" trigger={["click"]}>
-      <Avatar
-        size={size}
-        shape="square"
-        src={user?.photoURL}
-        style={{ cursor: "pointer" }}
-      />
+      <Avatar size={size} shape="square" src={user?.photoURL} style={style} />
     </Dropdown>
   );
 };
@@ -153,6 +154,7 @@ const AppNav = ({
             menuProps,
             user,
             size: 45,
+            style: { cursor: "pointer", marginLeft: "0.15rem" },
           })}
           <SideMenu
             onClick={handleMenuClick}
@@ -184,7 +186,12 @@ const AppNav = ({
               alignItems: "center",
             }}
           >
-            {renderAvatarIcon({ menuProps, user, size: 30 })}
+            {renderAvatarIcon({
+              menuProps,
+              user,
+              size: 30,
+              style: { cursor: "pointer" },
+            })}
             {defaultAppNav.map((each) => {
               return (
                 <Link to={each.redirectUrl} key={each.redirectUrl}>
