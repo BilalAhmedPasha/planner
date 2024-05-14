@@ -4,8 +4,6 @@ import { habitsSelector } from "../state/userHabits/userHabits.reducer";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Spinner from "../../../components/Spinner";
-import Loading from "../../../components/Loading";
 import HabitListHeader from "./HabitListHeader";
 import HabitDialogForm from "../HabitList/HabitDialogForm";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
@@ -48,7 +46,7 @@ const HabitListContainer = ({
   useEffect(() => {
     const handleResize = () => {
       const windowHeight = window.innerHeight;
-      const rowHeight = 32;
+      const rowHeight = 60;
       const availableRows = Math.floor(windowHeight / rowHeight) - 1;
       setNumRows(availableRows);
     };
@@ -139,31 +137,19 @@ const HabitListContainer = ({
         position: "relative",
       }}
     >
-      <Skeleton
-        active
-        loading={isLoadingHabits && habits?.length === 0}
-        paragraph={{ rows: numRows }}
-        style={{ padding: "1rem" }}
-      >
-        <Spinner
-          spinning={isLoadingHabits && habits?.length > 0}
-          indicator={Loading(0)}
-        >
-          <HabitListHeader
-            handleOpenHabitDialog={handleOpenHabitDialog}
-            setFormConfig={setFormConfig}
-          />
-          {openHabitDialog && (
-            <HabitDialogForm
-              user={user}
-              messageApi={messageApi}
-              openDialog={openHabitDialog}
-              setOpenDialog={setOpenHabitDialog}
-              formType={formConfig.mode}
-              formValues={formConfig.values}
+      <HabitListHeader
+        handleOpenHabitDialog={handleOpenHabitDialog}
+        setFormConfig={setFormConfig}
+      />
+      {isLoadingHabits && habits?.length === 0
+        ? Array.from({ length: numRows }).map((each) => (
+            <Skeleton.Button
+              active={true}
+              style={{ margin: "0.25rem 1rem", width: "95%", height: 60 }}
+              block={true}
             />
-          )}
-          {habits.map((habit) => (
+          ))
+        : habits.map((habit) => (
             <HabitItem
               habit={habit}
               user={user}
@@ -174,10 +160,18 @@ const HabitListContainer = ({
               handleDeleteHabit={handleDeleteHabit}
             />
           ))}
-          {contextHolder}
-          {modelContextHolder}
-        </Spinner>
-      </Skeleton>
+      {openHabitDialog && (
+        <HabitDialogForm
+          user={user}
+          messageApi={messageApi}
+          openDialog={openHabitDialog}
+          setOpenDialog={setOpenHabitDialog}
+          formType={formConfig.mode}
+          formValues={formConfig.values}
+        />
+      )}
+      {contextHolder}
+      {modelContextHolder}
     </Layout.Content>
   );
 };

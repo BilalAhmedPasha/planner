@@ -1,4 +1,4 @@
-import { DatePicker, Form, Input, Select, theme } from "antd";
+import { DatePicker, Form, Input, Select } from "antd";
 import { DATE_FORMAT, DAY } from "../../../../constants/dateTime.constants";
 import { useState } from "react";
 import RepeatCriteria from "./RepeatCriteria";
@@ -6,18 +6,14 @@ import {
   REPEAT_DAYS,
   REPEAT_OPTIONS,
 } from "../../../../constants/habits.constants";
-import { CREATE } from "../../../../constants/formType.constants";
 
 const HabitDialogForm = ({
   form,
   layout,
   initialValues,
   formType,
-  ...props
 }) => {
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
+
 
   const [startDate, setStartDate] = useState(initialValues["startDate"]);
   const handleStartDateChange = (e) => {

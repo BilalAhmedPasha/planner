@@ -1,15 +1,18 @@
 import styled from "styled-components";
 
 const CalendarWrapper = styled.div`
-  height: 92vh;
+  height: ${(props) => (props.isOnVerySmallScreen ? "85vh" : "92vh")};
   overflow-y: auto;
   .rbc-calendar {
     color: ${(props) => (props.userTheme ? "#fff" : "#000")};
   }
 
   .rbc-current-time-indicator {
-    background-color: rgba(255, 87, 87, 1);
+    position: absolute;
+    z-index: 3;
     height: 0.15rem;
+    background-color: #fe7576;
+    pointer-events: none;
   }
 
   .rbc-today {
@@ -42,6 +45,7 @@ const CalendarWrapper = styled.div`
     border-bottom: 0.75px solid
       ${(props) =>
         props.userTheme ? "rgba(255, 255, 255, 0.2)" : "rgba(66, 66, 66, 0.5)"};
+    min-height: 120px !important;
   }
 
   .rbc-time-view {
@@ -69,11 +73,12 @@ const CalendarWrapper = styled.div`
   }
 
   .rbc-day-slot .rbc-time-slot {
-    border-top: 0px solid
+    border: 0.1px solid
       ${(props) =>
-        props.userTheme ? "rgba(255, 255, 255, 0.2)" : "rgba(66, 66, 66, 0.5)"};
+        props.userTheme
+          ? "rgba(255, 255, 255, 0.025)"
+          : "rgba(66, 66, 66, 0.05)"};
   }
 `;
-
 
 export default CalendarWrapper;

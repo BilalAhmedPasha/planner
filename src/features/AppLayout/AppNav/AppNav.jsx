@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Avatar, Button, Dropdown, Layout, Menu, Modal } from "antd";
+import { Avatar, Button, Dropdown, Layout, Menu, Modal, theme } from "antd";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import SideMenu from "../../../components/SideMenu";
 import { UserAuth } from "../../../context/AuthContext";
@@ -9,6 +9,8 @@ import { LOGOUT } from "../../../constants/app.constants";
 import { useDispatch } from "react-redux";
 import { removeUserSettingAction } from "../state/userSettings/userSettings.actions";
 import { MdOutlineLightMode, MdOutlineDarkMode } from "react-icons/md";
+import useWindowSize from "../../../hooks/useWindowSize";
+import { isOnVerySmallScreen } from "../../../utils/screen.utils";
 
 const renderMenuItems = (itemsArray) => {
   return itemsArray.map((each) => {
@@ -20,7 +22,42 @@ const renderMenuItems = (itemsArray) => {
   });
 };
 
-const AppNav = ({ setCurrentTitle, userTheme, updateTheme }) => {
+const renderThemeChangeButton = ({
+  userTheme,
+  updateTheme,
+  style = { fontSize: "1rem" },
+}) => {
+  return (
+    <Button
+      size="large"
+      type="text"
+      icon={
+        userTheme ? (
+          <MdOutlineDarkMode style={style} />
+        ) : (
+          <MdOutlineLightMode style={style} />
+        )
+      }
+      style={{ cursor: "pointer" }}
+      onClick={updateTheme}
+    />
+  );
+};
+
+const renderAvatarIcon = ({ menuProps, user, size, style }) => {
+  return (
+    <Dropdown menu={menuProps} placement="bottomLeft" trigger={["click"]}>
+      <Avatar size={size} shape="square" src={user?.photoURL} style={style} />
+    </Dropdown>
+  );
+};
+
+const AppNav = ({
+  setCurrentTitle,
+  userTheme,
+  updateTheme,
+  childrenWithProps,
+}) => {
   const { logOut, user } = UserAuth();
   const navigateTo = useNavigate();
 
@@ -92,44 +129,92 @@ const AppNav = ({ setCurrentTitle, userTheme, updateTheme }) => {
     selectedAppMenuKey = "/habits";
   }
 
+  const screenSize = useWindowSize();
+
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken();
+
   return (
-    <Layout.Sider
-      style={{
-        overflow: "auto",
-        height: "100vh",
-        position: "sticky",
-        top: 0,
-        left: 0,
-      }}
-      theme="light"
-      collapsedWidth={50}
-      collapsed
-    >
-      <Dropdown menu={menuProps} placement="bottomLeft" trigger={["click"]}>
-        <Avatar
-          size={45}
-          shape="square"
-          src={user?.photoURL}
-          style={{ margin: "0.15rem", cursor: "pointer" }}
-        />
-      </Dropdown>
-      <SideMenu
-        onClick={handleMenuClick}
-        selectedAppMenuKey={selectedAppMenuKey}
-      >
-        {renderMenuItems(defaultAppNav)}
-      </SideMenu>
-      <div style={{ position: "absolute", bottom: 0, margin: "0.3rem" }}>
-        <Button
-          size="large"
-          type="text"
-          icon={userTheme ? <MdOutlineDarkMode /> : <MdOutlineLightMode />}
-          style={{ cursor: "pointer" }}
-          onClick={updateTheme}
-        />
-      </div>
+    <>
+      {!isOnVerySmallScreen({ currentWidth: screenSize.width }) && (
+        <Layout.Sider
+          style={{
+            overflow: "auto",
+            height: "100vh",
+            position: "sticky",
+            top: 0,
+            left: 0,
+          }}
+          theme="light"
+          collapsedWidth={50}
+          collapsed
+        >
+          {renderAvatarIcon({
+            menuProps,
+            user,
+            size: 45,
+            style: { cursor: "pointer", marginLeft: "0.15rem" },
+          })}
+          <SideMenu
+            onClick={handleMenuClick}
+            selectedAppMenuKey={selectedAppMenuKey}
+          >
+            {renderMenuItems(defaultAppNav)}
+          </SideMenu>
+          <div style={{ position: "absolute", bottom: 0, margin: "0.3rem" }}>
+            {renderThemeChangeButton({ userTheme, updateTheme })}
+          </div>
+        </Layout.Sider>
+      )}
       {contextHolder}
-    </Layout.Sider>
+      {childrenWithProps}
+      {isOnVerySmallScreen({ currentWidth: screenSize.width }) && (
+        <Layout.Footer
+          style={{
+            width: "100vw",
+            zIndex: 20,
+            background: colorBgContainer,
+            padding: "1rem",
+          }}
+          theme="light"
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            {renderAvatarIcon({
+              menuProps,
+              user,
+              size: 30,
+              style: { cursor: "pointer" },
+            })}
+            {defaultAppNav.map((each) => {
+              return (
+                <Link to={each.redirectUrl} key={each.redirectUrl}>
+                  <Button
+                    size="large"
+                    type="text"
+                    icon={<each.icon style={{ fontSize: "1.5rem" }} />}
+                    style={{ cursor: "pointer" }}
+                  />
+                </Link>
+              );
+            })}
+            {renderThemeChangeButton({
+              userTheme,
+              updateTheme,
+              style: {
+                fontSize: "1.5rem",
+              },
+            })}
+          </div>
+        </Layout.Footer>
+      )}
+    </>
   );
 };
 

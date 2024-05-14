@@ -1,4 +1,3 @@
-import React from "react";
 import { Modal as ModalAnt } from "antd";
 import Loading from "../Loading";
 import { LOADER_SIZE } from "../../constants/app.constants";

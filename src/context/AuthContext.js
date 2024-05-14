@@ -27,8 +27,7 @@ export const AuthContextProvider = ({ children }) => {
       prompt: "select_account",
     });
     signInWithPopup(auth, provider)
-      .then((res) => {
-      })
+      .then((res) => {})
       .catch((error) => {
         setError(error);
       })

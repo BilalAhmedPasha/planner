@@ -1,10 +1,10 @@
 import { Layout, theme, message } from "antd";
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useDispatch, useSelector } from "react-redux";
 import { INBOX } from "../../constants/app.constants";
 import { NONE } from "../../constants/priority.constants";
-import TaskDialogForm from "../TaskManager/TaskListView/TaskDialogForm";
+import TaskDialogForm from "../TaskManager/ListView/DialogForm";
 import { CREATE } from "../../constants/formType.constants";
 import { ENDLESS } from "../../constants/repeating.constants";
 import { userSelector } from "../AppLayout/state/userSettings/userSettings.reducer";
@@ -13,7 +13,6 @@ import { fetchTagsAction } from "../TaskManager/state/userTags/userTags.actions"
 import { fetchTasksAction } from "../TaskManager/state/userTasks/userTasks.actions";
 import CalendarComponent from "./CalendarComponent";
 import { fetchHabitsAction } from "../HabitTracker/state/userHabits/userHabits.actions";
-
 
 const CalendarView = ({ user, userTheme }) => {
   const {
@@ -67,7 +66,6 @@ const CalendarView = ({ user, userTheme }) => {
       style={{
         padding: "0.25rem 0.75rem",
         background: colorBgContainer,
-        height: "100vh",
       }}
     >
       <CalendarComponent

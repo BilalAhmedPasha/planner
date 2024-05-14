@@ -27,7 +27,7 @@ import {
   END_BY_DATE,
   END_BY_REPEAT_COUNT,
 } from "../../constants/repeating.constants";
-import { disableWeekView } from "../../utils/screen.utils";
+import { disableWeekView, isOnVerySmallScreen } from "../../utils/screen.utils";
 import useWindowSize from "../../hooks/useWindowSize";
 import Spinner from "../../components/Spinner";
 import Loading from "../../components/Loading";
@@ -75,14 +75,11 @@ const CalendarComponent = ({
     []
   );
 
-  const slotGroupPropGetter = useCallback(
-    () => ({
-      style: {
-        minHeight: 80,
-      },
-    }),
-    []
-  );
+  const slotGroupPropGetter = () => ({
+    style: {
+      minHeight: 80,
+    },
+  });
 
   const formats = {
     eventTimeRangeFormat: () => {
@@ -122,7 +119,7 @@ const CalendarComponent = ({
             border: `0.5px solid ${getListColor}`,
             opacity: event.isCompleted || event.isWontDo ? 0.5 : 1,
             padding: "3px",
-            overflow: "scroll"
+            overflow: "scroll",
           },
         };
       } else if (colorBy === TAGS) {
@@ -182,54 +179,44 @@ const CalendarComponent = ({
       setSpinner(true);
       setFormType(EDIT);
       setTaskDetails(event);
-      window.clearTimeout(clickRef?.current);
-      clickRef.current = window.setTimeout(() => {
-        setFormValues(() => {
-          return {
-            ...initalFormValues,
-            name: event.name,
-            description: event.description,
-            listId: event.listId,
-            priority: event.priority,
-            tagIds: event.tagIds,
-            taskDate: dayjs(event.taskDate),
-            duration:
-              event.startTime && event.endTime
-                ? [
-                    dayjs(event.startTime, TIME_FORMAT_IN_DB),
-                    dayjs(event.endTime, TIME_FORMAT_IN_DB),
-                  ]
-                : [undefined, undefined],
-            repeatFrequency: event.repeatFrequency,
-            endBy: event.endBy,
-            [END_BY_DATE]: event.endByDate ? dayjs(event.endByDate) : undefined,
-            [END_BY_REPEAT_COUNT]: event.endByRepeatCount,
-          };
-        });
-      }, 0);
+      setFormValues({
+        ...initalFormValues,
+        name: event.name,
+        description: event.description,
+        listId: event.listId,
+        priority: event.priority,
+        tagIds: event.tagIds,
+        taskDate: dayjs(event.taskDate),
+        duration:
+          event.startTime && event.endTime
+            ? [
+                dayjs(event.startTime, TIME_FORMAT_IN_DB),
+                dayjs(event.endTime, TIME_FORMAT_IN_DB),
+              ]
+            : [undefined, undefined],
+        repeatFrequency: event.repeatFrequency,
+        endBy: event.endBy,
+        [END_BY_DATE]: event.endByDate ? dayjs(event.endByDate) : undefined,
+        [END_BY_REPEAT_COUNT]: event.endByRepeatCount,
+      });
       setSpinner(false);
     },
-    [initalFormValues, setFormType, setTaskDetails, setFormValues]
+    [initalFormValues]
   );
 
   const onSelecting = useCallback(
     (range) => {
-      setFormType(CREATE);
       window.clearTimeout(clickRef?.current);
       clickRef.current = window.setTimeout(() => {
-        const selectedDate = dayjs(range.start).startOf(DAY);
-        const startTime = dayjs(range.start);
-        const endTime = dayjs(range.end);
-        setFormValues(() => {
-          return {
-            ...initalFormValues,
-            taskDate: selectedDate,
-            duration: [startTime, endTime],
-          };
+        setFormType(CREATE);
+        setFormValues({
+          ...initalFormValues,
+          taskDate: dayjs(range.start).startOf(DAY),
+          duration: [dayjs(range.start), dayjs(range.end)],
         });
-      }, 60);
+      }, 500);
     },
-    [initalFormValues, setFormType, setFormValues]
+    [initalFormValues]
   );
 
   const screenSize = useWindowSize();
@@ -278,7 +265,12 @@ const CalendarComponent = ({
         indicator={Loading(LOADER_SIZE)}
         delay={0}
       >
-        <CalendarWrapper userTheme={userTheme}>
+        <CalendarWrapper
+          userTheme={userTheme}
+          isOnVerySmallScreen={isOnVerySmallScreen({
+            currentWidth: screenSize.width,
+          })}
+        >
           <Calendar
             events={taskEvents}
             onRangeChange={(event) =>
@@ -301,18 +293,17 @@ const CalendarComponent = ({
                 return <CalendarEvent event={event} user={user} />;
               },
             }}
-            timeslots={4}
-            step={15}
+            timeslots={6}
+            step={10}
             slotGroupPropGetter={slotGroupPropGetter}
             min={new Date(0, 0, 0, 0, 0, 0)}
             max={new Date(0, 0, 0, 23, 59, 59)}
-            scrollToTime={new Date(0, 0, 0, 9, 0, 0)}
+            scrollToTime={new Date(0, 0, 0, new Date().getHours(), 0, 0)}
             eventPropGetter={eventPropGetter}
             dayLayoutAlgorithm="no-overlap"
             formats={formats}
             selectable={true}
             onSelecting={onSelecting}
-            longPressThreshold={250}
             onSelectEvent={onSelectEvent}
           />
         </CalendarWrapper>

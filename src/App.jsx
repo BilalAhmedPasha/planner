@@ -1,77 +1,83 @@
 import React, { useState } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
-import Calendar from "./features/Calendar";
-import HabitTracker from "./features/HabitTracker";
 import AppLayout from "./features/AppLayout";
-import TaskManager from "./features/TaskManager";
 import "./App.css";
 import LoginPage from "./features/LoginPage";
+import FullPageSpinner from "./components/FullPageSpinner";
+import Loading from "./components/Loading";
+
+const TaskManager = React.lazy(() => import("./features/TaskManager"));
+const Calendar = React.lazy(() => import("./features/Calendar"));
+const HabitTracker = React.lazy(() => import("./features/HabitTracker"));
 
 function App() {
-    const [currentTitle, setCurrentTitle] = useState("Inbox");
-
-    return (
-      <Routes>
-        <Route path="/" exact element={<Navigate to="/login" />} />
+  const [currentTitle, setCurrentTitle] = useState("Inbox");
+  return (
+    <Routes>
+      <Route path="/" exact element={<Navigate to="/login" />} />
+      <Route path="/login" exact element={<LoginPage title={currentTitle} />} />
+      {[
+        "/tasks/:sectionId/:documentId/:taskId",
+        "/tasks/:sectionId/:documentId",
+        "/tasks/:sectionId",
+      ].map((path, index) => (
         <Route
-          path="/login"
-          exact
-          element={<LoginPage title={currentTitle} />}
-        />
-        <Route
-          path="/calendar"
-          exact
+          key={index}
+          path={path}
           element={
+            <React.Suspense
+              fallback={
+                <AppLayout setCurrentTitle={setCurrentTitle}>
+                  <FullPageSpinner indicator={Loading(0)} />
+                </AppLayout>
+              }
+            >
+              <AppLayout setCurrentTitle={setCurrentTitle}>
+                <TaskManager title={currentTitle} />
+              </AppLayout>
+            </React.Suspense>
+          }
+        />
+      ))}
+      <Route
+        path="/calendar"
+        exact
+        element={
+          <React.Suspense
+            fallback={
+              <AppLayout setCurrentTitle={setCurrentTitle}>
+                <FullPageSpinner indicator={Loading(0)} />
+              </AppLayout>
+            }
+          >
             <AppLayout setCurrentTitle={setCurrentTitle}>
               <Calendar title={currentTitle} />
             </AppLayout>
-          }
-        />
+          </React.Suspense>
+        }
+      />
+      {["/habits/:habitId", "/habits"].map((path, index) => (
         <Route
-          path="/habits"
-          exact
+          key={index}
+          path={path}
           element={
-            <AppLayout setCurrentTitle={setCurrentTitle}>
-              <HabitTracker title={currentTitle} />
-            </AppLayout>
+            <React.Suspense
+              fallback={
+                <AppLayout setCurrentTitle={setCurrentTitle}>
+                  <FullPageSpinner indicator={Loading(0)} />
+                </AppLayout>
+              }
+            >
+              <AppLayout setCurrentTitle={setCurrentTitle}>
+                <HabitTracker title={currentTitle} />
+              </AppLayout>
+            </React.Suspense>
           }
         />
-        <Route
-          path="/habits/:habitId"
-          exact
-          element={
-            <AppLayout setCurrentTitle={setCurrentTitle}>
-              <HabitTracker title={currentTitle} />
-            </AppLayout>
-          }
-        />
-        <Route
-          path="/tasks/:sectionId/:documentId/:taskId"
-          element={
-            <AppLayout setCurrentTitle={setCurrentTitle}>
-              <TaskManager title={currentTitle} />
-            </AppLayout>
-          }
-        />
-        <Route
-          path="/tasks/:sectionId/:documentId"
-          element={
-            <AppLayout setCurrentTitle={setCurrentTitle}>
-              <TaskManager title={currentTitle} />
-            </AppLayout>
-          }
-        />
-        <Route
-          path="/tasks/:sectionId"
-          element={
-            <AppLayout setCurrentTitle={setCurrentTitle}>
-              <TaskManager title={currentTitle} />
-            </AppLayout>
-          }
-        />
-        <Route path="*" element={<Navigate to="/tasks/today" />} />
-      </Routes>
-    );
+      ))}
+      <Route path="*" element={<Navigate to="/tasks/today" />} />
+    </Routes>
+  );
 }
 
 export default App;

@@ -56,6 +56,15 @@ const modifyHabitsAfterMarking = ({ currentHabits, editedHabit }) => {
   );
 };
 
+const modifyHabitsAfterMarkingFailed = ({ currentHabits, editedHabit }) => {
+  return currentHabits.map((each) => {
+    if (each.id === editedHabit.id) {
+      delete each.history[editedHabit.date];
+    }
+    return each;
+  });
+};
+
 const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case FETCH_HABITS: {
@@ -154,10 +163,6 @@ const reducer = (state = INITIAL_STATE, action) => {
     }
 
     case MARK_HABIT: {
-      return fetchLoadingState({ state });
-    }
-
-    case MARK_HABIT_SUCCESS: {
       return {
         ...state,
         isLoadingHabits: false,
@@ -169,12 +174,22 @@ const reducer = (state = INITIAL_STATE, action) => {
       };
     }
 
+    case MARK_HABIT_SUCCESS: {
+      return {
+        ...state,
+      };
+    }
+
     case MARK_HABIT_ERROR: {
       return {
         ...state,
-        error: action.payload.error,
-        markHabitSuccess: false,
         isLoadingHabits: false,
+        markHabitSuccess: false,
+        error: action.payload.error,
+        habits: modifyHabitsAfterMarkingFailed({
+          currentHabits: state.habits,
+          editedHabit: action.payload,
+        }),
       };
     }
 
