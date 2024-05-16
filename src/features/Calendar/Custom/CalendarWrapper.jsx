@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 const CalendarWrapper = styled.div`
+  cursor: pointer;
   height: ${(props) => (props.isOnVerySmallScreen ? "85vh" : "92vh")};
   overflow-y: auto;
   .rbc-calendar {

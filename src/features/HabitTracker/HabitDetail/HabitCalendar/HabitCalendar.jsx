@@ -385,12 +385,6 @@ const HabitCalendar = ({ user, habit, isInDrawer = false }) => {
                       });
                     }
                   }}
-                  onContextMenu={(e) => {
-                    e.preventDefault();
-                    if (isValidDate) {
-                      console.log("Right clicked", date.toDate());
-                    }
-                  }}
                   cursor={isValidDate && !isFuture ? "pointer" : "not-allowed"}
                   isFuture={isFuture}
                   isValidDate={isValidDate}

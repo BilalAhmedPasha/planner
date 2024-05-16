@@ -117,7 +117,10 @@ const AppLayout = ({ setCurrentTitle, children }) => {
             }
       }
     >
-      <Layout style={{ height: "100vh" }}>
+      <Layout
+        style={{ height: "100vh" }}
+        onContextMenu={(e) => e.preventDefault()}
+      >
         <AppNav
           setCurrentTitle={setCurrentTitle}
           userTheme={userTheme}

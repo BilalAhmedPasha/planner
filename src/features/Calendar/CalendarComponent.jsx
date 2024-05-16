@@ -48,6 +48,7 @@ const CalendarComponent = ({
   setFormType,
   setTaskDetails,
   setFormValues,
+  setOpenAddTaskDialog,
   initalFormValues,
 }) => {
   const { lists } = useSelector(listsSelector);
@@ -199,25 +200,27 @@ const CalendarComponent = ({
         [END_BY_DATE]: event.endByDate ? dayjs(event.endByDate) : undefined,
         [END_BY_REPEAT_COUNT]: event.endByRepeatCount,
       });
+      setOpenAddTaskDialog(true);
       setSpinner(false);
     },
     [initalFormValues]
   );
 
-  const onSelecting = useCallback(
-    (range) => {
-      window.clearTimeout(clickRef?.current);
-      clickRef.current = window.setTimeout(() => {
-        setFormType(CREATE);
-        setFormValues({
-          ...initalFormValues,
-          taskDate: dayjs(range.start).startOf(DAY),
-          duration: [dayjs(range.start), dayjs(range.end)],
-        });
-      }, 500);
-    },
-    [initalFormValues]
-  );
+  const onSelectSlot = (range) => {
+    setSpinner(true);
+    setFormType(CREATE);
+    const isAllDay = range.end - range.start === 86400000;
+    setFormValues({
+      ...initalFormValues,
+      taskDate: dayjs(range.start).startOf(DAY),
+      duration: isAllDay
+        ? [undefined, undefined]
+        : [dayjs(range.start), dayjs(range.end)],
+      isAllDay: isAllDay,
+    });
+    setOpenAddTaskDialog(true);
+    setSpinner(false);
+  };
 
   const screenSize = useWindowSize();
   return (
@@ -303,8 +306,9 @@ const CalendarComponent = ({
             dayLayoutAlgorithm="no-overlap"
             formats={formats}
             selectable={true}
-            onSelecting={onSelecting}
             onSelectEvent={onSelectEvent}
+            onSelectSlot={onSelectSlot}
+            longPressThreshold={50}
           />
         </CalendarWrapper>
       </Spinner>
