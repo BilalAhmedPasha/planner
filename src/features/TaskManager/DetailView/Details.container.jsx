@@ -144,7 +144,7 @@ const DetailsContainer = ({
       closable={false}
       open={!isTaskDetailsDrawerCollapsed}
       width={navToDrawer({ currentWidth: screenSize.width }) ? "90vw" : "60vw"}
-      destroyOnClose={true}
+      destroyOnClose={false}
       extra={
         <Button
           icon={<CloseOutlined />}

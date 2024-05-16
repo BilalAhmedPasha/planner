@@ -417,7 +417,7 @@ const SideNav = ({
         header: { height: "2.5rem", padding: "1rem" },
         body: { padding: "0px", overflow: "auto" },
       }}
-      destroyOnClose={true}
+      destroyOnClose={false}
       width={
         isOnVerySmallScreen({ currentWidth: screenSize.width }) ? "80vw" : 300
       }

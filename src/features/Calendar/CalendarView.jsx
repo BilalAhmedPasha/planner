@@ -1,5 +1,5 @@
 import { Layout, theme, message } from "antd";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useDispatch, useSelector } from "react-redux";
 import { INBOX } from "../../constants/app.constants";
@@ -14,22 +14,20 @@ import { fetchTasksAction } from "../TaskManager/state/userTasks/userTasks.actio
 import CalendarComponent from "./CalendarComponent";
 import { fetchHabitsAction } from "../HabitTracker/state/userHabits/userHabits.actions";
 
+export const initalFormValues = {
+  name: "",
+  listId: INBOX,
+  priority: NONE,
+  endBy: ENDLESS,
+  tagIds: [],
+  taskDate: undefined,
+  duration: [undefined, undefined],
+};
+
 const CalendarView = ({ user, userTheme }) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-
-  const initalFormValues = useMemo(() => {
-    return {
-      name: "",
-      listId: INBOX,
-      priority: NONE,
-      endBy: ENDLESS,
-      tagIds: [],
-      taskDate: undefined,
-      duration: [undefined, undefined],
-    };
-  }, []);
 
   const [formValues, setFormValues] = useState(initalFormValues);
   const [openAddTaskDialog, setOpenAddTaskDialog] = useState(false);
@@ -45,21 +43,9 @@ const CalendarView = ({ user, userTheme }) => {
     }
   }, [userSetting, dispatch, user]);
 
-  useEffect(() => {
-    if (formValues.taskDate !== undefined) {
-      setOpenAddTaskDialog(true);
-    }
-  }, [formValues]);
-
   const [formType, setFormType] = useState(CREATE);
   const [taskDetails, setTaskDetails] = useState();
   const [messageApi] = message.useMessage();
-
-  useEffect(() => {
-    if (formValues.taskDate !== undefined) {
-      setOpenAddTaskDialog(true);
-    }
-  }, [formValues, setOpenAddTaskDialog]);
 
   return (
     <Layout.Content
@@ -73,25 +59,23 @@ const CalendarView = ({ user, userTheme }) => {
         user={user}
         setFormType={setFormType}
         setTaskDetails={setTaskDetails}
-        setOpenAddTaskDialog={setOpenAddTaskDialog}
-        formValues={formValues}
         setFormValues={setFormValues}
+        setOpenAddTaskDialog={setOpenAddTaskDialog}
         initalFormValues={initalFormValues}
       />
-      {openAddTaskDialog && (
-        <TaskDialogForm
-          user={user}
-          messageApi={messageApi}
-          openDialog={openAddTaskDialog}
-          setOpenDialog={setOpenAddTaskDialog}
-          formType={formType}
-          formValues={formValues}
-          taskDetails={taskDetails}
-          isFromCalendar={true}
-          disableDateSelection={formType === CREATE}
-          disableTimeSelection={formType === CREATE}
-        />
-      )}
+      <TaskDialogForm
+        user={user}
+        messageApi={messageApi}
+        openDialog={openAddTaskDialog}
+        setOpenDialog={setOpenAddTaskDialog}
+        formType={formType}
+        formValues={formValues}
+        setFormValues={setFormValues}
+        taskDetails={taskDetails}
+        isFromCalendar={true}
+        disableDateSelection={formType === CREATE}
+        disableTimeSelection={formType === CREATE}
+      />
     </Layout.Content>
   );
 };

@@ -1,16 +1,14 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../../../components/Modal";
 import TaskDialogForm from "./DialogForm";
 import { Form } from "antd";
 import { tasksSelector } from "../../state/userTasks/userTasks.reducer";
 import { CREATE, EDIT } from "../../../../constants/formType.constants";
-import {
-  handleAddTask,
-  handleEditTask,
-} from "../List.utils";
+import { handleAddTask, handleEditTask } from "../List.utils";
 import { navToDrawer } from "../../../../utils/screen.utils";
 import useWindowSize from "../../../../hooks/useWindowSize";
+import { initalFormValues } from "../../../Calendar/CalendarView";
 
 const DialogContainer = ({
   user,
@@ -18,6 +16,7 @@ const DialogContainer = ({
   openDialog,
   setOpenDialog,
   formValues,
+  setFormValues,
   formType,
   taskDetails,
   isFromCalendar = false,
@@ -63,6 +62,10 @@ const DialogContainer = ({
     formValues.name.length === 0
   );
 
+  useEffect(() => {
+    setDisableAddButton(formValues.name.length === 0 ? true : false);
+  }, [formValues.name]);
+
   const handleOnOk = (formValues) => {
     if (formType === CREATE) {
       handleAddTask({
@@ -93,35 +96,35 @@ const DialogContainer = ({
 
   const { isLoadingTasks } = useSelector(tasksSelector);
   const screenSize = useWindowSize();
+  const modalWidth = useMemo(() => {
+    return navToDrawer({ currentWidth: screenSize.width }) ? "90vw" : "50vw";
+  }, [screenSize]);
 
+  
   return (
-    openDialog && (
-      <Modal
-        open={openDialog}
-        formTitle={formType === CREATE ? "Add New Task" : "Edit Task"}
-        onOk={handleOnOk}
-        onCancel={() => {
-          setOpenDialog(false);
-        }}
-        okText={formType === CREATE ? "Add" : "Save"}
+    <Modal
+      open={openDialog}
+      formTitle={formType === CREATE ? "Add New Task" : "Edit Task"}
+      onOk={handleOnOk}
+      onCancel={() => {
+        setOpenDialog(false);
+      }}
+      okText={formType === CREATE ? "Add" : "Save"}
+      form={form}
+      centered={true}
+      width={modalWidth}
+      destroyOnClose={false}
+      loading={isLoadingTasks}
+      disableOk={disableAddButton}
+    >
+      <TaskDialogForm
+        layout="vertical"
         form={form}
-        centered={true}
-        width={
-          navToDrawer({ currentWidth: screenSize.width }) ? "90vw" : "50vw"
-        }
-        destroyOnClose={true}
-        loading={isLoadingTasks}
-        disableOk={disableAddButton}
-      >
-        <TaskDialogForm
-          layout="vertical"
-          form={form}
-          initialValues={formValues}
-          setDisableAddButton={setDisableAddButton}
-          {...props}
-        />
-      </Modal>
-    )
+        initialValues={formValues}
+        setDisableAddButton={setDisableAddButton}
+        {...props}
+      />
+    </Modal>
   );
 };
 

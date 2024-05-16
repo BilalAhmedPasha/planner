@@ -111,7 +111,7 @@ const HabitDialog = ({
         okText={formType === CREATE ? "Add" : "Save"}
         form={form}
         centered={true}
-        destroyOnClose={true}
+        destroyOnClose={false}
         loading={isLoadingHabits}
       >
         <HabitDialogForm

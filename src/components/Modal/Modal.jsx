@@ -35,10 +35,13 @@ const Modal = ({
       okButtonProps={{
         disabled: disableOk,
       }}
-      onCancel={onCancel}
+      onCancel={(e) => {
+        form.resetFields();
+        onCancel(e);
+      }}
       maskClosable={false}
       keyboard={false}
-      destroyOnClose={true}
+      destroyOnClose={false}
       {...props}
     >
       <Spinner spinning={loading} indicator={Loading(LOADER_SIZE)}>
