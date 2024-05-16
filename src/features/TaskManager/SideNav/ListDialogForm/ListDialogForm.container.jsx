@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../../../components/Modal";
 import ListDialogForm from "./ListDialogForm";
@@ -132,6 +132,12 @@ const ListDialog = ({
   const [form] = Form.useForm();
 
   const { isLoadingLists } = useSelector(listsSelector);
+
+    useEffect(() => {
+      form.setFieldsValue(formValues);
+    }, [formValues]);
+
+
   return (
     openDialog && (
       <Modal

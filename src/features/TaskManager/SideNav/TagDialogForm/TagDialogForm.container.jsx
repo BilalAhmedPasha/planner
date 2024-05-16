@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Modal from "../../../../components/Modal";
 import TagDialogForm from "./TagDialogForm";
 import { SUCCESS, TAGS } from "../../../../constants/app.constants";
@@ -132,6 +132,9 @@ const TagDialog = ({
   const [form] = Form.useForm();
 
   const { isLoadingTags } = useSelector(tagsSelector);
+  useEffect(() => {
+    form.setFieldsValue(formValues);
+  }, [formValues]);
 
   return (
     openDialog && (

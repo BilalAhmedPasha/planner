@@ -8,7 +8,6 @@ import { CREATE, EDIT } from "../../../../constants/formType.constants";
 import { handleAddTask, handleEditTask } from "../List.utils";
 import { navToDrawer } from "../../../../utils/screen.utils";
 import useWindowSize from "../../../../hooks/useWindowSize";
-import { initalFormValues } from "../../../Calendar/CalendarView";
 
 const DialogContainer = ({
   user,
@@ -100,7 +99,10 @@ const DialogContainer = ({
     return navToDrawer({ currentWidth: screenSize.width }) ? "90vw" : "50vw";
   }, [screenSize]);
 
-  
+  useEffect(() => {
+    form.setFieldsValue(formValues);
+  }, [formValues]);
+
   return (
     <Modal
       open={openDialog}
