@@ -132,12 +132,6 @@ const ListDialog = ({
   const [form] = Form.useForm();
 
   const { isLoadingLists } = useSelector(listsSelector);
-
-    useEffect(() => {
-      form.setFieldsValue(formValues);
-    }, [formValues]);
-
-
   return (
     openDialog && (
       <Modal

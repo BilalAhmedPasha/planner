@@ -1,6 +1,11 @@
 import { Form, Input, ColorPicker } from "antd";
+import { useEffect } from "react";
 
 const TagDialogForm = ({ form, handleColorChange, layout, initialValues }) => {
+  useEffect(() => {
+    form.setFieldsValue(initialValues);
+  }, [initialValues]);
+
   return (
     <Form
       form={form}

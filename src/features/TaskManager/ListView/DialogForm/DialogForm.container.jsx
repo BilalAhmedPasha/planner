@@ -99,9 +99,6 @@ const DialogContainer = ({
     return navToDrawer({ currentWidth: screenSize.width }) ? "90vw" : "50vw";
   }, [screenSize]);
 
-  useEffect(() => {
-    form.setFieldsValue(formValues);
-  }, [formValues]);
 
   return (
     <Modal

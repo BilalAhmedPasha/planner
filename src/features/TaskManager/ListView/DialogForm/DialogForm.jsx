@@ -3,6 +3,7 @@ import useWindowSize from "../../../../hooks/useWindowSize";
 import { detailsToDrawer } from "../../../../utils/screen.utils";
 import TaskDialogPrimaryPanel from "./PrimaryPanel";
 import TaskDialogSecondaryPanel from "./SecondaryPanel";
+import { useEffect } from "react";
 
 const DialogForm = ({
   form,
@@ -19,6 +20,10 @@ const DialogForm = ({
   const verticallyAlignForm = detailsToDrawer({
     currentWidth: screenSize.width,
   });
+
+  useEffect(() => {
+    form.setFieldsValue(initialValues);
+  }, [initialValues]);
 
   return (
     <Form

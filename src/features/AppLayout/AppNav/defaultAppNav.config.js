@@ -6,7 +6,7 @@ export const defaultAppNav = [
   {
     label: "Tasks",
     icon: GoTasklist,
-    redirectUrl: "/tasks/all",
+    redirectUrl: "/tasks/today",
     id: "tasks",
   },
   {
