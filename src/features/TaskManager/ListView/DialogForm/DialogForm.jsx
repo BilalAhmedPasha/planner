@@ -52,6 +52,7 @@ const DialogForm = ({
               form={form}
               height={72}
               smallScreen={verticallyAlignForm}
+              initialValues={initialValues}
               {...props}
             />
           )}
@@ -63,7 +64,12 @@ const DialogForm = ({
               background: colorBgContainer,
             }}
           >
-            <TaskDialogSecondaryPanel form={form} height={72} {...props} />
+            <TaskDialogSecondaryPanel
+              form={form}
+              height={72}
+              initialValues={initialValues}
+              {...props}
+            />
           </Layout.Content>
         )}
       </Layout>

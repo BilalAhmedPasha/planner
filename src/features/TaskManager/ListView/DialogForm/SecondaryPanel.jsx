@@ -9,7 +9,7 @@ import {
   TimePicker,
   Typography,
 } from "antd";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { listsSelector } from "../../state/userLists/userLists.reducer";
 import { tagsSelector } from "../../state/userTags/userTags.reducer";
@@ -54,7 +54,13 @@ const MultiSelect = styled(Select)`
   }
 `;
 
-const SecondaryPanel = ({ form, height, smallScreen, ...props }) => {
+const SecondaryPanel = ({
+  form,
+  height,
+  smallScreen,
+  initialValues,
+  ...props
+}) => {
   const { lists } = useSelector(listsSelector);
   const { tags } = useSelector(tagsSelector);
 
@@ -102,18 +108,6 @@ const SecondaryPanel = ({ form, height, smallScreen, ...props }) => {
   const [priorityColor, setPriorityColor] = useState(
     priorityColorMappings[form.getFieldValue("priority")]
   );
-  const handlePriorityChange = (event) => {
-    if (event === HIGH) {
-      setPriorityColor(HIGH_COLOR);
-    } else if (event === MEDIUM) {
-      setPriorityColor(MEDIUM_COLOR);
-    } else if (event === LOW) {
-      setPriorityColor(LOW_COLOR);
-    } else {
-      setPriorityColor(NONE_COLOR);
-    }
-  };
-
   const [startDate, setStartDate] = useState(form.getFieldValue("taskDate"));
   const [isScheduled, setIsScheduled] = useState(
     form.getFieldValue("taskDate") ? true : false
@@ -128,6 +122,27 @@ const SecondaryPanel = ({ form, height, smallScreen, ...props }) => {
   const [showEndByRepeatCount, setshowEndByRepeatCount] = useState(
     form.getFieldValue("endBy") === END_BY_REPEAT_COUNT
   );
+
+  useEffect(() => {
+    setPriorityColor(priorityColorMappings[initialValues["priority"]]);
+    setStartDate(initialValues["taskDate"]);
+    setIsScheduled(initialValues["taskDate"] ? true : false);
+    setIsRepeating(initialValues["repeatFrequency"]);
+    setShowEndByDate(initialValues["endBy"] === END_BY_DATE);
+    setshowEndByRepeatCount(initialValues["endBy"] === END_BY_REPEAT_COUNT);
+  }, [initialValues]);
+
+  const handlePriorityChange = (event) => {
+    if (event === HIGH) {
+      setPriorityColor(HIGH_COLOR);
+    } else if (event === MEDIUM) {
+      setPriorityColor(MEDIUM_COLOR);
+    } else if (event === LOW) {
+      setPriorityColor(LOW_COLOR);
+    } else {
+      setPriorityColor(NONE_COLOR);
+    }
+  };
 
   const handleStartDateChange = (e) => {
     setStartDate(e);
