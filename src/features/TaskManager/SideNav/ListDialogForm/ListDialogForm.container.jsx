@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import {  useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../../../components/Modal";
 import ListDialogForm from "./ListDialogForm";
@@ -133,29 +133,27 @@ const ListDialog = ({
 
   const { isLoadingLists } = useSelector(listsSelector);
   return (
-    openDialog && (
-      <Modal
-        open={openDialog}
-        formTitle={formTitle}
-        onOk={formType === CREATE ? handleAddList : handleEditList}
-        onCancel={() => {
-          setOpenDialog(false);
-        }}
-        okText={okText}
+    <Modal
+      open={openDialog}
+      formTitle={formTitle}
+      onOk={formType === CREATE ? handleAddList : handleEditList}
+      onCancel={() => {
+        setOpenDialog(false);
+      }}
+      okText={okText}
+      form={form}
+      loading={isLoadingLists}
+    >
+      <ListDialogForm
         form={form}
-        loading={isLoadingLists}
-      >
-        <ListDialogForm
-          form={form}
-          color={color}
-          handleColorChange={(color) => {
-            return setColor(color.toHexString());
-          }}
-          initialValues={DEFAULT_VALUES}
-          layout="vertical"
-        />
-      </Modal>
-    )
+        color={color}
+        handleColorChange={(color) => {
+          return setColor(color.toHexString());
+        }}
+        initialValues={DEFAULT_VALUES}
+        layout="vertical"
+      />
+    </Modal>
   );
 };
 

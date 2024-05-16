@@ -132,34 +132,30 @@ const TagDialog = ({
   const [form] = Form.useForm();
 
   const { isLoadingTags } = useSelector(tagsSelector);
-  useEffect(() => {
-    form.setFieldsValue(formValues);
-  }, [formValues]);
+
 
   return (
-    openDialog && (
-      <Modal
-        open={openDialog}
-        formTitle={formTitle}
-        onOk={formType === CREATE ? handleAddTag : handleEditTag}
-        onCancel={() => {
-          setOpenDialog(false);
-        }}
-        okText={okText}
+    <Modal
+      open={openDialog}
+      formTitle={formTitle}
+      onOk={formType === CREATE ? handleAddTag : handleEditTag}
+      onCancel={() => {
+        setOpenDialog(false);
+      }}
+      okText={okText}
+      form={form}
+      loading={isLoadingTags}
+    >
+      <TagDialogForm
         form={form}
-        loading={isLoadingTags}
-      >
-        <TagDialogForm
-          form={form}
-          color={color}
-          handleColorChange={(color) => {
-            return setColor(color.toHexString());
-          }}
-          initialValues={DEFAULT_VALUES}
-          layout="vertical"
-        />
-      </Modal>
-    )
+        color={color}
+        handleColorChange={(color) => {
+          return setColor(color.toHexString());
+        }}
+        initialValues={DEFAULT_VALUES}
+        layout="vertical"
+      />
+    </Modal>
   );
 };
 
