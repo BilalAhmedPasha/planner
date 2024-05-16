@@ -22,7 +22,10 @@ import {
   WONT_DO,
 } from "../../../../constants/app.constants";
 import { cross, tick } from "../../../../constants/checkBox.constants";
-import { DAY, DB_TIME_STAMP_FORMAT } from "../../../../constants/dateTime.constants";
+import {
+  DAY,
+  DB_TIME_STAMP_FORMAT,
+} from "../../../../constants/dateTime.constants";
 import dayjs from "../../../../utils/dateTime.utils";
 import {
   completeTaskAction,
@@ -33,6 +36,7 @@ import {
   handleCompletePlaceholderRepeatingTask,
   handleWontDoPlaceholderRepeatingTask,
 } from "../List.utils";
+import { useEffect, useRef } from "react";
 
 const getPriorityColor = ({
   isInCalendar,
@@ -63,6 +67,7 @@ const CheckBoxDropdown = ({
   isInCalendar = false,
 }) => {
   const dispatch = useDispatch();
+  const dropdownRef = useRef(null);
 
   const {
     token: { colorBgContainer, colorBorder, colorBorderSecondary },
@@ -240,6 +245,24 @@ const CheckBoxDropdown = ({
     }
   };
 
+  const handleClickOutside = (event) => {
+    if (
+      showCheckBoxMenu &&
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target)
+    ) {
+      setShowCheckBoxMenu(false);
+    }
+  };
+
+  useEffect(() => {
+    const handleOutsideClick = handleClickOutside;
+    document.addEventListener("click", handleOutsideClick);
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, [showCheckBoxMenu]);
+
   const colorConfig = getPriorityColor({
     isInCalendar: isInCalendar,
     item: taskDetails,
@@ -258,6 +281,7 @@ const CheckBoxDropdown = ({
       disabled={taskDetails.isDeleted}
     >
       <CheckBoxInput
+        ref={dropdownRef}
         id={taskDetails.name}
         uniCode={checkBoxContent}
         backgroundColor={colorConfig.color}
