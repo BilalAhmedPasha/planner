@@ -1,6 +1,11 @@
 import styled from "styled-components";
 
 const CalendarWrapper = styled.div`
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
   cursor: pointer;
   height: ${(props) => (props.isOnVerySmallScreen ? "85vh" : "92vh")};
   overflow-y: auto;

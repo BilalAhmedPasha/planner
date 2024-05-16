@@ -308,7 +308,7 @@ const CalendarComponent = ({
             selectable={true}
             onSelectEvent={onSelectEvent}
             onSelectSlot={onSelectSlot}
-            longPressThreshold={50}
+            longPressThreshold={5}
           />
         </CalendarWrapper>
       </Spinner>
