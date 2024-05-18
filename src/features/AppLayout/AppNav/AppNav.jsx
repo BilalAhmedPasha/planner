@@ -121,7 +121,7 @@ const AppNav = ({
   };
 
   const url = useLocation();
-  let selectedAppMenuKey = "/tasks/all";
+  let selectedAppMenuKey = "/tasks/today";
   const currentPathName = url.pathname.split("/");
   if (currentPathName[1] === "calendar") {
     selectedAppMenuKey = "/calendar";
