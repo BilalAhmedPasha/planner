@@ -342,7 +342,7 @@ const SideNav = ({
       <>
         <SideMenu
           selectedAppMenuKey={selectedAppMenuKey}
-          openSubMenuKeys={openSubMenuKeys}
+          openSubMenuKeys={!isMenuCollapsed && openSubMenuKeys}
           onClick={handleMenuClick}
         >
           {renderMenuItems(defaultTaskNav1)}
@@ -443,7 +443,7 @@ const SideNav = ({
       width={300}
       collapsed={isMenuCollapsed}
     >
-      {taskNavContent()}
+      {taskNavContent({ isMenuCollapsed })}
     </Layout.Sider>
   );
 };
