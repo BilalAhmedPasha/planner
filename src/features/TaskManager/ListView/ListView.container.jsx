@@ -24,6 +24,7 @@ import { computeSectionData } from "./List.utils";
 import ListHeader from "./Header";
 import ListSections from "./Sections";
 import DialogForm from "./DialogForm";
+import Editor from "../LexicalEditor/LexicalEditor"
 
 const hideAddForSections = [COMPLETED, WONT_DO, DELETED];
 
@@ -311,7 +312,7 @@ const ListView = ({
           sortBy={sortBy}
           selectedTaskDetails={selectedTaskDetails}
           setSelectedTaskDetails={setSelectedTaskDetails}
-        />   
+        />
       )}
 
       {openAddTaskDialog && (
@@ -326,6 +327,8 @@ const ListView = ({
           disableTimeSelection={false}
         />
       )}
+      <Editor />
+
       {modalContextHolder}
       {messageContextHolder}
     </Layout.Content>
