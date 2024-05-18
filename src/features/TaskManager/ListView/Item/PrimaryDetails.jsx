@@ -1,25 +1,14 @@
-import { Button, Space, Typography, theme } from "antd";
+import { Space, Typography, theme } from "antd";
 import { INBOX } from "../../../../constants/app.constants";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import dayjs from "../../../../utils/dateTime.utils";
-import {
-  SyncOutlined,
-  NodeExpandOutlined,
-  DeleteOutlined,
-  DeleteFilled,
-  UndoOutlined,
-} from "@ant-design/icons";
+import { SyncOutlined, NodeExpandOutlined } from "@ant-design/icons";
 import {
   DATE_FORMAT_IN_TASK_ITEM,
   DAY,
   TIME_ZONE,
 } from "../../../../constants/dateTime.constants";
-import {
-  hardDeleteSingleTaskAction,
-  restoreTaskAction,
-  softDeleteTaskAction,
-} from "../../state/userTasks/userTasks.actions";
 
 const StyledLink = styled(Link)`
   align-items: center;
@@ -70,7 +59,13 @@ const renderRepeatIcon = ({ item, colorBorder, colorTextLabel }) => {
   }
 };
 
-const renderList = ({ item, lists, colorBorder, colorTextLabel }) => {
+const renderList = ({
+  item,
+  lists,
+  colorBorder,
+  colorTextLabel,
+  setSelectedTaskDetails,
+}) => {
   const itemInList = lists?.find((each) => each.id === item?.listId);
   const listColor =
     item.isCompleted || item.isWontDo ? colorBorder : itemInList?.color;
@@ -78,7 +73,10 @@ const renderList = ({ item, lists, colorBorder, colorTextLabel }) => {
     <StyledLink
       to={itemInList ? `/tasks/lists/${itemInList?.id}` : `/tasks/inbox`}
       color={colorTextLabel}
-      onClick={(e) => e.stopPropagation()}
+      onClick={(e) => {
+        e.stopPropagation();
+        setSelectedTaskDetails([]);
+      }}
     >
       {itemInList?.color ? renderColorDot(listColor) : null}
       <Typography.Text
@@ -128,18 +126,9 @@ const renderTaskDate = ({ item }) => {
   }
 };
 
-const PrimaryDetails = ({
-  taskDetails,
-  selectedTaskDetails,
-  lists,
-  handleTaskRestore,
-  showSoftDeleteConfirm,
-  handleSoftDelete,
-  showHardDeleteConfirm,
-  handleHardDelete,
-}) => {
+const PrimaryDetails = ({ taskDetails, setSelectedTaskDetails, lists }) => {
   const {
-    token: { colorBorder, colorTextLabel, colorError },
+    token: { colorBorder, colorTextLabel },
   } = theme.useToken();
 
   return (
@@ -157,7 +146,7 @@ const PrimaryDetails = ({
         }}
         disabled={taskDetails.isCompleted || taskDetails.isWontDo}
       >{`${taskDetails.name}`}</Typography.Text>
-      <div
+      <span
         style={{
           whiteSpace: "nowrap",
           overflowX: "auto",
@@ -170,6 +159,7 @@ const PrimaryDetails = ({
             lists: lists,
             colorBorder: colorBorder,
             colorTextLabel: colorTextLabel,
+            setSelectedTaskDetails: setSelectedTaskDetails,
           })}
           {renderChildNodeIcon({
             item: taskDetails,
@@ -183,94 +173,7 @@ const PrimaryDetails = ({
           })}
           {renderTaskDate({ item: taskDetails })}
         </Space>
-        {taskDetails.isDeleted ? (
-          <Button
-            type="text"
-            icon={
-              <UndoOutlined
-                style={{
-                  color:
-                    taskDetails.isCompleted || taskDetails.isWontDo
-                      ? colorBorder
-                      : colorTextLabel,
-                  opacity: selectedTaskDetails?.length > 1 ? 0.3 : 1,
-                  transition: "0.3s all ease",
-                }}
-              />
-            }
-            size="small"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleTaskRestore({
-                currentItem: taskDetails,
-                restoreTaskAction: restoreTaskAction,
-                successMessage: "Task restored",
-                failureMessage: "Failed to restore task",
-              });
-            }}
-            disabled={selectedTaskDetails?.length > 1}
-          />
-        ) : (
-          <Button
-            type="text"
-            icon={
-              <DeleteOutlined
-                style={{
-                  color:
-                    taskDetails.isCompleted || taskDetails.isWontDo
-                      ? colorBorder
-                      : colorTextLabel,
-                  opacity: selectedTaskDetails?.length > 1 ? 0.3 : 1,
-                  transition: "0.3s all ease",
-                }}
-              />
-            }
-            size="small"
-            onClick={(e) => {
-              e.stopPropagation();
-              showSoftDeleteConfirm({
-                content: "Delete this task?",
-                handleSoftDelete: handleSoftDelete,
-                currentItem: taskDetails,
-                softDeleteAction: softDeleteTaskAction,
-                successMessage: "Task deleted",
-                failureMessage: "Failed to delete task",
-              });
-            }}
-            disabled={selectedTaskDetails?.length > 1}
-          />
-        )}
-        {taskDetails.isDeleted ? (
-          <Button
-            type="text"
-            icon={
-              <DeleteFilled
-                style={{
-                  color:
-                    taskDetails.isCompleted || taskDetails.isWontDo
-                      ? colorBorder
-                      : colorError,
-                  opacity: selectedTaskDetails?.length > 1 ? 0.3 : 1,
-                  transition: "0.3s all ease",
-                }}
-              />
-            }
-            size="small"
-            onClick={(e) => {
-              e.stopPropagation();
-              showHardDeleteConfirm({
-                content: "Delete this task permanently?",
-                handleHardDelete: handleHardDelete,
-                currentItem: taskDetails,
-                hardDeleteAction: hardDeleteSingleTaskAction,
-                successMessage: "Task deleted",
-                failureMessage: "Failed to delete task",
-              });
-            }}
-            disabled={selectedTaskDetails?.length > 1}
-          />
-        ) : null}
-      </div>
+      </span>
     </div>
   );
 };

@@ -5,6 +5,7 @@ import "./App.css";
 import LoginPage from "./features/LoginPage";
 import FullPageSpinner from "./components/FullPageSpinner";
 import Loading from "./components/Loading";
+import { LOADER_SIZE } from "./constants/app.constants";
 
 const TaskManager = React.lazy(() => import("./features/TaskManager"));
 const Calendar = React.lazy(() => import("./features/Calendar"));
@@ -28,7 +29,7 @@ function App() {
             <React.Suspense
               fallback={
                 <AppLayout setCurrentTitle={setCurrentTitle}>
-                  <FullPageSpinner indicator={Loading(0)} />
+                  <FullPageSpinner indicator={Loading(LOADER_SIZE)} />
                 </AppLayout>
               }
             >
@@ -46,7 +47,7 @@ function App() {
           <React.Suspense
             fallback={
               <AppLayout setCurrentTitle={setCurrentTitle}>
-                <FullPageSpinner indicator={Loading(0)} />
+                <FullPageSpinner indicator={Loading(LOADER_SIZE)} />
               </AppLayout>
             }
           >
@@ -64,7 +65,7 @@ function App() {
             <React.Suspense
               fallback={
                 <AppLayout setCurrentTitle={setCurrentTitle}>
-                  <FullPageSpinner indicator={Loading(0)} />
+                  <FullPageSpinner indicator={Loading(LOADER_SIZE)} />
                 </AppLayout>
               }
             >

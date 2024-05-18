@@ -78,7 +78,7 @@ const ListView = ({
       );
       selectedItemViaURL && setSelectedTaskDetails([selectedItemViaURL]);
     }
-  }, [pathParameters, tasks, setSelectedTaskDetails]);
+  }, [pathParameters, tasks]);
 
   useEffect(() => {
     if (currentSection?.label) {
@@ -311,7 +311,7 @@ const ListView = ({
           sortBy={sortBy}
           selectedTaskDetails={selectedTaskDetails}
           setSelectedTaskDetails={setSelectedTaskDetails}
-        />
+        />   
       )}
 
       {openAddTaskDialog && (

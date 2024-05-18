@@ -1,16 +1,24 @@
-import { Modal, Tag, theme, Typography } from "antd";
+import { Button, Modal, Tag, theme, Typography } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { DEFAULT_BADGE_COLOR } from "../../../../constants/color.constants";
-import { SUCCESS } from "../../../../constants/app.constants";
-import { useDispatch } from "react-redux";
+import { LISTS, SUCCESS, TAGS } from "../../../../constants/app.constants";
+import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { cross, tick } from "../../../../constants/checkBox.constants";
 import PrimaryTaskListItemDetail from "./PrimaryDetails";
 import styled from "styled-components";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import CheckBoxDropdown from "./CheckBoxDropdown";
+import { listsSelector } from "../../state/userLists/userLists.reducer";
+import { tagsSelector } from "../../state/userTags/userTags.reducer";
+import { DeleteOutlined, DeleteFilled, UndoOutlined } from "@ant-design/icons";
+import {
+  hardDeleteSingleTaskAction,
+  restoreTaskAction,
+  softDeleteTaskAction,
+} from "../../state/userTasks/userTasks.actions";
 
-const renderTags = ({ item, tags, colorBorder }) => {
+const renderTags = ({ item, tags, colorBorder, setSelectedTaskDetails }) => {
   if (item?.tagIds?.length > 0) {
     const tagsArray = [];
     for (let index = 0; index < 3; index++) {
@@ -28,7 +36,10 @@ const renderTags = ({ item, tags, colorBorder }) => {
           >
             <StyledLink
               to={`/tasks/tags/${item.tagIds[index]}`}
-              onClick={(e) => e.stopPropagation()}
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedTaskDetails([]);
+              }}
             >
               {tagDetails?.label.length > 12
                 ? `${tagDetails.label?.slice(0, 10)}...`
@@ -65,14 +76,14 @@ const Item = ({
   user,
   messageApi,
   taskDetails,
-  lists,
-  tags,
   selectedTaskDetails,
   setSelectedTaskDetails,
   setShowCheckBoxMenu,
   showCheckBoxMenu,
 }) => {
   const [modal, contextHolder] = Modal.useModal();
+  const { lists } = useSelector(listsSelector);
+  const { tags } = useSelector(tagsSelector);
 
   const showSoftDeleteConfirm = ({
     content,
@@ -210,12 +221,23 @@ const Item = ({
   );
 
   const {
-    token: { colorBorder },
+    token: { colorBorder, colorTextLabel, colorError },
   } = theme.useToken();
 
+  const currentURL = useLocation();
+
   return (
-    <div style={{ width: "100%" }}>
-      <div style={{ float: "left", marginTop: "0.15rem" }}>
+    <div
+      style={{
+        width: "100%",
+        display: "flex",
+        justifyContent: "space-between",
+      }}
+    >
+      <div
+        style={{ marginTop: "0.15rem" }}
+        onClick={(e) => e.stopPropagation()}
+      >
         <CheckBoxDropdown
           user={user}
           taskDetails={taskDetails}
@@ -225,16 +247,50 @@ const Item = ({
           setCheckBoxContent={setCheckBoxContent}
         />
       </div>
-      <div style={{ marginLeft: "1.75rem" }}>
+
+      <div
+        style={{ marginLeft: "1rem", flexGrow: 1, overflow:"hidden" }}
+        onClick={(e) => {
+          e.stopPropagation();
+          setShowCheckBoxMenu(false);
+          if (e.nativeEvent.shiftKey) {
+            setSelectedTaskDetails((prevState) => {
+              if (!prevState.find((each) => each.id === taskDetails.id)) {
+                return [...prevState, taskDetails];
+              } else {
+                if (selectedTaskDetails.length !== 1) {
+                  return prevState.filter((each) => each.id !== taskDetails.id);
+                } else {
+                  return [...prevState];
+                }
+              }
+            });
+          } else {
+            const urlPath = currentURL.pathname.split("/");
+            if (
+              urlPath.length >= 4 &&
+              (urlPath[2] === LISTS || urlPath[2] === TAGS)
+            ) {
+              navigateTo(
+                `/${urlPath[1]}/${urlPath[2]}/${urlPath[3]}/${taskDetails.id}`
+              );
+            } else {
+              navigateTo(`/${urlPath[1]}/${urlPath[2]}/${taskDetails.id}`);
+            }
+          }
+        }}
+      >
         <PrimaryTaskListItemDetail
           taskDetails={taskDetails}
           selectedTaskDetail={selectedTaskDetails}
+          setSelectedTaskDetails={setSelectedTaskDetails}
           lists={lists}
           handleTaskRestore={handleTaskRestore}
           showSoftDeleteConfirm={showSoftDeleteConfirm}
           handleSoftDelete={handleSoftDelete}
           showHardDeleteConfirm={showHardDeleteConfirm}
           handleHardDelete={handleHardDelete}
+          setShowCheckBoxMenu={setShowCheckBoxMenu}
         />
         {taskDetails.description && (
           <div>
@@ -257,9 +313,101 @@ const Item = ({
             item: taskDetails,
             tags: tags,
             colorBorder: colorBorder,
+            setSelectedTaskDetails: setSelectedTaskDetails,
           })}
         </div>
       </div>
+
+      <div>
+        {taskDetails.isDeleted ? (
+          <Button
+            type="text"
+            icon={
+              <UndoOutlined
+                style={{
+                  color:
+                    taskDetails.isCompleted || taskDetails.isWontDo
+                      ? colorBorder
+                      : colorTextLabel,
+                  opacity: selectedTaskDetails?.length > 1 ? 0.3 : 1,
+                  transition: "0.3s all ease",
+                }}
+              />
+            }
+            size="small"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleTaskRestore({
+                currentItem: taskDetails,
+                restoreTaskAction: restoreTaskAction,
+                successMessage: "Task restored",
+                failureMessage: "Failed to restore task",
+              });
+            }}
+            disabled={selectedTaskDetails?.length > 1}
+          />
+        ) : (
+          <Button
+            type="text"
+            icon={
+              <DeleteOutlined
+                style={{
+                  color:
+                    taskDetails.isCompleted || taskDetails.isWontDo
+                      ? colorBorder
+                      : colorTextLabel,
+                  opacity: selectedTaskDetails?.length > 1 ? 0.3 : 1,
+                  transition: "0.3s all ease",
+                }}
+              />
+            }
+            size="small"
+            onClick={(e) => {
+              e.stopPropagation();
+              showSoftDeleteConfirm({
+                content: "Delete this task?",
+                handleSoftDelete: handleSoftDelete,
+                currentItem: taskDetails,
+                softDeleteAction: softDeleteTaskAction,
+                successMessage: "Task deleted",
+                failureMessage: "Failed to delete task",
+              });
+            }}
+            disabled={selectedTaskDetails?.length > 1}
+          />
+        )}
+        {taskDetails.isDeleted ? (
+          <Button
+            type="text"
+            icon={
+              <DeleteFilled
+                style={{
+                  color:
+                    taskDetails.isCompleted || taskDetails.isWontDo
+                      ? colorBorder
+                      : colorError,
+                  opacity: selectedTaskDetails?.length > 1 ? 0.3 : 1,
+                  transition: "0.3s all ease",
+                }}
+              />
+            }
+            size="small"
+            onClick={(e) => {
+              e.stopPropagation();
+              showHardDeleteConfirm({
+                content: "Delete this task permanently?",
+                handleHardDelete: handleHardDelete,
+                currentItem: taskDetails,
+                hardDeleteAction: hardDeleteSingleTaskAction,
+                successMessage: "Task deleted",
+                failureMessage: "Failed to delete task",
+              });
+            }}
+            disabled={selectedTaskDetails?.length > 1}
+          />
+        ) : null}
+      </div>
+
       {contextHolder}
     </div>
   );

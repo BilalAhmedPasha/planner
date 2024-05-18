@@ -1,11 +1,6 @@
 import { theme } from "antd";
-import { useState } from "react";
-import { useSelector } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { LISTS, TAGS } from "../../../../constants/app.constants";
-import { listsSelector } from "../../state/userLists/userLists.reducer";
-import { tagsSelector } from "../../state/userTags/userTags.reducer";
 import TaskItem from "./Item";
 
 const StyledDiv = styled.div`
@@ -26,7 +21,7 @@ const StyledDiv = styled.div`
 const ItemContainer = ({
   user,
   messageApi,
-  cardDetails,
+  taskDetails,
   selectedTaskDetails,
   setSelectedTaskDetails,
   isInCollapse,
@@ -41,10 +36,8 @@ const ItemContainer = ({
     },
   } = theme.useToken();
 
-  const { lists } = useSelector(listsSelector);
-  const { tags } = useSelector(tagsSelector);
 
-  const id = cardDetails.id;
+  const id = taskDetails.id;
 
   const checkIfSelected = (id) => {
     return selectedTaskDetails?.find((each) => each.id === id);
@@ -56,8 +49,6 @@ const ItemContainer = ({
       setShowCheckBoxMenu(false);
     }
   }
-  const currentURL = useLocation();
-  const navigateTo = useNavigate();
   return (
     <StyledDiv
       opacity={1}
@@ -68,45 +59,12 @@ const ItemContainer = ({
       controlItemBgHover={controlItemBgHover}
       colorBgTextHover={colorBgTextHover}
       colorBorder={colorBorder}
-      onClick={(e) => {
-        e.stopPropagation();
-        setShowCheckBoxMenu(false);
-        if (e.nativeEvent.shiftKey) {
-          setSelectedTaskDetails((prevState) => {
-            if (!prevState.find((each) => each.id === cardDetails.id)) {
-              return [...prevState, cardDetails];
-            } else {
-              if (selectedTaskDetails.length !== 1) {
-                return prevState.filter((each) => each.id !== cardDetails.id);
-              } else {
-                return [...prevState];
-              }
-            }
-          });
-        } else {
-          // TODO Check here
-          const urlPath = currentURL.pathname.split("/");
-          if (
-            urlPath.length >= 4 &&
-            (urlPath[2] === LISTS || urlPath[2] === TAGS)
-          ) {
-            navigateTo(
-              `/${urlPath[1]}/${urlPath[2]}/${urlPath[3]}/${cardDetails.id}`
-            );
-          } else {
-            navigateTo(`/${urlPath[1]}/${urlPath[2]}/${cardDetails.id}`);
-          }
-          setSelectedTaskDetails([cardDetails]);
-        }
-      }}
       onKeyDown={keyPress}
     >
       <TaskItem
         user={user}
         messageApi={messageApi}
-        taskDetails={cardDetails}
-        lists={lists}
-        tags={tags}
+        taskDetails={taskDetails}
         selectedTaskDetails={selectedTaskDetails}
         setSelectedTaskDetails={setSelectedTaskDetails}
         setShowCheckBoxMenu={setShowCheckBoxMenu}

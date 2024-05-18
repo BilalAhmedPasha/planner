@@ -25,12 +25,12 @@ const renderItemContainerOutsideCollapse = ({
 }) => {
   return (
     <div>
-      {tasks.map((card) => (
+      {tasks.map((task) => (
         <ItemContainer
           user={user}
           messageApi={messageApi}
-          key={card.id}
-          cardDetails={card}
+          key={task.id}
+          taskDetails={task}
           moveItemContainer={(id, atIndex) =>
             moveSectionTask(id, atIndex, tasks, sectionId)
           }
@@ -56,15 +56,15 @@ const Section = ({
   const { token } = theme.useToken();
 
   const findSectionTask = (id, sectionTasks) => {
-    const card = sectionTasks.filter((c) => `${c.id}` === id)[0];
+    const task = sectionTasks.filter((c) => `${c.id}` === id)[0];
     return {
-      card,
-      index: sectionTasks.indexOf(card),
+      task,
+      index: sectionTasks.indexOf(task),
     };
   };
 
   const moveSectionTask = (id, atIndex, sectionTasks, sectionId) => {
-    const { card, index } = findSectionTask(id);
+    const { task, index } = findSectionTask(id);
     setSectionTasks((prevSectionTasks) => {
       return {
         ...prevSectionTasks,
@@ -73,7 +73,7 @@ const Section = ({
           tasks: update(sectionTasks, {
             $splice: [
               [index, 1],
-              [atIndex, 0, card],
+              [atIndex, 0, task],
             ],
           }),
         },
@@ -152,12 +152,12 @@ const Section = ({
                       marginBottom: "-1rem",
                     }}
                   >
-                    {sectionalTasks[each].tasks.map((card) => (
+                    {sectionalTasks[each].tasks.map((task) => (
                       <ItemContainer
                         user={user}
                         messageApi={messageApi}
-                        key={card.id}
-                        cardDetails={card}
+                        key={task.id}
+                        taskDetails={task}
                         moveItemContainer={(id, atIndex) =>
                           moveSectionTask(
                             id,

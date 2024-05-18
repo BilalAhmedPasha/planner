@@ -98,7 +98,6 @@ const HabitItem = ({
         e.stopPropagation();
         const urlPath = currentURL.pathname.split("/");
         navigateTo(`/${urlPath[1]}/${habit.id}`);
-        setSelectedHabitDetail(habit);
       }}
     >
       <Typography.Text
