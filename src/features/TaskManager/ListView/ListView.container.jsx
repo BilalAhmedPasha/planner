@@ -24,6 +24,8 @@ import { computeSectionData } from "./List.utils";
 import ListHeader from "./Header";
 import ListSections from "./Sections";
 import DialogForm from "./DialogForm";
+import Loading from "../../../components/Loading";
+import Spinner from "../../../components/Spinner";
 
 const hideAddForSections = [COMPLETED, WONT_DO, DELETED];
 
@@ -305,13 +307,19 @@ const ListView = ({
           />
         ))
       ) : (
-        <ListSections
-          user={user}
-          tasks={sortedSectionTasks}
-          sortBy={sortBy}
-          selectedTaskDetails={selectedTaskDetails}
-          setSelectedTaskDetails={setSelectedTaskDetails}
-        />   
+        <Spinner
+          spinning={isLoadingTasks}
+          indicator={Loading(0)}
+          delay={0}
+        >
+          <ListSections
+            user={user}
+            tasks={sortedSectionTasks}
+            sortBy={sortBy}
+            selectedTaskDetails={selectedTaskDetails}
+            setSelectedTaskDetails={setSelectedTaskDetails}
+          />
+        </Spinner>
       )}
 
       {openAddTaskDialog && (

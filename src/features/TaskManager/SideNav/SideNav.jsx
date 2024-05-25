@@ -103,7 +103,7 @@ const renderSubMenuItems = ({
       {items.map((each) => {
         return (
           <Menu.Item key={`/tasks/${key}/${each.id}`}>
-            <Spinner spinning={isLoading} indicator={Loading(0)}>
+            <Spinner spinning={isLoading} indicator={Loading(0)} delay={0}>
               <div
                 style={{
                   display: "flex",

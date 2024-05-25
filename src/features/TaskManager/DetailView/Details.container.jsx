@@ -97,7 +97,8 @@ const DetailsContainer = ({
     return (
       <Spinner
         spinning={isLoadingTasks && selectedTaskDetails?.length > 0}
-        indicator={Loading(0)}
+        indicator={Loading(0)} 
+        delay={0}
       >
         {selectedTaskDetails.length === 1 ? (
           <Form

@@ -253,7 +253,7 @@ const Item = ({
         onClick={(e) => {
           e.stopPropagation();
           setShowCheckBoxMenu(false);
-          if (e.nativeEvent.shiftKey) {
+          if (e.nativeEvent.ctrlKey) {
             setSelectedTaskDetails((prevState) => {
               if (!prevState.find((each) => each.id === taskDetails.id)) {
                 return [...prevState, taskDetails];

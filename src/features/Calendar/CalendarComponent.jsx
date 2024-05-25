@@ -19,7 +19,7 @@ import {
 } from "../../constants/color.constants";
 import { BgColorsOutlined } from "@ant-design/icons";
 import { PRIORITY } from "../../constants/sort.constants";
-import { LISTS, LOADER_SIZE, TAGS } from "../../constants/app.constants";
+import { LISTS, TAGS } from "../../constants/app.constants";
 import { DAY, TIME_FORMAT_IN_DB } from "../../constants/dateTime.constants";
 import { priorityColorMappings } from "../../constants/priority.constants";
 import { CREATE, EDIT } from "../../constants/formType.constants";
@@ -265,7 +265,7 @@ const CalendarComponent = ({
       </div>
       <Spinner
         spinning={isLoadingTasks || spinner}
-        indicator={Loading(LOADER_SIZE)}
+        indicator={Loading(0)}
         delay={0}
       >
         <CalendarWrapper

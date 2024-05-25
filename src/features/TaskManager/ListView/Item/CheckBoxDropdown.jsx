@@ -138,10 +138,6 @@ const CheckBoxDropdown = ({
           }
         }
       }
-      if (isInCalendar) {
-        delete taskDetails.start;
-        delete taskDetails.end;
-      }
       return dispatch(
         completeTaskAction(
           user.uid,
@@ -149,7 +145,8 @@ const CheckBoxDropdown = ({
           isCompleted,
           markedTime,
           updatedTaskDate?.format(),
-          shouldCreateNewTask
+          shouldCreateNewTask,
+          isInCalendar
         )
       );
     } else {
@@ -204,10 +201,6 @@ const CheckBoxDropdown = ({
           }
         }
       }
-      if (isInCalendar) {
-        delete taskDetails.start;
-        delete taskDetails.end;
-      }
       return dispatch(
         wontDoTaskAction(
           user.uid,
@@ -215,7 +208,8 @@ const CheckBoxDropdown = ({
           isWontDo,
           markedTime,
           updatedTaskDate?.format(),
-          shouldCreateNewTask
+          shouldCreateNewTask,
+          isInCalendar
         )
       );
     } else {

@@ -346,7 +346,7 @@ export const editTaskAction =
   };
 
 export const updateRepeatingTaskAction =
-  (userId,referenceTaskId, excludeDate) => async (dispatch) => {
+  (userId, referenceTaskId, excludeDate) => async (dispatch) => {
     dispatch(updateRepeatingTask());
     try {
       await updateRepeatingTaskApi(userId, referenceTaskId, excludeDate);
@@ -359,7 +359,6 @@ export const updateRepeatingTaskAction =
       return dispatch(updateRepeatingTaskFailure(error));
     }
   };
-
 
 export const softDeleteTaskAction =
   (userId, currentTask) => async (dispatch) => {
@@ -412,14 +411,20 @@ export const completeTaskAction =
     isCompleted,
     markedTime,
     updatedTaskDate,
-    shouldCreateNewTask
+    shouldCreateNewTask,
+    isInCalendar
   ) =>
   async (dispatch) => {
     dispatch(completeTask());
     try {
+      const apiTaskDetails = {...taskDetails};
+      if (isInCalendar) {
+        delete apiTaskDetails.start;
+        delete apiTaskDetails.end;
+      }
       const newTask = await completeTaskApi(
         userId,
-        taskDetails,
+        apiTaskDetails,
         isCompleted,
         markedTime,
         updatedTaskDate,
@@ -428,8 +433,8 @@ export const completeTaskAction =
       return dispatch(
         completeTaskSuccess({
           response: {
-            taskDetails: taskDetails,
-            completedTaskId: taskDetails.id,
+            taskDetails: apiTaskDetails,
+            completedTaskId: apiTaskDetails.id,
             isCompleted,
             markedTime,
             updatedTaskDate,
@@ -450,14 +455,20 @@ export const wontDoTaskAction =
     isWontDo,
     markedTime,
     updatedTaskDate,
-    shouldCreateNewTask
+    shouldCreateNewTask,
+    isInCalendar
   ) =>
   async (dispatch) => {
     dispatch(wontDoTask());
     try {
+      const apiTaskDetails = {...taskDetails};
+      if (isInCalendar) {
+        delete apiTaskDetails.start;
+        delete apiTaskDetails.end;
+      }
       const newTask = await wontDoTaskApi(
         userId,
-        taskDetails,
+        apiTaskDetails,
         isWontDo,
         markedTime,
         updatedTaskDate,
@@ -466,8 +477,8 @@ export const wontDoTaskAction =
       return dispatch(
         wontDoTaskSuccess({
           response: {
-            taskDetails: taskDetails,
-            wontDoTaskId: taskDetails.id,
+            taskDetails: apiTaskDetails,
+            wontDoTaskId: apiTaskDetails.id,
             isWontDo,
             markedTime,
             updatedTaskDate,

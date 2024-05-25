@@ -1,6 +1,5 @@
 import { Modal as ModalAnt } from "antd";
 import Loading from "../Loading";
-import { LOADER_SIZE } from "../../constants/app.constants";
 import Spinner from "../Spinner";
 
 const Modal = ({
@@ -44,7 +43,7 @@ const Modal = ({
       destroyOnClose={false}
       {...props}
     >
-      <Spinner spinning={loading} indicator={Loading(LOADER_SIZE)}>
+      <Spinner spinning={loading} indicator={Loading(0)} delay={0}>
         {children}
       </Spinner>
     </ModalAnt>
