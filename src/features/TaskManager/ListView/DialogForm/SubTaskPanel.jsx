@@ -38,13 +38,13 @@ const StyledDiv = styled.div`
   border: 0.1px solid #bfbfbf;
   margin-top: 0.5rem;
   border-radius: 5px;
-  max-height: ${(props) => props.maxHeight};
+  max-height: ${(props) => props.$maxHeight};
   overflow: auto;
   transition: max-height 0.8s ease-out;
 `;
 
 const StyledFormItem = styled(Form.Item)`
-  margin: ${(props) => props.marginVertical} 0rem;
+  margin: ${(props) => props.$marginVertical} 0rem;
 `;
 
 const SubTaskPanel = ({ form, subTaskPanelHeight, closeSubTaskPanel }) => {
@@ -150,7 +150,7 @@ const SubTaskPanel = ({ form, subTaskPanelHeight, closeSubTaskPanel }) => {
   const scheduleContent = () => {
     return (
       <div style={{ width: "15rem" }}>
-        <StyledFormItem name="subTaskDate" marginVertical="0.5rem">
+        <StyledFormItem name="subTaskDate" $marginVertical="0.5rem">
           <DatePicker
             format={DATE_FORMAT}
             style={{
@@ -161,7 +161,7 @@ const SubTaskPanel = ({ form, subTaskPanelHeight, closeSubTaskPanel }) => {
           />
         </StyledFormItem>
         {isScheduled && (
-          <StyledFormItem name="subTaskTime" marginVertical="0.5rem">
+          <StyledFormItem name="subTaskTime" $marginVertical="0.5rem">
             <TimePicker.RangePicker
               format={TIME_FORMAT}
               minuteStep={5}
@@ -174,7 +174,7 @@ const SubTaskPanel = ({ form, subTaskPanelHeight, closeSubTaskPanel }) => {
           </StyledFormItem>
         )}
         {isScheduled && (
-          <StyledFormItem name="subTaskRepeatFrequency" marginVertical="0.5rem">
+          <StyledFormItem name="subTaskRepeatFrequency" $marginVertical="0.5rem">
             <Select
               allowClear
               options={[
@@ -197,7 +197,7 @@ const SubTaskPanel = ({ form, subTaskPanelHeight, closeSubTaskPanel }) => {
           </StyledFormItem>
         )}
         {isScheduled && isRepeating && (
-          <StyledFormItem name="subTaskEndBy" marginVertical="0.5rem">
+          <StyledFormItem name="subTaskEndBy" $marginVertical="0.5rem">
             <Select
               defaultValue={ENDLESS}
               options={[
@@ -221,7 +221,7 @@ const SubTaskPanel = ({ form, subTaskPanelHeight, closeSubTaskPanel }) => {
         {isScheduled && isRepeating && showEndByDate && (
           <StyledFormItem
             name="subTaskEndDate"
-            marginVertical="0.5rem"
+            $marginVertical="0.5rem"
             rules={[
               {
                 required: true,
@@ -269,9 +269,9 @@ const SubTaskPanel = ({ form, subTaskPanelHeight, closeSubTaskPanel }) => {
   };
 
   return (
-    <StyledDiv maxHeight={subTaskPanelHeight}>
+    <StyledDiv $maxHeight={subTaskPanelHeight}>
       <div style={{ padding: "0rem 1rem" }}>
-        <StyledFormItem name="subTaskName" marginVertical="0rem">
+        <StyledFormItem name="subTaskName" $marginVertical="0rem">
           <Input
             autoComplete="off"
             maxLength={25}
@@ -281,7 +281,7 @@ const SubTaskPanel = ({ form, subTaskPanelHeight, closeSubTaskPanel }) => {
             onInput={handleSubTaskNameChange}
           />
         </StyledFormItem>
-        <StyledFormItem name="subTaskDescription" marginVertical="0rem">
+        <StyledFormItem name="subTaskDescription" $marginVertical="0rem">
           <Input.TextArea
             autoComplete="off"
             autoSize={{
@@ -312,7 +312,7 @@ const SubTaskPanel = ({ form, subTaskPanelHeight, closeSubTaskPanel }) => {
               trigger={["click"]}
               placement="bottomLeft"
             >
-              <StyledFormItem name="subTaskPriority" marginVertical="0rem">
+              <StyledFormItem name="subTaskPriority" $marginVertical="0rem">
                 <Button
                   type="default"
                   icon={<FlagFilled style={{ color: priority.color }} />}
@@ -322,7 +322,7 @@ const SubTaskPanel = ({ form, subTaskPanelHeight, closeSubTaskPanel }) => {
               </StyledFormItem>
             </Dropdown>
 
-            <StyledFormItem name="subTaskTags" marginVertical="0rem">
+            <StyledFormItem name="subTaskTags" $marginVertical="0rem">
               <Select
                 mode="multiple"
                 options={tagOptions}

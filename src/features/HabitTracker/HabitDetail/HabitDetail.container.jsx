@@ -12,6 +12,8 @@ const HabitDetailContainer = ({
   setSelectedHabitDetail,
   isHabitDetailsDrawerCollapsed,
   setIsHabitDetailsDrawerCollapsed,
+  habitHistory,
+  setHabitHistory,
 }) => {
   const {
     token: { colorBgContainer },
@@ -55,6 +57,8 @@ const HabitDetailContainer = ({
           habit={selectedHabitDetail}
           user={user}
           isInDrawer={true}
+          habitHistory={habitHistory}
+          setHabitHistory={setHabitHistory}
         />
       ) : (
         <NoHabitSelected />
@@ -69,7 +73,12 @@ const HabitDetailContainer = ({
       }}
     >
       {selectedHabitDetail ? (
-        <HabitCalendar habit={selectedHabitDetail} user={user} />
+        <HabitCalendar
+          habit={selectedHabitDetail}
+          user={user}
+          habitHistory={habitHistory}
+          setHabitHistory={setHabitHistory}
+        />
       ) : (
         <NoHabitSelected />
       )}

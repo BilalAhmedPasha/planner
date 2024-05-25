@@ -277,16 +277,16 @@ const CheckBoxDropdown = ({
       <CheckBoxInput
         ref={dropdownRef}
         id={taskDetails.name}
-        uniCode={checkBoxContent}
-        backgroundColor={colorConfig.color}
-        borderColor={colorConfig.color}
-        checkBoxColor={colorConfig.color}
-        hoverBgColor={colorConfig.bgColor}
         onChange={handleClick}
         onContextMenu={(e) => handleRightClick({ e, taskDetails })}
         checked={taskDetails.isCompleted || taskDetails.isWontDo}
         disabled={taskDetails.isDeleted}
-        colorBgContainer={colorBgContainer}
+        $uniCode={checkBoxContent}
+        $backgroundColor={colorConfig.color}
+        $borderColor={colorConfig.color}
+        $checkBoxColor={colorConfig.color}
+        $hoverBgColor={colorConfig.bgColor}
+        $colorBgContainer={colorBgContainer}
       />
     </Dropdown>
   );

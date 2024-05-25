@@ -14,23 +14,23 @@ const DaySelector = styled.div`
   cursor: ${(props) => props.cursor};
   border-radius: 50%;
   margin: 0.2rem;
-  color: ${(props) => (props.isSelected ? "#ffffff" : props.colorTextBase)};
+  color: ${(props) => (props.$isSelected ? "#ffffff" : props.$colorTextBase)};
   background-color: ${(props) => {
-    if (props.markedValue === HABIT_MARKED_DONE) {
-      return props.colorSuccess;
-    } else if (props.markedValue === HABIT_MARKED_NOT_DONE) {
-      return props.colorError;
+    if (props.$markedValue === HABIT_MARKED_DONE) {
+      return props.$colorSuccess;
+    } else if (props.$markedValue === HABIT_MARKED_NOT_DONE) {
+      return props.$colorError;
     }
-    return !props.isSelected ? props.colorBgContainer : props.colorPrimary;
+    return !props.$isSelected ? props.$colorBgContainer : props.$colorPrimary;
   }};
   &:hover {
     background-color: ${(props) => {
-      if (props.markedValue === HABIT_UNMARKED) {
-        return props.isValidDate
-          ? props.colorBgTextHover
-          : props.isSelected
-          ? props.colorPrimary
-          : props.colorBgContainer;
+      if (props.$markedValue === HABIT_UNMARKED) {
+        return props.$isValidDate
+          ? props.$colorBgTextHover
+          : props.$isSelected
+          ? props.$colorPrimary
+          : props.$colorBgContainer;
       }
     }};
   }

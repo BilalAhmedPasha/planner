@@ -32,12 +32,20 @@ const HabitTracker = ({ user }) => {
       : setIsHabitDetailsDrawerCollapsed(true);
   }, [selectedHabitDetail]);
 
+  const [habitHistory, setHabitHistory] = useState({
+    achieved: 0,
+    unachieved: 0,
+    pending: 0,
+  });
+
   return (
     <>
       <HabitListContainer
         user={user}
         selectedHabitDetail={selectedHabitDetail}
         setSelectedHabitDetail={setSelectedHabitDetail}
+        habitHistory={habitHistory}
+        setHabitHistory={setHabitHistory}
       />
       <HabitDetailContainer
         user={user}
@@ -45,6 +53,8 @@ const HabitTracker = ({ user }) => {
         setSelectedHabitDetail={setSelectedHabitDetail}
         isHabitDetailsDrawerCollapsed={isHabitDetailsDrawerCollapsed}
         setIsHabitDetailsDrawerCollapsed={setIsHabitDetailsDrawerCollapsed}
+        habitHistory={habitHistory}
+        setHabitHistory={setHabitHistory}
       />
     </>
   );

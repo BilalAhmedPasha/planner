@@ -299,8 +299,9 @@ const ListView = ({
       />
 
       {isLoadingTasks && tasks?.length === 0 ? (
-        Array.from({ length: numRows }).map((each) => (
+        Array.from({ length: numRows }).map((each, index) => (
           <Skeleton.Button
+            key={index}
             active={true}
             style={{ margin: "0.5rem 1rem", width: "95%", height: 70 }}
             block={true}

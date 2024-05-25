@@ -269,8 +269,8 @@ const CalendarComponent = ({
         delay={0}
       >
         <CalendarWrapper
-          userTheme={userTheme}
-          isOnVerySmallScreen={isOnVerySmallScreen({
+          $userTheme={userTheme}
+          $isOnVerySmallScreen={isOnVerySmallScreen({
             currentWidth: screenSize.width,
           })}
         >

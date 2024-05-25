@@ -23,8 +23,6 @@ import {
 import { habitsSelector } from "../../state/userHabits/userHabits.reducer";
 import HabitHistory from "./HabitHistory";
 
-const CalendarWrapper = styled.div``;
-
 const CalenderDays = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -36,11 +34,11 @@ const CalenderDays = styled.div`
 const CalendarText = styled.h2`
   padding: 0.3rem;
   color: ${(props) => {
-    return !props.currentMonth || props.isFuture || !props.isValidDate
-      ? props.colorBorder
-      : props.isToday && props.markedValue === 0
-      ? props.colorPrimary
-      : props.colorTextBase;
+    return !props.$currentMonth || props.$isFuture || !props.$isValidDate
+      ? props.$colorBorder
+      : props.$isToday && props.$markedValue === 0
+      ? props.$colorPrimary
+      : props.$colorTextBase;
   }};
 `;
 
@@ -48,7 +46,7 @@ const CalendarDay = styled.div`
   margin: 1rem 1.25rem 0.5rem 1.25rem;
   text-align: center;
   font-size: 1rem;
-  color: ${(props) => props.colorTextSecondary};
+  color: ${(props) => props.$colorTextSecondary};
 `;
 
 const CalenderDates = styled.div`
@@ -68,27 +66,27 @@ const CalenderDate = styled.div`
   margin: 1rem;
   cursor: ${(props) => props.cursor};
   background-color: ${(props) => {
-    if (props.markedValue === 1) {
-      return props.colorSuccess;
-    } else if (props.markedValue === -1) {
-      return props.colorError;
+    if (props.$markedValue === 1) {
+      return props.$colorSuccess;
+    } else if (props.$markedValue === -1) {
+      return props.$colorError;
     }
-    return props.colorBgContainer;
+    return props.$colorBgContainer;
   }};
   &:hover {
     background-color: ${(props) => {
-      if (props.markedValue === 1) {
-        return props.colorSuccess;
-      } else if (props.markedValue === -1) {
-        return props.colorError;
+      if (props.$markedValue === 1) {
+        return props.$colorSuccess;
+      } else if (props.$markedValue === -1) {
+        return props.$colorError;
       }
-      return props.isValidDate && !props.isFuture
-        ? props.colorBgTextHover
-        : props.colorBgContainer;
+      return props.$isValidDate && !props.$isFuture
+        ? props.$colorBgTextHover
+        : props.$colorBgContainer;
     }};
   }
   box-shadow: ${(props) =>
-    props.isValidDate && !props.isFuture
+    props.$isValidDate && !props.$isFuture
       ? "rgba(99, 99, 99, 0.20) 0px 2px 8px 0px"
       : "none"};
 `;
@@ -162,7 +160,13 @@ export const handleHabitDateClick = ({
   // Update history
 };
 
-const HabitCalendar = ({ user, habit, isInDrawer = false }) => {
+const HabitCalendar = ({
+  user,
+  habit,
+  isInDrawer = false,
+  habitHistory,
+  setHabitHistory,
+}) => {
   const {
     token: {
       colorBgContainer,
@@ -185,12 +189,6 @@ const HabitCalendar = ({ user, habit, isInDrawer = false }) => {
 
   const dispatch = useDispatch();
   const { isLoadingHabits } = useSelector(habitsSelector);
-
-  const [habitHistory, setHabitHistory] = useState({
-    achieved: 0,
-    unachieved: 0,
-    pending: 0,
-  });
 
   const validDaysCount = useMemo(() => {
     let count = 0;
@@ -234,7 +232,7 @@ const HabitCalendar = ({ user, habit, isInDrawer = false }) => {
   ]);
 
   return (
-    <CalendarWrapper>
+    <div>
       {!isInDrawer && (
         <div
           style={{
@@ -351,7 +349,7 @@ const HabitCalendar = ({ user, habit, isInDrawer = false }) => {
         <CalenderDays>
           {DAYS_LIST.map((day, index) => {
             return (
-              <CalendarDay key={index} colorTextSecondary={colorTextSecondary}>
+              <CalendarDay key={index} $colorTextSecondary={colorTextSecondary}>
                 <p>{day}</p>
               </CalendarDay>
             );
@@ -368,12 +366,12 @@ const HabitCalendar = ({ user, habit, isInDrawer = false }) => {
               return (
                 <CalenderDate
                   key={index}
-                  colorBgContainer={colorBgContainer}
-                  colorBgTextHover={colorBgTextHover}
-                  colorPrimary={colorPrimary}
-                  colorSuccess={colorSuccess}
-                  colorError={colorError}
-                  colorTextBase={colorTextBase}
+                  $colorBgContainer={colorBgContainer}
+                  $colorBgTextHover={colorBgTextHover}
+                  $colorPrimary={colorPrimary}
+                  $colorSuccess={colorSuccess}
+                  $colorError={colorError}
+                  $colorTextBase={colorTextBase}
                   onClick={() => {
                     if (isValidDate && !isFuture) {
                       handleHabitDateClick({
@@ -386,20 +384,20 @@ const HabitCalendar = ({ user, habit, isInDrawer = false }) => {
                     }
                   }}
                   cursor={isValidDate && !isFuture ? "pointer" : "not-allowed"}
-                  isFuture={isFuture}
-                  isValidDate={isValidDate}
-                  markedValue={markedValue}
+                  $isFuture={isFuture}
+                  $isValidDate={isValidDate}
+                  $markedValue={markedValue}
                 >
                   <CalendarText
-                    currentMonth={currentMonth}
-                    isFuture={isFuture}
-                    isToday={isToday}
-                    colorPrimary={colorPrimary}
-                    colorTextBase={colorTextBase}
-                    colorTextSecondary={colorTextSecondary}
-                    colorBorder={colorBorder}
-                    isValidDate={isValidDate}
-                    markedValue={markedValue}
+                    $currentMonth={currentMonth}
+                    $isFuture={isFuture}
+                    $isToday={isToday}
+                    $colorPrimary={colorPrimary}
+                    $colorTextBase={colorTextBase}
+                    $colorTextSecondary={colorTextSecondary}
+                    $colorBorder={colorBorder}
+                    $isValidDate={isValidDate}
+                    $markedValue={markedValue}
                   >
                     {date.date() <= 9 ? `0${date.date()}` : date.date()}
                   </CalendarText>
@@ -409,7 +407,7 @@ const HabitCalendar = ({ user, habit, isInDrawer = false }) => {
           )}
         </CalenderDates>
       </div>
-    </CalendarWrapper>
+    </div>
   );
 };
 

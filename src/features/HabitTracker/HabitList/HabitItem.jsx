@@ -18,10 +18,10 @@ const StyledDiv = styled.div`
   opacity: ${(props) => props.opacity};
   &:hover {
     background-color: ${(props) =>
-      props.isSelected ? props.colorPrimaryBg : props.colorBgTextHover};
+      props.$isSelected ? props.$colorPrimaryBg : props.$colorBgTextHover};
   }
   background-color: ${(props) =>
-    props.isSelected ? props.colorPrimaryBg : props.colorBgContainer};
+    props.$isSelected ? props.$colorPrimaryBg : props.$colorBgContainer};
   box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
   user-select: none;
   cursor: pointer;
@@ -32,13 +32,13 @@ const StyledDiv = styled.div`
 
 const DateText = styled.h5`
   color: ${(props) =>
-    !props.isValidDate
-      ? props.colorBorder
+    !props.$isValidDate
+      ? props.$colorBorder
       : props.today
-      ? props.colorPrimary
-      : props.currentMonth || props.markedValue !== 0
-      ? props.colorTextBase
-      : props.colorTextSecondary};
+      ? props.$colorPrimary
+      : props.$currentMonth || props.$markedValue !== 0
+      ? props.$colorTextBase
+      : props.$colorTextSecondary};
 `;
 
 const HabitItem = ({
@@ -49,6 +49,7 @@ const HabitItem = ({
   handleOpenHabitDialog,
   setFormConfig,
   handleDeleteHabit,
+  setHabitHistory
 }) => {
   const {
     token: {
@@ -88,12 +89,12 @@ const HabitItem = ({
   return (
     <StyledDiv
       opacity={1}
-      isSelected={selectedHabitDetail && selectedHabitDetail.id === habit.id}
-      colorBgContainer={colorBgContainer}
-      colorPrimaryBg={colorPrimaryBg}
-      controlItemBgHover={controlItemBgHover}
-      colorBgTextHover={colorBgTextHover}
-      colorBorder={colorBorder}
+      $isSelected={selectedHabitDetail && selectedHabitDetail.id === habit.id}
+      $colorBgContainer={colorBgContainer}
+      $colorPrimaryBg={colorPrimaryBg}
+      $controlItemBgHover={controlItemBgHover}
+      $colorBgTextHover={colorBgTextHover}
+      $colorBorder={colorBorder}
       onClick={(e) => {
         e.stopPropagation();
         const urlPath = currentURL.pathname.split("/");
@@ -126,7 +127,7 @@ const HabitItem = ({
                 gap: "0.5rem",
               }}
             >
-              {last7Dates.map((date) => {
+              {last7Dates.map((date,index) => {
                 const isValidDate = checkIfValidDate({
                   date: dayjs(date),
                   habit,
@@ -137,14 +138,15 @@ const HabitItem = ({
                     : 0;
                 return (
                   <DaySelector
+                    key={index}
                     height={2}
-                    colorBgContainer={colorBgContainer}
-                    colorBgTextHover={colorBgTextHover}
-                    colorPrimary={colorPrimary}
-                    colorTextBase={colorTextSecondary}
-                    colorSuccess={colorSuccess}
-                    colorError={colorError}
-                    isSelected={false}
+                    $colorBgContainer={colorBgContainer}
+                    $colorBgTextHover={colorBgTextHover}
+                    $colorPrimary={colorPrimary}
+                    $colorTextBase={colorTextSecondary}
+                    $colorSuccess={colorSuccess}
+                    $colorError={colorError}
+                    $isSelected={false}
                     onClick={(e) => {
                       e.stopPropagation();
                       if (isValidDate) {
@@ -153,20 +155,21 @@ const HabitItem = ({
                           date: dayjs(date),
                           dispatch: dispatch,
                           user: user,
+                          setHabitHistory
                         });
                       }
                     }}
                     cursor={isValidDate ? "pointer" : "not-allowed"}
-                    isValidDate={isValidDate}
-                    markedValue={markedValue}
+                    $isValidDate={isValidDate}
+                    $markedValue={markedValue}
                   >
                     <DateText
-                      isValidDate={isValidDate}
-                      colorBorder={colorBorder}
-                      colorPrimary={colorPrimary}
-                      colorTextBase={colorTextBase}
-                      colorTextSecondary={colorTextSecondary}
-                      markedValue={markedValue}
+                      $isValidDate={isValidDate}
+                      $colorBorder={colorBorder}
+                      $colorPrimary={colorPrimary}
+                      $colorTextBase={colorTextBase}
+                      $colorTextSecondary={colorTextSecondary}
+                      $markedValue={markedValue}
                     >
                       {date.getDate() <= 9 ? `0${date.getDate()}` : date.getDate()}
                     </DateText>

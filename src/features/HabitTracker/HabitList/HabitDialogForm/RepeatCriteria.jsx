@@ -56,12 +56,13 @@ const RepeatCriteria = ({ value = {}, onChange, frequencyType }) => {
           {frequencyState.days.map((each, index) => {
             return (
               <DaySelector
+                key={index}
                 height={3}
-                colorBgContainer={colorBgContainer}
-                colorBgTextHover={colorBgTextHover}
-                colorPrimary={colorPrimary}
-                colorTextBase={colorTextBase}
-                isSelected={each}
+                $colorBgContainer={colorBgContainer}
+                $colorBgTextHover={colorBgTextHover}
+                $colorPrimary={colorPrimary}
+                $colorTextBase={colorTextBase}
+                $isSelected={each}
                 onClick={(e) => toggleActiveState(e, index)}
                 cursor={"pointer"}
               >

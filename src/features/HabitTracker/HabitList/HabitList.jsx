@@ -14,6 +14,8 @@ const HabitListContainer = ({
   user,
   selectedHabitDetail,
   setSelectedHabitDetail,
+  habitHistory,
+  setHabitHistory
 }) => {
   const {
     token: { colorBgContainer },
@@ -142,8 +144,9 @@ const HabitListContainer = ({
         setFormConfig={setFormConfig}
       />
       {isLoadingHabits && habits?.length === 0
-        ? Array.from({ length: numRows }).map((each) => (
+        ? Array.from({ length: numRows }).map((each, index) => (
             <Skeleton.Button
+              key={index}
               active={true}
               style={{ margin: "0.25rem 1rem", width: "95%", height: 60 }}
               block={true}
@@ -151,6 +154,7 @@ const HabitListContainer = ({
           ))
         : habits.map((habit) => (
             <HabitItem
+              key={habit.name}
               habit={habit}
               user={user}
               selectedHabitDetail={selectedHabitDetail}
@@ -158,6 +162,7 @@ const HabitListContainer = ({
               handleOpenHabitDialog={handleOpenHabitDialog}
               setFormConfig={setFormConfig}
               handleDeleteHabit={handleDeleteHabit}
+              setHabitHistory={setHabitHistory}
             />
           ))}
       {openHabitDialog && (

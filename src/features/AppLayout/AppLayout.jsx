@@ -100,7 +100,9 @@ const AppLayout = ({ setCurrentTitle, children }) => {
   const { defaultAlgorithm } = theme;
   const childrenWithProps = React.Children.map(children, (child) => {
     if (React.isValidElement(child)) {
-      return React.cloneElement(child, { setCurrentTitle, user, userTheme });
+      const isComponent = typeof child.type === 'function';
+      const newProps = isComponent ? { setCurrentTitle, user, userTheme } : { user };
+      return React.cloneElement(child, newProps);
     }
     return child;
   });

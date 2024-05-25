@@ -5,14 +5,14 @@ import TaskItem from "./Item";
 
 const StyledDiv = styled.div`
   padding: 0.75rem 1rem;
-  margin: 0.25rem ${(props) => (props.isInCollapse ? "0rem" : "1rem")};
+  margin: 0.25rem ${(props) => (props.$isInCollapse ? "0rem" : "1rem")};
   opacity: ${(props) => props.opacity};
   &:hover {
     background-color: ${(props) =>
-      props.isSelected ? props.colorPrimaryBg : props.colorBgTextHover};
+      props.$isSelected ? props.$colorPrimaryBg : props.$colorBgTextHover};
   }
   background-color: ${(props) =>
-    props.isSelected ? props.colorPrimaryBg : props.colorBgContainer};
+    props.$isSelected ? props.$colorPrimaryBg : props.$colorBgContainer};
   box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
   user-select: none;
   cursor: pointer;
@@ -52,13 +52,13 @@ const ItemContainer = ({
   return (
     <StyledDiv
       opacity={1}
-      isSelected={checkIfSelected(id)}
-      isInCollapse={isInCollapse}
-      colorBgContainer={colorBgContainer}
-      colorPrimaryBg={colorPrimaryBg}
-      controlItemBgHover={controlItemBgHover}
-      colorBgTextHover={colorBgTextHover}
-      colorBorder={colorBorder}
+      $isSelected={checkIfSelected(id)}
+      $isInCollapse={isInCollapse}
+      $colorBgContainer={colorBgContainer}
+      $colorPrimaryBg={colorPrimaryBg}
+      $controlItemBgHover={controlItemBgHover}
+      $colorBgTextHover={colorBgTextHover}
+      $colorBorder={colorBorder}
       onKeyDown={keyPress}
     >
       <TaskItem

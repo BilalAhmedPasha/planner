@@ -47,7 +47,11 @@ const CalendarEvent = ({ event, user }) => {
             isInCalendar={true}
           />
         </div>
-        <Typography.Text strong={true} ellipsis={true} tooltip={false}>
+        <Typography.Text
+          strong={true}
+          ellipsis={true}
+          tooltip={{ open: false }}
+        >
           {event.name}
         </Typography.Text>
       </Space>

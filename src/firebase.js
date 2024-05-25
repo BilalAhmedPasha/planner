@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, enableNetwork } from "@firebase/firestore";
+import { getFirestore } from "@firebase/firestore";
 import { API_KEY } from "./constants/firebase.constants";
 import { getAuth } from "firebase/auth";
 
@@ -15,14 +15,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
-
-enableNetwork(db)
-  .then(() => {
-    console.log("Firestore preconnected");
-  })
-  .catch((error) => {
-    console.error("Error preconnecting to Firestore:", error);
-  });
 
 export const auth = getAuth(app);
 export default db;
