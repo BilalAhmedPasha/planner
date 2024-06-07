@@ -101,7 +101,9 @@ const AppLayout = ({ setCurrentTitle, children }) => {
   const childrenWithProps = React.Children.map(children, (child) => {
     if (React.isValidElement(child)) {
       const isComponent = typeof child.type === 'function';
-      const newProps = isComponent ? { setCurrentTitle, user, userTheme } : { user };
+      const newProps = isComponent
+        ? { setCurrentTitle, user, userTheme }
+        : { user, userTheme };
       return React.cloneElement(child, newProps);
     }
     return child;
